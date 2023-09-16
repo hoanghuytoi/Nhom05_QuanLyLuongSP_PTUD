@@ -10,6 +10,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+<<<<<<< HEAD
+import javax.swing.BorderFactory;
+=======
+>>>>>>> 2be857b (Sign In)
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;

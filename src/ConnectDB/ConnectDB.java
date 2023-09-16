@@ -1,5 +1,9 @@
 package ConnectDB;
 
+<<<<<<< HEAD
+public class ConnectDB {
+
+=======
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,4 +33,5 @@ public class ConnectDB {
 		instance.connect();
 		return con;
 	}
+>>>>>>> 2be857b (Sign In)
 }
