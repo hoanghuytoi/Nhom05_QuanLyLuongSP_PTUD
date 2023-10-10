@@ -11,9 +11,8 @@ public class PhanCongCongNhan {
     private ToNhom toNhom;
     private int soLuongCanLam;
     
-	public PhanCongCongNhan(String maPhanCong, CongNhan congNhan, CongDoan congDoan, NhanVien nguoiPhanCong,
-			Date ngayPhanCong, ToNhom toNhom, int soLuongCanLam) {
-		try {
+    public PhanCongCongNhan(String maPhanCong, CongNhan congNhan, CongDoan congDoan, NhanVien nguoiPhanCong, Date ngayPhanCong, int soLuongCanLam, ToNhom toNhom) {
+        try {
             setMaPhanCong(maPhanCong);
             setCongNhan(congNhan);
             setCongDoan(congDoan);
@@ -24,7 +23,8 @@ public class PhanCongCongNhan {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-	}
+
+    }
 
 	public String getMaPhanCong() {
 		return maPhanCong;
@@ -94,7 +94,7 @@ public class PhanCongCongNhan {
     
 	@Override
     public String toString() {
-        return "PhanCongCongNhan{" + "maPhanCong=" + maPhanCong + ", congNhan=" + congNhan + ", congDoan=" + congDoan + ", nguoiPhanCong=" + nguoiPhanCong + ", ngayPhanCong=" + ngayPhanCong + ", toNhom=" + toNhom + '}';
+        return "PhanCongCongNhan{" + "maPhanCong=" + maPhanCong + ", congNhan=" + congNhan + ", congDoan=" + congDoan + ", nguoiPhanCong=" + nguoiPhanCong + ", ngayPhanCong=" + ngayPhanCong + ", soLuongCanLam=" + soLuongCanLam + ", toNhom=" + toNhom + '}';
     }
     
 }
