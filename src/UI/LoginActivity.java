@@ -36,7 +36,7 @@ public class LoginActivity extends JFrame implements MouseListener,ActionListene
 
 	public LoginActivity() {
         try {
-            ConnectDB.ConnectDB.getInstance().connect();
+            ConnectionDB.ConnectDB.getInstance().connect();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
