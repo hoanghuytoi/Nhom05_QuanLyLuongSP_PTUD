@@ -65,10 +65,10 @@ public class Login_GUI extends JFrame implements MouseListener,ActionListener{
     }
 	
     private void Component(){
-		setTitle("PACEPRO - Phầm mềm quản lý lương sản phẩm");
+		setTitle("PACEPRO - Hệ thống quản lý lương sản phẩm");
 		setSize(1050, 550);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("images/logo.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage("images/salary.png"));
 		getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
