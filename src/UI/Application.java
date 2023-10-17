@@ -7,7 +7,7 @@ public class Application {
 		EventQueue.invokeLater(new Runnable() {
 	        public void run() {
 	            try {
-	                LoginActivity frame = new LoginActivity();
+	                Login_GUI frame = new Login_GUI();
 	                frame.setVisible(true);
 	                frame.setResizable(false);
 	                frame.setLocationRelativeTo(null);

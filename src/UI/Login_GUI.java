@@ -23,18 +23,18 @@ import java.awt.Toolkit;
 * @author HoangHuyToi
 */
 
-public class LoginActivity extends JFrame implements MouseListener,ActionListener{
+public class Login_GUI extends JFrame implements MouseListener,ActionListener{
 
 	private JTextField txtTaiKhoan;
 	private JButton btnDangNhap;
 	private JPasswordField txtPassword;
-    private JLabel lblQuenMatKhau;
+    private JLabel lblQuenMatKhau,lblNgonNgu;
     private JCheckBox chkRemerberPassword;
     private NhanVien_Dao nhanVien_DAO;
     private CongNhan_Dao congNhan_DAO;
 
 
-	public LoginActivity() {
+	public Login_GUI() {
         try {
             ConnectionDB.ConnectDB.getInstance().connect();
         } catch (Exception e) {
@@ -80,7 +80,7 @@ public class LoginActivity extends JFrame implements MouseListener,ActionListene
 		JLabel lblTieuDe = new JLabel("ĐĂNG NHẬP");
 		lblTieuDe.setForeground(new Color(255, 255, 255));
 		lblTieuDe.setBackground(new Color(255, 255, 255));
-		lblTieuDe.setBounds(148, 30, 263, 64);
+		lblTieuDe.setBounds(148, 11, 263, 64);
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		panel.add(lblTieuDe);
 		
@@ -88,12 +88,12 @@ public class LoginActivity extends JFrame implements MouseListener,ActionListene
 		lblTenDangNhap.setIcon(new ImageIcon("images\\logoTK.png"));
 		lblTenDangNhap.setForeground(new Color(255, 255, 255));
 		lblTenDangNhap.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblTenDangNhap.setBounds(57, 119, 197, 36);
+		lblTenDangNhap.setBounds(57, 86, 197, 36);
 		panel.add(lblTenDangNhap);
 		
 		txtTaiKhoan = new JTextField();
 		txtTaiKhoan.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		txtTaiKhoan.setBounds(57, 153, 404, 54);
+		txtTaiKhoan.setBounds(67, 133, 404, 54);
 		panel.add(txtTaiKhoan);
 		txtTaiKhoan.setColumns(10);
 		
@@ -101,19 +101,19 @@ public class LoginActivity extends JFrame implements MouseListener,ActionListene
 		lblMatKhau.setIcon(new ImageIcon("images\\logoDMK.png"));
 		lblMatKhau.setForeground(Color.WHITE);
 		lblMatKhau.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblMatKhau.setBounds(57, 238, 197, 36);
+		lblMatKhau.setBounds(67, 210, 197, 36);
 		panel.add(lblMatKhau);
 		
 		txtPassword = new JPasswordField();
 		txtPassword.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		txtPassword.setBounds(57, 277, 404, 54);
+		txtPassword.setBounds(67, 246, 404, 54);
 		panel.add(txtPassword);
 		
 		chkRemerberPassword = new JCheckBox("Remember password?");
 		chkRemerberPassword.setBackground(new Color(0, 128, 128));
 		chkRemerberPassword.setForeground(new Color(255, 255, 255));
 		chkRemerberPassword.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		chkRemerberPassword.setBounds(57, 350, 185, 23);
+		chkRemerberPassword.setBounds(69, 328, 185, 23);
 		panel.add(chkRemerberPassword);
 		
 		chkRemerberPassword.addMouseListener(new MouseAdapter() {
@@ -126,7 +126,7 @@ public class LoginActivity extends JFrame implements MouseListener,ActionListene
 		lblQuenMatKhau = new JLabel("Quên mật khẩu?");
 		lblQuenMatKhau.setForeground(new Color(255, 255, 255));
 		lblQuenMatKhau.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblQuenMatKhau.setBounds(334, 347, 115, 29);
+		lblQuenMatKhau.setBounds(345, 325, 115, 29);
 		panel.add(lblQuenMatKhau);
 		
 		lblQuenMatKhau.addMouseListener(new MouseAdapter() {
@@ -135,10 +135,33 @@ public class LoginActivity extends JFrame implements MouseListener,ActionListene
             }
         });
 		
+		JLabel lblNgonNgu = new JLabel("Chọn ngôn ngữ :");
+		lblNgonNgu.setForeground(new Color(255, 255, 255));
+		lblNgonNgu.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblNgonNgu.setBounds(76, 445, 115, 29);
+		panel.add(lblNgonNgu);
+		
+		lblNgonNgu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblNgonNguMouseClicked(evt);
+            }
+        });
+		
+		JComboBox cmbNgonNgu = new JComboBox();
+		cmbNgonNgu.setBounds(224, 445, 187, 29);
+		panel.add(cmbNgonNgu);
+		
+		cmbNgonNgu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VietNam", "English" }));
+        cmbNgonNgu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbNgonNguActionPerformed(evt);
+            }
+        });
+        
 		btnDangNhap = new JButton("ĐĂNG NHẬP");
 		btnDangNhap.setForeground(new Color(0, 0, 255));
 		btnDangNhap.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		btnDangNhap.setBounds(123, 402, 280, 48);
+		btnDangNhap.setBounds(131, 365, 280, 48);
 		panel.add(btnDangNhap);
 		
 		btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
@@ -167,7 +190,7 @@ public class LoginActivity extends JFrame implements MouseListener,ActionListene
             NhanVien nhanVien = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
             if (nhanVien != null && nhanVien.getMatKhau().equals(password)) {
                 try {
-                    new MainView().setVisible(true);
+                    new Main_GUI().setVisible(true);
                 } catch (Exception e1) {
                 	e1.printStackTrace();
                 }
@@ -198,14 +221,26 @@ public class LoginActivity extends JFrame implements MouseListener,ActionListene
     }
     
     private void lblQuenMatKhauMouseClicked(MouseEvent evt) {
-        new QuenMatKhauView().setVisible(true);
+        new QuenMatKhau_GUI().setVisible(true);
     }
 	
+    private void lblNgonNguMouseClicked(java.awt.event.MouseEvent evt) {
+        JOptionPane.showMessageDialog(this, "Ngôn ngữ!)");
+    }
+    
+    private void cmbNgonNguActionPerformed(java.awt.event.ActionEvent evt) {
+//        try {
+//            caiDatNgonNguChoView(ngonNguList.get(cmbNgonNgu.getSelectedIndex()));
+//        } catch (IOException ex) {
+//            Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
+    
 	public static void main(String[] args) {
 	    EventQueue.invokeLater(new Runnable() {
 	        public void run() {
 	            try {
-	                LoginActivity frame = new LoginActivity();
+	                Login_GUI frame = new Login_GUI();
 	                frame.setVisible(true);
 	                frame.setResizable(false);
 	                frame.setLocationRelativeTo(null);

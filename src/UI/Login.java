@@ -18,6 +18,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 
 public class Login extends JFrame {
 
@@ -62,7 +63,7 @@ public class Login extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("ĐĂNG NHẬP");
 		lblNewLabel_1.setForeground(new Color(255, 255, 255));
 		lblNewLabel_1.setBackground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(148, 30, 263, 64);
+		lblNewLabel_1.setBounds(148, 11, 263, 64);
 		lblNewLabel_1.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		panel.add(lblNewLabel_1);
 		
@@ -70,12 +71,12 @@ public class Login extends JFrame {
 		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\hoang\\Videos\\Nhom05_QuanLyLuongSP_PTUD-main\\images\\logoTK.png"));
 		lblNewLabel_2.setForeground(new Color(255, 255, 255));
 		lblNewLabel_2.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblNewLabel_2.setBounds(57, 119, 197, 36);
+		lblNewLabel_2.setBounds(57, 86, 197, 36);
 		panel.add(lblNewLabel_2);
 		
 		textField = new JTextField();
 		textField.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		textField.setBounds(57, 153, 404, 54);
+		textField.setBounds(67, 133, 404, 54);
 		panel.add(textField);
 		textField.setColumns(10);
 		
@@ -83,32 +84,42 @@ public class Login extends JFrame {
 		lblNewLabel_2_1.setIcon(new ImageIcon("C:\\Users\\hoang\\Videos\\Nhom05_QuanLyLuongSP_PTUD-main\\images\\logoDMK.png"));
 		lblNewLabel_2_1.setForeground(Color.WHITE);
 		lblNewLabel_2_1.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblNewLabel_2_1.setBounds(57, 238, 197, 36);
+		lblNewLabel_2_1.setBounds(67, 210, 197, 36);
 		panel.add(lblNewLabel_2_1);
 		
 		passwordField = new JPasswordField();
 		passwordField.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		passwordField.setBounds(57, 277, 404, 54);
+		passwordField.setBounds(67, 246, 404, 54);
 		panel.add(passwordField);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Remember password?");
-		chckbxNewCheckBox.setBackground(new Color(0, 128, 128));
-		chckbxNewCheckBox.setForeground(new Color(255, 255, 255));
-		chckbxNewCheckBox.setFont(new Font("Times New Roman", Font.BOLD, 15));
-		chckbxNewCheckBox.setBounds(57, 350, 185, 23);
-		panel.add(chckbxNewCheckBox);
-		
-		JLabel lblNewLabel_3 = new JLabel("Quên mật khẩu?");
-		lblNewLabel_3.setForeground(new Color(255, 255, 255));
-		lblNewLabel_3.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-		lblNewLabel_3.setBounds(334, 347, 115, 29);
-		panel.add(lblNewLabel_3);
+		JLabel lblNgonNgu = new JLabel("Chọn ngôn ngữ :");
+		lblNgonNgu.setForeground(new Color(255, 255, 255));
+		lblNgonNgu.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblNgonNgu.setBounds(76, 445, 115, 29);
+		panel.add(lblNgonNgu);
 		
 		JButton btnNewButton = new JButton("ĐĂNG NHẬP");
 		btnNewButton.setForeground(new Color(0, 0, 255));
 		btnNewButton.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		btnNewButton.setBounds(123, 402, 280, 48);
+		btnNewButton.setBounds(131, 365, 280, 48);
 		panel.add(btnNewButton);
+		
+		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Remember password?");
+		chckbxNewCheckBox_1.setForeground(Color.WHITE);
+		chckbxNewCheckBox_1.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		chckbxNewCheckBox_1.setBackground(new Color(0, 128, 128));
+		chckbxNewCheckBox_1.setBounds(69, 328, 185, 23);
+		panel.add(chckbxNewCheckBox_1);
+		
+		JLabel lblNewLabel_3_1 = new JLabel("Quên mật khẩu?");
+		lblNewLabel_3_1.setForeground(Color.WHITE);
+		lblNewLabel_3_1.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+		lblNewLabel_3_1.setBounds(345, 325, 115, 29);
+		panel.add(lblNewLabel_3_1);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(224, 445, 187, 29);
+		panel.add(comboBox);
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\hoang\\Videos\\Nhom05_QuanLyLuongSP_PTUD-main\\images\\background.png"));
