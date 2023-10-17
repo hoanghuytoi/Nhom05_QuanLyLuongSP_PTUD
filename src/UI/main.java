@@ -38,25 +38,25 @@ public class main extends JFrame {
 		getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_1.setBackground(new Color(255, 228, 181));
-		panel_1.setBounds(0, 0, 1534, 50);
-		panel.add(panel_1);
+		JPanel panel_TieuDe = new JPanel();
+		panel_TieuDe.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_TieuDe.setBackground(new Color(255, 228, 181));
+		panel_TieuDe.setBounds(0, 0, 1534, 50);
+		panel.add(panel_TieuDe);
 		
 		JLabel lblTieuDe = new JLabel("HỆ THỐNG QUẢN LÝ LƯƠNG SẢN PHẨM CÔNG TY - PACEPRO");
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 34));
-		panel_1.add(lblTieuDe);
+		panel_TieuDe.add(lblTieuDe);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_2.setBounds(0, 50, 168, 542);
-		panel.add(panel_2);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		JPanel panel_Menu = new JPanel();
+		panel_Menu.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_Menu.setBounds(0, 50, 168, 542);
+		panel.add(panel_Menu);
+		panel_Menu.setLayout(new BorderLayout(0, 0));
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(24, 11, 101, 22);
-		panel_2.add(menuBar);
+		panel_Menu.add(menuBar);
 		menuBar.setLayout(new GridLayout(9,1));
 		
 		JMenu menuTrangChu = new JMenu("Trang chủ");
@@ -188,34 +188,34 @@ public class main extends JFrame {
 		menuHoTro.setFont(new Font("Times New Roman", Font.BOLD, 20));
 		menuBar.add(menuHoTro);
 		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_3.setBounds(0, 585, 168, 206);
-		panel.add(panel_3);
-		panel_3.setLayout(null);
+		JPanel panel_TaiKhoan = new JPanel();
+		panel_TaiKhoan.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_TaiKhoan.setBounds(0, 585, 168, 206);
+		panel.add(panel_TaiKhoan);
+		panel_TaiKhoan.setLayout(null);
 		
 		JLabel lblTaiKhoan = new JLabel("Hoàng Huy Tới");
 		lblTaiKhoan.setBounds(20, 69, 138, 24);
 		lblTaiKhoan.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		panel_3.add(lblTaiKhoan);
+		panel_TaiKhoan.add(lblTaiKhoan);
 		
 		JLabel lblTK = new JLabel("");
 		lblTK.setBounds(62, 18, 40, 40);
 		lblTK.setIcon(new ImageIcon("images\\log-in.png"));
 		lblTK.setFont(new Font("Times New Roman", Font.BOLD, 20));
-		panel_3.add(lblTK);
+		panel_TaiKhoan.add(lblTK);
 		
 		JLabel lblDoiMK = new JLabel("Đổi mật khẩu");
 		lblDoiMK.setIcon(new ImageIcon("images\\DMK.png"));
 		lblDoiMK.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblDoiMK.setBounds(20, 104, 138, 40);
-		panel_3.add(lblDoiMK);
+		panel_TaiKhoan.add(lblDoiMK);
 		
 		JLabel lblDangXuat = new JLabel("Đăng xuất");
 		lblDangXuat.setIcon(new ImageIcon("images\\logout.png"));
 		lblDangXuat.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblDangXuat.setBounds(20, 155, 122, 40);
-		panel_3.add(lblDangXuat);
+		panel_TaiKhoan.add(lblDangXuat);
 		
 	}
 	
