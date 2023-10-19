@@ -1,22 +1,32 @@
 package Custom_UI;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  *
- * @author December
+ * @author HoangHuyToi
  */
-public class MenuItem extends javax.swing.JPanel {
+public class MenuItem extends JPanel {
 
-	private JSeparator jSeparator1;
-    private JSeparator jSeparator2;
+    private JSeparator jSeparator;
     private JLabel lbIcon;
     private JLabel lbName;
+    private boolean showing = false;
     
     public void setShowing(boolean showing) {
         this.showing = showing;
@@ -40,9 +50,11 @@ public class MenuItem extends javax.swing.JPanel {
             subMenu[i].setVisible(false);
         }
     }
+    
     public void setIcon(Icon icon){
         lbIcon.setIcon(icon);
     }
+    
     private void showMenu() {
         new Thread(new Runnable() {
             @Override
@@ -80,41 +92,37 @@ public class MenuItem extends javax.swing.JPanel {
         } catch (Exception e) {
         }
     }
-
-    
-    @SuppressWarnings("unchecked")
-    
+  
     private void initComponents() {
 
-        jSeparator1 = new javax.swing.JSeparator();
-        lbIcon = new javax.swing.JLabel();
-        lbName = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
+        lbIcon = new JLabel();
+        lbName = new JLabel();
+        jSeparator = new JSeparator();
+        jSeparator.setForeground(Color.BLACK);
 
-        setBackground(new java.awt.Color(255, 255, 255));
-        setMinimumSize(new java.awt.Dimension(32767, 32767));
-        setPreferredSize(new java.awt.Dimension(210, 65));
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
+        setBackground(new Color(255, 255, 255));
+        setMinimumSize(new Dimension(32767, 32767));
+        setPreferredSize(new Dimension(210, 65));
+        addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent evt) {
                 formMousePressed(evt);
             }
         });
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setLayout(new AbsoluteLayout());
 
-        lbIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icon/congnhan.png"))); 
-        add(lbIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 70));
+        lbIcon.setHorizontalAlignment(SwingConstants.CENTER);
+        lbIcon.setIcon(new ImageIcon(getClass().getResource("/image/icon/congnhan.png"))); 
+        add(lbIcon, new AbsoluteConstraints(0, 0, 70, 70));
 
-        lbName.setFont(new java.awt.Font("Segoe UI", 0, 16));
-        lbName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbName.setText("Menu name here....");
-        lbName.setPreferredSize(new java.awt.Dimension(113, 50));
-        add(lbName, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 170, -1));
-        add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 250, -1));
+        lbName.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        lbName.setHorizontalAlignment(SwingConstants.LEFT);
+        lbName.setText("Menu");
+        lbName.setPreferredSize(new Dimension(113, 50));
+        add(lbName, new AbsoluteConstraints(80, 10, 170, -1));
+        add(jSeparator, new AbsoluteConstraints(0, 80, 250, -1));
     }
-
-    private boolean showing = false;
-    private void formMousePressed(java.awt.event.MouseEvent evt) {
+    
+    private void formMousePressed(MouseEvent evt) {
         if (showing) {
             hideMenu();
             showing = false;
