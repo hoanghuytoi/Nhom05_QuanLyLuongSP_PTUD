@@ -12,6 +12,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -20,12 +22,16 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JScrollPane;
 
-public class main extends JFrame {
+public class main extends JFrame implements ActionListener, MouseListener{
 
-	private JPanel contentPane;
+	private JMenu menuSanPham;
 
 	
 	public main() {
@@ -90,6 +96,7 @@ public class main extends JFrame {
 		menuBar.add(menuSanPham);
 		
 		JMenuItem submenuSanPham_CapNhat = new JMenuItem("Cập nhật");
+		submenuSanPham_CapNhat.setSelected(true);
 		submenuSanPham_CapNhat.setIcon(new ImageIcon("images\\chamTrang.png"));
 		submenuSanPham_CapNhat.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		menuSanPham.add(submenuSanPham_CapNhat);
@@ -103,6 +110,7 @@ public class main extends JFrame {
 		submenuSanPham_TimKiem.setIcon(new ImageIcon("images\\chamTrang.png"));
 		submenuSanPham_TimKiem.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		menuSanPham.add(submenuSanPham_TimKiem);
+
 		
 		JMenu menuNhanVien = new JMenu("Nhân viên");
 		menuNhanVien.setIcon(new ImageIcon("images\\NVien.png"));
@@ -232,21 +240,40 @@ public class main extends JFrame {
 	        }
 	    });
 	}
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
