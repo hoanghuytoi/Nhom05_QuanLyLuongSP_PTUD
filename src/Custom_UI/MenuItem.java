@@ -16,6 +16,8 @@ import java.awt.event.MouseAdapter;
 
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
+import javax.swing.border.LineBorder;
+import javax.swing.border.BevelBorder;
 
 /**
  *
@@ -24,17 +26,20 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 public class MenuItem extends JPanel {
 
     private JSeparator jSeparator;
-    private JLabel lbIcon;
-    private JLabel lbName;
+    private javax.swing.JLabel lbIcon;
+    private javax.swing.JLabel lbName;
+    
+    private final ArrayList<MenuItem> subMenu = new ArrayList<>();
+    private ActionListener act;
+    
     private boolean showing = false;
     
     public void setShowing(boolean showing) {
         this.showing = showing;
     }
-    private final ArrayList<MenuItem> subMenu = new ArrayList<>();
-    private ActionListener act;
     
     public MenuItem(Icon icon, String menuName, ActionListener act, MenuItem... subMenu) {
+    	setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
         initComponents();
         lbIcon.setIcon(icon);
         lbName.setText(menuName);
@@ -92,13 +97,11 @@ public class MenuItem extends JPanel {
         } catch (Exception e) {
         }
     }
-  
-    private void initComponents() {
 
+    private void initComponents() {
+        jSeparator = new JSeparator();
         lbIcon = new JLabel();
         lbName = new JLabel();
-        jSeparator = new JSeparator();
-        jSeparator.setForeground(Color.BLACK);
 
         setBackground(new Color(255, 255, 255));
         setMinimumSize(new Dimension(32767, 32767));
@@ -111,16 +114,19 @@ public class MenuItem extends JPanel {
         setLayout(new AbsoluteLayout());
 
         lbIcon.setHorizontalAlignment(SwingConstants.CENTER);
-        lbIcon.setIcon(new ImageIcon(getClass().getResource("/image/icon/congnhan.png"))); 
+        lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icon/congnhan.png"))); 
         add(lbIcon, new AbsoluteConstraints(0, 0, 70, 70));
 
         lbName.setFont(new Font("Times New Roman", Font.BOLD, 16));
         lbName.setHorizontalAlignment(SwingConstants.LEFT);
-        lbName.setText("Menu");
+        lbName.setText("Menu name here....");
         lbName.setPreferredSize(new Dimension(113, 50));
         add(lbName, new AbsoluteConstraints(80, 10, 170, -1));
+        
         add(jSeparator, new AbsoluteConstraints(0, 80, 250, -1));
+        
     }
+    
     
     private void formMousePressed(MouseEvent evt) {
         if (showing) {
@@ -134,6 +140,7 @@ public class MenuItem extends JPanel {
             act.actionPerformed(null);
         }
     }
+    
     public ArrayList<MenuItem> getSubMenu() {
         return subMenu;
     }
