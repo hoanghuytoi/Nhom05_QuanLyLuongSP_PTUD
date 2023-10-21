@@ -16,7 +16,6 @@ import java.awt.event.MouseAdapter;
 
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
-import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
 
 /**
@@ -26,8 +25,8 @@ import javax.swing.border.BevelBorder;
 public class MenuItem extends JPanel {
 
     private JSeparator jSeparator;
-    private javax.swing.JLabel lbIcon;
-    private javax.swing.JLabel lbName;
+    private javax.swing.JLabel lblIcon;
+    private javax.swing.JLabel lblName;
     
     private final ArrayList<MenuItem> subMenu = new ArrayList<>();
     private ActionListener act;
@@ -41,8 +40,8 @@ public class MenuItem extends JPanel {
     public MenuItem(Icon icon, String menuName, ActionListener act, MenuItem... subMenu) {
     	setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
         initComponents();
-        lbIcon.setIcon(icon);
-        lbName.setText(menuName);
+        lblIcon.setIcon(icon);
+        lblName.setText(menuName);
         if (act != null) {
             this.act = act;
         }
@@ -57,7 +56,7 @@ public class MenuItem extends JPanel {
     }
     
     public void setIcon(Icon icon){
-        lbIcon.setIcon(icon);
+        lblIcon.setIcon(icon);
     }
     
     private void showMenu() {
@@ -100,8 +99,8 @@ public class MenuItem extends JPanel {
 
     private void initComponents() {
         jSeparator = new JSeparator();
-        lbIcon = new JLabel();
-        lbName = new JLabel();
+        lblIcon = new JLabel();
+        lblName = new JLabel();
 
         setBackground(new Color(255, 255, 255));
         setMinimumSize(new Dimension(32767, 32767));
@@ -113,16 +112,15 @@ public class MenuItem extends JPanel {
         });
         setLayout(new AbsoluteLayout());
 
-        lbIcon.setHorizontalAlignment(SwingConstants.CENTER);
-        lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icon/congnhan.png"))); 
-        add(lbIcon, new AbsoluteConstraints(0, 0, 70, 70));
+        lblIcon.setHorizontalAlignment(SwingConstants.CENTER);
+        lblIcon.setIcon(new ImageIcon(getClass().getResource("/image/icon/congnhan.png"))); 
+        add(lblIcon, new AbsoluteConstraints(0, 0, 70, 70));
 
-        lbName.setFont(new Font("Times New Roman", Font.BOLD, 16));
-        lbName.setHorizontalAlignment(SwingConstants.LEFT);
-        lbName.setText("Menu name here....");
-        lbName.setPreferredSize(new Dimension(113, 50));
-        add(lbName, new AbsoluteConstraints(80, 10, 170, -1));
-        
+        lblName.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        lblName.setHorizontalAlignment(SwingConstants.LEFT);
+        lblName.setText("Menu name here....");
+        lblName.setPreferredSize(new Dimension(113, 50));
+        add(lblName, new AbsoluteConstraints(80, 10, 170, -1));
         add(jSeparator, new AbsoluteConstraints(0, 80, 250, -1));
         
     }

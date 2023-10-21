@@ -88,36 +88,11 @@ public class Menu extends JFrame {
     private MenuItem menuHoTro;
     private MenuItem menuHeThong;
 
-    private String lblTrangChu;
-    private String lblPhongBan;
-    private String lblToNhom;
-    private String lblHopDong;
-    private String lblSanPham;
-    private String lblCapNhat;
-    private String lblPhanCongDoanSanPham;
-    private String lblTimKiem;
-    private String lblNhanVien;
-    private String lblChamCong;
-    private String lblPhanCong;
-    private String lblLuong;
-    private String lblCongNhan;
-    private String lblThongKe;
-    private String lblHoTro;
-    private String lblHeThong;
-    private String lblThongTinCaNhan;
-    private String lblDangXuat;
-    private String lblDoiMatKhau;
-    private String lblXacNhanDangXuat;
-   
-    private String userName;
-    private String fileName;
-    private NhanVien nhanVienDangNhap;
 	
 	
     public Menu() throws IOException {
         initComponents();
         execute();
-        //caiDatNgonNguChoView(fileName);
     }
     
     
@@ -282,7 +257,7 @@ public class Menu extends JFrame {
         
         dangXuat = new MenuItem(iconLogOut, "Đăng xuất", ((e) -> {
         	iconSubMenuMacDinh((dangXuat));
-            if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn đăng xuất không!!", null, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+            if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn đăng xuất tài khoản không!!!", null, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
                 this.setVisible(false);
                 Login_GUI loginGUI = new Login_GUI();
                 loginGUI.setLocationRelativeTo(null);
@@ -297,8 +272,11 @@ public class Menu extends JFrame {
         // menu Trang chủ
         menuTrangChu = new MenuItem(iconTrangChu, "Trang chủ", (ActionEvent e) -> {
             pnBody.removeAll();
-            
-            
+            try {
+                pnBody.add(new TrangChu(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
@@ -534,8 +512,9 @@ public class Menu extends JFrame {
         pnBody.setLayout(new BorderLayout());
         getContentPane().add(pnBody, BorderLayout.CENTER);
 
-        setSize(new java.awt.Dimension(1516, 839));
+        setSize(new Dimension(1540, 835));
         setLocationRelativeTo(null);
+        setVisible(true);
     }
     
 
