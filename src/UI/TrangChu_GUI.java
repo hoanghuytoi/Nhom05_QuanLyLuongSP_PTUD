@@ -25,8 +25,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
+import javax.swing.ScrollPaneConstants;
 
-public class TrangChu extends JPanel {
+public class TrangChu_GUI extends JPanel {
 	private JLabel iconPhongBan;
     private JLabel iconToNhom;
     private JLabel iconNhanVien;
@@ -49,16 +50,19 @@ public class TrangChu extends JPanel {
     private JLabel lblAnhSP;
     private JLabel lblAnhCN;
     
-    public TrangChu() {
+    public TrangChu_GUI() {
     	setBackground(new Color(255, 255, 255));
     	initComponents();
     }
     
 
 	 private void initComponents() {
+	    setSize(1290, 750);
+
 		setLayout(null);
 		pnTongSoLuong = new JPanel();
 		pnTongSoLuong.setBounds(0, 0, 1290, 242);
+		
         pnNhanVien = new Custom_UI.RoundedBorder();
         pnNhanVien.setBounds(664, 40, 260, 160);
         lblNhanVien = new JLabel();
@@ -67,6 +71,7 @@ public class TrangChu extends JPanel {
         iconNhanVien.setBounds(20, 60, 120, 120);
         lblTongNhanVien = new JLabel();
         lblTongNhanVien.setBounds(170, 80, 90, 60);
+        
         pnToNhom = new Custom_UI.RoundedBorder();
         pnToNhom.setBounds(354, 40, 260, 160);
         lblToNhom = new JLabel();
@@ -75,6 +80,7 @@ public class TrangChu extends JPanel {
         iconToNhom.setBounds(20, 60, 120, 120);
         lblTongToNhom = new JLabel();
         lblTongToNhom.setBounds(160, 70, 80, 60);
+        
         pnPhongBan = new Custom_UI.RoundedBorder();
         pnPhongBan.setBounds(47, 40, 260, 160);
         lblTongPhongBan = new JLabel();
@@ -83,6 +89,7 @@ public class TrangChu extends JPanel {
         lblPhongBan.setBounds(0, 0, 220, 40);
         iconPhongBan = new JLabel();
         iconPhongBan.setBounds(20, 60, 120, 128);
+        
         pnCongNhan = new Custom_UI.RoundedBorder();
         pnCongNhan.setBounds(971, 40, 260, 160);
         lblCongNhan = new JLabel();
@@ -114,7 +121,7 @@ public class TrangChu extends JPanel {
         iconPhongBan.setFont(new Font("Segoe UI", 1, 26)); 
         iconPhongBan.setForeground(new Color(255, 255, 255));
         iconPhongBan.setHorizontalAlignment(SwingConstants.LEFT);
-        iconPhongBan.setIcon(new ImageIcon(TrangChu.class.getResource("/image/trangChu/slphongban.png")));
+        iconPhongBan.setIcon(new ImageIcon(TrangChu_GUI.class.getResource("/image/trangChu/slphongban.png")));
         pnPhongBan.add(iconPhongBan);
 
         pnTongSoLuong.add(pnPhongBan);
@@ -154,7 +161,7 @@ public class TrangChu extends JPanel {
         iconNhanVien.setFont(new Font("Segoe UI", 1, 26)); 
         iconNhanVien.setForeground(new Color(255, 255, 255));
         iconNhanVien.setHorizontalAlignment(SwingConstants.LEFT);
-        iconNhanVien.setIcon(new ImageIcon(TrangChu.class.getResource("/image/trangChu/slnhanvien.png"))); 
+        iconNhanVien.setIcon(new ImageIcon(TrangChu_GUI.class.getResource("/image/trangChu/slnhanvien.png"))); 
         pnNhanVien.add(iconNhanVien);
 
         lblTongNhanVien.setFont(new Font("Times New Roman", Font.BOLD, 32)); 
@@ -177,7 +184,7 @@ public class TrangChu extends JPanel {
         iconCongNhan.setFont(new Font("Segoe UI", 1, 26)); 
         iconCongNhan.setForeground(new Color(255, 255, 255));
         iconCongNhan.setHorizontalAlignment(SwingConstants.LEFT);
-        iconCongNhan.setIcon(new ImageIcon(TrangChu.class.getResource("/image/trangChu/slcongnhan.png")));
+        iconCongNhan.setIcon(new ImageIcon(TrangChu_GUI.class.getResource("/image/trangChu/slcongnhan.png")));
         pnCongNhan.add(iconCongNhan);
 
         lblTongCongNhan.setFont(new Font("Times New Roman", Font.BOLD, 32)); 
@@ -189,7 +196,6 @@ public class TrangChu extends JPanel {
         pnTongSoLuong.add(pnCongNhan);
 
         add(pnTongSoLuong,BorderLayout.PAGE_START);
-        setSize(1290, 750);
         
         JPanel panelGioiThieu = new JPanel();
         panelGioiThieu.setBackground(Color.WHITE);
@@ -210,7 +216,6 @@ public class TrangChu extends JPanel {
         textGioiThieu.setBounds(10, 45, 543, 288);
         panelGioiThieu.add(textGioiThieu);
         
-        // Đặt font và màu chữ
         textGioiThieu.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 18));
         textGioiThieu.setForeground(Color.BLACK);
 
@@ -230,11 +235,12 @@ public class TrangChu extends JPanel {
 
         // Tạo JScrollPane với thanh cuộn dọc
         JScrollPane scrollPane = new JScrollPane(textGioiThieu);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scrollPane.setViewportBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 255, 255), new Color(220, 20, 60), new Color(255, 0, 255), new Color(50, 205, 50)));
         scrollPane.setEnabled(false);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         scrollPane.setBounds(0, 45, 567, 299);
         panelGioiThieu.add(scrollPane);
+        
         
         panelAnh = new JPanel();
         panelAnh.setBounds(664, 243, 567, 344);
@@ -242,22 +248,22 @@ public class TrangChu extends JPanel {
         panelAnh.setLayout(null);
         
         lblAnhSP = new JLabel("");
-        lblAnhSP.setIcon(new ImageIcon(TrangChu.class.getResource("/image/trangChu/anhSanPham.PNG")));
+        lblAnhSP.setIcon(new ImageIcon(TrangChu_GUI.class.getResource("/image/trangChu/anhSanPham.PNG")));
         lblAnhSP.setBounds(0, 190, 260, 154);
         panelAnh.add(lblAnhSP);
         
         lblAnhCN = new JLabel("");
-        lblAnhCN.setIcon(new ImageIcon(TrangChu.class.getResource("/image/trangChu/anhCongNhan.PNG")));
+        lblAnhCN.setIcon(new ImageIcon(TrangChu_GUI.class.getResource("/image/trangChu/anhCongNhan.PNG")));
         lblAnhCN.setBounds(307, 190, 260, 154);
         panelAnh.add(lblAnhCN);
         
         JLabel lblAnhHD = new JLabel("");
-        lblAnhHD.setIcon(new ImageIcon(TrangChu.class.getResource("/image/trangChu/anhHopDong.PNG")));
+        lblAnhHD.setIcon(new ImageIcon(TrangChu_GUI.class.getResource("/image/trangChu/anhHopDong.PNG")));
         lblAnhHD.setBounds(0, 0, 260, 154);
         panelAnh.add(lblAnhHD);
         
         JLabel lblAnhNV = new JLabel("");
-        lblAnhNV.setIcon(new ImageIcon(TrangChu.class.getResource("/image/trangChu/anhNhanVien.PNG")));
+        lblAnhNV.setIcon(new ImageIcon(TrangChu_GUI.class.getResource("/image/trangChu/anhNhanVien.PNG")));
         lblAnhNV.setBounds(307, 0, 260, 154);
         panelAnh.add(lblAnhNV);
         
@@ -294,7 +300,7 @@ public class TrangChu extends JPanel {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						TrangChu frame = new TrangChu();
+						TrangChu_GUI frame = new TrangChu_GUI();
 						frame.setVisible(true);
 					} catch (Exception e) {
 						e.printStackTrace();

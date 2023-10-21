@@ -98,12 +98,12 @@ public class Main_GUI extends JFrame {
     
     private void initComponents() {
     	setTitle("PACEPRO - Hệ thống quản lý lương sản phẩm");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Menu.class.getResource("/image/icon/salary.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main_GUI.class.getResource("/image/icon/salary.png")));
 		
         pnHeader = new JPanel();
         lblTieuDe = new JLabel();
         lblXinChao = new JLabel();
-        lblXinChao.setIcon(new ImageIcon(Menu.class.getResource("/image/icon/logocty.png")));
+        lblXinChao.setIcon(new ImageIcon(Main_GUI.class.getResource("/image/icon/logocty.png")));
         lblXinChao.setText("Welcome ");
         pnMenu = new JPanel();
         jScrollPane = new JScrollPane();
@@ -341,7 +341,7 @@ public class Main_GUI extends JFrame {
         menuTrangChu = new MenuItem(iconTrangChu, "Trang chủ", (ActionEvent e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new TrangChu(), BorderLayout.CENTER);
+                pnBody.add(new TrangChu_GUI(), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -523,7 +523,7 @@ public class Main_GUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 	        public void run() {
 	            try {
-	                Menu frame = new Menu();
+	                Main_GUI frame = new Main_GUI();
 	                frame.setVisible(true);
 	                frame.setResizable(false);
 	                frame.setLocationRelativeTo(null);

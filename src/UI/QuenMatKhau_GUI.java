@@ -21,22 +21,10 @@ public class QuenMatKhau_GUI extends JFrame {
 	private JTextField textField_1;
 
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					QuenMatKhau_GUI frame = new QuenMatKhau_GUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public QuenMatKhau_GUI() {
 		setTitle("PACEPRO - Hệ thống quản lý lương sản phẩm");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Menu.class.getResource("/image/icon/salary.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main_GUI.class.getResource("/image/icon/salary.png")));
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 788, 681);
@@ -107,5 +95,23 @@ public class QuenMatKhau_GUI extends JFrame {
 		btnGuiMa.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		btnGuiMa.setBounds(246, 502, 295, 57);
 		panel.add(btnGuiMa);
+		
 	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					QuenMatKhau_GUI frame = new QuenMatKhau_GUI();
+					frame.setVisible(true);
+					frame.setResizable(false);
+	                frame.setLocationRelativeTo(null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	
 }
