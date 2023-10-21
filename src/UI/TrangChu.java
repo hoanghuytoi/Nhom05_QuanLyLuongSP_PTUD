@@ -211,7 +211,7 @@ public class TrangChu extends JPanel {
         panelGioiThieu.add(textGioiThieu);
         
         // Đặt font và màu chữ
-        textGioiThieu.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
+        textGioiThieu.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 18));
         textGioiThieu.setForeground(Color.BLACK);
 
         // Đặt màu nền và màu viền
@@ -260,6 +260,31 @@ public class TrangChu extends JPanel {
         lblAnhNV.setIcon(new ImageIcon(TrangChu.class.getResource("/image/trangChu/anhNhanVien.PNG")));
         lblAnhNV.setBounds(307, 0, 260, 154);
         panelAnh.add(lblAnhNV);
+        
+        JLabel lblTVNhom = new JLabel("Thành viên nhóm 5");
+        lblTVNhom.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        lblTVNhom.setBounds(519, 610, 254, 50);
+        add(lblTVNhom);
+        
+        JLabel lblName = new JLabel("Hoàng Huy Tới");
+        lblName.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
+        lblName.setBounds(48, 679, 146, 35);
+        add(lblName);
+        
+        JLabel lblName1 = new JLabel("Huỳnh Công Vương");
+        lblName1.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
+        lblName1.setBounds(352, 679, 177, 35);
+        add(lblName1);
+        
+        JLabel lblName2 = new JLabel("Lê Phan Ngọc Minh");
+        lblName2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
+        lblName2.setBounds(723, 679, 177, 35);
+        add(lblName2);
+        
+        JLabel lblName3 = new JLabel("Nguyễn Việt Hùng");
+        lblName3.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
+        lblName3.setBounds(1054, 679, 177, 35);
+        add(lblName3);
 
 		
 //        setUndecorated(true);
