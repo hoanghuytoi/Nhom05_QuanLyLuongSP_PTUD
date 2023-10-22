@@ -14,6 +14,10 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
+/**
+ * Hoàng Huy Tới
+ */
+
 public class QuenMatKhau_GUI extends JFrame {
 
 	private JPanel contentPane;

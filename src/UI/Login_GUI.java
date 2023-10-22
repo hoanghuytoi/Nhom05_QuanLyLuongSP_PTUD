@@ -19,6 +19,10 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
+/**
+ * Hoàng Huy Tới
+ */
+
 public class Login_GUI extends JFrame {
 
 	private JButton btnDangNhap;

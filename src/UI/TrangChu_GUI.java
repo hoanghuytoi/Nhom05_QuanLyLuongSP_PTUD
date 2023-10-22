@@ -1,6 +1,5 @@
 package UI;
 
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -9,6 +8,8 @@ import javax.swing.SwingConstants;
 
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
+
+import Custom_UI.ScrollBarCustom;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
@@ -26,6 +27,10 @@ import javax.swing.border.MatteBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.ScrollPaneConstants;
+
+/**
+ * Hoàng Huy Tới
+ */
 
 public class TrangChu_GUI extends JPanel {
 	private JLabel iconPhongBan;
@@ -45,7 +50,6 @@ public class TrangChu_GUI extends JPanel {
     private Custom_UI.RoundedBorder pnToNhom;
     private Custom_UI.RoundedBorder pnNhanVien;
     private Custom_UI.RoundedBorder pnCongNhan;
-    private JScrollPane scrollPane;
     private JPanel panelAnh;
     private JLabel lblAnhSP;
     private JLabel lblAnhCN;
@@ -235,14 +239,22 @@ public class TrangChu_GUI extends JPanel {
 
         // Tạo JScrollPane với thanh cuộn dọc
         JScrollPane scrollPane = new JScrollPane(textGioiThieu);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scrollPane.setViewportBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 255, 255), new Color(220, 20, 60), new Color(255, 0, 255), new Color(50, 205, 50)));
-        scrollPane.setEnabled(false);
         scrollPane.setBounds(0, 45, 567, 299);
+        
+        // Tạo ScrollBarCustom
+        ScrollBarCustom scrollBar = new ScrollBarCustom();
+        scrollBar.setForeground(Color.RED);
+
+        // Chèn ScrollBarCustom vào JScrollPane
+        scrollPane.setVerticalScrollBar(scrollBar);
+     
+        // Thêm JScrollPane vào panelGioiThieu
         panelGioiThieu.add(scrollPane);
         
         
         panelAnh = new JPanel();
+        panelAnh.setBackground(Color.WHITE);
         panelAnh.setBounds(664, 243, 567, 344);
         add(panelAnh);
         panelAnh.setLayout(null);
