@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import java.awt.Dimension;
 
 /**
  * Hoàng Huy Tới
@@ -61,7 +62,7 @@ public class Login_GUI extends JFrame {
         lblTietDe.setBounds(0, 0, 510, 60);
         
         panelThongTin = new javax.swing.JPanel();
-        panelThongTin.setBounds(510, 0, 550, 500);
+        panelThongTin.setBounds(510, 0, 535, 500);
         lblTieuDeDangNhap = new JLabel();
         lblTieuDeDangNhap.setBounds(129, 16, 286, 43);
         
@@ -69,10 +70,10 @@ public class Login_GUI extends JFrame {
         lblHello.setBounds(162, 70, 208, 18);
         
         imageExit = new JLabel();
-        imageExit.setBounds(483, 10, 50, 53);
+        imageExit.setBounds(485, 0, 50, 53);
         
         lblTenDangNhap = new JLabel();
-        lblTenDangNhap.setBounds(60, 130, 360, 24);
+        lblTenDangNhap.setBounds(60, 118, 360, 36);
         
         imageUser = new JLabel();
         imageUser.setBounds(450, 159, 20, 36);
@@ -269,7 +270,7 @@ public class Login_GUI extends JFrame {
         txtMatKhau.setBounds(60, 248, 344, 36);
         panelThongTin.add(txtMatKhau);
 
-        setSize(new java.awt.Dimension(1058, 496));
+        setSize(new Dimension(1045, 496));
         // Ẩn viền của textField
         txtDangNhap.setBorder(null); 
         txtMatKhau.setBorder(null);
