@@ -390,7 +390,11 @@ public class Main_GUI extends JFrame {
         // menu Phòng ban
         menuPhongBan = new MenuItem(iconPhongBan, "Phòng ban", (ActionEvent e) -> {
             pnBody.removeAll();
-
+            try {
+                pnBody.add(new PhongBan_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
@@ -400,7 +404,11 @@ public class Main_GUI extends JFrame {
         // menu Tổ nhóm
         menuToNhom = new MenuItem(iconToNhom, "Tổ nhóm", (ActionEvent e) -> {
             pnBody.removeAll();
-
+            try {
+                pnBody.add(new ToNhom_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);

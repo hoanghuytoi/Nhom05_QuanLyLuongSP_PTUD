@@ -16,6 +16,7 @@ import java.awt.Dimension;
 
 import com.toedter.calendar.JDateChooser;
 
+import Custom_UI.RoundedButton;
 import Custom_UI.ScrollBarCustom;
 
 import javax.swing.JTextArea;
@@ -33,7 +34,6 @@ public class HopDong_GUI extends JPanel {
 	
 	private JScrollPane scrHopDong;
     private JTable tblHopDong;
-    private JTable table;
     
 
 	public HopDong_GUI() {
@@ -48,7 +48,7 @@ public class HopDong_GUI extends JPanel {
 	    JLabel lblTieuDe = new JLabel("QUẢN LÝ HỢP ĐỒNG ");
 	    lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
 	    lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 23));
-	    lblTieuDe.setBounds(501, 0, 368, 43);
+	    lblTieuDe.setBounds(501, 0, 368, 50);
 	    add(lblTieuDe);
 	    
 	    JPanel panelHD = new JPanel();
@@ -60,7 +60,7 @@ public class HopDong_GUI extends JPanel {
 	    JLabel lblAnhHD = new JLabel();
 	    lblAnhHD.setBounds(34, 83, 200, 173);
 	    panelHD.add(lblAnhHD);
-	    lblAnhHD.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/hopDong/HopDong.PNG")));
+	    lblAnhHD.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/hopDong.PNG")));
 	    
 	    JLabel lblMaHopDong = new JLabel();
 	    lblMaHopDong.setBounds(272, 35, 111, 30);
@@ -254,58 +254,46 @@ public class HopDong_GUI extends JPanel {
 	    panelButton.setBounds(10, 376, 1280, 65);
 	    add(panelButton);
 	    panelButton.setLayout(null);
-	    
-	    JButton btnThem =new JButton();
+
+	    // Tạo một RoundedButton thay vì JButton
+	    RoundedButton btnThem = new RoundedButton("Thêm", SystemColor.inactiveCaption, null);
 	    btnThem.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/them.png")));
-	    btnThem.setText("Thêm");
 	    btnThem.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnThem.setBorder(null);
-	    btnThem.setBackground(SystemColor.inactiveCaption);
 	    btnThem.setBounds(10, 14, 170, 40);
 	    panelButton.add(btnThem);
-	    
-	    JButton btnXoa = new JButton();
+
+	    // Tạo và thêm nút Xóa
+	    RoundedButton btnXoa = new RoundedButton("Xóa", new Color(222, 184, 135), null);
 	    btnXoa.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/xoa.png")));
-	    btnXoa.setText("Xóa");
 	    btnXoa.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnXoa.setBorder(null);
-	    btnXoa.setBackground(new Color(222, 184, 135));
 	    btnXoa.setBounds(219, 14, 170, 40);
 	    panelButton.add(btnXoa);
-	    
-	    JButton btnCapNhat = new JButton();
+
+	    // Tạo và thêm nút Cập nhật
+	    RoundedButton btnCapNhat = new RoundedButton("Cập nhật", new Color(255, 218, 185), null);
 	    btnCapNhat.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/capNhat.png")));
-	    btnCapNhat.setText("Cập nhật");
 	    btnCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnCapNhat.setBorder(null);
-	    btnCapNhat.setBackground(new Color(255, 218, 185));
 	    btnCapNhat.setBounds(439, 14, 170, 40);
 	    panelButton.add(btnCapNhat);
-	    
-	    JButton btnLuu = new JButton();
+
+	    // Tạo và thêm nút Lưu
+	    RoundedButton btnLuu = new RoundedButton("Lưu", new Color(192, 192, 192), null);
 	    btnLuu.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/luu.png")));
-	    btnLuu.setText("Lưu");
 	    btnLuu.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnLuu.setBorder(null);
-	    btnLuu.setBackground(new Color(192, 192, 192));
 	    btnLuu.setBounds(662, 14, 170, 40);
 	    panelButton.add(btnLuu);
-	    
-	    JButton btnHuy = new JButton();
+
+	    // Tạo và thêm nút Hủy
+	    RoundedButton btnHuy = new RoundedButton("Hủy", new Color(255, 222, 173), null);
 	    btnHuy.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/huy.png")));
-	    btnHuy.setText("Hủy");
 	    btnHuy.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnHuy.setBorder(null);
-	    btnHuy.setBackground(new Color(255, 222, 173));
 	    btnHuy.setBounds(880, 14, 170, 40);
 	    panelButton.add(btnHuy);
-	    
-	    JButton btnInHD = new JButton();
+
+	    // Tạo và thêm nút In hợp đồng
+	    RoundedButton btnInHD = new RoundedButton("In hợp đồng", new Color(211, 211, 211), null);
 	    btnInHD.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/in.png")));
-	    btnInHD.setText("In hợp đồng");
 	    btnInHD.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnInHD.setBorder(null);
-	    btnInHD.setBackground(new Color(211, 211, 211));
 	    btnInHD.setBounds(1100, 14, 150, 40);
 	    panelButton.add(btnInHD);
 	    
