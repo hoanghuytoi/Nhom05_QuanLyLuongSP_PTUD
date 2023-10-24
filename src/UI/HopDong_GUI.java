@@ -344,7 +344,7 @@ public class HopDong_GUI extends JPanel {
 	    
 	    JLabel lblDsHD = new JLabel("Danh sách hợp đồng:");
 	    lblDsHD.setFont(new Font("Times New Roman", Font.BOLD, 18));
-	    lblDsHD.setBounds(39, 471, 186, 28);
+	    lblDsHD.setBounds(39, 475, 243, 37);
 	    add(lblDsHD);
 	    
 	    
