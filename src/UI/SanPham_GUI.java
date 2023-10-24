@@ -298,7 +298,7 @@ public class SanPham_GUI extends JPanel {
 	    		"STT", "M\u00E3 h\u1EE3p \u0111\u1ED3ng", "T\u00EAn h\u1EE3p \u0111\u1ED3ng", "T\u00EAn kh\u00E1ch h\u00E0ng"
 	    	}
 	    ));
-	    tblHopDong.getColumnModel().getColumn(0).setPreferredWidth(35);
+	    tblHopDong.getColumnModel().getColumn(0).setPreferredWidth(40);
 	    tblHopDong.getColumnModel().getColumn(0).setMinWidth(20);
 	    tblHopDong.getColumnModel().getColumn(0).setMaxWidth(40);
 	    tblHopDong.getColumnModel().getColumn(1).setPreferredWidth(72);
@@ -365,22 +365,9 @@ public class SanPham_GUI extends JPanel {
         panelButton.add(btnHuy);
         
         tblSanPham = new JTable();
-        tblSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-        tblSanPham.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
-	    
-        tblSanPham.setRowHeight(30);
-	    
-	    DefaultTableModel tableModelSP = new DefaultTableModel(
-	    		new Object[][] {
-	    			{null, null, null, null, null, null, null, null},
-	    			{null, null, null, null, null, null, null, null},
-	    			{null, null, null, null, null, null, null, null},
-	    			{null, null, null, null, null, null, null, null}
-	    		},
-	    		new String[] {
-	    				"STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng sản phẩm", "Chất liệu", "Kích thước", "Số công đoạn", "Đơn giá"
-	    		}
-	    		);
+        tblSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        tblSanPham.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
+        tblSanPham.setRowHeight(20);
 
 	    tblSanPham.setModel(new DefaultTableModel(
 	    	new Object[][] {
@@ -394,9 +381,11 @@ public class SanPham_GUI extends JPanel {
 	    		{null, null, null, null, null, null, null, null},
 	    	},
 	    	new String[] {
-    				"STT", "Mã sản phẩm", "Tên sản phẩm", "Số lượng sản phẩm", "Chất liệu", "Kích thước", "Số công đoạn", "Đơn giá"
-    		}
-	    )); 
+	    		"STT", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng s\u1EA3n ph\u1EA9m", "Ch\u1EA5t li\u1EC7u", "K\u00EDch th\u01B0\u1EDBc", "S\u1ED1 c\u00F4ng \u0111o\u1EA1n", "\u0110\u01A1n gi\u00E1"
+	    	}
+	    ));
+	    tblSanPham.getColumnModel().getColumn(0).setPreferredWidth(40);
+	    tblSanPham.getColumnModel().getColumn(0).setMinWidth(40);
 	    
 
 	    scrSanPham = new JScrollPane(tblSanPham);
@@ -410,7 +399,7 @@ public class SanPham_GUI extends JPanel {
         scrSanPham.setVerticalScrollBar(scrollBar1);
 	    
 	    JLabel lblDsSP = new JLabel("Danh sách sản phẩm:");
-	    lblDsSP.setFont(new Font("Times New Roman", Font.BOLD, 18));
+	    lblDsSP.setFont(new Font("Times New Roman", Font.BOLD, 15));
 	    lblDsSP.setBounds(39, 471, 186, 28);
 	    add(lblDsSP);
         

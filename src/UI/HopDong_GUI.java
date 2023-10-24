@@ -98,11 +98,11 @@ public class HopDong_GUI extends JPanel {
 	    jSeparator1.setBounds(417, 122, 224, 10);
 	    panelHD.add(jSeparator1);
 	    
-	    JLabel lblGiaTriHD = new JLabel();
-	    lblGiaTriHD.setText("Giá trị hợp đồng:");
-	    lblGiaTriHD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblGiaTriHD.setBounds(272, 160, 135, 30);
-	    panelHD.add(lblGiaTriHD);
+	    JLabel lblTriGiaHD = new JLabel();
+	    lblTriGiaHD.setText("Trị giá hợp đồng:");
+	    lblTriGiaHD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+	    lblTriGiaHD.setBounds(272, 160, 135, 30);
+	    panelHD.add(lblTriGiaHD);
 	    
 	    txtGiaTriHD = new JTextField();
 	    txtGiaTriHD.setText("0");
@@ -117,7 +117,7 @@ public class HopDong_GUI extends JPanel {
 	    panelHD.add(jSeparator2);
 	    
 	    JLabel lblTienCoc = new JLabel();
-	    lblTienCoc.setText("Số tiền cọc:");
+	    lblTienCoc.setText("Tiền đặt cọc:");
 	    lblTienCoc.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    lblTienCoc.setBounds(272, 226, 111, 30);
 	    panelHD.add(lblTienCoc);
@@ -141,7 +141,7 @@ public class HopDong_GUI extends JPanel {
 	    panelHD.add(lblTenKH);
 	    
 	    JLabel lblNguoiDaiDien = new JLabel();
-	    lblNguoiDaiDien.setText("Người đại diện:");
+	    lblNguoiDaiDien.setText("Người ký kết:");
 	    lblNguoiDaiDien.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    lblNguoiDaiDien.setBounds(785, 100, 146, 30);
 	    panelHD.add(lblNguoiDaiDien);
@@ -221,7 +221,7 @@ public class HopDong_GUI extends JPanel {
 	    panelHD.add(lblErrNgayKT);
 	    
 	    JLabel lblThoaThuan = new JLabel();
-	    lblThoaThuan.setText("Thỏa thuận:");
+	    lblThoaThuan.setText("Yêu cầu:");
 	    lblThoaThuan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    lblThoaThuan.setBounds(272, 284, 135, 30);
 	    panelHD.add(lblThoaThuan);
@@ -302,18 +302,6 @@ public class HopDong_GUI extends JPanel {
 	    tblHopDong.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
 	    
 	    tblHopDong.setRowHeight(30);
-	    
-	    DefaultTableModel tableModel = new DefaultTableModel(
-	    		new Object[][] {
-	    			{null, null, null, null, null, null, null, null},
-	    			{null, null, null, null, null, null, null, null},
-	    			{null, null, null, null, null, null, null, null},
-	    			{null, null, null, null, null, null, null, null}
-	    		},
-	    		new String[] {
-	    				"STT", "Mã hợp đồng", "Tên hợp đồng", "Tên khách hàng", "Giá trị hợp đồng", "Số tiền cọc", "Ngày bắt đầu", "Ngày kết thúc"
-	    		}
-	    		);
 
 	    tblHopDong.setModel(new DefaultTableModel(
 	    	new Object[][] {
@@ -327,8 +315,8 @@ public class HopDong_GUI extends JPanel {
 	    		{null, null, null, null, null, null, null, null},
 	    	},
 	    	new String[] {
-	    		"STT", "M\u00E3 h\u1EE3p \u0111\u1ED3ng", "T\u00EAn h\u1EE3p \u0111\u1ED3ng", "T\u00EAn kh\u00E1ch h\u00E0ng", "Gi\u00E1 tr\u1ECB h\u1EE3p \u0111\u1ED3ng", "S\u1ED1 ti\u1EC1n c\u1ECDc", "Ng\u00E0y b\u1EAFt \u0111\u1EA7u", "Ng\u00E0y k\u1EBFt th\u00FAc"
-	    	}
+    				"STT", "Mã hợp đồng", "Tên hợp đồng", "Tên khách hàng", "Trị giá hợp đồng", "Tiền đặt cọc", "Ngày bắt đầu", "Ngày kết thúc"
+    		}
 	    )); 
 	    
 
