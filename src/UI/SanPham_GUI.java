@@ -133,61 +133,61 @@ public class SanPham_GUI extends JPanel {
 	    JLabel lblChatLieu = new JLabel();
 	    lblChatLieu.setText("Chất liệu:");
 	    lblChatLieu.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    lblChatLieu.setBounds(567, 35, 102, 30);
+	    lblChatLieu.setBounds(580, 35, 89, 30);
 	    panelSP.add(lblChatLieu);
 	    
 	    txtChatLieu = new JTextField();
 	    txtChatLieu.setText("txtChatLieu");
 	    txtChatLieu.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtChatLieu.setBorder(null);
-	    txtChatLieu.setBounds(666, 21, 169, 30);
+	    txtChatLieu.setBounds(685, 21, 162, 30);
 	    panelSP.add(txtChatLieu);
 	    
 	    JSeparator jSeparator4 = new JSeparator();
 	    jSeparator4.setForeground(Color.BLACK);
-	    jSeparator4.setBounds(666, 55, 169, 10);
+	    jSeparator4.setBounds(679, 55, 168, 10);
 	    panelSP.add(jSeparator4);
 	    
 	    JLabel lblKichThuoc = new JLabel();
 	    lblKichThuoc.setText("Kích thước:");
 	    lblKichThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    lblKichThuoc.setBounds(567, 97, 111, 30);
+	    lblKichThuoc.setBounds(580, 97, 98, 30);
 	    panelSP.add(lblKichThuoc);
 	    
 	    txtKichThuoc = new JTextField();
 	    txtKichThuoc.setText("txtKichThuoc");
 	    txtKichThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtKichThuoc.setBorder(null);
-	    txtKichThuoc.setBounds(666, 91, 169, 30);
+	    txtKichThuoc.setBounds(685, 91, 162, 30);
 	    panelSP.add(txtKichThuoc);
 	    
 	    JSeparator jSeparator5 = new JSeparator();
 	    jSeparator5.setForeground(Color.BLACK);
-	    jSeparator5.setBounds(666, 122, 169, 10);
+	    jSeparator5.setBounds(685, 122, 162, 10);
 	    panelSP.add(jSeparator5);
 	    
 	    JLabel lblSoCD = new JLabel();
 	    lblSoCD.setText("Số công đoạn:");
 	    lblSoCD.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    lblSoCD.setBounds(567, 160, 126, 30);
+	    lblSoCD.setBounds(580, 160, 113, 30);
 	    panelSP.add(lblSoCD);
 	    
 	    txtSoCD = new JTextField();
 	    txtSoCD.setText("txtSoCD");
 	    txtSoCD.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtSoCD.setBorder(null);
-	    txtSoCD.setBounds(666, 149, 169, 30);
+	    txtSoCD.setBounds(686, 149, 149, 30);
 	    panelSP.add(txtSoCD);
 	    
 	    JSeparator jSeparator6 = new JSeparator();
 	    jSeparator6.setForeground(Color.BLACK);
-	    jSeparator6.setBounds(666, 180, 169, 10);
+	    jSeparator6.setBounds(686, 180, 162, 10);
 	    panelSP.add(jSeparator6);
 	    
 	    JLabel lblYeuCau = new JLabel();
 	    lblYeuCau.setText("Yêu cầu:");
 	    lblYeuCau.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    lblYeuCau.setBounds(567, 224, 126, 30);
+	    lblYeuCau.setBounds(580, 224, 113, 30);
 	    panelSP.add(lblYeuCau);
 	    
 	    JLabel lblDonGia = new JLabel();
@@ -205,12 +205,12 @@ public class SanPham_GUI extends JPanel {
 	    txtYeuCau.setText("txtYeuCau");
 	    txtYeuCau.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtYeuCau.setBorder(null);
-	    txtYeuCau.setBounds(666, 214, 169, 30);
+	    txtYeuCau.setBounds(685, 214, 162, 30);
 	    panelSP.add(txtYeuCau);
 	    
 	    JSeparator jSeparator7 = new JSeparator();
 	    jSeparator7.setForeground(Color.BLACK);
-	    jSeparator7.setBounds(666, 244, 169, 10);
+	    jSeparator7.setBounds(685, 244, 162, 10);
 	    panelSP.add(jSeparator7);
 	    
 	    txtDonGia = new JTextField();
@@ -245,21 +245,21 @@ public class SanPham_GUI extends JPanel {
 	    lblErrGiaTriHD_2.setText("thông báo lỗi");
 	    lblErrGiaTriHD_2.setForeground(new Color(204, 0, 0));
 	    lblErrGiaTriHD_2.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrGiaTriHD_2.setBounds(666, 122, 200, 24);
+	    lblErrGiaTriHD_2.setBounds(685, 122, 181, 24);
 	    panelSP.add(lblErrGiaTriHD_2);
 	    
 	    JLabel lblErrGiaTriHD_3 = new JLabel();
 	    lblErrGiaTriHD_3.setText("thông báo lỗi");
 	    lblErrGiaTriHD_3.setForeground(new Color(204, 0, 0));
 	    lblErrGiaTriHD_3.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrGiaTriHD_3.setBounds(666, 180, 200, 24);
+	    lblErrGiaTriHD_3.setBounds(685, 180, 181, 24);
 	    panelSP.add(lblErrGiaTriHD_3);
 	    
 	    JLabel lblErrGiaTriHD_4 = new JLabel();
 	    lblErrGiaTriHD_4.setText("thông báo lỗi");
 	    lblErrGiaTriHD_4.setForeground(new Color(204, 0, 0));
 	    lblErrGiaTriHD_4.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrGiaTriHD_4.setBounds(666, 57, 200, 18);
+	    lblErrGiaTriHD_4.setBounds(679, 57, 187, 18);
 	    panelSP.add(lblErrGiaTriHD_4);
 	    
 	    tblHopDong = new JTable();
@@ -367,7 +367,7 @@ public class SanPham_GUI extends JPanel {
         tblSanPham = new JTable();
         tblSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 15));
         tblSanPham.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
-        tblSanPham.setRowHeight(20);
+        tblSanPham.setRowHeight(30);
 
 	    tblSanPham.setModel(new DefaultTableModel(
 	    	new Object[][] {
