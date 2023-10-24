@@ -234,12 +234,12 @@ public class SanPham_GUI extends JPanel {
 	    lblErrTenSP.setBounds(341, 122, 200, 17);
 	    panelSP.add(lblErrTenSP);
 	    
-	    RoundedButton rndbtnnhSnPhm = new RoundedButton("Thêm", Color.GRAY, (Color) null);
-	    rndbtnnhSnPhm.setBackground(Color.GRAY);
-	    rndbtnnhSnPhm.setText("Ảnh sản phẩm");
-	    rndbtnnhSnPhm.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    rndbtnnhSnPhm.setBounds(39, 209, 133, 40);
-	    panelSP.add(rndbtnnhSnPhm);
+	    RoundedButton btnAnhSP = new RoundedButton("Thêm", Color.GRAY, (Color) null);
+	    btnAnhSP.setBackground(Color.GRAY);
+	    btnAnhSP.setText("Ảnh sản phẩm");
+	    btnAnhSP.setFont(new Font("Times New Roman", Font.BOLD, 16));
+	    btnAnhSP.setBounds(39, 209, 133, 40);
+	    panelSP.add(btnAnhSP);
 	    
 	    JLabel lblErrGiaTriHD_2 = new JLabel();
 	    lblErrGiaTriHD_2.setText("thông báo lỗi");
@@ -365,8 +365,8 @@ public class SanPham_GUI extends JPanel {
         panelButton.add(btnHuy);
         
         tblSanPham = new JTable();
-        tblSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        tblSanPham.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
+        tblSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        tblSanPham.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
         tblSanPham.setRowHeight(30);
 
 	    tblSanPham.setModel(new DefaultTableModel(
