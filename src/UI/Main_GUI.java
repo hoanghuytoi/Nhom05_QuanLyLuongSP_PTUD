@@ -245,7 +245,11 @@ public class Main_GUI extends JFrame {
         
         chamCongNhanVien = new MenuItem(iconSubMenuNonSelect, "Chấm công", (ActionEvent e) -> {
             pnBody.removeAll();
-            
+            try {
+                pnBody.add(new ChamCongNhanVien_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh((chamCongNhanVien));
@@ -267,7 +271,11 @@ public class Main_GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 pnBody.removeAll();
-                
+                try {
+                    pnBody.add(new TimKiemNhanVien_GUI(), BorderLayout.CENTER);
+                } catch (Exception ex) {
+                    Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 pnBody.repaint();
                 pnBody.revalidate();
                 iconSubMenuMacDinh(timKiemNhanVien);
@@ -298,7 +306,11 @@ public class Main_GUI extends JFrame {
         
         chamCongCongNhan = new MenuItem(iconSubMenuNonSelect, "Chấm công", ((e) -> {
             pnBody.removeAll();
-            
+            try {
+                pnBody.add(new ChamCongCongNhan_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh(chamCongCongNhan);

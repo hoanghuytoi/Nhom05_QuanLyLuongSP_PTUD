@@ -6,59 +6,78 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 
+import com.toedter.calendar.JDateChooser;
 import Custom_UI.RoundedButton;
 import Custom_UI.ScrollBarCustom;
 
-import javax.swing.ImageIcon;
-import com.toedter.calendar.JDateChooser;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JComboBox;
 import java.awt.SystemColor;
+import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
+import java.awt.Component;
+import javax.swing.JRadioButton;
+import javax.swing.JComboBox;
 
-public class NhanVien_GUI extends JPanel {
-	private JTextField txtMaNV;
-	private JTextField txtTenNV;
-	private JTextField txtSoCccd;
-	private JTextField txtSdt;
-	private JTextField txtEmail;
-	private JTextField txtDiaChi;
-	private JTextField txtLuongCoBan;
+/**
+ * Hoàng Huy Tới
+ */
+
+public class TimKiemNhanVien_GUI extends JPanel {
 	
 	private JScrollPane scrNhanVien;
     private JTable tblNhanVien;
+    
+    private JTextField txtMaNV;
+    private JTextField txtTenNV;
+    private JTextField txtSoCccd;
+    private JTextField txtSdt;
+    private JTextField txtEmail;
 
-	public NhanVien_GUI() {
+	
+	public TimKiemNhanVien_GUI() {
 		setBackground(Color.WHITE);
 		initComponents();
 	}
 
 	private void initComponents() {
-	    setSize(1290, 750);
+		setSize(1290, 750);
 	    setLayout(null);
 	    
-	    JLabel lblTieuDe = new JLabel("QUẢN LÝ NHÂN VIÊN");
+	    JLabel lblTieuDe = new JLabel("TÌM KIẾM NHÂN VIÊN");
 	    lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
-	    lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 23));
-	    lblTieuDe.setBounds(495, 11, 368, 37);
+	    lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
+	    lblTieuDe.setBounds(411, 11, 490, 50);
 	    add(lblTieuDe);
+	    
+	    JPanel panelButton = new JPanel();
+	    panelButton.setLayout(null);
+	    panelButton.setBackground(Color.WHITE);
+	    panelButton.setBounds(229, 405, 814, 65);
+	    add(panelButton);
+	    
+	    RoundedButton rndbtnXaRng = new RoundedButton("Xóa", new Color(222, 184, 135), (Color) null);
+	    rndbtnXaRng.setIcon(new ImageIcon(TimKiemSanPham_GUI.class.getResource("/image/icon/xoaRong.png")));
+	    rndbtnXaRng.setText("Xóa rỗng");
+	    rndbtnXaRng.setFont(new Font("Times New Roman", Font.BOLD, 16));
+	    rndbtnXaRng.setBounds(219, 14, 170, 40);
+	    panelButton.add(rndbtnXaRng);
+	    
+	    RoundedButton rndbtnTmKim = new RoundedButton("Cập nhật", new Color(255, 218, 185), (Color) null);
+	    rndbtnTmKim.setIcon(new ImageIcon(TimKiemSanPham_GUI.class.getResource("/image/icon/timKiem.png")));
+	    rndbtnTmKim.setText("Tìm kiếm");
+	    rndbtnTmKim.setFont(new Font("Times New Roman", Font.BOLD, 16));
+	    rndbtnTmKim.setBounds(439, 14, 170, 40);
+	    panelButton.add(rndbtnTmKim);
 	    
 	    JPanel panelNV = new JPanel();
 	    panelNV.setLayout(null);
 	    panelNV.setBackground(Color.WHITE);
-	    panelNV.setBounds(43, 31, 1190, 415);
+	    panelNV.setBounds(0, 42, 1254, 350);
 	    add(panelNV);
-	    
-	    JLabel lblAnhNV = new JLabel();
-	    lblAnhNV.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/nhanVien/nhanVien1.png")));
-	    lblAnhNV.setBounds(23, 117, 181, 179);
-	    panelNV.add(lblAnhNV);
 	    
 	    JLabel lblMaNV = new JLabel();
 	    lblMaNV.setText("Mã nhân viên:");
@@ -67,7 +86,6 @@ public class NhanVien_GUI extends JPanel {
 	    panelNV.add(lblMaNV);
 	    
 	    txtMaNV = new JTextField();
-	    txtMaNV.setText("txtMaNV");
 	    txtMaNV.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtMaNV.setBorder(null);
 	    txtMaNV.setBounds(341, 21, 301, 36);
@@ -85,7 +103,6 @@ public class NhanVien_GUI extends JPanel {
 	    panelNV.add(lblTenNV);
 	    
 	    txtTenNV = new JTextField();
-	    txtTenNV.setText("txtTenNV");
 	    txtTenNV.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtTenNV.setBorder(null);
 	    txtTenNV.setBounds(341, 85, 301, 36);
@@ -144,11 +161,6 @@ public class NhanVien_GUI extends JPanel {
 	    jSeparator3.setBounds(341, 244, 301, 10);
 	    panelNV.add(jSeparator3);
 	    
-	    JSeparator jSeparator7 = new JSeparator();
-	    jSeparator7.setForeground(Color.BLACK);
-	    jSeparator7.setBounds(881, 377, 254, 10);
-	    panelNV.add(jSeparator7);
-	    
 	    txtSdt = new JTextField();
 	    txtSdt.setText("0");
 	    txtSdt.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -170,13 +182,6 @@ public class NhanVien_GUI extends JPanel {
 	    lblErrTenNV.setBounds(341, 122, 200, 17);
 	    panelNV.add(lblErrTenNV);
 	    
-	    RoundedButton btnAnhNhanVien = new RoundedButton("Thêm", UIManager.getColor("Button.light"), (Color) null);
-	    btnAnhNhanVien.setText("Ảnh nhân viên");
-	    btnAnhNhanVien.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnAnhNhanVien.setBackground(UIManager.getColor("CheckBox.background"));
-	    btnAnhNhanVien.setBounds(45, 314, 133, 40);
-	    panelNV.add(btnAnhNhanVien);
-	    
 	    JLabel lblEmail = new JLabel();
 	    lblEmail.setText("Email:");
 	    lblEmail.setFont(new Font("Times New Roman", Font.PLAIN, 16));
@@ -195,37 +200,12 @@ public class NhanVien_GUI extends JPanel {
 	    jSeparator1_1.setBounds(341, 314, 301, 10);
 	    panelNV.add(jSeparator1_1);
 	    
-	    JLabel lblDiaChi = new JLabel();
-	    lblDiaChi.setText("Địa chỉ:");
-	    lblDiaChi.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    lblDiaChi.setBounds(235, 357, 102, 30);
-	    panelNV.add(lblDiaChi);
-	    
-	    txtDiaChi = new JTextField();
-	    txtDiaChi.setText("txtDiaChi");
-	    txtDiaChi.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    txtDiaChi.setBorder(null);
-	    txtDiaChi.setBounds(341, 345, 301, 30);
-	    panelNV.add(txtDiaChi);
-	    
-	    JSeparator jSeparator1_1_1 = new JSeparator();
-	    jSeparator1_1_1.setForeground(Color.BLACK);
-	    jSeparator1_1_1.setBounds(341, 377, 301, 10);
-	    panelNV.add(jSeparator1_1_1);
-	    
 	    JLabel lblErrEmail = new JLabel();
 	    lblErrEmail.setText("thông báo lỗi");
 	    lblErrEmail.setForeground(new Color(204, 0, 0));
 	    lblErrEmail.setFont(new Font("Times New Roman", Font.PLAIN, 13));
 	    lblErrEmail.setBounds(341, 316, 200, 18);
 	    panelNV.add(lblErrEmail);
-	    
-	    JLabel lblErrDiaChi = new JLabel();
-	    lblErrDiaChi.setText("thông báo lỗi");
-	    lblErrDiaChi.setForeground(new Color(204, 0, 0));
-	    lblErrDiaChi.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrDiaChi.setBounds(341, 381, 200, 18);
-	    panelNV.add(lblErrDiaChi);
 	    
 	    JDateChooser dcsNgaySinh = new JDateChooser();
 	    dcsNgaySinh.setDateFormatString("yyyy-MM-dd");
@@ -236,13 +216,13 @@ public class NhanVien_GUI extends JPanel {
 	    rdoNam.setBackground(new Color(255, 255, 255));
 	    rdoNam.setText("Nam");
 	    rdoNam.setSelected(true);
-	    rdoNam.setBounds(880, 93, 59, 30);
+	    rdoNam.setBounds(880, 93, 64, 30);
 	    panelNV.add(rdoNam);
 	    
 	    JRadioButton rdoNu = new JRadioButton();
 	    rdoNu.setBackground(new Color(255, 255, 255));
 	    rdoNu.setText("Nữ");
-	    rdoNu.setBounds(972, 93, 47, 30);
+	    rdoNu.setBounds(972, 93, 52, 30);
 	    panelNV.add(rdoNu);
 	    
 	    JLabel lblNgayVaoLam = new JLabel();
@@ -263,8 +243,8 @@ public class NhanVien_GUI extends JPanel {
 	    panelNV.add(lblPhongBan);
 	    
 	    JComboBox<String> cboPhongBan = new JComboBox<String>();
-	    cboPhongBan.setBackground(new Color(255, 255, 255));
 	    cboPhongBan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+	    cboPhongBan.setBackground(Color.WHITE);
 	    cboPhongBan.setBounds(881, 219, 254, 40);
 	    panelNV.add(cboPhongBan);
 	    
@@ -275,29 +255,10 @@ public class NhanVien_GUI extends JPanel {
 	    panelNV.add(lblChucVu);
 	    
 	    JComboBox<String> cboChucVu = new JComboBox<String>();
-	    cboChucVu.setBackground(Color.WHITE);
 	    cboChucVu.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+	    cboChucVu.setBackground(Color.WHITE);
 	    cboChucVu.setBounds(881, 290, 254, 40);
 	    panelNV.add(cboChucVu);
-	    
-	    JLabel lblLuongCoBan = new JLabel();
-	    lblLuongCoBan.setText("Lương cơ bản:");
-	    lblLuongCoBan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    lblLuongCoBan.setBounds(764, 347, 107, 40);
-	    panelNV.add(lblLuongCoBan);
-	    
-	    txtLuongCoBan = new JTextField();
-	    txtLuongCoBan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    txtLuongCoBan.setBorder(null);
-	    txtLuongCoBan.setBounds(881, 339, 254, 36);
-	    panelNV.add(txtLuongCoBan);
-	    
-	    JLabel lblErrLuongCoBan = new JLabel();
-	    lblErrLuongCoBan.setText("đây là dòng thông báo lỗi");
-	    lblErrLuongCoBan.setForeground(new Color(204, 0, 0));
-	    lblErrLuongCoBan.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrLuongCoBan.setBounds(881, 383, 254, 18);
-	    panelNV.add(lblErrLuongCoBan);
 	    
 	    JLabel lblErrNgayVaoLam = new JLabel();
 	    lblErrNgayVaoLam.setText("đây là dòng thông báo lỗi");
@@ -313,53 +274,10 @@ public class NhanVien_GUI extends JPanel {
 	    lblErrNgaySinh.setBounds(880, 64, 254, 18);
 	    panelNV.add(lblErrNgaySinh);
 	    
-	    JPanel panelButton = new JPanel();
-	    panelButton.setBounds(21, 442, 1259, 65);
-	    add(panelButton);
-	    panelButton.setLayout(null);
-	    panelButton.setBackground(Color.WHITE);
-	    
-	    RoundedButton btnThemNhieu = new RoundedButton("Thêm nhiều", new Color(50, 206, 50), (Color) null);
-	    btnThemNhieu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
-	    btnThemNhieu.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnThemNhieu.setBounds(10, 14, 150, 40);
-	    panelButton.add(btnThemNhieu);
-	    
-	    RoundedButton btnThem = new RoundedButton("Thêm", SystemColor.inactiveCaption, (Color) null);
-	    btnThem.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
-	    btnThem.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnThem.setBackground(new Color(64, 224, 208));
-	    btnThem.setBounds(221, 14, 150, 40);
-	    panelButton.add(btnThem);
-	    
-	    RoundedButton btnXoa = new RoundedButton("Xóa", new Color(222, 184, 135), (Color) null);
-	    btnXoa.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/xoa.png")));
-	    btnXoa.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnXoa.setBounds(430, 14, 150, 40);
-	    panelButton.add(btnXoa);
-	    
-	    RoundedButton btnCapNhat = new RoundedButton("Cập nhật", new Color(255, 218, 185), (Color) null);
-	    btnCapNhat.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/capNhat.png")));
-	    btnCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnCapNhat.setBounds(653, 14, 150, 40);
-	    panelButton.add(btnCapNhat);
-	    
-	    RoundedButton btnLuu = new RoundedButton("Lưu", Color.LIGHT_GRAY, (Color) null);
-	    btnLuu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/luu.png")));
-	    btnLuu.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnLuu.setBounds(867, 14, 150, 40);
-	    panelButton.add(btnLuu);
-	    
-	    RoundedButton btnHuy = new RoundedButton("Hủy", new Color(255, 222, 173), (Color) null);
-	    btnHuy.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/huy.png")));
-	    btnHuy.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnHuy.setBounds(1080, 14, 150, 40);
-	    panelButton.add(btnHuy);
-	    
 	    tblNhanVien = new JTable();
-	    tblNhanVien.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-	    tblNhanVien.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 14));
-	    tblNhanVien.setRowHeight(18);
+	    tblNhanVien.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+	    tblNhanVien.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 16));
+	    tblNhanVien.setRowHeight(22);
 
 	    tblNhanVien.setModel(new DefaultTableModel(
 	    	new Object[][] {
@@ -383,7 +301,7 @@ public class NhanVien_GUI extends JPanel {
 	    
 
 	    scrNhanVien = new JScrollPane(tblNhanVien);
-	    scrNhanVien.setBounds(10, 557, 1259, 194);
+	    scrNhanVien.setBounds(10, 515, 1259, 236);
 	    add(scrNhanVien);
 	    
         ScrollBarCustom scrollBar = new ScrollBarCustom();
@@ -393,7 +311,8 @@ public class NhanVien_GUI extends JPanel {
 	    
 	    JLabel lblDsNV = new JLabel("Danh sách nhân viên:");
 	    lblDsNV.setFont(new Font("Times New Roman", Font.BOLD, 15));
-	    lblDsNV.setBounds(43, 518, 186, 37);
+	    lblDsNV.setBounds(10, 473, 186, 37);
 	    add(lblDsNV);
+	
 	}
 }

@@ -268,18 +268,6 @@ public class SanPham_GUI extends JPanel {
 	    
 	    tblHopDong.setRowHeight(20);
 	    
-	    DefaultTableModel tableModelHD = new DefaultTableModel(
-	    		new Object[][] {
-	    			{null, null, null, null},
-	    			{null, null, null, null},
-	    			{null, null, null, null},
-	    			{null, null, null, null}
-	    		},
-	    		new String[] {
-	    				"STT", "Mã hợp đồng", "Tên hợp đồng", "Tên khách hàng"
-	    		}
-	    		);
-
 	    tblHopDong.setModel(new DefaultTableModel(
 	    	new Object[][] {
 	    		{null, null, null, null},
