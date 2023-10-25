@@ -318,7 +318,11 @@ public class Main_GUI extends JFrame {
         
         timKiemCongNhan = new MenuItem(iconSubMenuNonSelect, "Tìm kiếm", ((e) -> {
             pnBody.removeAll();
-            
+            try {
+                pnBody.add(new TimKiemCongNhan_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh(timKiemCongNhan);

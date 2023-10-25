@@ -108,7 +108,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
         dcsNgayChamCong.setBounds(198, 381, 177, 41);
         add(dcsNgayChamCong);
         
-        RoundedButton btnLayDanhSach = new RoundedButton("Thêm", SystemColor.inactiveCaption, (Color) null);
+        RoundedButton btnLayDanhSach = new RoundedButton("Thêm", new Color(152, 251, 152), (Color) null);
         btnLayDanhSach.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/them.png")));
         btnLayDanhSach.setText("Lấy danh sách");
         btnLayDanhSach.setFont(new Font("Times New Roman", Font.BOLD, 16));

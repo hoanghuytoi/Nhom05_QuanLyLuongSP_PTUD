@@ -56,7 +56,7 @@ public class TimKiemSanPham_GUI extends JPanel {
 	    JPanel panelSP = new JPanel();
 	    panelSP.setLayout(null);
 	    panelSP.setBackground(Color.WHITE);
-	    panelSP.setBounds(46, 92, 1164, 307);
+	    panelSP.setBounds(46, 92, 1164, 282);
 	    add(panelSP);
 	    
 	    JLabel lblMaSanPham = new JLabel();
@@ -248,7 +248,7 @@ public class TimKiemSanPham_GUI extends JPanel {
 	    JPanel panelButton = new JPanel();
 	    panelButton.setLayout(null);
 	    panelButton.setBackground(Color.WHITE);
-	    panelButton.setBounds(219, 410, 814, 65);
+	    panelButton.setBounds(222, 372, 814, 65);
 	    add(panelButton);
 	    
 	    RoundedButton rndbtnXaRng = new RoundedButton("Xóa", new Color(222, 184, 135), (Color) null);
@@ -290,7 +290,7 @@ public class TimKiemSanPham_GUI extends JPanel {
 	    
 
 	    scrSanPham = new JScrollPane(tblSanPham);
-	    scrSanPham.setBounds(39, 523, 1225, 205);
+	    scrSanPham.setBounds(46, 500, 1225, 205);
 	    add(scrSanPham);
 	    
         ScrollBarCustom scrollBar = new ScrollBarCustom();
@@ -300,7 +300,7 @@ public class TimKiemSanPham_GUI extends JPanel {
 	    
 	    JLabel lblDsSP = new JLabel("Danh sách sản phẩm:");
 	    lblDsSP.setFont(new Font("Times New Roman", Font.BOLD, 15));
-	    lblDsSP.setBounds(39, 493, 186, 28);
+	    lblDsSP.setBounds(46, 461, 186, 28);
 	    add(lblDsSP);
 	
 	}

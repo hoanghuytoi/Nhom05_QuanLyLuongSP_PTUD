@@ -225,14 +225,18 @@ public class CongNhan_GUI extends JPanel {
 	    panelCN.add(dcsNgaySinh);
 	    
 	    JRadioButton rdoNam = new JRadioButton();
+	    rdoNam.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+	    rdoNam.setBackground(new Color(255, 255, 255));
 	    rdoNam.setText("Nam");
 	    rdoNam.setSelected(true);
-	    rdoNam.setBounds(880, 100, 47, 23);
+	    rdoNam.setBounds(880, 100, 60, 23);
 	    panelCN.add(rdoNam);
 	    
 	    JRadioButton rdoNu = new JRadioButton();
+	    rdoNu.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+	    rdoNu.setBackground(new Color(255, 255, 255));
 	    rdoNu.setText("Nữ");
-	    rdoNu.setBounds(972, 100, 39, 23);
+	    rdoNu.setBounds(972, 100, 55, 23);
 	    panelCN.add(rdoNu);
 	    
 	    JLabel lblNgayVaoLam = new JLabel();
