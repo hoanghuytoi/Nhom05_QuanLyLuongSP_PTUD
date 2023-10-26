@@ -58,38 +58,43 @@ public class ChamCongCongNhan_GUI extends JPanel {
 	    add(lblDanhSachCN);
 
 	    tblCongNhan = new JTable();
-	    tblCongNhan.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-	    tblCongNhan.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
+	    tblCongNhan.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+	    tblCongNhan.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 14));
 	    
-	    tblCongNhan.setRowHeight(20);
+	    tblCongNhan.setRowHeight(18);
 
 	    tblCongNhan.setModel(new DefaultTableModel(
 	    	new Object[][] {
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null},
-	    		{null, null, null, null, null, null}
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
+	    		{null, null, null, null, null, null, null, null},
 	    	},
 	    	new String[] {
-	    		"STT", "Mã nhân viên", "Họ và tên", "SĐT", "Phòng ban", "Chức vụ"
+	    		"STT", "M\u00E3 ph\u00E2n c\u00F4ng", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "M\u00E3 c\u00F4ng \u0111o\u1EA1n", "T\u00EAn c\u00F4ng \u0111o\u1EA1n", "T\u1ED5 Nh\u00F3m", "S\u1ED1 l\u01B0\u1EE3ng c\u1EA7n"
 	    	}
 	    ));
 	    tblCongNhan.getColumnModel().getColumn(0).setPreferredWidth(40);
 	    tblCongNhan.getColumnModel().getColumn(0).setMinWidth(20);
 	    tblCongNhan.getColumnModel().getColumn(0).setMaxWidth(40);
-	    tblCongNhan.getColumnModel().getColumn(1).setPreferredWidth(72);
+	    tblCongNhan.getColumnModel().getColumn(1).setPreferredWidth(79);
 	    tblCongNhan.getColumnModel().getColumn(2).setPreferredWidth(76);
 	    tblCongNhan.getColumnModel().getColumn(3).setPreferredWidth(86);
+	    tblCongNhan.getColumnModel().getColumn(5).setPreferredWidth(78);
+	    tblCongNhan.getColumnModel().getColumn(6).setPreferredWidth(78);
+	    tblCongNhan.getColumnModel().getColumn(7).setPreferredWidth(82);
 
 	    scrCongNhan = new JScrollPane(tblCongNhan);
-	    scrCongNhan.setBounds(74, 125, 598, 245);
+	    scrCongNhan.setBounds(10, 125, 684, 245);
 	    add(scrCongNhan);
 	    
         ScrollBarCustom scrollBar = new ScrollBarCustom();
@@ -166,37 +171,40 @@ public class ChamCongCongNhan_GUI extends JPanel {
         add(lblMuiTen);
         
         tblDSChamCongCN = new JTable();
-        tblDSChamCongCN.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        tblDSChamCongCN.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
+        tblDSChamCongCN.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        tblDSChamCongCN.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 14));
 	    
-        tblDSChamCongCN.setRowHeight(20);
+        tblDSChamCongCN.setRowHeight(18);
 
         tblDSChamCongCN.setModel(new DefaultTableModel(
         	new Object[][] {
-        		{null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
         	},
         	new String[] {
-        		"STT", "M\u00E3 nh\u00E2n vi\u00EAn", "H\u1ECD v\u00E0 t\u00EAn", "S\u0111t", "Ph\u00F2ng ban", "Ch\u1EE9c v\u1EE5", "Ng\u00E0y ch\u1EA5m c\u00F4ng", "Ca l\u00E0m", "Tr\u1EA1ng th\u00E1i", "Gi\u1EDD \u0111i l\u00E0m", "Gi\u1EDD t\u0103ng ca"
+        		"STT", "M\u00E3 Ph\u00E2n c\u00F4ng", "M\u00E3 c\u00F4ng nh\u00E2n", "H\u1ECD v\u00E0 t\u00EAn", "T\u1ED5/Nh\u00F3m", "Ng\u00E0y ch\u1EA5m c\u00F4ng", "Ca l\u00E0m", "Tr\u1EA1ng th\u00E1i", "Gi\u1EDD \u0111i l\u00E0m", "M\u00E3 s\u1EA3n ph\u1EA9m", "S\u1EA3n ph\u1EA9m", "M\u00E3 c\u00F4ng \u0111o\u1EA1n", "C\u00F4ng \u0111o\u1EA1n", "S\u1ED1 l\u01B0\u1EE3ng l\u00E0m"
         	}
         ));
         tblDSChamCongCN.getColumnModel().getColumn(0).setPreferredWidth(40);
         tblDSChamCongCN.getColumnModel().getColumn(0).setMinWidth(20);
         tblDSChamCongCN.getColumnModel().getColumn(0).setMaxWidth(40);
-        tblDSChamCongCN.getColumnModel().getColumn(1).setPreferredWidth(72);
-        tblDSChamCongCN.getColumnModel().getColumn(2).setPreferredWidth(76);
+        tblDSChamCongCN.getColumnModel().getColumn(1).setPreferredWidth(78);
+        tblDSChamCongCN.getColumnModel().getColumn(2).setPreferredWidth(84);
         tblDSChamCongCN.getColumnModel().getColumn(3).setPreferredWidth(86);
+        tblDSChamCongCN.getColumnModel().getColumn(5).setPreferredWidth(97);
+        tblDSChamCongCN.getColumnModel().getColumn(5).setMinWidth(29);
+        tblDSChamCongCN.getColumnModel().getColumn(11).setPreferredWidth(77);
 
 	    scrDSChamCongCN = new JScrollPane(tblDSChamCongCN);
-	    scrDSChamCongCN.setBounds(74, 556, 1160, 183);
+	    scrDSChamCongCN.setBounds(10, 556, 1254, 183);
 	    add(scrDSChamCongCN);
 	    
         ScrollBarCustom scrollBar1 = new ScrollBarCustom();
