@@ -259,7 +259,11 @@ public class Main_GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 pnBody.removeAll();
-                
+                try {
+                    pnBody.add(new BangLuongNhanVien_GUI(), BorderLayout.CENTER);
+                } catch (Exception ex) {
+                    Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 pnBody.repaint();
                 pnBody.revalidate();
                 iconSubMenuMacDinh(tinhLuongNhanVien);
@@ -283,9 +287,13 @@ public class Main_GUI extends JFrame {
 
         });
         
-        phanCongCongNhan = new MenuItem(iconSubMenuNonSelect, "Phân công công đoạn", ((e) -> {
+        phanCongCongNhan = new MenuItem(iconSubMenuNonSelect, "Phân công công nhân", ((e) -> {
             pnBody.removeAll();
-            
+            try {
+                pnBody.add(new PhanCongCongNhan_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh(phanCongCongNhan);
@@ -330,7 +338,11 @@ public class Main_GUI extends JFrame {
         
         tinhLuongCongNhan = new MenuItem(iconSubMenuNonSelect, "Tính lương", ((e) -> {
             pnBody.removeAll();
-            
+            try {
+                pnBody.add(new BangLuongCongNhan_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh((tinhLuongCongNhan));
@@ -463,8 +475,6 @@ public class Main_GUI extends JFrame {
         
         // menu Nhân viên
         menuNhanVien = new MenuItem(iconNhanVien, "Nhân viên", (ActionEvent e) -> {
-            pnBody.removeAll();
-            
             pnBody.repaint();
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
@@ -473,8 +483,6 @@ public class Main_GUI extends JFrame {
         
         // menu Công nhân
         menuCongNhan = new MenuItem(iconCongNhan, "Công nhân", (ActionEvent e) -> {
-            pnBody.removeAll();
-            
             pnBody.repaint();
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
@@ -483,8 +491,6 @@ public class Main_GUI extends JFrame {
         
         // menu Thống kê
         menuThongKe = new MenuItem(iconThongKe, "Thống kê", (ActionEvent e) -> {
-            pnBody.removeAll();
-            
             pnBody.repaint();
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
@@ -503,8 +509,6 @@ public class Main_GUI extends JFrame {
         
         // menu Tài khoản
         menuHeThong = new MenuItem(iconHeThong, "Tài khoản", (ActionEvent e) -> {
-            pnBody.removeAll();
-            
             pnBody.repaint();
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);

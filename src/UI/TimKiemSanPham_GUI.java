@@ -56,7 +56,7 @@ public class TimKiemSanPham_GUI extends JPanel {
 	    JPanel panelSP = new JPanel();
 	    panelSP.setLayout(null);
 	    panelSP.setBackground(Color.WHITE);
-	    panelSP.setBounds(46, 92, 1164, 282);
+	    panelSP.setBounds(46, 71, 1164, 282);
 	    add(panelSP);
 	    
 	    JLabel lblMaSanPham = new JLabel();
