@@ -43,7 +43,6 @@ public class ConnectDB {
             ConnectDB.getInstance().connect();
             System.out.println("Yes");
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e);
         }
     }

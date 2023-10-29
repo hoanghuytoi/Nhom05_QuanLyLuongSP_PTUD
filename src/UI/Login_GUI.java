@@ -1,16 +1,31 @@
 package UI;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import Dao.CongNhan_Dao;
+import Dao.NhanVien_Dao;
+import Entity.NhanVien;
+
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.awt.Color;
 import java.awt.Cursor;
 
@@ -44,13 +59,64 @@ public class Login_GUI extends JFrame {
     private JLabel lblTenDangNhap;
     private JLabel lblTietDe;
     private JLabel lblTieuDeDangNhap;
+    private JLabel lblTieuDePhanMem;
     private JLabel show;
     private JTextField txtDangNhap;
     private JPasswordField txtMatKhau;
     
-	
+    private NhanVien_Dao nhanVien_DAO;
+    private CongNhan_Dao congNhan_DAO;
+    private ArrayList<String> ngonNguList;
 
 	public Login_GUI() {
+//		ngonNguList = new ArrayList<>();
+//        try {
+//            ConnectionDB.ConnectDB.getInstance().connect();
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//        congNhan_DAO = new CongNhan_Dao();
+//        nhanVien_DAO = new NhanVien_Dao();
+//        File file = new File("config/VietNam.properties");
+//        File file1 = new File("config/English.properties");
+//        ngonNguList.add(file.getAbsolutePath());
+//        ngonNguList.add(file1.getAbsolutePath());
+        initComponents();
+//        txtDangNhap.setText("NV100001");
+//        txtMatKhau.setText("111111");
+//
+//        if (pref.get("userName", "").equals("") || pref.get("userName", "") == null) {
+//            txtDangNhap.setText("NV100001");
+//            NhanVien nhanVienDangNhap = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(txtDangNhap.getText());
+//            txtMatKhau.setText(nhanVienDangNhap.getMatKhau());
+//        } else {
+//            getDataRemember();
+//        }
+	}
+    
+	public void getDataRemember() {
+        String userName = "";
+        userName = pref.get("userName", userName);
+        String passWord = "";
+        passWord = pref.get("password", passWord);
+        this.txtDangNhap.setText(userName);
+        this.txtMatKhau.setText(passWord);
+    }
+    
+	public void caiDatNgonNguChoView(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        lblTieuDePhanMem.setText(prop.getProperty("Login_lblTieuDePhanMem"));
+        lblTieuDeDangNhap.setText(prop.getProperty("Login_lblTieuDeDangNhap"));
+        lblTenDangNhap.setText(prop.getProperty("Login_lblTenDangNhap"));
+        lblMatKhau.setText(prop.getProperty("Login_lblMatKhau"));
+        lblQuenMatKhau.setText(prop.getProperty("Login_lblQuenMatKhau"));
+        btnDangNhap.setText(prop.getProperty("Login_btnDangNhap"));
+        lblNgonNgu.setText(prop.getProperty("Login_lblNgonNgu"));
+    }
+	
+    private void initComponents() {
         panelTieuDe = new JPanel();
         panelTieuDe.setBounds(0, 0, 510, 500);
         
@@ -298,11 +364,8 @@ public class Login_GUI extends JFrame {
         this.show.setEnabled(true);
     }
     
-    private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {
-    	
-    }
-    
     private void chkRemerberPasswordActionPerformed(java.awt.event.ActionEvent evt) {
+    	
     }
     
     public Preferences pref = Preferences.userRoot().node("Remember");
@@ -320,6 +383,49 @@ public class Login_GUI extends JFrame {
         }
     }
     
+    private void lblNgonNguMouseClicked(java.awt.event.MouseEvent evt) {
+    }
+
+    private void lblQuenMatKhauMouseClicked(java.awt.event.MouseEvent evt) {
+        new QuenMatKhau_GUI().setVisible(true);
+    }
+
+    private void cmbNgonNguActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            caiDatNgonNguChoView(ngonNguList.get(cmbNgonNgu.getSelectedIndex()));
+        } catch (IOException ex) {
+            Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+ 
+    private void btnDangNhapActionPerformed(ActionEvent evt) {
+
+        String userName = txtDangNhap.getText();
+        String password = new String(txtMatKhau.getPassword());
+        if (userName.length() != 8 || password.length() < 6) {
+            JOptionPane.showMessageDialog(null, "Tài khoản hoặc Mật khẩu không chính xác!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String loai = userName.substring(0, 2);
+        if (loai.equals("NV")) {
+            NhanVien nhanVien = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
+            if (nhanVien != null && nhanVien.getMatKhau().equals(password)) {
+                try {
+                    new Main_GUI();
+                } catch (IOException ex) {
+                    Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Tài khoản hoặc Mật khẩu không chính xác!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "chính xác!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }
     
     public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

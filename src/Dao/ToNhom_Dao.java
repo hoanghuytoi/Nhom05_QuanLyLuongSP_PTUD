@@ -53,7 +53,7 @@ public class ToNhom_Dao {
            
             while (rs.next()){
                 String maToNhomOb = rs.getString("maToNhom");
-                String tenToNhom = rs.getString("tenTo");
+                String tenToNhom = rs.getString("tenToNhom");
                 int soLuongCongNhan = rs.getInt("soLuongCongNhan");
                 toNhom = new ToNhom(maToNhomOb, tenToNhom, soLuongCongNhan);
             }
@@ -78,7 +78,7 @@ public class ToNhom_Dao {
             ResultSet rs = stm.executeQuery(chuoiTruyVan);
             while (rs.next()) {
                 String maTo = rs.getString("maToNhom");
-                String tenToNhom = rs.getString("tenTo");
+                String tenToNhom = rs.getString("tenToNhom");
                 int soLuongCongNhan = rs.getInt("soLuongCongNhan");
                 dsToNhom.add(new ToNhom(maTo, tenToNhom, soLuongCongNhan));
             }
@@ -122,6 +122,39 @@ public class ToNhom_Dao {
         return true;
     }
 	
+	public String layRaMaToNhomDeThem() {
+        Statement stm = null;
+        String  maToNhom = "";
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "select top 1 * from ToNhom order by LEN(maToNhom), maToNhom desc";
+            stm = con.createStatement();
+            ResultSet rs = stm.executeQuery(truyVan);
+            while (rs.next()) {
+            	maToNhom = rs.getString("maToNhom");
+               
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (maToNhom.equals("") || maToNhom == null){
+            return "TN100001";
+            
+        }
+
+        String chuoiCanLay = maToNhom.split("TN")[1];
+
+        try {
+            chuoiCanLay = "TN" + (Integer.parseInt(chuoiCanLay) + 1);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return chuoiCanLay;
+    }
+	
+	
 	public boolean xoaMotToNhomTheoMa(String maToNhom) {
         PreparedStatement stm = null;
         int soLuongXoa = 0;
@@ -152,7 +185,7 @@ public class ToNhom_Dao {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
             String query = "UPDATE ToNhom"
-                    + " set tenTo = ?"
+                    + " set tenToNhom = ?"
                     + " where maToNhom = ?";
             stm = con.prepareStatement(query);
             stm.setString(1, toNhom.getTenToNhom());

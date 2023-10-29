@@ -6,28 +6,25 @@ public class HopDong {
 	private String maHopDong;
     private String tenHopDong;
     private String tenKhachHang;
-    private String diaChi;
-    private double soTienCoc;
-    private double giaTriHD;
-    private Date ngayKyKet;
-    private Date hanChot;
-    private String thoaThuan;
+    private double tienDatCoc;
+    private double triGiaHD;
+    private Date ngayKyKetHD;
+    private Date ngayKetThucHD;
+    private String yeuCau;
+    private NhanVien nguoiKyKet;
     
-	public HopDong(String maHopDong, String tenHopDong, String tenKhachHang, String diaChi, double soTienCoc,
-			double giaTriHD, Date ngayKyKet, Date hanChot, String thoaThuan) {
-		try {
-            setMaHopDong(maHopDong);
-            setTenHopDong(tenHopDong);
-            setTenKhachHang(tenKhachHang);
-            setDiaChi(diaChi);
-            setSoTienCoc(soTienCoc);
-            setGiaTriHD(giaTriHD);
-            setNgayKyKet(ngayKyKet);
-            setHanChot(hanChot);
-            setThoaThuan(thoaThuan);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+	public HopDong(String maHopDong, String tenHopDong, String tenKhachHang, double tienDatCoc, double triGiaHD,
+			Date ngayKyKetHD, Date ngayKetThucHD, String yeuCau, NhanVien nguoiKyKet) {
+		super();
+		this.maHopDong = maHopDong;
+		this.tenHopDong = tenHopDong;
+		this.tenKhachHang = tenKhachHang;
+		this.tienDatCoc = tienDatCoc;
+		this.triGiaHD = triGiaHD;
+		this.ngayKyKetHD = ngayKyKetHD;
+		this.ngayKetThucHD = ngayKetThucHD;
+		this.yeuCau = yeuCau;
+		this.nguoiKyKet = nguoiKyKet;
 	}
 
 	public String getMaHopDong() {
@@ -68,73 +65,70 @@ public class HopDong {
 	        }
 	}
 
-	public String getDiaChi() {
-		return diaChi;
+	public double getTienDatCoc() {
+		return tienDatCoc;
 	}
 
-	public void setDiaChi(String diaChi)throws Exception {
-		 if (diaChi.equals("")){
-	            throw new Exception("Địa chỉ không được trống!");
-	        } else {
-	            this.diaChi = diaChi;
-	        }
-	}
-
-	public double getSoTienCoc() {
-		return soTienCoc;
-	}
-
-	public void setSoTienCoc(double soTienCoc) throws Exception{
-		if (soTienCoc <= 0){
+	public void setTienDatCoc(double TienDatCoc) throws Exception{
+		if (tienDatCoc <= 0){
             throw new Exception("Số tiền cọc phải >0 !");
         } else {
-            this.soTienCoc = soTienCoc;
+            this.tienDatCoc = tienDatCoc;
         }
 	}
 
-	public double getGiaTriHD() {
-		return giaTriHD;
+	public double getTriGiaHD() {
+		return triGiaHD;
 	}
 
-	public void setGiaTriHD(double giaTriHD) throws Exception{
+	public void setTriGiaHD(double giaTriHD) throws Exception{
 		if (giaTriHD <= 0){
             throw new Exception("Gía trị hợp đồng phải >0 !");
         } else {
-            this.giaTriHD = giaTriHD;
+            this.triGiaHD = giaTriHD;
         }
 	}
 
-	public Date getNgayKyKet() {
-		return ngayKyKet;
+	public Date getNgayKyKetHD() {
+		return ngayKyKetHD;
 	}
 
-	public void setNgayKyKet(Date ngayKyKet)throws Exception {
-		if (ngayKyKet.after(new Date())){
+	public void setNgayKyKetHD(Date ngayKyKetHD)throws Exception {
+		if (ngayKyKetHD.after(new Date())){
             throw new Exception("Ngày kí kết phải trước ngày hiện tại !");
         } else {
-            this.ngayKyKet = ngayKyKet;
+            this.ngayKyKetHD = ngayKyKetHD;
         }
 	}
 
-	public Date getHanChot() {
-		return hanChot;
+	public Date getNgayKetThucHD() {
+		return ngayKetThucHD;
 	}
 
-	public void setHanChot(Date hanChot) {
-		this.hanChot = hanChot;
+	public void setNgayKetThucHD(Date ngayKetThucHD) {
+		this.ngayKetThucHD = ngayKetThucHD;
 	}
 
-	public String getThoaThuan() {
-		return thoaThuan;
+	public String getYeuCau() {
+		return yeuCau;
 	}
 
-	public void setThoaThuan(String thoaThuan) {
-		this.thoaThuan = thoaThuan;
+	public void setYeuCau(String yeuCau) {
+		this.yeuCau = yeuCau;
 	}
-    
+
+	public NhanVien getNguoiKyKet() {
+		return nguoiKyKet;
+	}
+
+	public void setNguoiKyKet(NhanVien nguoiKyKet) {
+		this.nguoiKyKet = nguoiKyKet;
+	}
+
 	@Override
-    public String toString() {
-        return "HopDong{" + "maHopDong=" + maHopDong + ", tenHopDong=" + tenHopDong + ", tenKhachHang=" + tenKhachHang +", diaChi"+ diaChi + ", soTienCoc=" + soTienCoc + ", giaTriHD=" + giaTriHD + ", ngayKyKet=" + ngayKyKet + ", hanChot=" + hanChot + ", thoaThuan=" + thoaThuan + '}';
-    }
-	
+	public String toString() {
+		return "HopDong [maHopDong=" + maHopDong + ", tenHopDong=" + tenHopDong + ", tenKhachHang=" + tenKhachHang
+				+ ", tienDatCoc=" + tienDatCoc + ", triGiaHD=" + triGiaHD + ", ngayKyKetHD=" + ngayKyKetHD
+				+ ", ngayKetThucHD=" + ngayKetThucHD + ", yeuCau=" + yeuCau + ", maNguoiKyKet=" + nguoiKyKet + "]";
+	}
 }

@@ -27,6 +27,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JScrollBar;
 
 /**
  * Hoàng Huy Tới
@@ -236,8 +237,8 @@ public class TrangChu_GUI extends JPanel {
         		+ "\r\n"
         		+ " Dễ dàng sử dụng và tích hợp, hệ thống quản lý lương sản phẩm của PacePro giúp công ty bạn thúc đẩy sự chuyên nghiệp và hiệu suất trong việc quản lý tài chính và nguồn nhân lực. Hãy để chúng tôi đồng hành cùng bạn trong việc quản lý tiền lương một cách thông minh và hiệu quả hơn bao giờ hết.";
         textGioiThieu.setText(noiDungGioiThieu);
+        textGioiThieu.setCaretPosition(0);
 
-        // Tạo JScrollPane với thanh cuộn dọc
         JScrollPane scrollPane = new JScrollPane(textGioiThieu);
         scrollPane.setViewportBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 255, 255), new Color(220, 20, 60), new Color(255, 0, 255), new Color(50, 205, 50)));
         scrollPane.setBounds(0, 45, 567, 299);
@@ -248,10 +249,7 @@ public class TrangChu_GUI extends JPanel {
 
         // Chèn ScrollBarCustom vào JScrollPane
         scrollPane.setVerticalScrollBar(scrollBar);
-     
-        // Thêm JScrollPane vào panelGioiThieu
         panelGioiThieu.add(scrollPane);
-        
         
         panelAnh = new JPanel();
         panelAnh.setBackground(Color.WHITE);

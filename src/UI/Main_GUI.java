@@ -39,6 +39,9 @@ public class Main_GUI extends JFrame {
     private JPanel pnBody;
     private JPanel pnHeader;
     private JPanel pnMenu;
+    private String fileName;
+    private String userName;
+    private NhanVien nhanVienDangNhap;
     
 	private static final long serialVersionUID = 1L;
 	
@@ -94,6 +97,12 @@ public class Main_GUI extends JFrame {
 	
 	
     public Main_GUI() throws IOException {
+    	try {
+            ConnectionDB.ConnectDB.getInstance().connect();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         initComponents();
         execute();
     }
@@ -589,13 +598,12 @@ public class Main_GUI extends JFrame {
         }
     }
 
-
     
     public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 	        public void run() {
 	            try {
-	                Main_GUI frame = new Main_GUI();
+	            	Main_GUI frame = new Main_GUI();
 	                frame.setVisible(true);
 	                frame.setResizable(false);
 	                frame.setLocationRelativeTo(null);

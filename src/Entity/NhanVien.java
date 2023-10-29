@@ -44,6 +44,10 @@ public class NhanVien {
         }
 	}
 	
+	public NhanVien() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getMaNhanVien() {
 		return maNhanVien;
 	}
