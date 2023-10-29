@@ -8,9 +8,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 
@@ -41,8 +44,8 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 	private JLabel lblMaToNhom;
 	private JLabel lblSoLuongCongNhan;
 	private JLabel lblTenToNhom;
-	private JLabel lblDsToNhom;
 	private JPanel pnlToNhom;
+	private JPanel panelButon;
 	private JScrollPane scrToNhom;
 	private JTable tblToNhom;
 	private JTextField txtMaToNhom;
@@ -99,47 +102,35 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 	}
 
 	private void initComponents() {
-		setSize(1290, 750);
-		
 		JLabel lblTieuDe = new JLabel("QUẢN LÝ TỔ NHÓM");
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		lblTieuDe.setBounds(510, 11, 296, 55);
 		add(lblTieuDe);
 
-		lblDsToNhom = new JLabel("Danh sách tổ nhóm:");
-		lblDsToNhom.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		lblDsToNhom.setBounds(100, 419, 162, 20);
-		add(lblDsToNhom);
-		
 		pnlToNhom = new JPanel();
-		pnlToNhom.setBounds(24, 77, 1241, 326);
+		pnlToNhom.setBounds(80, 77, 1115, 257);
+		LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);
+		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Thông tin tổ nhóm");
+		pnlToNhom.setBorder(titledBorder);
+
 		txtMaToNhom = new JTextField();
 		txtMaToNhom.setBounds(690, 30, 290, 30);
 		jSeparator1 = new JSeparator();
 		jSeparator1.setForeground(new Color(0, 0, 0));
 		jSeparator1.setBounds(690, 60, 290, 10);
 		lblTenToNhom = new JLabel();
-		lblTenToNhom.setBounds(500, 85, 190, 50);
+		lblTenToNhom.setBounds(500, 93, 190, 42);
 		txtTenToNhom = new JTextField();
 		txtTenToNhom.setBounds(690, 90, 290, 30);
-		lblAnhTN = new JLabel();
-		lblAnhTN.setIcon(new ImageIcon(ToNhom_GUI.class.getResource("/image/toNhom.png")));
-		lblAnhTN.setBounds(24, 0, 422, 229);
-		btnLuu = new JButton();
-		btnLuu.setBounds(798, 275, 160, 40);
-		btnThem = new JButton();
-		btnThem.setBounds(135, 275, 170, 40);
-		btnXoa = new JButton();
-		btnXoa.setBounds(374, 275, 160, 40);
-		btnCapNhat = new JButton();
-		btnCapNhat.setBackground(new Color(240, 230, 140));
-		btnCapNhat.setBounds(586, 275, 160, 40);
+		lblAnhTN = 
+				new JLabel();
+		lblAnhTN.setBounds(107, 29, 270, 217);
 		lbErrTenToNhom = new JLabel();
 		lbErrTenToNhom.setBounds(690, 130, 290, 30);
 		lblMaToNhom = new JLabel();
 		lblMaToNhom.setBounds(500, 25, 190, 50);
 		lblSoLuongCongNhan = new JLabel();
-		lblSoLuongCongNhan.setBounds(500, 135, 190, 60);
+		lblSoLuongCongNhan.setBounds(500, 153, 190, 42);
 		txtSoLuongCongNhan = new JTextField();
 		txtSoLuongCongNhan.setBackground(Color.WHITE);
 		txtSoLuongCongNhan.setBounds(690, 150, 290, 30);
@@ -147,16 +138,15 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 		jSeparator2.setForeground(Color.BLACK);
 		jSeparator2.setBounds(690, 125, 290, 10);
 		pnlToNhom.add(jSeparator2);
+
 		jSeparator3 = new JSeparator();
 		jSeparator3.setForeground(new Color(0, 0, 0));
 		jSeparator3.setBounds(690, 180, 290, 10);
-		btnHuy = new JButton();
-		btnHuy.setBounds(1012, 275, 170, 40);
 		scrToNhom = new JScrollPane();
-		scrToNhom.setBounds(100, 464, 1078, 236);
+		scrToNhom.setBounds(80, 452, 1115, 248);
 		tblToNhom = new JTable();
 
-		setPreferredSize(new Dimension(1293, 700));
+		setPreferredSize(new Dimension(1290, 750));
 
 		pnlToNhom.setBackground(new Color(255, 255, 255));
 		pnlToNhom.setPreferredSize(new java.awt.Dimension(1250, 300));
@@ -184,54 +174,9 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 			}
 		});
 		pnlToNhom.add(txtTenToNhom);
+
+		lblAnhTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/toNhom.png")));
 		pnlToNhom.add(lblAnhTN);
-
-		btnThem.setBackground(new Color(46, 204, 113));
-		btnThem.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnThem.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/them.png")));
-		btnThem.setText("Thêm");
-		btnThem.setBorder(null);
-		btnThem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				btnThemActionPerformed(evt);
-			}
-		});
-		pnlToNhom.add(btnThem);
-
-		btnXoa.setBackground(new Color(41, 128, 185));
-		btnXoa.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnXoa.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/xoa.png")));
-		btnXoa.setText("Xóa");
-		btnXoa.setBorder(null);
-		btnXoa.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				btnXoaActionPerformed(evt);
-			}
-		});
-		pnlToNhom.add(btnXoa);
-
-		btnCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnCapNhat.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/capNhat.png")));
-		btnCapNhat.setText("Cập nhật");
-		btnCapNhat.setBorder(null);
-		btnCapNhat.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				btnCapNhatActionPerformed(evt);
-			}
-		});
-		pnlToNhom.add(btnCapNhat);
-
-		btnLuu.setBackground(new Color(156, 136, 255));
-		btnLuu.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnLuu.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/luu.png")));
-		btnLuu.setText("Lưu");
-		btnLuu.setBorder(null);
-		btnLuu.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnLuuActionPerformed(evt);
-			}
-		});
-		pnlToNhom.add(btnLuu);
 
 		lbErrTenToNhom.setFont(new Font("Segoe UI", 0, 13));
 		lbErrTenToNhom.setForeground(new Color(255, 0, 0));
@@ -255,52 +200,123 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 		});
 		pnlToNhom.add(txtSoLuongCongNhan);
 		pnlToNhom.add(jSeparator3);
+		setLayout(null);
+		add(pnlToNhom);
 
-		btnHuy.setBackground(new Color(255, 121, 121));
+		panelButon = new JPanel();
+		panelButon.setBackground(Color.WHITE);
+		panelButon.setBounds(80, 331, 1115, 85);
+		add(panelButon);
+		panelButon.setLayout(null);
+
+		btnThem = new JButton();
+		btnThem.setBounds(30, 23, 170, 40);
+		panelButon.add(btnThem);
+		btnThem.setBackground(new Color(255, 215, 0));
+		btnThem.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnThem.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/them.png")));
+		btnThem.setText("Thêm");
+		btnThem.setBorder(null);
+
+		btnXoa = new JButton();
+		btnXoa.setBounds(251, 23, 160, 40);
+		panelButon.add(btnXoa);
+		btnXoa.setBackground(new Color(255, 215, 0));
+		btnXoa.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnXoa.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/xoa.png")));
+		btnXoa.setText("Xóa");
+		btnXoa.setBorder(null);
+
+		btnCapNhat = new JButton();
+		btnCapNhat.setBounds(480, 23, 160, 40);
+		panelButon.add(btnCapNhat);
+		btnCapNhat.setBackground(new Color(255, 215, 0));
+		btnCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnCapNhat.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/capNhat.png")));
+		btnCapNhat.setText("Cập nhật");
+		btnCapNhat.setBorder(null);
+
+		btnLuu = new JButton();
+		btnLuu.setBounds(697, 23, 160, 40);
+		panelButon.add(btnLuu);
+		btnLuu.setBackground(new Color(255, 0, 255));
+		btnLuu.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnLuu.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/luu.png")));
+		btnLuu.setText("Lưu");
+		btnLuu.setBorder(null);
+		btnHuy = new JButton();
+		btnHuy.setBounds(911, 23, 170, 40);
+		panelButon.add(btnHuy);
+
+		btnHuy.setBackground(new Color(255, 0, 255));
 		btnHuy.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnHuy.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/huy.png")));
 		btnHuy.setText("Hủy");
 		btnHuy.setBorder(null);
+		
 		btnHuy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				btnHuyActionPerformed(evt);
 			}
 		});
-		setLayout(null);
-		pnlToNhom.add(btnHuy);
-		add(pnlToNhom);
+		btnLuu.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnLuuActionPerformed(evt);
+			}
+		});
+		btnCapNhat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				btnCapNhatActionPerformed(evt);
+			}
+		});
+		btnXoa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				btnXoaActionPerformed(evt);
+			}
+		});
+		btnThem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				btnThemActionPerformed(evt);
+			}
+		});
 
-		scrToNhom.setBackground(new Color(0, 0, 0));
+		TitledBorder titledBorder1 = BorderFactory.createTitledBorder("Danh sách tổ nhóm");
+		titledBorder1.setTitleFont(new Font("Times New Roman", Font.BOLD, 25));
+		titledBorder1.setTitleJustification(TitledBorder.CENTER);
+		titledBorder1.setTitleColor(Color.BLACK);
+		titledBorder1.setBorder(new LineBorder(Color.BLACK));
+		scrToNhom.setBorder(titledBorder1);
+
+		scrToNhom.setBackground(Color.WHITE);
 		tblToNhom.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblToNhom.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			new String[] {
-				"STT", "M\u00E3 t\u1ED5 nh\u00F3m", "T\u00EAn t\u1ED5 nh\u00F3m", "S\u1ED1 l\u01B0\u1EE3ng c\u00F4ng nh\u00E2n"
-			}
-		));
+				new Object[][] {
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+				},
+				new String[] {
+						"STT", "Mã tổ nhóm", "Tên tổ nhóm", "Số lượng công nhân"
+				}
+				));
 		tblToNhom.getColumnModel().getColumn(0).setPreferredWidth(50);
 		tblToNhom.getColumnModel().getColumn(1).setPreferredWidth(150);
 		tblToNhom.getColumnModel().getColumn(2).setPreferredWidth(200);
 		tblToNhom.getColumnModel().getColumn(3).setPreferredWidth(150);
-		tblToNhom.setSelectionBackground(new Color(255, 160, 122));
+		tblToNhom.setSelectionBackground(new Color(255, 215, 0));
 		tblToNhom.getTableHeader().setReorderingAllowed(false);
 		tblToNhom.setRowHeight(30); 
 		tblToNhom.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		tblToNhom.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 20));
 
 		scrToNhom.setViewportView(tblToNhom);
-
 		add(scrToNhom);
 		ScrollBarCustom scrollBar = new ScrollBarCustom();
 		scrollBar.setForeground(Color.RED);

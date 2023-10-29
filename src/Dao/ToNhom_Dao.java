@@ -139,14 +139,14 @@ public class ToNhom_Dao {
             System.out.println(e.getMessage());
         }
         if (maToNhom.equals("") || maToNhom == null){
-            return "TN100001";
+            return "PPTN100001";
             
         }
 
-        String chuoiCanLay = maToNhom.split("TN")[1];
+        String chuoiCanLay = maToNhom.split("PPTN")[1];
 
         try {
-            chuoiCanLay = "TN" + (Integer.parseInt(chuoiCanLay) + 1);
+            chuoiCanLay = "PPTN" + (Integer.parseInt(chuoiCanLay) + 1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -22,8 +22,8 @@ public class ToNhom {
 	public void setMaToNhom(String maToNhom) throws Exception {
         if (maToNhom.equals("")) {
             throw new Exception("Mã tổ nhóm không được bỏ trống!");
-        } else if (!maToNhom.matches("^TN[1-9][0-9]{5}$")) {
-            throw new Exception("Mã tổ nhóm phải theo định dạng TNxxxxx với x là các kí tự số, x đầu tiền từ [1-9], x sau từ [0-9]!");
+        } else if (!maToNhom.matches("^PPTN[1-9][0-9]{5}$")) {
+            throw new Exception("Mã tổ nhóm phải theo định dạng PPTNxxxxx với x là các kí tự số, x đầu tiền từ [1-9], x sau từ [0-9]!");
         } else {
             this.maToNhom = maToNhom;
         }

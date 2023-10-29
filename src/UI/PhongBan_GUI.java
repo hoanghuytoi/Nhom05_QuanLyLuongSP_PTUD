@@ -8,9 +8,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 
@@ -47,18 +50,18 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 	private JTextField txtMaPhongBan;
 	private JTextField txtSoLuongNhanVien;
 	private JTextField txtTenPhongBan;
-	private JLabel lblDsPhongBan;
 
 	private PhongBan_Dao phongBan_DAO;
 	private DefaultTableModel defaultTablePhongBan;
 	private Object oFlag;
 	private NhanVien nhanVienDangNhap;
 	private String fileName;
-	
+
 	private String stThongbao;
 	private String stBanXacNhanXoa;
 	private String stXoaThanhCong;
 	private String stXoaThatBai;
+	private JPanel panelButon;
 
 
 	public PhongBan_GUI() throws IOException {
@@ -70,34 +73,32 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
-        tblPhongBan.addMouseListener(this);
+
+		tblPhongBan.addMouseListener(this);
 		phongBan_DAO = new PhongBan_Dao();
 		btnThem.addActionListener(this);
 		btnXoa.addActionListener(this);
 		btnCapNhat.addActionListener(this);
-		btnHuy.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnLuu.setEnabled(false);
+		btnHuy.addActionListener(this);
 		btnHuy.setEnabled(false);
+
 		execute();
 	}
 
 	private void initComponents() {
-		setSize(1290, 750);
-		
 		JLabel lblTieuDe = new JLabel("QUẢN LÝ PHÒNG BAN");
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		lblTieuDe.setBounds(510, 11, 296, 55);
 		add(lblTieuDe);
 
-		lblDsPhongBan = new JLabel("Danh sách phòng ban:");
-		lblDsPhongBan.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		lblDsPhongBan.setBounds(100, 414, 162, 20);
-		add(lblDsPhongBan);
-		
 		pnlPhongBan = new JPanel();
-		pnlPhongBan.setBounds(24, 77, 1241, 300);
+		pnlPhongBan.setBounds(80, 77, 1115, 237);
+		LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);
+		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Thông tin phòng ban");
+		pnlPhongBan.setBorder(titledBorder);
+
 		txtMaPhongBan = new JTextField();
 		txtMaPhongBan.setBounds(690, 30, 290, 30);
 		jSeparator1 = new JSeparator();
@@ -109,15 +110,6 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		txtTenPhongBan.setBounds(690, 90, 290, 30);
 		lblAnhPB = new JLabel();
 		lblAnhPB.setBounds(24, 20, 422, 192);
-		btnLuu = new JButton();
-		btnLuu.setBounds(797, 240, 160, 40);
-		btnThem = new JButton();
-		btnThem.setBounds(138, 240, 170, 40);
-		btnXoa = new JButton();
-		btnXoa.setBounds(373, 240, 160, 40);
-		btnCapNhat = new JButton();
-		btnCapNhat.setBackground(new Color(240, 230, 140));
-		btnCapNhat.setBounds(584, 240, 160, 40);
 		lbErrTenPhongBan = new JLabel();
 		lbErrTenPhongBan.setBounds(690, 130, 290, 30);
 		lblMaPhongBan = new JLabel();
@@ -131,23 +123,19 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		jSeparator2.setForeground(Color.BLACK);
 		jSeparator2.setBounds(690, 125, 290, 10);
 		pnlPhongBan.add(jSeparator2);
-		
 		jSeparator3 = new JSeparator();
 		jSeparator3.setForeground(new Color(0, 0, 0));
 		jSeparator3.setBounds(690, 180, 290, 10);
-		btnHuy = new JButton();
-		btnHuy.setBounds(1010, 240, 170, 40);
 		scrPhongBan = new JScrollPane();
-		scrPhongBan.setBounds(100, 452, 1078, 237);
+		scrPhongBan.setBounds(80, 452, 1115, 248);
 		tblPhongBan = new JTable();
 
-		setPreferredSize(new Dimension(1293, 700));
+		setPreferredSize(new Dimension(1290, 750));
 
 		pnlPhongBan.setBackground(new Color(255, 255, 255));
 		pnlPhongBan.setPreferredSize(new java.awt.Dimension(1250, 300));
 
 		txtMaPhongBan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		txtMaPhongBan.setText("jTextField1");
 		txtMaPhongBan.setBorder(null);
 		txtMaPhongBan.addActionListener(new ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,7 +151,6 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		pnlPhongBan.add(lblTenPhongBan);
 
 		txtTenPhongBan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		txtTenPhongBan.setText("jTextField1");
 		txtTenPhongBan.setBorder(null);
 		txtTenPhongBan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -175,53 +162,6 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		lblAnhPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/PhongBan.png")));
 		lblAnhPB.setText("jLabel1");
 		pnlPhongBan.add(lblAnhPB);
-
-		btnThem.setBackground(new Color(46, 204, 113));
-		btnThem.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnThem.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/them.png")));
-		btnThem.setText("Thêm");
-		btnThem.setBorder(null);
-		btnThem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				btnThemActionPerformed(evt);
-			}
-		});
-		pnlPhongBan.add(btnThem);
-
-		btnXoa.setBackground(new Color(41, 128, 185));
-		btnXoa.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnXoa.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/xoa.png")));
-		btnXoa.setText("Xóa");
-		btnXoa.setBorder(null);
-		btnXoa.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				btnXoaActionPerformed(evt);
-			}
-		});
-		pnlPhongBan.add(btnXoa);
-
-		btnCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnCapNhat.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/capNhat.png")));
-		btnCapNhat.setText("Cập nhật");
-		btnCapNhat.setBorder(null);
-		btnCapNhat.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				btnCapNhatActionPerformed(evt);
-			}
-		});
-		pnlPhongBan.add(btnCapNhat);
-
-		btnLuu.setBackground(new Color(156, 136, 255));
-		btnLuu.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		btnLuu.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/luu.png")));
-		btnLuu.setText("Lưu");
-		btnLuu.setBorder(null);
-		btnLuu.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnLuuActionPerformed(evt);
-			}
-		});
-		pnlPhongBan.add(btnLuu);
 
 		lbErrTenPhongBan.setFont(new Font("Segoe UI", 0, 13));
 		lbErrTenPhongBan.setForeground(new Color(255, 0, 0));
@@ -245,52 +185,123 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		});
 		pnlPhongBan.add(txtSoLuongNhanVien);
 		pnlPhongBan.add(jSeparator3);
+		setLayout(null);
+		add(pnlPhongBan);
 
-		btnHuy.setBackground(new Color(255, 121, 121));
+		panelButon = new JPanel();
+		panelButon.setBackground(Color.WHITE);
+		panelButon.setBounds(80, 331, 1115, 85);
+		add(panelButon);
+		panelButon.setLayout(null);
+
+		btnThem = new JButton();
+		btnThem.setBounds(30, 23, 170, 40);
+		panelButon.add(btnThem);
+		btnThem.setBackground(new Color(255, 215, 0));
+		btnThem.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnThem.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/them.png")));
+		btnThem.setText("Thêm");
+		btnThem.setBorder(null);
+
+		btnXoa = new JButton();
+		btnXoa.setBounds(251, 23, 160, 40);
+		panelButon.add(btnXoa);
+		btnXoa.setBackground(new Color(255, 215, 0));
+		btnXoa.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnXoa.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/xoa.png")));
+		btnXoa.setText("Xóa");
+		btnXoa.setBorder(null);
+
+		btnCapNhat = new JButton();
+		btnCapNhat.setBounds(480, 23, 160, 40);
+		panelButon.add(btnCapNhat);
+		btnCapNhat.setBackground(new Color(255, 215, 0));
+		btnCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnCapNhat.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/capNhat.png")));
+		btnCapNhat.setText("Cập nhật");
+		btnCapNhat.setBorder(null);
+
+		btnLuu = new JButton();
+		btnLuu.setBounds(697, 23, 160, 40);
+		panelButon.add(btnLuu);
+		btnLuu.setBackground(new Color(255, 0, 255));
+		btnLuu.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnLuu.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/luu.png")));
+		btnLuu.setText("Lưu");
+		btnLuu.setBorder(null);
+		btnHuy = new JButton();
+		btnHuy.setBounds(911, 23, 170, 40);
+		panelButon.add(btnHuy);
+
+		btnHuy.setBackground(new Color(255, 0, 255));
 		btnHuy.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		btnHuy.setIcon(new ImageIcon(PhongBan_GUI.class.getResource("/image/icon/huy.png")));
 		btnHuy.setText("Hủy");
 		btnHuy.setBorder(null);
+		
 		btnHuy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				btnHuyActionPerformed(evt);
 			}
 		});
-		setLayout(null);
-		pnlPhongBan.add(btnHuy);
-		add(pnlPhongBan);
+		btnLuu.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnLuuActionPerformed(evt);
+			}
+		});
+		btnCapNhat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				btnCapNhatActionPerformed(evt);
+			}
+		});
+		btnXoa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				btnXoaActionPerformed(evt);
+			}
+		});
+		btnThem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				btnThemActionPerformed(evt);
+			}
+		});
 
-		scrPhongBan.setBackground(new Color(0, 0, 0));
+		TitledBorder titledBorder1 = BorderFactory.createTitledBorder("Danh sách phòng ban");
+		titledBorder1.setTitleFont(new Font("Times New Roman", Font.BOLD, 25));
+		titledBorder1.setTitleJustification(TitledBorder.CENTER);
+		titledBorder1.setTitleColor(Color.BLACK);
+		titledBorder1.setBorder(new LineBorder(Color.BLACK));
+		scrPhongBan.setBorder(titledBorder1);
+
+		scrPhongBan.setBackground(Color.WHITE);
 		tblPhongBan.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblPhongBan.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			new String[] {
-				"STT", "M\u00E3 ph\u00F2ng ban", "T\u00EAn ph\u00F2ng ban", "S\u1ED1 l\u01B0\u01A1ng nh\u00E2n vi\u00EAn"
-			}
-		));
+				new Object[][] {
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+				},
+				new String[] {
+						"STT", "M\u00E3 ph\u00F2ng ban", "T\u00EAn ph\u00F2ng ban", "S\u1ED1 l\u01B0\u01A1ng nh\u00E2n vi\u00EAn"
+				}
+				));
 		tblPhongBan.getColumnModel().getColumn(0).setPreferredWidth(50);
 		tblPhongBan.getColumnModel().getColumn(1).setPreferredWidth(150);
 		tblPhongBan.getColumnModel().getColumn(2).setPreferredWidth(200);
 		tblPhongBan.getColumnModel().getColumn(3).setPreferredWidth(150);
-		tblPhongBan.setSelectionBackground(new Color(255, 160, 122));
+		tblPhongBan.setSelectionBackground(new Color(255, 215, 0));
 		tblPhongBan.getTableHeader().setReorderingAllowed(false);
 		tblPhongBan.setRowHeight(30); 
 		tblPhongBan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		tblPhongBan.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 20));
 
 		scrPhongBan.setViewportView(tblPhongBan);
-
 		add(scrPhongBan);
 		ScrollBarCustom scrollBar = new ScrollBarCustom();
 		scrollBar.setForeground(Color.RED);
@@ -383,7 +394,7 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		txtTenPhongBan.setEditable(b);
 		txtTenPhongBan.requestFocus();
 	}
-	
+
 	public void xoaTrang() {
 		txtTenPhongBan.setText("");
 	}

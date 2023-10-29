@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ConnectionDB.ConnectDB;
 import Entity.NhanVien;
 import Entity.PhongBan;
 
@@ -34,13 +35,13 @@ public class NhanVien_Dao {
                 String matKhau = rs.getString("matKhau");
                 String chucVu = rs.getString("chucVu");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                double luongThoaThuan = rs.getBigDecimal("luongThoaThuan").doubleValue();
+                double luongCoBan = rs.getBigDecimal("luongCoBan").doubleValue();
                 boolean gioiTinh = rs.getBoolean("gioiTinh");
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 String maPhongBan = rs.getString("maPhongBan");
                 PhongBan phongBan = phongBan_DAO.layMotPhongBanTheoMa(maPhongBan);
-                dsNhanVien.add(new NhanVien(maNhanVien, hoTen, ngaySinh, maCCCD, soDienThoai, email, matKhau, chucVu, ngayVaoLam, luongThoaThuan, gioiTinh, anhDaiDien, diaChi, phongBan));
+                dsNhanVien.add(new NhanVien(maNhanVien, hoTen, ngaySinh, maCCCD, soDienThoai, email, matKhau, chucVu, ngayVaoLam, luongCoBan, gioiTinh, anhDaiDien, diaChi, phongBan));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -52,6 +53,36 @@ public class NhanVien_Dao {
             }
         }
         return dsNhanVien;
+    }
+    
+    public String layRaMaNhanVienDeThem() {
+        Statement stm = null;
+        String  maNhanVien = "";
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "select top 1 * from NhanVien order by LEN(maNhanVien), maNhanVien desc";
+            stm = con.createStatement();
+            ResultSet rs = stm.executeQuery(truyVan);
+            while (rs.next()) {
+            	maNhanVien = rs.getString("maNhanVien");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (maNhanVien.equals("") || maNhanVien == null){
+            return "PPNV100001";
+            
+        }
+
+        String chuoiCanLay = maNhanVien.split("PPNV")[1];
+
+        try {
+            chuoiCanLay = "PPNV" + (Integer.parseInt(chuoiCanLay) + 1);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return chuoiCanLay;
     }
     
     public ArrayList<NhanVien> layDanhSachNhanVienTheoMaPhongBan(String maPhongBan) {
@@ -75,13 +106,13 @@ public class NhanVien_Dao {
                 String matKhau = rs.getString("matKhau");
                 String chucVu = rs.getString("chucVu");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                double luongThoaThuan = rs.getBigDecimal("luongThoaThuan").doubleValue();
+                double luongCoBan = rs.getBigDecimal("luongCoBan").doubleValue();
                 boolean gioiTinh = rs.getBoolean("gioiTinh");
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 String maPhongBanOB = rs.getString("maPhongBan");
                 PhongBan phongBan = phongBan_DAO.layMotPhongBanTheoMa(maPhongBanOB);
-                dsNhanVien.add(new NhanVien(maNhanVien, hoTen, ngaySinh, maCCCD, soDienThoai, email, matKhau, chucVu, ngayVaoLam, luongThoaThuan, gioiTinh, anhDaiDien, diaChi, phongBan));
+                dsNhanVien.add(new NhanVien(maNhanVien, hoTen, ngaySinh, maCCCD, soDienThoai, email, matKhau, chucVu, ngayVaoLam, luongCoBan, gioiTinh, anhDaiDien, diaChi, phongBan));
 
             }
         } catch (Exception e) {
@@ -117,13 +148,13 @@ public class NhanVien_Dao {
                 String matKhau = rs.getString("matKhau");
                 String chucVu = rs.getString("chucVu");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                double luongThoaThuan = rs.getBigDecimal("luongThoaThuan").doubleValue();
+                double luongCoBan = rs.getBigDecimal("luongCoBan").doubleValue();
                 boolean gioiTinh = rs.getBoolean("gioiTinh");
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 String maPhongBanOB = rs.getString("maPhongBan");
                 PhongBan phongBan = phongBan_DAO.layMotPhongBanTheoMa(maPhongBanOB);
-                nhanVien = new NhanVien(maNhanVienOB, hoTen, ngaySinh, maCCCD, soDienThoai, email, matKhau, chucVu, ngayVaoLam, luongThoaThuan, gioiTinh, anhDaiDien, diaChi, phongBan);
+                nhanVien = new NhanVien(maNhanVienOB, hoTen, ngaySinh, maCCCD, soDienThoai, email, matKhau, chucVu, ngayVaoLam, luongCoBan, gioiTinh, anhDaiDien, diaChi, phongBan);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -145,7 +176,7 @@ public class NhanVien_Dao {
             Connection con = ConnectionDB.ConnectDB.getConnection();
             String query = "INSERT INTO NhanVien(maNhanVien, hoTen, ngaySinh"
                     + " ,maCCCD, soDienThoai, email, matKhau, chucVu"
-                    + " , ngayVaoLam, luongThoaThuan, gioiTinh, anhDaiDien, diaChi, maPhongBan)"
+                    + " , ngayVaoLam, luongCoBan, gioiTinh, anhDaiDien, diaChi, maPhongBan)"
                     + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             stm = con.prepareStatement(query);
             stm.setString(1, nhanVien.getMaNhanVien());
@@ -157,7 +188,7 @@ public class NhanVien_Dao {
             stm.setString(7, nhanVien.getMatKhau());
             stm.setString(8, nhanVien.getChucVu());
             stm.setDate(9, new java.sql.Date(nhanVien.getNgayVaoLam().getTime()));
-            stm.setDouble(10,nhanVien.getLuongThoaThuan());
+            stm.setDouble(10,nhanVien.getLuongCoBan());
             stm.setBoolean(11, nhanVien.isGioiTinh());
             stm.setString(12, nhanVien.getAnhDaiDien());
             stm.setString(13, nhanVien.getDiaChi());
@@ -183,7 +214,7 @@ public class NhanVien_Dao {
             String query = "UPDATE NhanVien"
                     + " SET hoten = ?, ngaySinh = ?, maCCCD = ?"
                     + " , soDienThoai = ?, email = ?, matKhau = ?"
-                    + " , chucVu = ?, ngayVaoLam = ?, luongThoaThuan = ?"
+                    + " , chucVu = ?, ngayVaoLam = ?, luongCoBan = ?"
                     + " , gioiTinh = ?, anhDaiDien = ?"
                     + " , diaChi = ?, maPhongBan = ?"
                     + " where maNhanVien = ?";
@@ -196,7 +227,7 @@ public class NhanVien_Dao {
             stm.setString(6, nhanVien.getMatKhau());
             stm.setString(7, nhanVien.getChucVu());
             stm.setDate(8, new java.sql.Date(nhanVien.getNgayVaoLam().getTime()));
-            stm.setDouble(9, nhanVien.getLuongThoaThuan());
+            stm.setDouble(9, nhanVien.getLuongCoBan());
             stm.setBoolean(10, nhanVien.isGioiTinh());
             stm.setString(11, nhanVien.getAnhDaiDien());
             stm.setString(12, nhanVien.getDiaChi());

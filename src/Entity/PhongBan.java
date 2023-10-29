@@ -23,8 +23,8 @@ public class PhongBan {
     private void setMaPhongBan(String maPhongBan) throws Exception {
         if (maPhongBan.equals("")) {
             throw new Exception("Mã phòng ban không được rỗng");
-        } else if (!maPhongBan.matches("^PB[1-9][0-9]{5}$")) {
-            throw new Exception("Mã phòng ban phải theo định dạng PBxxxxxx với x là các kí tự số, x đầu tiền từ [1-9][0-9]");
+        } else if (!maPhongBan.matches("^PPPB[1-9][0-9]{5}$")) {
+            throw new Exception("Mã phòng ban phải theo định dạng PPPBxxxxxx với x là các kí tự số, x đầu tiền từ [1-9][0-9]");
         } else {
             this.maPhongBan = maPhongBan;
         }

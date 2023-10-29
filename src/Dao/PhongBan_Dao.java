@@ -187,14 +187,14 @@ public class PhongBan_Dao {
             System.out.println(e.getMessage());
         }
         if (maPhongBan.equals("") || maPhongBan == null){
-            return "PB100001";
+            return "PPPB100001";
             
         }
 
-        String chuoiCanLay = maPhongBan.split("PB")[1];
+        String chuoiCanLay = maPhongBan.split("PPPB")[1];
 
         try {
-            chuoiCanLay = "PB" + (Integer.parseInt(chuoiCanLay) + 1);
+            chuoiCanLay = "PPPB" + (Integer.parseInt(chuoiCanLay) + 1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -224,27 +224,6 @@ public class PhongBan_Dao {
             }
         }
         return soLuong;
-    }
-    public static void main(String[] args) {
-        try {
-            System.setOut(new PrintStream(System.out, true, "UTF8"));
-        } catch (UnsupportedEncodingException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        try {
-            ConnectDB.getInstance().connect();
-            System.out.println("Yes");
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(e);
-        }
-        PhongBan_Dao dao = new PhongBan_Dao();
-        System.out.println(dao.themMotPhongBan(new PhongBan("PB111111", "Phòng Nhân sự", 0)));
-        System.out.println("\n\n\nDanh sách: " + dao.layDanhSachPhongBan());
-        System.out.println("\n\n\nSửa: " + dao.suaMotPhongBan(new PhongBan("PB111111", "Phòng Kế toán", 0)));
-        System.out.println("\n\n\nXóa: " + dao.xoaMotPhongBanTheoMa("PB111111"));
-        System.out.println("\n\n\nLấy 1: " + dao.layMotPhongBanTheoMa("PB123123"));
     }
 }
 
