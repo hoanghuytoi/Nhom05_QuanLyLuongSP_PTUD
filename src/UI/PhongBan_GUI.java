@@ -97,7 +97,7 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		add(lblDsPhongBan);
 		
 		pnlPhongBan = new JPanel();
-		pnlPhongBan.setBounds(24, 93, 1241, 300);
+		pnlPhongBan.setBounds(24, 77, 1241, 300);
 		txtMaPhongBan = new JTextField();
 		txtMaPhongBan.setBounds(690, 30, 290, 30);
 		jSeparator1 = new JSeparator();
@@ -138,7 +138,7 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		btnHuy = new JButton();
 		btnHuy.setBounds(1010, 240, 170, 40);
 		scrPhongBan = new JScrollPane();
-		scrPhongBan.setBounds(100, 445, 1078, 292);
+		scrPhongBan.setBounds(100, 452, 1078, 237);
 		tblPhongBan = new JTable();
 
 		setPreferredSize(new Dimension(1293, 700));
@@ -263,26 +263,31 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		scrPhongBan.setBackground(new Color(0, 0, 0));
 		tblPhongBan.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblPhongBan.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-				},
-				new String[] {
-						"STT", "M\u00E3 ph\u00F2ng ban", "T\u00EAn ph\u00F2ng ban", "S\u1ED1 l\u01B0\u01A1ng nh\u00E2n vi\u00EAn"
-				}
-				));
+			new Object[][] {
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+			},
+			new String[] {
+				"STT", "M\u00E3 ph\u00F2ng ban", "T\u00EAn ph\u00F2ng ban", "S\u1ED1 l\u01B0\u01A1ng nh\u00E2n vi\u00EAn"
+			}
+		));
+		tblPhongBan.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tblPhongBan.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblPhongBan.getColumnModel().getColumn(2).setPreferredWidth(200);
+		tblPhongBan.getColumnModel().getColumn(3).setPreferredWidth(150);
 		tblPhongBan.setSelectionBackground(new Color(255, 160, 122));
 		tblPhongBan.getTableHeader().setReorderingAllowed(false);
 		tblPhongBan.setRowHeight(30); 
 		tblPhongBan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		tblPhongBan.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 20));
-		
-		tblPhongBan.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tblPhongBan.getColumnModel().getColumn(1).setPreferredWidth(150);
-		tblPhongBan.getColumnModel().getColumn(2).setPreferredWidth(200);
-		tblPhongBan.getColumnModel().getColumn(3).setPreferredWidth(150);
 
 		scrPhongBan.setViewportView(tblPhongBan);
 

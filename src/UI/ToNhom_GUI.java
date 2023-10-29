@@ -112,7 +112,7 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 		add(lblDsToNhom);
 		
 		pnlToNhom = new JPanel();
-		pnlToNhom.setBounds(24, 93, 1241, 300);
+		pnlToNhom.setBounds(24, 77, 1241, 326);
 		txtMaToNhom = new JTextField();
 		txtMaToNhom.setBounds(690, 30, 290, 30);
 		jSeparator1 = new JSeparator();
@@ -126,14 +126,14 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 		lblAnhTN.setIcon(new ImageIcon(ToNhom_GUI.class.getResource("/image/toNhom.png")));
 		lblAnhTN.setBounds(24, 0, 422, 229);
 		btnLuu = new JButton();
-		btnLuu.setBounds(797, 240, 160, 40);
+		btnLuu.setBounds(798, 275, 160, 40);
 		btnThem = new JButton();
-		btnThem.setBounds(138, 240, 170, 40);
+		btnThem.setBounds(135, 275, 170, 40);
 		btnXoa = new JButton();
-		btnXoa.setBounds(373, 240, 160, 40);
+		btnXoa.setBounds(374, 275, 160, 40);
 		btnCapNhat = new JButton();
 		btnCapNhat.setBackground(new Color(240, 230, 140));
-		btnCapNhat.setBounds(584, 240, 160, 40);
+		btnCapNhat.setBounds(586, 275, 160, 40);
 		lbErrTenToNhom = new JLabel();
 		lbErrTenToNhom.setBounds(690, 130, 290, 30);
 		lblMaToNhom = new JLabel();
@@ -151,9 +151,9 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 		jSeparator3.setForeground(new Color(0, 0, 0));
 		jSeparator3.setBounds(690, 180, 290, 10);
 		btnHuy = new JButton();
-		btnHuy.setBounds(1010, 240, 170, 40);
+		btnHuy.setBounds(1012, 275, 170, 40);
 		scrToNhom = new JScrollPane();
-		scrToNhom.setBounds(100, 461, 1078, 292);
+		scrToNhom.setBounds(100, 464, 1078, 236);
 		tblToNhom = new JTable();
 
 		setPreferredSize(new Dimension(1293, 700));
@@ -273,26 +273,31 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 		scrToNhom.setBackground(new Color(0, 0, 0));
 		tblToNhom.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblToNhom.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-				},
-				new String [] {
-		                "STT", "Mã tổ nhóm", "Tên tổ nhóm", "Số lượng công nhân"
-		            }
-				));
+			new Object[][] {
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+			},
+			new String[] {
+				"STT", "M\u00E3 t\u1ED5 nh\u00F3m", "T\u00EAn t\u1ED5 nh\u00F3m", "S\u1ED1 l\u01B0\u1EE3ng c\u00F4ng nh\u00E2n"
+			}
+		));
+		tblToNhom.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tblToNhom.getColumnModel().getColumn(1).setPreferredWidth(150);
+		tblToNhom.getColumnModel().getColumn(2).setPreferredWidth(200);
+		tblToNhom.getColumnModel().getColumn(3).setPreferredWidth(150);
 		tblToNhom.setSelectionBackground(new Color(255, 160, 122));
 		tblToNhom.getTableHeader().setReorderingAllowed(false);
 		tblToNhom.setRowHeight(30); 
 		tblToNhom.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		tblToNhom.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 20));
-		
-		tblToNhom.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tblToNhom.getColumnModel().getColumn(1).setPreferredWidth(150);
-		tblToNhom.getColumnModel().getColumn(2).setPreferredWidth(200);
-		tblToNhom.getColumnModel().getColumn(3).setPreferredWidth(150);
 
 		scrToNhom.setViewportView(tblToNhom);
 
