@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 
+import ConnectionDB.ConnectDB;
 import Entity.HopDong;
 import Entity.NhanVien;
 
@@ -33,7 +34,7 @@ public class HopDong_Dao {
                 Date ngayKyKet = rs.getDate("ngayKyKetHD");
                 Date ngayKetThuc = rs.getDate("ngayKetThucHD");
                 String yeuCau = rs.getString("yeuCau");
-                String maNguoiKyKet = rs.getString("maNguoiKetKet");
+                String maNguoiKyKet = rs.getString("maNguoiKyKet");
                 NhanVien maNhanVien = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNguoiKyKet);
                 dsHopDong.add(new HopDong(maHopDong, tenHopDong, tenKhachHang, tienDatCoc, triGiaHD, ngayKyKet, ngayKetThuc, yeuCau, maNhanVien));
             }
@@ -69,7 +70,7 @@ public class HopDong_Dao {
                 Date ngayKyKet = rs.getDate("ngayKyKetHD");
                 Date ngayKetThuc = rs.getDate("ngayKetThucHD");
                 String yeuCau = rs.getString("yeuCau");
-                String maNguoiKyKet = rs.getString("maNguoiKetKet");
+                String maNguoiKyKet = rs.getString("maNguoiKyKet");
                 NhanVien maNhanVien = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNguoiKyKet);
                 hopDong = new HopDong(maHopDong, tenHopDong, tenKhachHang, tienDatCoc, triGiaHD, ngayKyKet, ngayKetThuc, yeuCau, maNhanVien);
             }
@@ -114,6 +115,38 @@ public class HopDong_Dao {
             }
         }
         return soDongThemDuoc != 0;
+    }
+    
+    public String layRaMaHopDongDeThem() {
+        Statement stm = null;
+        String  maHopDong = "";
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "select top 1 * from HopDong order by LEN(maHopDong), maHopDong desc";
+            stm = con.createStatement();
+            ResultSet rs = stm.executeQuery(truyVan);
+            while (rs.next()) {
+            	maHopDong = rs.getString("maHopDong");
+               
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (maHopDong.equals("") || maHopDong == null){
+            return "PPHD100001";
+            
+        }
+
+        String chuoiCanLay = maHopDong.split("PPHD")[1];
+
+        try {
+            chuoiCanLay = "PPHD" + (Integer.parseInt(chuoiCanLay) + 1);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return chuoiCanLay;
     }
 
 //    public boolean suaMotHopDong(HopDong hopDong) {

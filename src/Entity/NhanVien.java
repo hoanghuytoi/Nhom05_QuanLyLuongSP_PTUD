@@ -26,7 +26,17 @@ public class NhanVien {
     private String diaChi;
     private PhongBan phongBan;
     
-    public NhanVien(String maNhanVien, String hoTen, Date ngaySinh, String maCCCD, String soDienThoai, String email, String matKhau, String chucVu, Date ngayVaoLam, double luongCoBan, boolean gioiTinh, String anhDaiDien, String diaChi, PhongBan phongBan) {
+    public NhanVien(String maNhanVien) {
+        this.maNhanVien=maNhanVien;
+
+	}
+    
+    public NhanVien() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public NhanVien(String maNhanVien, String hoTen, Date ngaySinh, String maCCCD, String soDienThoai, String email, String matKhau, String chucVu, Date ngayVaoLam, double luongCoBan, boolean gioiTinh, String anhDaiDien, String diaChi, PhongBan phongBan) {
         try {
             setMaNhanVien(maNhanVien);
             setHoTen(hoTen);

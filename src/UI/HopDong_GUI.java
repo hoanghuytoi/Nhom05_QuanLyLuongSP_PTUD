@@ -6,13 +6,23 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
+
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -21,381 +31,560 @@ import Custom_UI.RoundedButton;
 import Custom_UI.ScrollBarCustom;
 import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
+import Dao.PhongBan_Dao;
 import Entity.HopDong;
 import Entity.NhanVien;
+import Entity.PhongBan;
 
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JComboBox;
 
 public class HopDong_GUI extends JPanel {
-	private JTextField txtMaHD;
-	private JTextField txtTenHD;
-	private JTextField txtTriGiaHD;
-	private JTextField txtTienDatCoc;
-	private JTextField txtTenKH;
-	private JButton btnThem;
-	private JButton btnLuu;
-    private JButton btnXoa;
-	private JButton btnCapNhat;
-    private JButton btnHuy;
-    private JButton btnInHD;
-
-    private JLabel lblErrNgayKetThuc;
-    private JLabel lblErrNgayKiKet;
+    private JTextField txtMaHopDong;
+    private JTextField txtTenHopDong;
+    private JTextField txtTenKhachHang;
+    private JTextField txtTienDatCoc;
+    private JTextField txtTriGiaHD;
+    private JTextArea txtAreaYeuCau;
+    private JDateChooser dcsNgayKyKetHD;
+    private JDateChooser dcsNgayKetThucHD;
+    private JLabel lblAnh;
+    private JScrollPane srcYeuCau;
+    private JSeparator jSeparator1;
+    private JSeparator jSeparator2;
+    private JSeparator jSeparator3;
+    private JSeparator jSeparator4;
+    private JSeparator jSeparator5;
+    private JLabel lblErrNgayKetThucHD;
+    private JLabel lblErrNgayKiKetHD;
     private JLabel lblErrTenHopDong;
     private JLabel lblErrTenKhachHang;
     private JLabel lblErrTienDatCoc;
     private JLabel lblErrTriGiaHD;
-
     
-    private DefaultTableModel model;
-    private JDateChooser dcsNgayKetThuc;
-    private JDateChooser dcsNgayKyKet;
-    private JTextArea txtAreaYeuCau;
-	
-	private JScrollPane scrHopDong;
+    private JLabel lblTieuDe;
+    private JLabel lblMaHopDong;
+    private JLabel lblTenHopDong;
+    private JLabel lbltenKhachHang;
+    private JLabel lblNgayKyKetHD;
+    private JLabel lblNgayKetThucHD;
+    private JLabel lblTienDatCoc;
+    private JLabel lblTriGiaHD;
+    private JLabel lblYeuCau;
+    private JPanel pnlHopDong;
+	private JComboBox<String> cboNhanVien;
+    
+ 	private JButton btnThem;
+	private JButton btnThemNhieu;
+	private JButton btnXoa;
+	private JButton btnCapNhat;
+	private JButton btnLuu;
+	private JButton btnHuy;
+	private JButton btnInHopDong;
+    private JScrollPane scrHopDong;
     private JTable tblHopDong;
     
+    private DefaultTableModel model;
+    private HopDong_Dao hopDongDao;
+    private boolean isThem = false;
+    private String stErrKhongDeTrong;
+    private String stErrTenKhachHangKhongHopLe;
+    private String stErrTien;
+    private String stErrTongTien;
+    private String stErrNgayKyKet;
+    private String stErrHanHopDong;
+    private String stThongbao;
     private String stBanXacNhanXoa;
     private String stXoaThanhCong;
     private String stXoaThatBai;
     private String stThemThanhCong;
     private String stThemThatBai;
-    private String stThongbao;
-
-    
-    private HopDong_Dao hopDongDao;
-    private NhanVien_Dao daoNhanVien;
+    private String stTren;
+    private String stHopDong;
+    private String stKhongTimThayFile;
+    private String stKhongDocDuocFile;
+    private String stCapNhatThanhCong;
+    private String stCapNhatThatBai;
+    private String stErrTienKhongHopLe;
     private DecimalFormat dcf = new DecimalFormat("###.00");
     private NhanVien nhanVienDangNhap;
     private String fileName;
     
-    private boolean isThem = false;
-
 
     public HopDong_GUI() throws ParseException, IOException {
-    	setBackground(Color.WHITE);
-//        this.nhanVienDangNhap = nv;
-//        this.fileName = fileName;
+    	setBackground(new Color(255, 255, 255));
         initComponents();
 //        caiDatNgonNguChoView(fileName);
-//        excute();
-//        taiDuLieuLenTable();
+        excute();
+        taiDuLieuLenBang();
     }
 
 	private void initComponents() {
-	    setSize(1290, 750);
-	    setLayout(null);
-	    
-	    JLabel lblTieuDe = new JLabel("QUẢN LÝ HỢP ĐỒNG ");
-	    lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
-	    lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 23));
-	    lblTieuDe.setBounds(501, 0, 368, 50);
-	    add(lblTieuDe);
-	    
-	    JPanel panelHD = new JPanel();
-	    panelHD.setBackground(Color.WHITE);
-	    panelHD.setBounds(10, 23, 1280, 355);
-	    add(panelHD);
-	    panelHD.setLayout(null);
-	    
-	    JLabel lblAnhHD = new JLabel();
-	    lblAnhHD.setBounds(34, 83, 200, 173);
-	    panelHD.add(lblAnhHD);
-	    lblAnhHD.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/hopDong.PNG")));
-	    
-	    JLabel lblMaHopDong = new JLabel();
-	    lblMaHopDong.setBounds(272, 35, 111, 30);
-	    panelHD.add(lblMaHopDong);
-	    lblMaHopDong.setText("Mã hợp đồng:");
-	    lblMaHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    
-	    txtMaHD = new JTextField();
-	    txtMaHD.setBackground(Color.WHITE);
-	    txtMaHD.setBounds(417, 21, 224, 36);
-	    panelHD.add(txtMaHD);
-	    txtMaHD.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    txtMaHD.setBorder(null);
-	    
-	    JSeparator jSeparator = new JSeparator();
-	    jSeparator.setForeground(Color.BLACK);
-	    jSeparator.setBounds(417, 57, 224, 10);
-	    panelHD.add(jSeparator);
-	    
-	    JLabel lblTenHD = new JLabel();
-	    lblTenHD.setText("Tên hợp đồng:");
-	    lblTenHD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblTenHD.setBounds(272, 100, 111, 30);
-	    panelHD.add(lblTenHD);
-	    
-	    txtTenHD = new JTextField();
-	    txtTenHD.setBackground(Color.WHITE);
-	    txtTenHD.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    txtTenHD.setBorder(null);
-	    txtTenHD.setBounds(417, 85, 224, 36);
-	    panelHD.add(txtTenHD);
-	    
-	    JSeparator jSeparator1 = new JSeparator();
-	    jSeparator1.setForeground(Color.BLACK);
-	    jSeparator1.setBounds(417, 122, 224, 10);
-	    panelHD.add(jSeparator1);
-	    
-	    JLabel lblTriGiaHD = new JLabel();
-	    lblTriGiaHD.setText("Trị giá hợp đồng:");
-	    lblTriGiaHD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblTriGiaHD.setBounds(272, 160, 135, 30);
-	    panelHD.add(lblTriGiaHD);
-	    
-	    txtTriGiaHD = new JTextField();
-	    txtTriGiaHD.setBackground(Color.WHITE);
-	    txtTriGiaHD.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-	    txtTriGiaHD.setBorder(null);
-	    txtTriGiaHD.setBounds(417, 149, 224, 30);
-	    panelHD.add(txtTriGiaHD);
-	    
-	    JSeparator jSeparator2 = new JSeparator();
-	    jSeparator2.setForeground(Color.BLACK);
-	    jSeparator2.setBounds(417, 180, 224, 10);
-	    panelHD.add(jSeparator2);
-	    
-	    JLabel lblTienDatCoc = new JLabel();
-	    lblTienDatCoc.setText("Tiền đặt cọc:");
-	    lblTienDatCoc.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblTienDatCoc.setBounds(272, 226, 111, 30);
-	    panelHD.add(lblTienDatCoc);
-	    
-	    txtTienDatCoc = new JTextField();
-	    txtTienDatCoc.setBackground(Color.WHITE);
-	    txtTienDatCoc.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-	    txtTienDatCoc.setBorder(null);
-	    txtTienDatCoc.setBounds(417, 213, 224, 30);
-	    panelHD.add(txtTienDatCoc);
-	    
-	    JSeparator jSeparator3 = new JSeparator();
-	    jSeparator3.setForeground(Color.BLACK);
-	    jSeparator3.setBounds(417, 246, 224, 10);
-	    panelHD.add(jSeparator3);
-	    
-	    JLabel lblTenKH = new JLabel();
-	    lblTenKH.setText("Tên khách hàng:");
-	    lblTenKH.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblTenKH.setBounds(785, 35, 146, 30);
-	    panelHD.add(lblTenKH);
-	    
-	    JLabel lblNgayBatDau = new JLabel();
-	    lblNgayBatDau.setText("Ngày bắt đầu:");
-	    lblNgayBatDau.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblNgayBatDau.setBounds(785, 100, 170, 30);
-	    panelHD.add(lblNgayBatDau);
-	    
-	    JLabel lblNgayKT = new JLabel();
-	    lblNgayKT.setText("Ngày kết thúc:");
-	    lblNgayKT.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblNgayKT.setBounds(785, 160, 110, 30);
-	    panelHD.add(lblNgayKT);
-	    
-	    txtTenKH = new JTextField();
-	    txtTenKH.setBackground(Color.WHITE);
-	    txtTenKH.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    txtTenKH.setBorder(null);
-	    txtTenKH.setBounds(956, 21, 224, 36);
-	    panelHD.add(txtTenKH);
-	    
-	    JSeparator jSeparator4 = new JSeparator();
-	    jSeparator4.setForeground(Color.BLACK);
-	    jSeparator4.setBounds(956, 57, 224, 17);
-	    panelHD.add(jSeparator4);
-	    
-	    dcsNgayKyKet = new JDateChooser();
-	    dcsNgayKyKet.setDateFormatString("yyyy-MM-dd");
-	    dcsNgayKyKet.setBounds(956, 83, 224, 36);
-	    panelHD.add(dcsNgayKyKet);
-	    
-	    dcsNgayKetThuc = new JDateChooser();
-	    dcsNgayKetThuc.setDateFormatString("yyyy-MM-dd");
-	    dcsNgayKetThuc.setBounds(956, 154, 224, 36);
-	    panelHD.add(dcsNgayKetThuc);
-	    
-	    JLabel lblErrTenKhachHang = new JLabel();
-	    lblErrTenKhachHang.setText("lblErrTenKhachHang");
-	    lblErrTenKhachHang.setForeground(new Color(204, 0, 0));
-	    lblErrTenKhachHang.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrTenKhachHang.setBounds(956, 64, 200, 17);
-	    panelHD.add(lblErrTenKhachHang);
-	    
-	    lblErrTriGiaHD = new JLabel();
-	    lblErrTriGiaHD.setText("thông báo lỗi");
-	    lblErrTriGiaHD.setForeground(new Color(204, 0, 0));
-	    lblErrTriGiaHD.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrTriGiaHD.setBounds(417, 184, 200, 18);
-	    panelHD.add(lblErrTriGiaHD);
-	    
-	    lblErrNgayKiKet = new JLabel();
-	    lblErrNgayKiKet.setText("thông báo lỗi");
-	    lblErrNgayKiKet.setForeground(new Color(204, 0, 0));
-	    lblErrNgayKiKet.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrNgayKiKet.setBounds(956, 122, 200, 23);
-	    panelHD.add(lblErrNgayKiKet);
-	    
-	    lblErrNgayKetThuc = new JLabel();
-	    lblErrNgayKetThuc.setText("thông báo lỗi");
-	    lblErrNgayKetThuc.setForeground(new Color(204, 0, 0));
-	    lblErrNgayKetThuc.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrNgayKetThuc.setBounds(956, 201, 200, 18);
-	    panelHD.add(lblErrNgayKetThuc);
-	    
-	    JLabel lblYeuCau = new JLabel();
-	    lblYeuCau.setText("Yêu cầu:");
-	    lblYeuCau.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblYeuCau.setBounds(272, 284, 135, 30);
-	    panelHD.add(lblYeuCau);
-	    
-	    lblErrTienDatCoc = new JLabel();
-	    lblErrTienDatCoc.setText("thông báo lỗi");
-	    lblErrTienDatCoc.setForeground(new Color(204, 0, 0));
-	    lblErrTienDatCoc.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrTienDatCoc.setBounds(417, 253, 200, 18);
-	    panelHD.add(lblErrTienDatCoc);
-	    
-	    ScrollBarCustom scrollBar = new ScrollBarCustom();
-        scrollBar.setForeground(Color.BLACK);
+		pnlHopDong = new JPanel();
+		pnlHopDong.setBounds(40, 46, 1208, 377);
+        txtTenHopDong = new JTextField();
+        txtTenHopDong.setBackground(new Color(255, 255, 255));
+        txtTenHopDong.setBounds(490, 90, 200, 30);
+        jSeparator1 = new JSeparator();
+        jSeparator1.setForeground(new Color(0, 0, 0));
+        jSeparator1.setBounds(490, 120, 200, 10);
+        lbltenKhachHang = new JLabel();
+        lbltenKhachHang.setBounds(760, 50, 170, 20);
+        txtTenKhachHang = new JTextField();
+        txtTenKhachHang.setBackground(new Color(255, 255, 255));
+        txtTenKhachHang.setBounds(930, 40, 200, 30);
+        jSeparator2 = new JSeparator();
+        jSeparator2.setForeground(new Color(0, 0, 0));
+        jSeparator2.setBounds(930, 70, 200, 10);
+        lblAnh = new JLabel();
+        lblAnh.setBounds(57, 82, 200, 200);
+        lblErrTriGiaHD = new JLabel();
+        lblErrTriGiaHD.setBounds(490, 241, 210, 29);
+        lblMaHopDong = new JLabel();
+        lblMaHopDong.setBounds(330, 50, 170, 29);
+        lblYeuCau = new JLabel();
+        lblYeuCau.setBounds(330, 279, 170, 30);
+        txtTienDatCoc = new JTextField();
+        txtTienDatCoc.setBackground(new Color(255, 255, 255));
+        txtTienDatCoc.setBounds(490, 150, 200, 30);
+        jSeparator3 = new JSeparator();
+        jSeparator3.setForeground(new Color(0, 0, 0));
+        jSeparator3.setBounds(490, 180, 200, 10);
+        lblTriGiaHD = new JLabel();
+        lblTriGiaHD.setBounds(330, 219, 170, 30);
+        txtTriGiaHD = new JTextField();
+        txtTriGiaHD.setBackground(new Color(255, 255, 255));
+        txtTriGiaHD.setBounds(490, 200, 200, 30);
+        jSeparator4 = new JSeparator();
+        jSeparator4.setForeground(new Color(0, 0, 0));
+        jSeparator4.setBounds(490, 239, 200, 10);
+        lblTienDatCoc = new JLabel();
+        lblTienDatCoc.setBounds(330, 158, 170, 40);
+        dcsNgayKyKetHD = new JDateChooser();
+        dcsNgayKyKetHD.setBounds(930, 99, 200, 30);
+        lblErrTenKhachHang = new JLabel();
+        lblErrTenKhachHang.setBounds(930, 70, 290, 30);
+        lblErrNgayKiKetHD = new JLabel();
+        lblErrNgayKiKetHD.setBounds(930, 128, 210, 30);
+        lblNgayKetThucHD = new JLabel();
+        lblNgayKetThucHD.setBounds(760, 168, 170, 30);
+        dcsNgayKetThucHD = new JDateChooser();
+        dcsNgayKetThucHD.setBounds(930, 168, 200, 30);
+        srcYeuCau = new JScrollPane();
+        srcYeuCau.setBounds(490, 283, 640, 67);
+        txtAreaYeuCau = new JTextArea();
+        lblNgayKyKetHD = new JLabel();
+        lblNgayKyKetHD.setBounds(760, 99, 170, 30);
+        lblErrNgayKetThucHD = new JLabel();
+        lblErrNgayKetThucHD.setBounds(930, 200, 210, 24);
+        lblErrTienDatCoc = new JLabel();
+        lblErrTienDatCoc.setBounds(490, 180, 210, 30);
+        lblTenHopDong = new JLabel();
+        lblTenHopDong.setBounds(330, 100, 170, 30);
+        txtMaHopDong = new JTextField();
+        txtMaHopDong.setBackground(new Color(255, 255, 255));
+        txtMaHopDong.setBounds(490, 40, 200, 30);
+        jSeparator5 = new JSeparator();
+        jSeparator5.setForeground(new Color(0, 0, 0));
+        jSeparator5.setBounds(490, 70, 200, 10);
+        lblErrTenHopDong = new JLabel();
+        lblErrTenHopDong.setBounds(490, 120, 210, 30);
+        scrHopDong = new JScrollPane();
+        scrHopDong.setBounds(40, 503, 1208, 236);
+        tblHopDong = new JTable();
+
+        setBackground(new Color(255, 255, 255));
+        setPreferredSize(new Dimension(1290, 750));
+        lblTieuDe = new JLabel("QUẢN LÝ HỢP ĐỒNG");
+		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
+		lblTieuDe.setBounds(543, 11, 296, 40);
+		add(lblTieuDe);
+
+        LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);
+		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Thông tin hợp đồng");
+		pnlHopDong.setBorder(titledBorder);
+        pnlHopDong.setBackground(new Color(255, 255, 255));
+        pnlHopDong.setPreferredSize(new Dimension(1250, 450));
+
+        txtTenHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        txtTenHopDong.setBorder(null);
+        txtTenHopDong.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                txtTenHopDongActionPerformed(evt);
+            }
+        });
+        pnlHopDong.setLayout(null);
+        pnlHopDong.add(txtTenHopDong);
+        pnlHopDong.add(jSeparator1);
+
+        lbltenKhachHang.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lbltenKhachHang.setText("Tên khách hàng:");
+        pnlHopDong.add(lbltenKhachHang);
+
+        txtTenKhachHang.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        txtTenKhachHang.setBorder(null);
+        txtTenKhachHang.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                txtTenKhachHangActionPerformed(evt);
+            }
+        });
+        pnlHopDong.add(txtTenKhachHang);
+        pnlHopDong.add(jSeparator2);
+
+        lblAnh.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/hopDong.PNG")));
+        pnlHopDong.add(lblAnh);
+
         
-	    JScrollPane jScrollPane = new JScrollPane();
-	    jScrollPane.setAutoscrolls(true);
-	    jScrollPane.setBounds(417, 280, 763, 52);
-	    jScrollPane.setVerticalScrollBar(scrollBar);
-	    panelHD.add(jScrollPane);
-	    
-	    txtAreaYeuCau = new JTextArea();
-	    jScrollPane.setViewportView(txtAreaYeuCau);
-	    txtAreaYeuCau.setBackground(Color.WHITE);
-	    txtAreaYeuCau.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    txtAreaYeuCau.setRows(5);
-	    txtAreaYeuCau.setColumns(20);
-	    
-	    JPanel panelButton = new JPanel();
-	    panelButton.setBackground(Color.WHITE);
-	    panelButton.setBounds(10, 376, 1280, 65);
-	    add(panelButton);
-	    panelButton.setLayout(null);
 
-	    // Tạo một RoundedButton thay vì JButton
-	    btnThem = new RoundedButton("Thêm", SystemColor.inactiveCaption, null);
-	    btnThem.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/them.png")));
-	    btnThem.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnThem.setBounds(10, 14, 170, 40);
-	    btnThem.addActionListener(new java.awt.event.ActionListener() {
-	        public void actionPerformed(java.awt.event.ActionEvent evt) {
-	            btnThemActionPerformed(evt);
-	        }
-	    });
-	    panelButton.add(btnThem);
+        lblErrTriGiaHD.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        lblErrTriGiaHD.setForeground(new Color(204, 0, 0));
+        lblErrTriGiaHD.setText("đây là dòng thông báo lỗi");
+        pnlHopDong.add(lblErrTriGiaHD);
 
+        lblMaHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblMaHopDong.setText("Mã hợp đồng:");
+        pnlHopDong.add(lblMaHopDong);
 
-	    // Tạo và thêm nút Xóa
-	    btnXoa = new RoundedButton("Xóa", new Color(222, 184, 135), null);
-	    btnXoa.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/xoa.png")));
-	    btnXoa.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnXoa.setBounds(219, 14, 170, 40);
-	    btnXoa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //btnXoaActionPerformed(evt);
+        lblYeuCau.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblYeuCau.setText("Yêu cầu:");
+        pnlHopDong.add(lblYeuCau);
+
+        txtTienDatCoc.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        txtTienDatCoc.setBorder(null);
+        txtTienDatCoc.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                txtTienDatCocActionPerformed(evt);
             }
         });
-	    panelButton.add(btnXoa);
+        pnlHopDong.add(txtTienDatCoc);
+        pnlHopDong.add(jSeparator3);
 
-	    // Tạo và thêm nút Cập nhật
-	    btnCapNhat = new RoundedButton("Cập nhật", new Color(255, 218, 185), null);
-	    btnCapNhat.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/capNhat.png")));
-	    btnCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnCapNhat.setBounds(439, 14, 170, 40);
-	    btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //btnCapNhatActionPerformed(evt);
+        lblTriGiaHD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblTriGiaHD.setText("Trị giá hợp đồng:");
+        pnlHopDong.add(lblTriGiaHD);
+
+        txtTriGiaHD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        txtTriGiaHD.setBorder(null);
+        txtTriGiaHD.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                txtTriGiaHDActionPerformed(evt);
             }
         });
-	    panelButton.add(btnCapNhat);
+        pnlHopDong.add(txtTriGiaHD);
+        pnlHopDong.add(jSeparator4);
 
-	    // Tạo và thêm nút Lưu
-	    btnLuu = new RoundedButton("Lưu", new Color(192, 192, 192), null);
-	    btnLuu.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/luu.png")));
-	    btnLuu.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnLuu.setBounds(877, 14, 170, 40);
-	    btnLuu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLuuActionPerformed(evt);
+        lblTienDatCoc.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblTienDatCoc.setText("Tiền đặt cọc:");
+        pnlHopDong.add(lblTienDatCoc);
+
+        dcsNgayKyKetHD.setDateFormatString("yyyy-MM-dd");
+        pnlHopDong.add(dcsNgayKyKetHD);
+
+        lblErrTenKhachHang.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        lblErrTenKhachHang.setForeground(new Color(204, 0, 0));
+        lblErrTenKhachHang.setText("lblErrTenKhachHang");
+        pnlHopDong.add(lblErrTenKhachHang);
+
+        lblErrNgayKiKetHD.setFont(new Font("Times New Roman", Font.PLAIN, 15)); 
+        lblErrNgayKiKetHD.setForeground(new java.awt.Color(204, 0, 0));
+        lblErrNgayKiKetHD.setText("đây là dòng thông báo lỗi");
+        pnlHopDong.add(lblErrNgayKiKetHD);
+
+        lblNgayKetThucHD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblNgayKetThucHD.setText("Ngày kết thúc HĐ:");
+        pnlHopDong.add(lblNgayKetThucHD);
+
+        dcsNgayKetThucHD.setDateFormatString("yyyy-MM-dd");
+        pnlHopDong.add(dcsNgayKetThucHD);
+
+        srcYeuCau.setAutoscrolls(true);
+
+        txtAreaYeuCau.setColumns(20);
+        txtAreaYeuCau.setRows(5);
+        srcYeuCau.setViewportView(txtAreaYeuCau);
+
+        pnlHopDong.add(srcYeuCau);
+
+        lblNgayKyKetHD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblNgayKyKetHD.setText("Ngày ký kết HĐ:");
+        pnlHopDong.add(lblNgayKyKetHD);
+
+        lblErrNgayKetThucHD.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        lblErrNgayKetThucHD.setForeground(new Color(204, 0, 0));
+        lblErrNgayKetThucHD.setText("đây là dòng thông báo lỗi");
+        pnlHopDong.add(lblErrNgayKetThucHD);
+
+        lblErrTienDatCoc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        lblErrTienDatCoc.setForeground(new java.awt.Color(204, 0, 0));
+        lblErrTienDatCoc.setText("đây là dòng thông báo lỗi");
+        pnlHopDong.add(lblErrTienDatCoc);
+
+        lblTenHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 18)); 
+        lblTenHopDong.setText("Tên hợp đồng:");
+        pnlHopDong.add(lblTenHopDong);
+
+        txtMaHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        txtMaHopDong.setBorder(null);
+        txtMaHopDong.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                txtMaHopDongActionPerformed(evt);
             }
         });
-	    panelButton.add(btnLuu);
+        setLayout(null);
+        pnlHopDong.add(txtMaHopDong);
+        pnlHopDong.add(jSeparator5);
 
-	    // Tạo và thêm nút Hủy
-	    btnHuy = new RoundedButton("Hủy", new Color(255, 222, 173), null);
-	    btnHuy.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/huy.png")));
-	    btnHuy.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    btnHuy.setBounds(1100, 14, 170, 40);
-	    btnHuy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHuyActionPerformed(evt);
-            }
-        });
-	    panelButton.add(btnHuy);
-	    
-	    	    // Tạo và thêm nút In hợp đồng
-	    	    btnInHD = new RoundedButton("In hợp đồng", new Color(211, 211, 211), null);
-	    	    btnInHD.setBounds(670, 14, 150, 40);
-	    	    panelButton.add(btnInHD);
-	    	    btnInHD.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/in.png")));
-	    	    btnInHD.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    
-	    tblHopDong = new JTable();
-	    tblHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    tblHopDong.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
-	    
-	    tblHopDong.setRowHeight(30);
+        lblErrTenHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 15)); 
+        lblErrTenHopDong.setForeground(new Color(204, 0, 0));
+        lblErrTenHopDong.setText("đây là dòng thông báo lỗi");
+        pnlHopDong.add(lblErrTenHopDong);
 
-	    tblHopDong.setModel(new DefaultTableModel(
-	    	new Object[][] {
-	    		{null, null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null, null},
-	    	},
-	    	new String[] {
-    				"STT", "Mã hợp đồng", "Tên hợp đồng", "Tên khách hàng", "Trị giá hợp đồng", "Tiền đặt cọc", "Ngày bắt đầu", "Ngày kết thúc","Mã người ký kết"
-    		}
-	    )); 
-	    
+        add(pnlHopDong);
+        
+        JLabel lblNguoiKyKet = new JLabel();
+        lblNguoiKyKet.setText("Người ký kết:");
+        lblNguoiKyKet.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblNguoiKyKet.setBounds(760, 229, 130, 30);
+        pnlHopDong.add(lblNguoiKyKet);
+        
+        cboNhanVien = new JComboBox<String>();
+        cboNhanVien.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        cboNhanVien.setBackground(Color.WHITE);
+        cboNhanVien.setBounds(930, 225, 200, 40);
+        cboNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hoàng Huy Tới",}));
+        cboNhanVien.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pnlHopDong.add(cboNhanVien);
+        
+        btnThemNhieu = new JButton();
+		btnThemNhieu.setBounds(62, 434, 140, 40);
+		add(btnThemNhieu);
+		btnThemNhieu.setBackground(new Color(255, 215, 0));
+		btnThemNhieu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnThemNhieu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
+		btnThemNhieu.setText("Thêm nhiều");
+		btnThemNhieu.setBorder(null);
+		btnThemNhieu.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				//btnThemNhieuActionPerformed(evt);
+			}
+		});
+		
+		btnThem = new JButton();
+		btnThem.setBounds(235, 434, 140, 40);
+		add(btnThem);
+		btnThem.setBackground(new Color(255, 215, 0));
+		btnThem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnThem.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
+		btnThem.setText("Thêm");
+		btnThem.setBorder(null);
+		btnThem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnThemActionPerformed(evt);
+			}
+		});
+		
+		btnXoa = new JButton();
+		btnXoa.setBounds(406, 434, 140, 40);
+		add(btnXoa);
+		btnXoa.setBackground(new Color(255, 215, 0));
+		btnXoa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnXoa.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/xoa.png")));
+		btnXoa.setText("Xóa");
+		btnXoa.setBorder(null);
+		btnXoa.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				//btnXoaActionPerformed(evt);
+			}
+		});
+		
+		btnCapNhat = new JButton();
+		btnCapNhat.setBounds(576, 434, 140, 40);
+		add(btnCapNhat);
+		btnCapNhat.setBackground(new Color(255, 215, 0));
+		btnCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnCapNhat.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/capNhat.png")));
+		btnCapNhat.setText("Cập nhật");
+		btnCapNhat.setBorder(null);
+		btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				//btnCapNhatActionPerformed(evt);
+			}
+		});
+		
+		btnInHopDong = new JButton();
+		btnInHopDong.setBounds(742, 434, 140, 40);
+		add(btnInHopDong);
+		btnInHopDong.setBackground(new Color(255, 218, 185));
+		btnInHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnInHopDong.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/in.png")));
+		btnInHopDong.setText("In hợp đồng");
+		btnInHopDong.setBorder(null);
+		btnInHopDong.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				//btnInHopDongActionPerformed(evt);
+			}
+		});
+		
+		btnLuu = new JButton();
+		btnLuu.setBounds(909, 434, 140, 40);
+		add(btnLuu);
+		btnLuu.setBackground(new Color(255, 0, 255));
+		btnLuu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnLuu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/luu.png")));
+		btnLuu.setText("Lưu");
+		btnLuu.setBorder(null);
+		btnLuu.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnLuuActionPerformed(evt);
+			}
+		});
+		
+		btnHuy = new JButton();
+		btnHuy.setBounds(1083, 434, 140, 40);
+		add(btnHuy);
+		btnHuy.setBackground(new Color(255, 0, 255));
+		btnHuy.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnHuy.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/huy.png")));
+		btnHuy.setText("Hủy");
+		btnHuy.setBorder(null);
+		btnHuy.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnHuyActionPerformed(evt);
+			}
+		});
+		
+		LineBorder blackLineBorder1 = new LineBorder(Color.BLACK, 2);
+		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(blackLineBorder1, "Danh sách hợp đồng");
+		scrHopDong.setBorder(titledBorder1);
 
-	    scrHopDong = new JScrollPane(tblHopDong);
-	    scrHopDong.setBounds(39, 523, 1225, 194);
-	    add(scrHopDong);
-	    
-        ScrollBarCustom scrollBar1 = new ScrollBarCustom();
-        scrollBar1.setForeground(Color.RED);
+		scrHopDong.setBackground(Color.WHITE);
+		tblHopDong.getTableHeader().setBackground(new Color(128, 200, 255));
 
-        // Chèn ScrollBarCustom vào JScrollPane
-        scrHopDong.setVerticalScrollBar(scrollBar1);
-	    
-	    JLabel lblDsHD = new JLabel("Danh sách hợp đồng:");
-	    lblDsHD.setFont(new Font("Times New Roman", Font.BOLD, 18));
-	    lblDsHD.setBounds(39, 475, 243, 37);
-	    add(lblDsHD);
-
+		tblHopDong.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"STT", "M\u00E3 h\u1EE3p \u0111\u1ED3ng", "T\u00EAn h\u1EE3p \u0111\u1ED3ng", "T\u00EAn kh\u00E1ch h\u00E0ng", "Ti\u1EC1n \u0111\u1EB7t c\u1ECDc", "Tr\u1ECB gi\u00E1 h\u1EE3p \u0111\u1ED3ng", "Ng\u00E0y k\u00FD k\u1EBFt H\u0110", "Ng\u00E0y k\u1EBFt th\u00FAc H\u0110", "M\u00E3 ng\u01B0\u1EDDi k\u00FD k\u1EBFt"
+			}
+		));
+		tblHopDong.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
+		tblHopDong.getTableHeader().setOpaque(false);
+		((DefaultTableCellRenderer) tblHopDong.getTableHeader().getDefaultRenderer())
+		.setHorizontalAlignment(JLabel.CENTER);
+		tblHopDong.setRowHeight(25);
+		tblHopDong.setSelectionBackground(new Color(255, 215, 0));
+		tblHopDong.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				//tblNhanVienMouseClicked(evt);
+			}
+		});
+		scrHopDong.setViewportView(tblHopDong);
+		add(scrHopDong);
+		ScrollBarCustom scrollBar = new ScrollBarCustom();
+		scrollBar.setForeground(Color.RED);
+		scrHopDong.setVerticalScrollBar(scrollBar);
+		
 	}
 	
-	public void setShow(JButton... btn) {
+	public void excute() {
+        model = (DefaultTableModel) tblHopDong.getModel();
+        
+        this.txtTenHopDong.setText("");
+        this.txtMaHopDong.setText("");
+        this.txtTenKhachHang.setText("");
+        txtTienDatCoc.setText("");
+        txtTriGiaHD.setText("");
+        dcsNgayKyKetHD.setDate(new Date());
+        dcsNgayKetThucHD.setDate(new Date());
+        txtAreaYeuCau.setText("");
+        lblErrTenKhachHang.setText("");
+        lblErrTenHopDong.setText("");
+        lblErrTienDatCoc.setText("");
+        lblErrTriGiaHD.setText("");
+        lblErrNgayKiKetHD.setText("");
+        lblErrNgayKetThucHD.setText("");
+        
+        btnLuu.setEnabled(false);
+        btnHuy.setEnabled(false);
+    }
+
+	public void taiDuLieuLenBang() throws ParseException {
+		while (tblHopDong.getRowCount() != 0) {
+			model.removeRow(0);
+		}
+		cboNhanVien.removeAllItems();
+		NhanVien_Dao daoNhanVien = new NhanVien_Dao();
+		ArrayList<NhanVien> nhanVien = daoNhanVien.layDanhSachNhanVien();
+		if (nhanVien.size() > 0) {
+			for (NhanVien nv : nhanVien) {
+				cboNhanVien.addItem(nv.getHoTen());
+			}
+			hopDongDao = new HopDong_Dao();
+			ArrayList<HopDong> danhSachHopDong = hopDongDao.layDanhSachHopDong();
+			for (HopDong hd : danhSachHopDong) {
+				if (hd.getNguoiKyKet() != null) {
+					String data[] = {(model.getRowCount() + 1) + "", hd.getMaHopDong(), hd.getTenHopDong(), hd.getTenKhachHang(),dcf.format(hd.getTienDatCoc()).replaceAll("\\,", "."),
+	            		    dcf.format(hd.getTriGiaHD()).replaceAll("\\,", "."),hd.getNgayKyKetHD().toString(),hd.getNgayKetThucHD().toString(),hd.getNguoiKyKet().getHoTen()};
+					model.addRow(data);
+				} else {
+				    
+				}
+			}
+			if (tblHopDong.getRowCount() != 0) {
+				tblHopDong.setRowSelectionInterval(0, 0);
+				hienThiDuLieuLenTxt(0);
+			}
+		}
+	}
+
+    public void hienThiDuLieuLenTxt(int dong) throws ParseException {
+        hopDongDao = new HopDong_Dao();
+        HopDong hd = hopDongDao.layRaMotHopDongTheoMaHopDong(tblHopDong.getValueAt(dong, 1).toString());
+
+        txtMaHopDong.setText(tblHopDong.getValueAt(dong, 1).toString());
+        txtTenHopDong.setText(tblHopDong.getValueAt(dong, 2).toString());
+        txtTenKhachHang.setText(tblHopDong.getValueAt(dong, 3).toString());
+        txtTienDatCoc.setText(tblHopDong.getValueAt(dong, 4).toString().split(" ")[0].replaceAll("\\,", "."));
+        txtTriGiaHD.setText(tblHopDong.getValueAt(dong, 5).toString().split(" ")[0].replaceAll("\\,", "."));
+        dcsNgayKyKetHD.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblHopDong.getValueAt(dong, 6).toString()));
+        dcsNgayKetThucHD.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblHopDong.getValueAt(dong, 7).toString()));
+        txtAreaYeuCau.setText(hd.getYeuCau());
+     
+        setEnableForSelected(false);
+    }
+
+    public void setEnableForSelected(boolean check) {
+        txtTenKhachHang.setEditable(check);
+
+        txtMaHopDong.setEditable(false);
+        txtTenHopDong.setEditable(check);
+        txtTienDatCoc.setEditable(check);
+        txtTriGiaHD.setEditable(check);
+        dcsNgayKyKetHD.setEnabled(check);
+        dcsNgayKetThucHD.setEnabled(check);
+        txtAreaYeuCau.setEditable(check);
+    }
+
+    public void setShow(JButton... btn) {
         for (JButton jButton : btn) {
             jButton.setEnabled(true);
         }
@@ -407,125 +596,33 @@ public class HopDong_GUI extends JPanel {
         }
     }
     
-    public void hienThiDuLieuLenTxt(int dong) throws ParseException {
-        hopDongDao = new HopDong_Dao();
-        HopDong hd = hopDongDao.layRaMotHopDongTheoMaHopDong(tblHopDong.getValueAt(dong, 1).toString());
-
-        txtMaHD.setText(tblHopDong.getValueAt(dong, 1).toString());
-        txtTenHD.setText(tblHopDong.getValueAt(dong, 2).toString());
-        txtTenKH.setText(tblHopDong.getValueAt(dong, 3).toString());
-        txtTienDatCoc.setText(tblHopDong.getValueAt(dong, 4).toString().split(" ")[0].replaceAll("\\,", "."));
-        txtTriGiaHD.setText(tblHopDong.getValueAt(dong, 5).toString().split(" ")[0].replaceAll("\\,", "."));
-        dcsNgayKyKet.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblHopDong.getValueAt(dong, 6).toString()));
-        dcsNgayKetThuc.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(tblHopDong.getValueAt(dong, 7).toString()));
-        txtAreaYeuCau.setText(hd.getYeuCau());
-        setEnableForSelected(false);
-
-    }
-    
-    public void setEnableForSelected(boolean check) {
-        txtMaHD.setEditable(false);
-        txtTenHD.setEditable(check);
-        txtTenKH.setEditable(check);
-        txtTienDatCoc.setEditable(check);
-        txtTriGiaHD.setEditable(check);
-        dcsNgayKyKet.setEnabled(check);
-        dcsNgayKetThuc.setEnabled(check);
-        txtAreaYeuCau.setEditable(check);
-    }
-    
-    public void taiDuLieuLenTable() throws ParseException {
-        while (model.getRowCount() > 0) {
-            model.removeRow(0);
-        }
-        hopDongDao = new HopDong_Dao();
-        ArrayList<HopDong> hopDongList = hopDongDao.layDanhSachHopDong();
-        if (hopDongList != null) {
-            hopDongList.forEach(e -> {
-                model.addRow(new Object[]{model.getRowCount() + 1, e.getMaHopDong(), e.getTenHopDong(), e.getTenKhachHang(), dcf.format(e.getTienDatCoc()).replaceAll("\\,", "."), dcf.format(e.getTriGiaHD()).replaceAll("\\,", "."), e.getNgayKyKetHD(), e.getNgayKetThucHD()});
-            });
-        }
-        if (tblHopDong.getRowCount() != 0) {
-            tblHopDong.setRowSelectionInterval(0, 0);
-            hienThiDuLieuLenTxt(0);
-        }
-    }
-    
     public void xoaTrangTextField() {
-        txtMaHD.setText("");
-        txtTenHD.setText("");
-        txtTenKH.setText("");
-        txtTriGiaHD.setText("");
+        txtMaHopDong.setText("");
+        txtTenHopDong.setText("");
+        txtTenKhachHang.setText("");
         txtTienDatCoc.setText("");
-        dcsNgayKyKet.setDate(new Date());
-        dcsNgayKetThuc.setDate(new Date());
+        txtTriGiaHD.setText("");
+        dcsNgayKyKetHD.setDate(new Date());
+        dcsNgayKetThucHD.setDate(new Date());
         txtAreaYeuCau.setText("");
-        txtTenHD.requestFocus();
-    }
-    
-    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
-        if (isThem) {
-            String maHopDong = txtMaHD.getText().trim();
-            String tenHopDong = txtTenHD.getText().trim();
-            String tenKhachHang = txtTenHD.getText().trim();
-            double tienDatCoc = 0, triGiaHD = 0;
-            try {
-                tienDatCoc = Double.parseDouble(txtTienDatCoc.getText().trim());
-                triGiaHD = Double.parseDouble(txtTriGiaHD.getText().trim());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-            Date ngayKyKet = dcsNgayKyKet.getDate();
-            Date ngayKetThuc = dcsNgayKetThuc.getDate();
-            String yeuCau = txtAreaYeuCau.getText().trim();
-            daoNhanVien = new NhanVien_Dao();
-            boolean isThemDuoc = hopDongDao.themMotHopDong(new HopDong(maHopDong, tenHopDong, tenKhachHang, tienDatCoc, triGiaHD, ngayKyKet, ngayKetThuc, yeuCau,daoNhanVien.layMotNhanVienTheoMaNhanVien(maHopDong)));
-            if (isThemDuoc) {
-                JOptionPane.showMessageDialog(null, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
-                try {
-                    taiDuLieuLenTable();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                setEnableForSelected(false);
-                setShow(btnThem, btnCapNhat, btnXoa);
-                setHidden(btnLuu, btnHuy);
-                isThem = false;
-            } else {
-                JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    }
-    
-    public void setEditTextDateChooser() {
-        JTextFieldDateEditor ngaySinh = (JTextFieldDateEditor) dcsNgayKetThuc.getDateEditor();
-        JTextFieldDateEditor ngayVaoLam = (JTextFieldDateEditor) dcsNgayKyKet.getDateEditor();
-        ngaySinh.setEnabled(false);
-        ngayVaoLam.setEnabled(false);
-    }
-    
-    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {
-        setShow(btnHuy, btnLuu);
-        setHidden(btnThem, btnXoa, btnCapNhat,btnInHD);
+        txtTenHopDong.requestFocus();
 
-        this.isThem = true;
-        xoaTrangTextField();
-        setEnableForSelected(true);
-        if (tblHopDong.getRowHeight() > 0) {
-            txtMaHD.setText("HD" + (Integer.parseInt(tblHopDong.getValueAt(tblHopDong.getRowCount() - 1, 1).toString().split("D")[1]) + 1));
-        } else {
-            txtMaHD.setText("HD100001");
-        }
-        setEditTextDateChooser();
+    }
+    
+    public void setEditTextDateChooser() {        
+    	JTextFieldDateEditor ngayKyKet = (JTextFieldDateEditor) dcsNgayKyKetHD.getDateEditor();
+        JTextFieldDateEditor ngayKetThuc = (JTextFieldDateEditor) dcsNgayKetThucHD.getDateEditor();
+        ngayKyKet.setEnabled(false);
+        ngayKetThuc.setEnabled(false);
     }
     
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {
-        setShow(btnThem, btnXoa, btnCapNhat);
+        setShow(btnThem, btnXoa, btnCapNhat, btnThemNhieu);
         setHidden(btnHuy, btnLuu);
         isThem = false;
         setEnableForSelected(false);
-        lblErrNgayKetThuc.setText("");
-        lblErrNgayKiKet.setText("");
+        lblErrNgayKetThucHD.setText("");
+        lblErrNgayKiKetHD.setText("");
         lblErrTenHopDong.setText("");
         lblErrTenKhachHang.setText("");
         lblErrTienDatCoc.setText("");
@@ -538,5 +635,80 @@ public class HopDong_GUI extends JPanel {
             }
         }
         setEditTextDateChooser();
+    }
+	
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
+        if (isThem) {
+            String maHopDong = txtMaHopDong.getText().trim();
+            String tenHopDong = txtTenHopDong.getText().trim();
+            String tenKhachHang = txtTenKhachHang.getText().trim();
+            double tienCoc = 0, triGiaHD = 0;
+            try {
+                tienCoc = Double.parseDouble(txtTienDatCoc.getText().trim());
+                triGiaHD = Double.parseDouble(txtTriGiaHD.getText().trim());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            Date ngayKyKet = dcsNgayKyKetHD.getDate();
+            Date hanChot = dcsNgayKetThucHD.getDate();
+            String yeuCau = txtAreaYeuCau.getText().trim();
+
+            String maNhanVien = cboNhanVien.getSelectedItem().toString();
+            NhanVien_Dao daoNV = new NhanVien_Dao();
+            NhanVien nv = daoNV.layMotNhanVienTheoMaNhanVien(maNhanVien);
+            
+            boolean isThemDuoc = hopDongDao.themMotHopDong(new HopDong(maHopDong, tenHopDong, tenKhachHang, tienCoc, triGiaHD, ngayKyKet, hanChot, yeuCau, nv));
+            if (isThemDuoc) {
+                JOptionPane.showMessageDialog(null, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    taiDuLieuLenBang();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                setEnableForSelected(false);
+                setShow(btnThem, btnCapNhat, btnXoa, btnThemNhieu);
+                setHidden(btnLuu, btnHuy);
+                isThem = false;
+            } else {
+                JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {
+        setShow(btnHuy, btnLuu);
+        setHidden(btnThem, btnXoa, btnCapNhat, btnThemNhieu);
+
+        this.isThem = true;
+        xoaTrangTextField();
+        setEnableForSelected(true);
+        if (tblHopDong.getRowHeight() > 0) {
+        	String maHopDong = hopDongDao.layRaMaHopDongDeThem();
+    		this.txtMaHopDong.setText(maHopDong);
+        } else {
+            txtMaHopDong.setText("PPHD100001");
+        }
+        setEditTextDateChooser();
+    }
+	
+	private void txtTenHopDongActionPerformed(java.awt.event.ActionEvent evt) {
+    }
+
+    private void txtTenKhachHangActionPerformed(java.awt.event.ActionEvent evt) {
+    }
+	
+    private void txtTienDatCocActionPerformed(java.awt.event.ActionEvent evt) {
+    }
+    
+    private void txtTriGiaHDActionPerformed(java.awt.event.ActionEvent evt) {
+    }
+
+    private void tblHopDongMousePressed(java.awt.event.MouseEvent evt) {
+    }
+    
+    private void btnThemNhieuActionPerformed(java.awt.event.ActionEvent evt) {
+    }
+
+    private void txtMaHopDongActionPerformed(java.awt.event.ActionEvent evt) {
     }
 }

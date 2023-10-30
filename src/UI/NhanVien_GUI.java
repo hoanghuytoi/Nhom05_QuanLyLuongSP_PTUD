@@ -68,7 +68,7 @@ public class NhanVien_GUI extends JPanel {
 	private JLabel lblErrDiaChi;
 	private JLabel lblErrEmail;
 	private JLabel lblErrHoVaTen;
-	private JLabel lblErrLuongThoaThuan;
+	private JLabel lblErrLuongCoBan;
 	private JLabel lblErrNgaySinh;
 	private JLabel lblErrNgayVaoLam;
 	private JLabel lblErrSoCCCD;
@@ -76,7 +76,7 @@ public class NhanVien_GUI extends JPanel {
 	private JLabel lblGioiTinh;
 	private JLabel lblHinhAnh;
 	private JLabel lblHoVaTen;
-	private JLabel lblLuongThoaThuan;
+	private JLabel lblLuongCoBan;
 	private JLabel lblMaNhanVien;
 	private JLabel lblNgaySinh;
 	private JLabel lblNgayVaoLam;
@@ -90,7 +90,7 @@ public class NhanVien_GUI extends JPanel {
 	private JTextField txtDiaChi;
 	private JTextField txtEmail;
 	private JTextField txtHoVaTen;
-	private JTextField txtLuongThoaThuan;
+	private JTextField txtLuongCoBan;
 	private JTextField txtMaNhanVien;
 	private JTextField txtSoCCCD;
 	private JTextField txtSoDienThoai;
@@ -132,11 +132,6 @@ public class NhanVien_GUI extends JPanel {
 
 	public void excute() throws Exception {
 		model = (DefaultTableModel) tblNhanVien.getModel();
-		tblNhanVien.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
-		tblNhanVien.getTableHeader().setOpaque(false);
-		((DefaultTableCellRenderer) tblNhanVien.getTableHeader().getDefaultRenderer())
-		.setHorizontalAlignment(JLabel.CENTER);
-		tblNhanVien.setRowHeight(25);
 		ButtonGroup btnGroup = new ButtonGroup();
 		btnGroup.add(rdoNam);
 		btnGroup.add(rdoNu);
@@ -196,13 +191,13 @@ public class NhanVien_GUI extends JPanel {
 		txtDiaChi.setBounds(930, 160, 290, 40);
 		lblGioiTinh = new JLabel();
 		lblGioiTinh.setBounds(780, 220, 140, 40);
-		lblErrLuongThoaThuan = new JLabel();
-		lblErrLuongThoaThuan.setBounds(930, 390, 280, 29);
-		txtLuongThoaThuan = new JTextField();
-		txtLuongThoaThuan.setBackground(Color.WHITE);
-		txtLuongThoaThuan.setBounds(930, 350, 290, 40);
-		lblLuongThoaThuan = new JLabel();
-		lblLuongThoaThuan.setBounds(780, 361, 140, 40);
+		lblErrLuongCoBan = new JLabel();
+		lblErrLuongCoBan.setBounds(930, 390, 280, 29);
+		txtLuongCoBan = new JTextField();
+		txtLuongCoBan.setBackground(Color.WHITE);
+		txtLuongCoBan.setBounds(930, 350, 290, 40);
+		lblLuongCoBan = new JLabel();
+		lblLuongCoBan.setBounds(780, 361, 140, 40);
 		lblDiaChi = new JLabel();
 		lblDiaChi.setBounds(780, 160, 140, 40);
 		rdoNam = new JRadioButton();
@@ -244,7 +239,11 @@ public class NhanVien_GUI extends JPanel {
 		tblNhanVien = new JTable();
 
 		setPreferredSize(new Dimension(1290, 750));
-
+		lblTieuDe = new JLabel("QUẢN LÝ NHÂN VIÊN");
+		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
+		lblTieuDe.setBounds(543, 11, 296, 40);
+		add(lblTieuDe);
+		
 		LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);
 		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Thông tin nhân viên");
 		panelNhanVien.setBorder(titledBorder);
@@ -354,18 +353,18 @@ public class NhanVien_GUI extends JPanel {
 		lblGioiTinh.setText("Giới tính");
 		panelNhanVien.add(lblGioiTinh);
 
-		lblErrLuongThoaThuan.setFont(new java.awt.Font("Segoe UI", 0, 13));
-		lblErrLuongThoaThuan.setForeground(new java.awt.Color(204, 0, 0));
-		lblErrLuongThoaThuan.setText("đây là dòng thông báo lỗi");
-		panelNhanVien.add(lblErrLuongThoaThuan);
+		lblErrLuongCoBan.setFont(new java.awt.Font("Segoe UI", 0, 13));
+		lblErrLuongCoBan.setForeground(new java.awt.Color(204, 0, 0));
+		lblErrLuongCoBan.setText("đây là dòng thông báo lỗi");
+		panelNhanVien.add(lblErrLuongCoBan);
 
-		txtLuongThoaThuan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		txtLuongThoaThuan.setBorder(null);
-		panelNhanVien.add(txtLuongThoaThuan);
+		txtLuongCoBan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		txtLuongCoBan.setBorder(null);
+		panelNhanVien.add(txtLuongCoBan);
 
-		lblLuongThoaThuan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		lblLuongThoaThuan.setText("Lương thỏa thuận:");
-		panelNhanVien.add(lblLuongThoaThuan);
+		lblLuongCoBan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		lblLuongCoBan.setText("Lương cơ bản:");
+		panelNhanVien.add(lblLuongCoBan);
 
 		lblDiaChi.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		lblDiaChi.setText("Địa chỉ:");
@@ -486,7 +485,6 @@ public class NhanVien_GUI extends JPanel {
 		btnThemNhieu = new JButton();
 		btnThemNhieu.setBounds(51, 483, 170, 40);
 		add(btnThemNhieu);
-
 		btnThemNhieu.setBackground(new Color(255, 215, 0));
 		btnThemNhieu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		btnThemNhieu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
@@ -495,81 +493,76 @@ public class NhanVien_GUI extends JPanel {
 		btnThem = new JButton();
 		btnThem.setBounds(260, 483, 170, 40);
 		add(btnThem);
+		btnThemNhieu.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				//btnThemNhieuActionPerformed(evt);
+			}
+		});
 
 		btnThem.setBackground(new Color(255, 215, 0));
 		btnThem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		btnThem.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
 		btnThem.setText("Thêm");
 		btnThem.setBorder(null);
-		btnXoa = new JButton();
-		btnXoa.setBounds(474, 483, 160, 40);
-		add(btnXoa);
-
-		btnXoa.setBackground(new Color(255, 215, 0));
-		btnXoa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		btnXoa.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/xoa.png")));
-		btnXoa.setText("Xóa");
-		btnXoa.setBorder(null);
-		btnCapNhat = new JButton();
-		btnCapNhat.setBounds(666, 483, 160, 40);
-		add(btnCapNhat);
-		btnCapNhat.setBackground(new Color(255, 215, 0));
-
-		btnCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		btnCapNhat.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/capNhat.png")));
-		btnCapNhat.setText("Cập nhật");
-		btnCapNhat.setBorder(null);
-		btnLuu = new JButton();
-		btnLuu.setBounds(861, 483, 160, 40);
-		add(btnLuu);
-
-		btnLuu.setBackground(new Color(255, 0, 255));
-		btnLuu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		btnLuu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/luu.png")));
-		btnLuu.setText("Lưu");
-		btnLuu.setBorder(null);
-		btnHuy = new JButton();
-		btnHuy.setBounds(1053, 482, 170, 40);
-		add(btnHuy);
-
-		btnHuy.setBackground(new Color(255, 0, 255));
-		btnHuy.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		btnHuy.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/huy.png")));
-		btnHuy.setText("Hủy");
-		btnHuy.setBorder(null);
-
-		lblTieuDe = new JLabel("QUẢN LÝ NHÂN VIÊN");
-		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblTieuDe.setBounds(543, 11, 296, 40);
-		add(lblTieuDe);
-		btnHuy.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnHuyActionPerformed(evt);
-			}
-		});
-		btnLuu.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnLuuActionPerformed(evt);
-			}
-		});
-		btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnCapNhatActionPerformed(evt);
-			}
-		});
-		btnXoa.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				btnXoaActionPerformed(evt);
-			}
-		});
 		btnThem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnThemActionPerformed(evt);
 			}
 		});
-		btnThemNhieu.addActionListener(new java.awt.event.ActionListener() {
+		
+		btnXoa = new JButton();
+		btnXoa.setBounds(474, 483, 160, 40);
+		add(btnXoa);
+		btnXoa.setBackground(new Color(255, 215, 0));
+		btnXoa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnXoa.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/xoa.png")));
+		btnXoa.setText("Xóa");
+		btnXoa.setBorder(null);
+		btnXoa.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnThemNhieuActionPerformed(evt);
+				btnXoaActionPerformed(evt);
+			}
+		});
+		
+		btnCapNhat = new JButton();
+		btnCapNhat.setBounds(666, 483, 160, 40);
+		add(btnCapNhat);
+		btnCapNhat.setBackground(new Color(255, 215, 0));
+		btnCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnCapNhat.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/capNhat.png")));
+		btnCapNhat.setText("Cập nhật");
+		btnCapNhat.setBorder(null);
+		btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnCapNhatActionPerformed(evt);
+			}
+		});
+		
+		btnLuu = new JButton();
+		btnLuu.setBounds(861, 483, 160, 40);
+		add(btnLuu);
+		btnLuu.setBackground(new Color(255, 0, 255));
+		btnLuu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnLuu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/luu.png")));
+		btnLuu.setText("Lưu");
+		btnLuu.setBorder(null);
+		btnLuu.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnLuuActionPerformed(evt);
+			}
+		});
+		
+		btnHuy = new JButton();
+		btnHuy.setBounds(1053, 482, 170, 40);
+		add(btnHuy);
+		btnHuy.setBackground(new Color(255, 0, 255));
+		btnHuy.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnHuy.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/huy.png")));
+		btnHuy.setText("Hủy");
+		btnHuy.setBorder(null);
+		btnHuy.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnHuyActionPerformed(evt);
 			}
 		});
 
@@ -593,12 +586,19 @@ public class NhanVien_GUI extends JPanel {
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"STT", "M\u00E3 nh\u00E2n vi\u00EAn", "H\u1ECD v\u00E0 t\u00EAn", "S\u00F4 CCCd", "Gi\u1EDBi t\u00EDnh", "Ng\u00E0y sinh", "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i", "\u0110\u1ECBa ch\u1EC9", "\u1EA2nh \u0111\u1EA1i di\u1EC7n", "Email", "Ph\u00F2ng Ban", "Ch\u1EE9c v\u1EE5", "Ng\u00E0y v\u00E0o l\u00E0m", "L\u01B0\u01A1ng th\u1ECFa thu\u1EADn"
+				"STT", "M\u00E3 nh\u00E2n vi\u00EAn", "H\u1ECD v\u00E0 t\u00EAn", "S\u1ED1 CCCD", "Gi\u1EDBi t\u00EDnh", "Ng\u00E0y sinh", "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i", "\u0110\u1ECBa ch\u1EC9", "\u1EA2nh \u0111\u1EA1i di\u1EC7n", "Email", "Ph\u00F2ng Ban", "Ch\u1EE9c v\u1EE5", "Ng\u00E0y v\u00E0o l\u00E0m", "L\u01B0\u01A1ng c\u01A1 b\u1EA3n"
 			}
 		));
 		tblNhanVien.getColumnModel().getColumn(0).setPreferredWidth(35);
+		tblNhanVien.getColumnModel().getColumn(1).setPreferredWidth(80);
 		tblNhanVien.getColumnModel().getColumn(13).setPreferredWidth(101);
 		tblNhanVien.setSelectionBackground(new Color(255, 215, 0));
+		tblNhanVien.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
+		tblNhanVien.getTableHeader().setOpaque(false);
+		((DefaultTableCellRenderer) tblNhanVien.getTableHeader().getDefaultRenderer())
+		.setHorizontalAlignment(JLabel.CENTER);
+		tblNhanVien.setRowHeight(25);
+		
 		tblNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				tblNhanVienMouseClicked(evt);
@@ -618,7 +618,7 @@ public class NhanVien_GUI extends JPanel {
 		lblErrEmail.setText("");
 		lblErrNgaySinh.setText("");
 		lblErrNgayVaoLam.setText("");
-		lblErrLuongThoaThuan.setText("");
+		lblErrLuongCoBan.setText("");
 		lblErrDiaChi.setText("");
 		try {
 			setHidden(btnLuu, btnHuy);
@@ -640,7 +640,7 @@ public class NhanVien_GUI extends JPanel {
 		lblErrDiaChi.setText("");
 		lblErrNgaySinh.setText("");
 		lblErrNgayVaoLam.setText("");
-		lblErrLuongThoaThuan.setText("");
+		lblErrLuongCoBan.setText("");
 	}
 
 	public void hienThiDuLieuLenTxt(int dong) throws ParseException {
@@ -660,7 +660,7 @@ public class NhanVien_GUI extends JPanel {
 		cboPhongBan.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString());
 		cboChucVu.setSelectedItem(tblNhanVien.getValueAt(dong, 11).toString());
 		dcsNgayVaoLam.setDate(df.parse(tblNhanVien.getValueAt(dong, 12).toString()));
-		txtLuongThoaThuan.setText(tblNhanVien.getValueAt(dong, 13).toString().replaceAll("\\,", "."));
+		txtLuongCoBan.setText(tblNhanVien.getValueAt(dong, 13).toString().replaceAll("\\,", "."));
 		lblHinhAnh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/anhNhanVien/" + tblNhanVien.getValueAt(dong, 8))));
 	}
 
@@ -721,7 +721,7 @@ public class NhanVien_GUI extends JPanel {
 		//this.cboPhongBan.setEnabled(kq);
 		//this.cboChucVu.setEnabled(kq);
 		//this.dcsNgayVaoLam.setEnabled(kq);
-		this.txtLuongThoaThuan.setEditable(kq);
+		this.txtLuongCoBan.setEditable(kq);
 		//this.lblAnhDaiDien.setEnabled(kq);
 	}
 
@@ -753,7 +753,7 @@ public class NhanVien_GUI extends JPanel {
 		this.cboPhongBan.setSelectedIndex(0);
 		this.cboChucVu.setSelectedIndex(0);
 		this.dcsNgayVaoLam.setDate(new Date());
-		this.txtLuongThoaThuan.setText("");
+		this.txtLuongCoBan.setText("");
 		lblHinhAnh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/anhNhanVien/man.png")));
 		setEnableForInput(true);
 		isThem = true;
@@ -780,7 +780,7 @@ public class NhanVien_GUI extends JPanel {
 		setHidden(btnThem, btnXoa, btnCapNhat);
 		setShow(btnLuu, btnHuy);
 		setEnableForInput(true);
-		txtLuongThoaThuan.setText(txtLuongThoaThuan.getText().replaceAll(",", ""));
+		txtLuongCoBan.setText(txtLuongCoBan.getText().replaceAll(",", ""));
 		isCapNhat = true;
 		setEditTextDateChooser();
 		isThem = false;
@@ -791,9 +791,9 @@ public class NhanVien_GUI extends JPanel {
 			PhongBan_Dao dao = new PhongBan_Dao();
 			PhongBan pb = dao.layMotPhongBanTheoTen(cboPhongBan.getSelectedItem().toString());
 			System.out.println(pb.getMaPhongBan());
-			String tienLuong = txtLuongThoaThuan.getText();
-			if (txtLuongThoaThuan.getText().contains(",")) {
-				tienLuong = txtLuongThoaThuan.getText().replaceAll(",", "");
+			String tienLuong = txtLuongCoBan.getText();
+			if (txtLuongCoBan.getText().contains(",")) {
+				tienLuong = txtLuongCoBan.getText().replaceAll(",", "");
 			}
 			if (dcsNgaySinh.getDate() != null && dcsNgayVaoLam.getDate() != null) {
 				nhanvienEntity = new NhanVien(txtMaNhanVien.getText(), txtHoVaTen.getText(), dcsNgaySinh.getDate(),
