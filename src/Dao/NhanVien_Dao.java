@@ -167,6 +167,46 @@ public class NhanVien_Dao {
         }
         return nhanVien;
     }
+    public NhanVien layMotNhanVienTheoTen(String ten) {
+        PreparedStatement stm = null;
+        NhanVien nhanVien = null;
+        PhongBan_Dao phongBan_DAO = new PhongBan_Dao();
+        try {
+            ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String truyVan = "SELECT * FROM NhanVien where hoTen = ?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, ten);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+            	String maNhanVienOB = rs.getString("maNhanVien");
+                String hoTen = rs.getString("hoTen");
+                Date ngaySinh = rs.getDate("ngaySinh");
+                String maCCCD = rs.getString("maCCCD");
+                String soDienThoai = rs.getString("soDienThoai");
+                String email = rs.getString("email");
+                String matKhau = rs.getString("matKhau");
+                String chucVu = rs.getString("chucVu");
+                Date ngayVaoLam = rs.getDate("ngayVaoLam");
+                double luongCoBan = rs.getBigDecimal("luongCoBan").doubleValue();
+                boolean gioiTinh = rs.getBoolean("gioiTinh");
+                String anhDaiDien = rs.getString("anhDaiDien");
+                String diaChi = rs.getString("diaChi");
+                String maPhongBanOB = rs.getString("maPhongBan");
+                PhongBan phongBan = phongBan_DAO.layMotPhongBanTheoMa(maPhongBanOB);
+                nhanVien = new NhanVien(maNhanVienOB, hoTen, ngaySinh, maCCCD, soDienThoai, email, matKhau, chucVu, ngayVaoLam, luongCoBan, gioiTinh, anhDaiDien, diaChi, phongBan);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return nhanVien;
+    }
 
     public boolean themMotNhanVien(NhanVien nhanVien) {
         PreparedStatement stm = null;

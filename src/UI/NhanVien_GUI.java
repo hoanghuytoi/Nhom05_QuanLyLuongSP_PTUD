@@ -643,6 +643,30 @@ public class NhanVien_GUI extends JPanel {
 		lblErrLuongCoBan.setText("");
 	}
 
+	public void taiDuLieuLenBang() throws ParseException {
+		while (tblNhanVien.getRowCount() != 0) {
+			model.removeRow(0);
+		}
+		cboPhongBan.removeAllItems();
+		PhongBan_Dao daoPhongBan = new PhongBan_Dao();
+		ArrayList<PhongBan> phongBan = daoPhongBan.layDanhSachPhongBan();
+		if (phongBan.size() > 0) {
+			for (PhongBan pb : phongBan) {
+				cboPhongBan.addItem(pb.getTenPhongBan());
+			}
+			ArrayList<NhanVien> danhSachNhanVien = daoNhanVien.layDanhSachNhanVien();
+			for (NhanVien nv : danhSachNhanVien) {
+				String data[] = {(model.getRowCount() + 1) + "", nv.getMaNhanVien(), nv.getHoTen(), nv.getMaCCCD(), nv.isGioiTinh() ? "Nam" : "Nữ", nv.getNgaySinh().toString(),
+						nv.getSoDienThoai(), nv.getDiaChi(), nv.getAnhDaiDien(), nv.getEmail(), nv.getPhongBan().getTenPhongBan(),
+						nv.getChucVu(), nv.getNgayVaoLam().toString(), dcf.format(nv.getLuongCoBan()).replaceAll("\\,", ".")};
+				model.addRow(data);
+			}
+			if (tblNhanVien.getRowCount() != 0) {
+				tblNhanVien.setRowSelectionInterval(0, 0);
+				hienThiDuLieuLenTxt(0);
+			}
+		}
+	}
 	public void hienThiDuLieuLenTxt(int dong) throws ParseException {
 
 		txtMaNhanVien.setText(tblNhanVien.getValueAt(dong, 1).toString());
@@ -675,31 +699,6 @@ public class NhanVien_GUI extends JPanel {
 			System.out.println("path file split: " + file.toString().split("src")[1]);
 			this.lblHinhAnh.setIcon(new ImageIcon(this.getClass().getResource(path)));
 			System.out.println(this.lblHinhAnh.getIcon().toString());
-		}
-	}
-
-	public void taiDuLieuLenBang() throws ParseException {
-		while (tblNhanVien.getRowCount() != 0) {
-			model.removeRow(0);
-		}
-		cboPhongBan.removeAllItems();
-		PhongBan_Dao daoPhongBan = new PhongBan_Dao();
-		ArrayList<PhongBan> phongBan = daoPhongBan.layDanhSachPhongBan();
-		if (phongBan.size() > 0) {
-			for (PhongBan pb : phongBan) {
-				cboPhongBan.addItem(pb.getTenPhongBan());
-			}
-			ArrayList<NhanVien> danhSachNhanVien = daoNhanVien.layDanhSachNhanVien();
-			for (NhanVien nv : danhSachNhanVien) {
-				String data[] = {(model.getRowCount() + 1) + "", nv.getMaNhanVien(), nv.getHoTen(), nv.getMaCCCD(), nv.isGioiTinh() ? "Nam" : "Nữ", nv.getNgaySinh().toString(),
-						nv.getSoDienThoai(), nv.getDiaChi(), nv.getAnhDaiDien(), nv.getEmail(), nv.getPhongBan().getTenPhongBan(),
-						nv.getChucVu(), nv.getNgayVaoLam().toString(), dcf.format(nv.getLuongCoBan()).replaceAll("\\,", ".")};
-				model.addRow(data);
-			}
-			if (tblNhanVien.getRowCount() != 0) {
-				tblNhanVien.setRowSelectionInterval(0, 0);
-				hienThiDuLieuLenTxt(0);
-			}
 		}
 	}
 

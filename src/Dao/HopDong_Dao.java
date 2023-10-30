@@ -72,7 +72,7 @@ public class HopDong_Dao {
                 String yeuCau = rs.getString("yeuCau");
                 String maNguoiKyKet = rs.getString("maNguoiKyKet");
                 NhanVien maNhanVien = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNguoiKyKet);
-                hopDong = new HopDong(maHopDong, tenHopDong, tenKhachHang, tienDatCoc, triGiaHD, ngayKyKet, ngayKetThuc, yeuCau, maNhanVien);
+                hopDong = new HopDong(maHopDongTmp, tenHopDong, tenKhachHang, tienDatCoc, triGiaHD, ngayKyKet, ngayKetThuc, yeuCau, maNhanVien);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -92,7 +92,7 @@ public class HopDong_Dao {
         try {
             ConnectionDB.ConnectDB.getInstance();
             Connection con = ConnectionDB.ConnectDB.getConnection();
-            String query = "insert into HopDong(maHopDong, tenHopDong, tenKhachHang,tienDatCoc, triGiaHD ,ngayKyKetHD ,ngayKetThucHD, yeuCau,maNguoiKyKet)"
+            String query = "insert into HopDong(maHopDong, tenHopDong, tenKhachHang,tienDatCoc, triGiaHD ,ngayKyKetHD ,ngayKetThucHD, yeuCau, maNguoiKyKet)"
                     + " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
             stm = con.prepareStatement(query);
             stm.setString(1, hopDong.getMaHopDong());
@@ -149,59 +149,59 @@ public class HopDong_Dao {
         return chuoiCanLay;
     }
 
-//    public boolean suaMotHopDong(HopDong hopDong) {
-//        PreparedStatement stm = null;
-//        int soDongSuaDuoc = 0;
-//        try {
-//            ConnectionDB.ConnectDB.getInstance();
-//            Connection con = ConnectionDB.ConnectDB.getConnection();
-//            String query = "update HopDong"
-//                    + " set tenHopDong = ?, tenKhachHang = ?, diaChi = ?, soTienCoc = ?, giaTriHD = ? ,ngayKyKet = ?"
-//                    + " , hanChot = ?, thoaThuan = ?"
-//                    + " where maHopDong = ?";
-//            stm = con.prepareStatement(query);
-//            stm.setString(1, hopDong.getMaHopDong());
-//            stm.setString(2, hopDong.getTenHopDong());
-//            stm.setString(3, hopDong.getTenKhachHang());
-//            stm.setString(4, hopDong.getDiaChi());
-//            stm.setDouble(5, hopDong.getSoTienCoc());
-//            stm.setDouble(6, hopDong.getGiaTriHD());
-//            stm.setDate(7, new java.sql.Date(hopDong.getNgayKyKet().getTime()));
-//            stm.setDate(8, new java.sql.Date(hopDong.getHanChot().getTime()));
-//            stm.setString(9, hopDong.getThoaThuan());
-//            soDongSuaDuoc = stm.executeUpdate();
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            try {
-//                stm.close();
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
-//        return soDongSuaDuoc != 0;
-//    }
-//    
-//    public boolean xoaMotHopDong(String maHopDong) {
-//        PreparedStatement stm = null;
-//        int soDongXoaDuoc = 0;
-//        try {
-//            ConnectionDB.ConnectDB.getInstance();
-//            Connection con = ConnectionDB.ConnectDB.getConnection();
-//            String query = "delete HopDong"
-//                    + " where maHopDong = ?";
-//            stm = con.prepareStatement(query);
-//            stm.setString(1, maHopDong);
-//            soDongXoaDuoc = stm.executeUpdate();
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            try {
-//                stm.close();
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
-//        return soDongXoaDuoc != 0;
-//    }
+    public boolean suaMotHopDong(HopDong hopDong) {
+        PreparedStatement stm = null;
+        int soDongSuaDuoc = 0;
+        try {
+            ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String query = "update HopDong"
+                    + " set tenHopDong = ?, tenKhachHang = ?,tienDatCoc = ?, triGiaHD = ? ,ngayKyKetHD = ?"
+                    + " , ngayKetThucHD = ?, yeuCau = ? , maNguoiKyKet = ?"
+                    + " where maHopDong = ?";
+            stm = con.prepareStatement(query);
+            stm.setString(1, hopDong.getTenHopDong());
+            stm.setString(2, hopDong.getTenKhachHang());
+            stm.setDouble(3, hopDong.getTienDatCoc());
+            stm.setDouble(4, hopDong.getTriGiaHD());
+            stm.setDate(5, new java.sql.Date(hopDong.getNgayKyKetHD().getTime()));
+            stm.setDate(6, new java.sql.Date(hopDong.getNgayKetThucHD().getTime()));
+            stm.setString(7, hopDong.getYeuCau());
+            stm.setString(8,hopDong.getNguoiKyKet().getMaNhanVien());
+            stm.setString(9, hopDong.getMaHopDong());
+            soDongSuaDuoc = stm.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return soDongSuaDuoc != 0;
+    }
+    
+    public boolean xoaMotHopDong(String maHopDong) {
+        PreparedStatement stm = null;
+        int soDongXoaDuoc = 0;
+        try {
+            ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String query = "delete HopDong"
+                    + " where maHopDong = ?";
+            stm = con.prepareStatement(query);
+            stm.setString(1, maHopDong);
+            soDongXoaDuoc = stm.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return soDongXoaDuoc != 0;
+    }
 }
