@@ -51,6 +51,10 @@ import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 
+/**
+ * Hoàng Huy Tới
+ */
+
 public class HopDong_GUI extends JPanel {
 	private JTextField txtMaHopDong;
 	private JTextField txtTenHopDong;
