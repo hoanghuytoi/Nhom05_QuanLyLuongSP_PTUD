@@ -5,7 +5,6 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
@@ -13,8 +12,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -22,34 +19,33 @@ import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
-import Custom_UI.RoundedButton;
 import Custom_UI.ScrollBarCustom;
 import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
-import Dao.PhongBan_Dao;
 import Entity.HopDong;
 import Entity.NhanVien;
-import Entity.PhongBan;
+import XuatFile.ThongTinHD;
+import XuatFile.Relatorio;
 
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -127,7 +123,8 @@ public class HopDong_GUI extends JPanel {
 	private DecimalFormat dcf = new DecimalFormat("###.00");
 	private NhanVien nhanVienDangNhap;
 	private String fileName;
-
+	
+	List<ThongTinHD> listFileHD = new ArrayList<ThongTinHD>();
 
 	public HopDong_GUI() throws ParseException, IOException {
 		setBackground(new Color(255, 255, 255));
@@ -452,7 +449,7 @@ public class HopDong_GUI extends JPanel {
 		btnInHopDong.setBorder(null);
 		btnInHopDong.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnInHopDongActionPerformed(evt);
+				btnInHopDongActionPerformed(evt);
 			}
 		});
 
@@ -772,22 +769,47 @@ public class HopDong_GUI extends JPanel {
         }
     }
 
-	private void txtTenHopDongActionPerformed(java.awt.event.ActionEvent evt) {
+	protected void btnInHopDongActionPerformed(ActionEvent evt) {
+		Relatorio r = new Relatorio();
+//		int selectedRow = tblHopDong.getSelectedRow();
+//	    if (selectedRow >= 0) {
+//	        // Lấy ra hợp đồng được chọn từ bảng
+//	        HopDong selectedHopDong = hopDongDao.layRaMotHopDongTheoMaHopDong(tblHopDong.getValueAt(selectedRow, 1).toString());
+//
+//	        ThongTinHD thongTinHD = new ThongTinHD();
+//	        thongTinHD.setMaHopDong(selectedHopDong.getMaHopDong());
+//	        thongTinHD.setTenHopDong(selectedHopDong.getTenHopDong());
+//	        thongTinHD.setTenKhachHang(selectedHopDong.getTenKhachHang());
+//	        thongTinHD.setTienDatCoc((long) selectedHopDong.getTienDatCoc());
+//	        thongTinHD.setTriGiaHD((long) selectedHopDong.getTriGiaHD());
+//	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//	        thongTinHD.setNgayBatDau(dateFormat.format(selectedHopDong.getNgayKyKetHD()));
+//	        thongTinHD.setNgayKetThuc(dateFormat.format(selectedHopDong.getNgayKetThucHD()));
+//	        thongTinHD.setYeuCau(selectedHopDong.getYeuCau());
+//	    }
+		try {
+			r.gerarRelatorio();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void txtTenKhachHangActionPerformed(java.awt.event.ActionEvent evt) {
+	private void txtTenHopDongActionPerformed(ActionEvent evt) {
 	}
 
-	private void txtTienDatCocActionPerformed(java.awt.event.ActionEvent evt) {
+	private void txtTenKhachHangActionPerformed(ActionEvent evt) {
 	}
 
-	private void txtTriGiaHDActionPerformed(java.awt.event.ActionEvent evt) {
+	private void txtTienDatCocActionPerformed(ActionEvent evt) {
 	}
 
-	private void tblHopDongMousePressed(java.awt.event.MouseEvent evt) {
+	private void txtTriGiaHDActionPerformed(ActionEvent evt) {
 	}
 
-	private void btnThemNhieuActionPerformed(java.awt.event.ActionEvent evt) {
+	private void tblHopDongMousePressed(MouseEvent evt) {
+	}
+
+	private void btnThemNhieuActionPerformed(ActionEvent evt) {
 	}
 
 	private void txtMaHopDongActionPerformed(java.awt.event.ActionEvent evt) {

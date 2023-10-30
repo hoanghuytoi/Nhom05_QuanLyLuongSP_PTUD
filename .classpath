@@ -10,5 +10,13 @@
 	<classpathentry kind="lib" path="Lib/sqljdbc42.jar"/>
 	<classpathentry kind="lib" path="Lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="lib" path="Lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="Lib/commons-beanutils-1.8.3.jar"/>
+	<classpathentry kind="lib" path="Lib/commons-collections-3.2.1-1.0.0.jar"/>
+	<classpathentry kind="lib" path="Lib/jasperreports-fonts-5.6.0.jar"/>
+	<classpathentry kind="lib" path="Lib/jasperreports-5.6.0.jar"/>
+	<classpathentry kind="lib" path="Lib/groovy-all-2.0.1.jar"/>
+	<classpathentry kind="lib" path="Lib/itext-2.1.7.jar"/>
+	<classpathentry kind="lib" path="Lib/commons-logging-api-1.1.jar"/>
+	<classpathentry kind="lib" path="Lib/commons-digester-2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
