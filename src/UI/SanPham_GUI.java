@@ -156,7 +156,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 	private void initComponents() {
 		setBackground(new Color(255, 255, 255));
 		scrTableSanPham = new JScrollPane();
-		scrTableSanPham.setBounds(20, 471, 1235, 254);
+		scrTableSanPham.setBounds(20, 471, 1235, 248);
 		tblDanhSachSanPham = new JTable();
 
 		setPreferredSize(new Dimension(1290, 750));
@@ -166,31 +166,38 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		add(lblTieuDe);
 
 		scrHopDong = new JScrollPane();
-		scrHopDong.setBounds(20, 62, 410, 315);
+		scrHopDong.setBounds(20, 97, 410, 267);
 		add(scrHopDong);
 		tblHopDong = new javax.swing.JTable();
 
 		scrHopDong.setBackground(new java.awt.Color(255, 255, 255));
-		scrHopDong.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh sách hợp đồng"));
-
+		LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);
+		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Danh sách hợp đồng");
+		scrHopDong.setBorder(titledBorder);
+		tblHopDong.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblHopDong.setFont(new java.awt.Font("Times New Roman", 0, 16));
 		tblHopDong.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-					{null, null, null, null},
-				},
-				new String[] {
-						"STT", "M\u00E3 h\u1EE3p \u0111\u1ED3ng", "T\u00EAn h\u1EE3p \u0111\u1ED3ng", "T\u00EAn kh\u00E1ch h\u00E0ng"
-				}
-				));
+			new Object[][] {
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+				{null, null, null, null},
+			},
+			new String[] {
+				"STT", "M\u00E3 h\u1EE3p \u0111\u1ED3ng", "T\u00EAn h\u1EE3p \u0111\u1ED3ng", "T\u00EAn kh\u00E1ch h\u00E0ng"
+			}
+		));
+		tblHopDong.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tblHopDong.getColumnModel().getColumn(1).setPreferredWidth(73);
+		tblHopDong.getColumnModel().getColumn(2).setPreferredWidth(91);
+		tblHopDong.getColumnModel().getColumn(3).setPreferredWidth(90);
 		tblHopDong.getTableHeader().setOpaque(false);
 		tblHopDong.setRowHeight(24);
 		tblHopDong.setSelectionBackground(new java.awt.Color(232, 57, 95));
@@ -207,9 +214,9 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 
 		pnlThongTinSP = new JPanel();
 		pnlThongTinSP.setBackground(new Color(255, 255, 255));
-		LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);
-		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Thông tin sản phẩm");
-		pnlThongTinSP.setBorder(titledBorder);
+		LineBorder blackLineBorder2 = new LineBorder(Color.BLACK, 2);
+		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(blackLineBorder2, "Thông tin sản phẩm");
+		pnlThongTinSP.setBorder(titledBorder2);
 		pnlThongTinSP.setBounds(482, 62, 773, 317);
 		add(pnlThongTinSP);
 		pnlThongTinSP.setLayout(null);
@@ -536,26 +543,23 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		scrTableSanPham.setBorder(titledBorder1);
 
 		scrTableSanPham.setBackground(Color.WHITE);
-		tblDanhSachSanPham.getTableHeader().setBackground(new Color(128, 200, 255));
 
 		scrTableSanPham.setFont(new java.awt.Font("Segoe UI", 0, 10));
 		tblDanhSachSanPham.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null},
-				},
-				new String[] {
-						"STT", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "Số lượng", "Đơn giá", "Ch\u1EA5t li\u1EC7u", "K\u00EDch th\u01B0\u1EDBc", "\u1EA2nh s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng c\u00F4ng \u0111o\u1EA1n"
-				}
-				));
+			new Object[][] {
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"STT", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng", "\u0110\u01A1n gi\u00E1", "Ch\u1EA5t li\u1EC7u", "K\u00EDch th\u01B0\u1EDBc", "\u1EA2nh s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng c\u00F4ng \u0111o\u1EA1n"
+			}
+		));
+		tblDanhSachSanPham.getColumnModel().getColumn(8).setPreferredWidth(100);
+		tblDanhSachSanPham.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblDanhSachSanPham.setRowHeight(28);
 		tblDanhSachSanPham.setSelectionBackground(new Color(255, 215, 0));
 		tblDanhSachSanPham.addMouseListener(new java.awt.event.MouseAdapter() {

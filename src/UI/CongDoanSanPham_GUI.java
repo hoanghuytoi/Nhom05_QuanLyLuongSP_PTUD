@@ -116,10 +116,10 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		btnCapNhat.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnXoa.addActionListener(this);
-		
+
 		btnLuu.setEnabled(false);
-        btnHuy.setEnabled(false);
-        
+		btnHuy.setEnabled(false);
+
 		moKhoaTextField(false);
 		excute();
 	}
@@ -151,12 +151,15 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 					{null, null, null, null},
 					{null, null, null, null},
 					{null, null, null, null},
-					{null, null, null, null}
+					{null, null, null, null},
 				},
 				new String[] {
-						"STT", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng",
+						"STT", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng"
 				}
 				));
+		tblDanhSachSanPham.getColumnModel().getColumn(0).setPreferredWidth(40);
+		tblDanhSachSanPham.getColumnModel().getColumn(2).setPreferredWidth(95);
+		tblDanhSachSanPham.getColumnModel().getColumn(3).setPreferredWidth(57);
 		tblDanhSachSanPham.setRowHeight(30);
 		tblDanhSachSanPham.getTableHeader().setOpaque(false);
 		((DefaultTableCellRenderer) tblDanhSachSanPham.getTableHeader().getDefaultRenderer())
@@ -172,7 +175,9 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 
 		scrTableSanPham = new JScrollPane(tblDanhSachSanPham);
 		scrTableSanPham.setBackground(new java.awt.Color(255, 255, 255));
-		scrTableSanPham.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh sách sản phẩm"));
+		LineBorder blackLineBorder1 = new LineBorder(Color.BLACK, 2);
+		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(blackLineBorder1, "Danh sách sản phẩm");
+		scrTableSanPham.setBorder(titledBorder1);
 		scrTableSanPham.setBounds(48, 103, 625, 340);
 		add(scrTableSanPham);
 
@@ -434,22 +439,18 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		tblCongDoan.getTableHeader().setBackground(new Color(128, 200, 255));
 
 		tblCongDoan.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"Th\u1EE9 t\u1EF1 l\u00E0m", "M\u00E3 c\u00F4ng \u0111o\u1EA1n", "T\u00EAn  c\u00F4ng \u0111o\u1EA1n", "S\u1ED1 l\u01B0\u1EE3ng c\u1EA7n l\u00E0m", "S\u1ED1 l\u01B0\u01A1ng \u0111\u00E3 l\u00E0m", "\u0110\u01A1n gi\u00E1 C\u0110", "Th\u1EDDi h\u1EA1n", "M\u1EE9c \u0111\u1ED9 ho\u00E0n th\u00E0nh (%)"
-			}
-		));
+				new Object[][] {
+					{null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null},
+				},
+				new String[] {
+						"Th\u1EE9 t\u1EF1 l\u00E0m", "M\u00E3 c\u00F4ng \u0111o\u1EA1n", "T\u00EAn  c\u00F4ng \u0111o\u1EA1n", "S\u1ED1 l\u01B0\u1EE3ng c\u1EA7n l\u00E0m", "S\u1ED1 l\u01B0\u01A1ng \u0111\u00E3 l\u00E0m", "\u0110\u01A1n gi\u00E1 C\u0110", "Th\u1EDDi h\u1EA1n", "M\u1EE9c \u0111\u1ED9 ho\u00E0n th\u00E0nh (%)"
+				}
+				));
 		tblCongDoan.getColumnModel().getColumn(0).setPreferredWidth(63);
 		tblCongDoan.getColumnModel().getColumn(7).setPreferredWidth(130);
 		tblCongDoan.setRowHeight(24);
@@ -462,8 +463,10 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 
 		scrTableCongDoan = new JScrollPane(tblCongDoan);
 		scrTableCongDoan.setBackground(new java.awt.Color(255, 255, 255));
-		scrTableCongDoan.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh sách hợp đồng"));
-		scrTableCongDoan.setBounds(37, 534, 1203, 216);
+		LineBorder blackLineBorder2 = new LineBorder(Color.BLACK, 2);
+		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(blackLineBorder2, "Danh sách công đoạn sản phẩm");
+		scrTableCongDoan.setBorder(titledBorder2);
+		scrTableCongDoan.setBounds(37, 527, 1203, 192);
 		add(scrTableCongDoan);
 
 		ScrollBarCustom scrollBar1 = new ScrollBarCustom();

@@ -2,10 +2,15 @@ package UI;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Panel;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
@@ -14,261 +19,284 @@ import javax.swing.JTable;
 import com.toedter.calendar.JDateChooser;
 import Custom_UI.RoundedButton;
 import Custom_UI.ScrollBarCustom;
+import Dao.SanPham_Dao;
+import Entity.HopDong;
+import Entity.SanPham;
 
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import java.awt.Component;
+import java.awt.Container;
 
 /**
  * Hoàng Huy Tới
  */
 
-public class TimKiemSanPham_GUI extends JPanel {
+public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
 	private JTextField txtMaSP;
 	private JTextField txtTenSP;
 	private JTextField txtSoLuong;
 	private JTextField txtChatLieu;
 	private JTextField txtKichThuoc;
-	private JTextField txtSoCD;
-	private JTextField txtYeuCau;
 	private JTextField txtDonGia;
 	
 	private JScrollPane scrSanPham;
     private JTable tblSanPham;
+	private JLabel lblTieuDe;
+	private JPanel panelSP;
+	private JLabel lblMaSanPham;
+	private JLabel lblTenSP;
+	private JSeparator jSeparator1;
+	private JLabel lblSoLuongSP;
+	private JSeparator jSeparator2;
+	private JLabel lblErrSoLuong;
+	private JLabel lblChatLieu;
+	private JSeparator jSeparator4;
+	private JLabel lblKichThuoc;
+	private JSeparator jSeparator5;
+	private JSeparator jSeparator6;
+	private JLabel lblDonGia;
+	private JSeparator jSeparator;
+	private JLabel lblErrDonGia;
+	private JLabel lblErrTenSP;
+	private JLabel lblErrKichThuoc;
+	private JLabel lblErrChatLieu;
+	
+	private JButton btnXoaRong;
+	private JButton btnTimKiem;
 
+	private SanPham_Dao sanPham_DAO;
+    private DefaultTableModel modelTableSanPham;
+    private String stThongBao;
+    private String stTimKiemKhongThay;
+	private JButton btnQuayLai;
 	
 	public TimKiemSanPham_GUI() {
-		setBackground(Color.WHITE);
 		initComponents();
+		modelTableSanPham = (DefaultTableModel) tblSanPham.getModel();
+        try {
+            ConnectionDB.ConnectDB.getInstance().connect();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        sanPham_DAO = new SanPham_Dao();
+        btnXoaRong.addActionListener(this);
+        btnTimKiem.addActionListener(this);
+        
+        excute();
+        taiDuLieuLenBang("all", "all", "all", "all","all","all");
 	}
 
 	private void initComponents() {
 		setSize(1290, 750);
+		setBackground(Color.WHITE);
 	    setLayout(null);
 	    
-	    JLabel lblTieuDe = new JLabel("TÌM KIẾM SẢN PHẨM");
+	    lblTieuDe = new JLabel("TÌM KIẾM SẢN PHẨM");
 	    lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
 	    lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
 	    lblTieuDe.setBounds(344, 22, 490, 50);
 	    add(lblTieuDe);
 	    
-	    JPanel panelSP = new JPanel();
+	    panelSP = new JPanel();
 	    panelSP.setLayout(null);
 	    panelSP.setBackground(Color.WHITE);
-	    panelSP.setBounds(46, 71, 1164, 282);
+	    panelSP.setBounds(46, 108, 1164, 245);
 	    add(panelSP);
 	    
-	    JLabel lblMaSanPham = new JLabel();
+	    lblMaSanPham = new JLabel();
 	    lblMaSanPham.setText("Mã sản phẩm:");
 	    lblMaSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    lblMaSanPham.setBounds(81, 35, 125, 30);
 	    panelSP.add(lblMaSanPham);
 	    
 	    txtMaSP = new JTextField();
-	    txtMaSP.setText("txtMaSP");
 	    txtMaSP.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtMaSP.setBorder(null);
 	    txtMaSP.setBounds(216, 21, 318, 36);
 	    panelSP.add(txtMaSP);
 	    
-	    JSeparator jSeparator = new JSeparator();
+	    jSeparator = new JSeparator();
 	    jSeparator.setForeground(Color.BLACK);
 	    jSeparator.setBounds(216, 57, 318, 10);
 	    panelSP.add(jSeparator);
 	    
-	    JLabel lblTenSP = new JLabel();
+	    lblTenSP = new JLabel();
 	    lblTenSP.setText("Tên sản phẩm:");
 	    lblTenSP.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    lblTenSP.setBounds(81, 100, 125, 30);
 	    panelSP.add(lblTenSP);
 	    
 	    txtTenSP = new JTextField();
-	    txtTenSP.setText("txtTenSP");
 	    txtTenSP.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtTenSP.setBorder(null);
 	    txtTenSP.setBounds(216, 85, 318, 36);
 	    panelSP.add(txtTenSP);
 	    
-	    JSeparator jSeparator1 = new JSeparator();
+	    jSeparator1 = new JSeparator();
 	    jSeparator1.setForeground(Color.BLACK);
 	    jSeparator1.setBounds(216, 122, 318, 10);
 	    panelSP.add(jSeparator1);
 	    
-	    JLabel lblSoLuongSP = new JLabel();
+	    lblSoLuongSP = new JLabel();
 	    lblSoLuongSP.setText("Số lượng:");
 	    lblSoLuongSP.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    lblSoLuongSP.setBounds(81, 160, 125, 30);
 	    panelSP.add(lblSoLuongSP);
 	    
 	    txtSoLuong = new JTextField();
-	    txtSoLuong.setText("0");
 	    txtSoLuong.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 	    txtSoLuong.setBorder(null);
 	    txtSoLuong.setBounds(216, 149, 318, 30);
 	    panelSP.add(txtSoLuong);
 	    
-	    JSeparator jSeparator2 = new JSeparator();
+	    jSeparator2 = new JSeparator();
 	    jSeparator2.setForeground(Color.BLACK);
 	    jSeparator2.setBounds(216, 180, 318, 10);
 	    panelSP.add(jSeparator2);
 	    
-	    JLabel lblErrGiaTriHD = new JLabel();
-	    lblErrGiaTriHD.setText("thông báo lỗi");
-	    lblErrGiaTriHD.setForeground(new Color(204, 0, 0));
-	    lblErrGiaTriHD.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrGiaTriHD.setBounds(216, 184, 325, 18);
-	    panelSP.add(lblErrGiaTriHD);
+	    lblErrSoLuong = new JLabel();
+	    lblErrSoLuong.setText("thông báo lỗi");
+	    lblErrSoLuong.setForeground(new Color(204, 0, 0));
+	    lblErrSoLuong.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+	    lblErrSoLuong.setBounds(216, 184, 325, 18);
+	    panelSP.add(lblErrSoLuong);
 	    
-	    JLabel lblChatLieu = new JLabel();
+	    lblChatLieu = new JLabel();
 	    lblChatLieu.setText("Chất liệu:");
 	    lblChatLieu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    lblChatLieu.setBounds(624, 35, 91, 30);
 	    panelSP.add(lblChatLieu);
 	    
 	    txtChatLieu = new JTextField();
-	    txtChatLieu.setText("txtChatLieu");
 	    txtChatLieu.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtChatLieu.setBorder(null);
 	    txtChatLieu.setBounds(746, 21, 341, 30);
 	    panelSP.add(txtChatLieu);
 	    
-	    JSeparator jSeparator4 = new JSeparator();
+	    jSeparator4 = new JSeparator();
 	    jSeparator4.setForeground(Color.BLACK);
 	    jSeparator4.setBounds(746, 55, 341, 10);
 	    panelSP.add(jSeparator4);
 	    
-	    JLabel lblKichThuoc = new JLabel();
+	    lblKichThuoc = new JLabel();
 	    lblKichThuoc.setText("Kích thước:");
 	    lblKichThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    lblKichThuoc.setBounds(624, 97, 91, 30);
 	    panelSP.add(lblKichThuoc);
 	    
 	    txtKichThuoc = new JTextField();
-	    txtKichThuoc.setText("txtKichThuoc");
 	    txtKichThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 	    txtKichThuoc.setBorder(null);
 	    txtKichThuoc.setBounds(746, 91, 341, 30);
 	    panelSP.add(txtKichThuoc);
 	    
-	    JSeparator jSeparator5 = new JSeparator();
+	    jSeparator5 = new JSeparator();
 	    jSeparator5.setForeground(Color.BLACK);
 	    jSeparator5.setBounds(746, 122, 341, 10);
 	    panelSP.add(jSeparator5);
 	    
-	    JLabel lblSoCD = new JLabel();
-	    lblSoCD.setText("Số công đoạn:");
-	    lblSoCD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblSoCD.setBounds(624, 160, 102, 30);
-	    panelSP.add(lblSoCD);
-	    
-	    txtSoCD = new JTextField();
-	    txtSoCD.setText("txtSoCD");
-	    txtSoCD.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    txtSoCD.setBorder(null);
-	    txtSoCD.setBounds(746, 149, 341, 30);
-	    panelSP.add(txtSoCD);
-	    
-	    JSeparator jSeparator6 = new JSeparator();
+	    jSeparator6 = new JSeparator();
 	    jSeparator6.setForeground(Color.BLACK);
 	    jSeparator6.setBounds(745, 180, 342, 10);
 	    panelSP.add(jSeparator6);
 	    
-	    JLabel lblYeuCau = new JLabel();
-	    lblYeuCau.setText("Yêu cầu:");
-	    lblYeuCau.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblYeuCau.setBounds(624, 224, 69, 30);
-	    panelSP.add(lblYeuCau);
-	    
-	    JLabel lblDonGia = new JLabel();
+	    lblDonGia = new JLabel();
 	    lblDonGia.setText("Đơn giá:");
 	    lblDonGia.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-	    lblDonGia.setBounds(81, 224, 125, 30);
+	    lblDonGia.setBounds(624, 160, 125, 30);
 	    panelSP.add(lblDonGia);
 	    
-	    JSeparator jSeparator3 = new JSeparator();
-	    jSeparator3.setForeground(Color.BLACK);
-	    jSeparator3.setBounds(216, 244, 318, 10);
-	    panelSP.add(jSeparator3);
-	    
-	    txtYeuCau = new JTextField();
-	    txtYeuCau.setText("txtYeuCau");
-	    txtYeuCau.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-	    txtYeuCau.setBorder(null);
-	    txtYeuCau.setBounds(746, 214, 341, 30);
-	    panelSP.add(txtYeuCau);
-	    
-	    JSeparator jSeparator7 = new JSeparator();
-	    jSeparator7.setForeground(Color.BLACK);
-	    jSeparator7.setBounds(746, 244, 341, 10);
-	    panelSP.add(jSeparator7);
-	    
 	    txtDonGia = new JTextField();
-	    txtDonGia.setText("0");
 	    txtDonGia.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 	    txtDonGia.setBorder(null);
-	    txtDonGia.setBounds(216, 214, 318, 30);
+	    txtDonGia.setBounds(746, 149, 318, 30);
 	    panelSP.add(txtDonGia);
 	    
-	    JLabel lblErrGiaTriHD_1 = new JLabel();
-	    lblErrGiaTriHD_1.setText("thông báo lỗi");
-	    lblErrGiaTriHD_1.setForeground(new Color(204, 0, 0));
-	    lblErrGiaTriHD_1.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrGiaTriHD_1.setBounds(216, 252, 325, 18);
-	    panelSP.add(lblErrGiaTriHD_1);
+	    lblErrDonGia = new JLabel();
+	    lblErrDonGia.setText("thông báo lỗi");
+	    lblErrDonGia.setForeground(new Color(204, 0, 0));
+	    lblErrDonGia.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+	    lblErrDonGia.setBounds(216, 252, 325, 18);
+	    panelSP.add(lblErrDonGia);
 	    
-	    JLabel lblErrTenSP = new JLabel();
+	    lblErrTenSP = new JLabel();
 	    lblErrTenSP.setText("lblErrTenSP");
 	    lblErrTenSP.setForeground(new Color(204, 0, 0));
 	    lblErrTenSP.setFont(new Font("Times New Roman", Font.PLAIN, 13));
 	    lblErrTenSP.setBounds(216, 122, 325, 17);
 	    panelSP.add(lblErrTenSP);
 	    
-	    JLabel lblErrGiaTriHD_2 = new JLabel();
-	    lblErrGiaTriHD_2.setText("thông báo lỗi");
-	    lblErrGiaTriHD_2.setForeground(new Color(204, 0, 0));
-	    lblErrGiaTriHD_2.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrGiaTriHD_2.setBounds(746, 122, 284, 24);
-	    panelSP.add(lblErrGiaTriHD_2);
+	    lblErrKichThuoc = new JLabel();
+	    lblErrKichThuoc.setText("thông báo lỗi");
+	    lblErrKichThuoc.setForeground(new Color(204, 0, 0));
+	    lblErrKichThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+	    lblErrKichThuoc.setBounds(746, 122, 284, 24);
+	    panelSP.add(lblErrKichThuoc);
 	    
-	    JLabel lblErrGiaTriHD_3 = new JLabel();
-	    lblErrGiaTriHD_3.setText("thông báo lỗi");
-	    lblErrGiaTriHD_3.setForeground(new Color(204, 0, 0));
-	    lblErrGiaTriHD_3.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrGiaTriHD_3.setBounds(745, 180, 188, 24);
-	    panelSP.add(lblErrGiaTriHD_3);
+	    lblErrChatLieu = new JLabel();
+	    lblErrChatLieu.setText("thông báo lỗi");
+	    lblErrChatLieu.setForeground(new Color(204, 0, 0));
+	    lblErrChatLieu.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+	    lblErrChatLieu.setBounds(746, 57, 284, 18);
+	    panelSP.add(lblErrChatLieu);	    
+ 
+	    btnXoaRong = new JButton();
+	    btnXoaRong.setIcon(new ImageIcon(TimKiemSanPham_GUI.class.getResource("/image/icon/xoaRong.png")));
+	    btnXoaRong.setText("Xóa rỗng");
+	    btnXoaRong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+	    btnXoaRong.setBorder(null);
+	    btnXoaRong.setBackground(new Color(255, 192, 203));
+	    btnXoaRong.setBounds(331, 364, 140, 40);
+	    btnXoaRong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaRongActionPerformed(evt);
+            }
+        });
+	    add(btnXoaRong);
 	    
-	    JLabel lblErrGiaTriHD_4 = new JLabel();
-	    lblErrGiaTriHD_4.setText("thông báo lỗi");
-	    lblErrGiaTriHD_4.setForeground(new Color(204, 0, 0));
-	    lblErrGiaTriHD_4.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-	    lblErrGiaTriHD_4.setBounds(746, 57, 284, 18);
-	    panelSP.add(lblErrGiaTriHD_4);
+	    btnTimKiem = new JButton();
+	    btnTimKiem.setIcon(new ImageIcon(TimKiemSanPham_GUI.class.getResource("/image/icon/timKiem.png")));
+	    btnTimKiem.setText("Tìm kiếm");
+	    btnTimKiem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+	    btnTimKiem.setBorder(null);
+	    btnTimKiem.setBackground(new Color(255, 215, 0));
+	    btnTimKiem.setBounds(584, 364, 140, 40);
+	    btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
+	    add(btnTimKiem);
 	    
-	    JPanel panelButton = new JPanel();
-	    panelButton.setLayout(null);
-	    panelButton.setBackground(Color.WHITE);
-	    panelButton.setBounds(222, 372, 814, 65);
-	    add(panelButton);
-	    
-	    RoundedButton rndbtnXaRng = new RoundedButton("Xóa", new Color(222, 184, 135), (Color) null);
-	    rndbtnXaRng.setIcon(new ImageIcon(TimKiemSanPham_GUI.class.getResource("/image/icon/xoaRong.png")));
-	    rndbtnXaRng.setText("Xóa rỗng");
-	    rndbtnXaRng.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    rndbtnXaRng.setBounds(219, 14, 170, 40);
-	    panelButton.add(rndbtnXaRng);
-	    
-	    RoundedButton rndbtnTmKim = new RoundedButton("Cập nhật", new Color(255, 218, 185), (Color) null);
-	    rndbtnTmKim.setIcon(new ImageIcon(TimKiemSanPham_GUI.class.getResource("/image/icon/timKiem.png")));
-	    rndbtnTmKim.setText("Tìm kiếm");
-	    rndbtnTmKim.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    rndbtnTmKim.setBounds(439, 14, 170, 40);
-	    panelButton.add(rndbtnTmKim);
+	    btnQuayLai = new JButton();
+        btnQuayLai.setIcon(new ImageIcon(TimKiemSanPham_GUI.class.getResource("/image/icon/reset.png")));
+        btnQuayLai.setText("Quay lại");
+        btnQuayLai.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        btnQuayLai.setBorder(null);
+        btnQuayLai.setBackground(new Color(255, 192, 203));
+        btnQuayLai.setBounds(842, 364, 140, 40);
+        add(btnQuayLai);
+        btnQuayLai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuayLaiActionPerformed(evt);
+            }
+        });
 	    
 	    tblSanPham = new JTable();
         tblSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         tblSanPham.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
-        tblSanPham.setRowHeight(30);
 
 	    tblSanPham.setModel(new DefaultTableModel(
 	    	new Object[][] {
@@ -282,26 +310,139 @@ public class TimKiemSanPham_GUI extends JPanel {
 	    		{null, null, null, null, null, null, null, null},
 	    	},
 	    	new String[] {
-	    		"STT", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng s\u1EA3n ph\u1EA9m", "Ch\u1EA5t li\u1EC7u", "K\u00EDch th\u01B0\u1EDBc", "S\u1ED1 c\u00F4ng \u0111o\u1EA1n", "\u0110\u01A1n gi\u00E1"
+	    		"STT", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng", "Ch\u1EA5t li\u1EC7u", "K\u00EDch th\u01B0\u1EDBc", "Ảnh sản phẩm", "\u0110\u01A1n gi\u00E1"
 	    	}
 	    ));
-	    tblSanPham.getColumnModel().getColumn(0).setPreferredWidth(40);
-	    tblSanPham.getColumnModel().getColumn(0).setMinWidth(40);
+	    tblSanPham.getTableHeader().setBackground(new Color(128, 200, 255));
+	    tblSanPham.setRowHeight(28);
+	    tblSanPham.setSelectionBackground(new Color(255, 215, 0));
+	    tblSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				tblSanPhamMouseClicked(evt);
+			}
+		});
 	    
-
 	    scrSanPham = new JScrollPane(tblSanPham);
-	    scrSanPham.setBounds(46, 500, 1225, 205);
-	    add(scrSanPham);
-	    
+	    scrSanPham.setBounds(46, 443, 1225, 252);
+	    scrSanPham.setBackground(new java.awt.Color(255, 255, 255));
+	    LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);
+		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Danh sách sản phẩm");
+		scrSanPham.setBorder(titledBorder);
+	   
         ScrollBarCustom scrollBar = new ScrollBarCustom();
         scrollBar.setForeground(Color.RED);
-
         scrSanPham.setVerticalScrollBar(scrollBar);
-	    
-	    JLabel lblDsSP = new JLabel("Danh sách sản phẩm:");
-	    lblDsSP.setFont(new Font("Times New Roman", Font.BOLD, 15));
-	    lblDsSP.setBounds(46, 461, 186, 28);
-	    add(lblDsSP);
+        add(scrSanPham);
+        
+	}
+
+	public void excute() {
+		lblErrSoLuong.setText("");
+		lblErrChatLieu.setText("");
+		lblErrDonGia.setText("");
+		lblErrKichThuoc.setText("");
+		lblErrTenSP.setText("");
+    }
+
+	public void taiDuLieuLenBang(String ma, String ten, String kichThuoc, String chatLieu, String soLuong, String donGia) {
+	    while (tblSanPham.getRowCount() != 0) {
+	        modelTableSanPham.removeRow(0);
+	    }
+	    ArrayList<SanPham> dsSanPham = sanPham_DAO.layDanhSachSanPham();
+
+	    for (SanPham sanPham : dsSanPham) {
+	        boolean flag = true;
+
+	        // Kiểm tra các tiêu chí tìm kiếm
+	        if (!ma.equalsIgnoreCase("all") && !sanPham.getMaSanPham().toLowerCase().contains(ma.toLowerCase())) {
+	            flag = false;
+	        }
+	        if (!ten.equalsIgnoreCase("all") && !sanPham.getTenSanPham().toLowerCase().contains(ten.toLowerCase())) {
+	            flag = false;
+	        }
+	        if (!chatLieu.equalsIgnoreCase("all") && !sanPham.getChatLieu().toLowerCase().contains(chatLieu.toLowerCase())) {
+	            flag = false;
+	        }
+	        if (!kichThuoc.equalsIgnoreCase("all") && !String.valueOf(sanPham.getKichThuoc()).toLowerCase().contains(kichThuoc.toLowerCase())) {
+	            flag = false;
+	        }
+	        if (!soLuong.equalsIgnoreCase("all") && !String.valueOf(sanPham.getSoLuongSanPham()).toLowerCase().contains(soLuong.toLowerCase())) {
+	            flag = false;
+	        }
+	        if (!donGia.equalsIgnoreCase("all") && !String.valueOf(sanPham.getDonGia()).toLowerCase().contains(donGia.toLowerCase())) {
+	            flag = false;
+	        }
+
+	        if (flag) {
+	            String data[] = {(modelTableSanPham.getRowCount() + 1) + "", sanPham.getMaSanPham(), sanPham.getTenSanPham(), String.valueOf(sanPham.getSoLuongSanPham()), sanPham.getChatLieu(), String.valueOf(sanPham.getKichThuoc()), sanPham.getAnhSanPham(), String.valueOf(sanPham.getDonGia())};
+	            modelTableSanPham.addRow(data);
+	        }
+	    }
+
+	    if (tblSanPham.getRowCount() == 0) {
+	        JOptionPane.showMessageDialog(null, "Không tìm thấy", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	    }
+
+	    if (tblSanPham.getRowCount() != 0) {
+	        tblSanPham.setRowSelectionInterval(0, 0);
+	    }
+	}
+
+
+	private void btnQuayLaiActionPerformed(ActionEvent evt) {
+	    taiDuLieuLenBang("all", "all", "all", "all", "all", "all");
+	}
 	
+	private void tblSanPhamMouseClicked(MouseEvent evt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void btnTimKiemActionPerformed(ActionEvent evt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void btnXoaRongActionPerformed(ActionEvent evt) {
+		// TODO Auto-generated method stub
+		txtChatLieu.setText("");
+		txtDonGia.setText("");
+		txtKichThuoc.setText("");
+		txtMaSP.setText("");
+		txtSoLuong.setText("");
+		txtTenSP.setText("");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+        if (o.equals(btnTimKiem)) {
+            String maSanPham = txtMaSP.getText().trim();
+            String tenSanPham = txtTenSP.getText().trim();
+            String chatLieu = txtChatLieu.getText().trim();
+            String kichThuoc = txtKichThuoc.getText();
+            String soLuong = txtSoLuong.getText();
+            String donGia = txtDonGia.getText();
+            
+            if (maSanPham.trim().equalsIgnoreCase("")) {
+                maSanPham = "all";
+            }
+            if (tenSanPham.equalsIgnoreCase("")) {
+                tenSanPham = "all";
+            }
+            if (chatLieu.equalsIgnoreCase("")) {
+                chatLieu = "all";
+            }
+            if (kichThuoc.equalsIgnoreCase("")){
+                kichThuoc = "all";
+            }
+            if (soLuong.equalsIgnoreCase("")) {
+            	soLuong = "all";
+            }
+            if (donGia.equalsIgnoreCase("")){
+            	donGia = "all";
+            }
+            taiDuLieuLenBang(maSanPham, tenSanPham, kichThuoc, chatLieu,soLuong,donGia);
+        }
 	}
 }

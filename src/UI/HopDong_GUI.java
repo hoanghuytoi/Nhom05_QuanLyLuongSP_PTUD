@@ -209,7 +209,7 @@ public class HopDong_GUI extends JPanel {
 		lblErrTenHopDong = new JLabel();
 		lblErrTenHopDong.setBounds(490, 120, 210, 30);
 		scrHopDong = new JScrollPane();
-		scrHopDong.setBounds(40, 503, 1208, 236);
+		scrHopDong.setBounds(40, 503, 1208, 218);
 		tblHopDong = new JTable();
 
 		setBackground(new Color(255, 255, 255));
