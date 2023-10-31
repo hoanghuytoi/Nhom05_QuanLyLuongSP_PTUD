@@ -4,38 +4,47 @@ public class SanPham {
 	private String maSanPham;
     private String tenSanPham;
     private int soLuongSanPham;
-    private String mauSac;
+    private Double donGia;
     private String chatLieu;
     private int kichThuoc;
     private String anhSanPham;
     private int soLuongCongDoan;
     private HopDong hopDong;
     
-    public SanPham(String maSanPham, String tenSanPham, int soLuongSanPham, String mauSac, String chatLieu, int kichThuoc, String anhSanPham, int soLuongCongDoan, HopDong hopDong) {
-        try {
-            setMaSanPham(maSanPham);
-            setTenSanPham(tenSanPham);
-            setSoLuongSanPham(soLuongSanPham);
-            setMauSac(mauSac);
-            setChatLieu(chatLieu);
-            setKichThuoc(kichThuoc);
-            setAnhSanPham(anhSanPham);
-            setSoLuongCongDoan(soLuongCongDoan);
-            setHopDong(hopDong);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-    
+	public SanPham(String maSanPham, String tenSanPham, int soLuongSanPham, Double donGia, String chatLieu,
+			int kichThuoc, String anhSanPham, int soLuongCongDoan, HopDong hopDong) {
+		super();
+		this.maSanPham = maSanPham;
+		this.tenSanPham = tenSanPham;
+		this.soLuongSanPham = soLuongSanPham;
+		this.donGia = donGia;
+		this.chatLieu = chatLieu;
+		this.kichThuoc = kichThuoc;
+		this.anhSanPham = anhSanPham;
+		this.soLuongCongDoan = soLuongCongDoan;
+		this.hopDong = hopDong;
+	}
+
+	@Override
+	public String toString() {
+		return "SanPham [maSanPham=" + maSanPham + ", tenSanPham=" + tenSanPham + ", soLuongSanPham=" + soLuongSanPham
+				+ ", donGia=" + donGia + ", chatLieu=" + chatLieu + ", kichThuoc=" + kichThuoc + ", anhSanPham="
+				+ anhSanPham + ", soLuongCongDoan=" + soLuongCongDoan + ", hopDong=" + hopDong + "]";
+	}
+
+	public SanPham() {
+		super();
+	}
+
 	public String getMaSanPham() {
 		return maSanPham;
 	}
-	
-	private void setMaSanPham(String maSanPham) throws Exception {
+
+	public void setMaSanPham(String maSanPham) throws Exception {
         if (maSanPham.equals("")) {
             throw new Exception("Mã sản phẩm không được để Trống!");
-        } else if (!maSanPham.matches("^SP[1-9][0-9]{4}$")) {
-            throw new Exception("Mã Sản phẩm phải theo dạng SPxxxxx với x là các kí tự số x đầu tiên từ [1-9], x sau từ [0-9]");
+        } else if (!maSanPham.matches("^PPSP[1-9][0-9]{5}$")) {
+            throw new Exception("Mã Sản phẩm phải theo dạng PPSPxxxxxx với x là các kí tự số x đầu tiên từ [1-9], x sau từ [0-9]");
         } else {
             this.maSanPham = maSanPham;
         }
@@ -65,14 +74,18 @@ public class SanPham {
         }
     }
 	
-	public String getMauSac() {
-		return mauSac;
+	public Double getDonGia() {
+		return donGia;
 	}
-	
-	public void setMauSac(String mauSac) {
-		this.mauSac = mauSac;
+
+	public void setDonGia(Double donGia) throws Exception {
+		if (donGia <= 0) {
+            throw new Exception("Đơn giá không được <= 0!");
+        } else {
+            this.donGia = donGia;
+        }
 	}
-	
+
 	public String getChatLieu() {
 		return chatLieu;
 	}
@@ -127,8 +140,4 @@ public class SanPham {
 		this.hopDong = hopDong;
 	}
     
-	@Override
-    public String toString() {
-        return "SanPham{" + "maSanPham=" + maSanPham + ", tenSanPham=" + tenSanPham + ", soLuongSanPham=" + soLuongSanPham + ", mauSac=" + mauSac + ", chatLieu=" + chatLieu + ", kichThuoc=" + kichThuoc + ", anhSanPham=" + anhSanPham + ", soLuongCongDoan=" + soLuongCongDoan + ", hopDong=" + hopDong + '}';
-    }
 }
