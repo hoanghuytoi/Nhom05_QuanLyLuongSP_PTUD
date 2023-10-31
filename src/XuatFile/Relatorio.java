@@ -15,7 +15,7 @@ import net.sf.jasperreports.view.JasperViewer;
 public class Relatorio {
 	
 	public static void gerarRelatorio() throws JRException {
-		InputStream arq = Relatorio.class.getResourceAsStream("/FileIreport/InHopDong.jrxml");
+		InputStream arq = Relatorio.class.getResourceAsStream("/FileReport/InHopDong.jrxml");
 		JasperReport report = JasperCompileManager.compileReport(arq);
 		ThongTinHD rp = new ThongTinHD("TP.HCM, ngày 20 tháng 11 năm 2023","PPHD100001", "Hợp đồng sản xuất","Huỳnh Công Vương", "Hoàng Huy Tới", "100 chiếc giày Adidas", "10/10/2023", "31/12/2023", 1000000000, 200000000);
 		ArrayList<ThongTinHD> list = new ArrayList<>();
