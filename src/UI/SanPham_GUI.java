@@ -191,11 +191,12 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 						"STT", "M\u00E3 h\u1EE3p \u0111\u1ED3ng", "T\u00EAn h\u1EE3p \u0111\u1ED3ng", "T\u00EAn kh\u00E1ch h\u00E0ng"
 				}
 				));
-		tblHopDong.setRowHeight(30);
+		tblHopDong.getTableHeader().setOpaque(false);
+		tblHopDong.setRowHeight(24);
 		tblHopDong.setSelectionBackground(new java.awt.Color(232, 57, 95));
 		tblHopDong.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				//tblHopDongMouseClicked(evt);
+				tblHopDongMouseClicked(evt);
 			}
 		});
 		ScrollBarCustom scrollBar = new ScrollBarCustom();
@@ -285,7 +286,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		pnlThongTinSP.add(lblDonGia);
 
 		lblDonGia.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		lblDonGia.setText("Đơn giá:");
+		lblDonGia.setText("Đơn giá SP:");
 		lblSoLuong = new javax.swing.JLabel();
 		lblSoLuong.setBounds(213, 181, 80, 30);
 		pnlThongTinSP.add(lblSoLuong);
@@ -574,6 +575,11 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		lblNewLabel.setBounds(432, 201, 40, 27);
 		add(lblNewLabel);
 
+	}
+
+	protected void tblHopDongMouseClicked(MouseEvent evt) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void tblDanhSachSanPhamMouseClicked(MouseEvent evt) {

@@ -14,7 +14,7 @@ public class SanPham_Dao {
 	public SanPham_Dao() {
     }
 
-    public ArrayList<SanPham> layDanhSachSanPham() {
+    public static ArrayList<SanPham> layDanhSachSanPham() {
         ArrayList<SanPham> dsSanPham = new ArrayList<SanPham>();
         Statement stm = null;
         HopDong_Dao hopDong_DAO = new HopDong_Dao();

@@ -10,10 +10,10 @@ public class CongDoan {
     private String tinhTrang;
     private Date thoiHan;
     private SanPham sanPham;
-    private double tienLuong;
+    private double donGia; 
     
 	public CongDoan(String maCongDoan, int thuTuCongDoan, String tenCongDoan, int soLuongCan, String tinhTrang,
-			Date thoiHan, SanPham sanPham, double tienLuong) {
+			Date thoiHan, SanPham sanPham, double donGia) {
 		try {
             setMaCongDoan(maCongDoan);
             setTenCongDoan(tenCongDoan);
@@ -21,7 +21,7 @@ public class CongDoan {
             setTinhTrang(tinhTrang);
             setThoiHan(thoiHan);
             setSanPham(sanPham);
-            setTienLuong(tienLuong);
+            setDonGia(donGia);
             setThuTuCongDoan(thuTuCongDoan);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -35,8 +35,8 @@ public class CongDoan {
 	public void setMaCongDoan(String maCongDoan) throws Exception{
 		if (maCongDoan.equals("")) {
             throw new Exception("Mã công đoạn không được để trống!");
-        } else if (!maCongDoan.matches("^CD[1-9][0-9]{4}$")) {
-            throw new Exception("Mã Công đoạn phải theo dạng CDxxxxx với x là các kí tự số x đầu tiền từ [1-9], x sau từ [0-9]");
+        } else if (!maCongDoan.matches("^PPCD[1-9][0-9]{5}$")) {
+            throw new Exception("Mã Công đoạn phải theo dạng PPCDxxxxxx với x là các kí tự số x đầu tiền từ [1-9], x sau từ [0-9]");
         } else {
             this.maCongDoan = maCongDoan;
         }
@@ -102,21 +102,21 @@ public class CongDoan {
 		this.sanPham = sanPham;
 	}
 
-	public double getTienLuong() {
-		return tienLuong;
+	public double getDonGia() {
+		return donGia;
 	}
 
-	public void setTienLuong(double tienLuong) throws Exception{
-		if (tienLuong <= 0) {
-            throw new Exception("Tiền lương phải >0 !");
+	public void setDonGia(double donGia) throws Exception{
+		if (donGia <= 0) {
+            throw new Exception("Đơn giá phải >0 !");
         } else {
-            this.tienLuong = tienLuong;
+            this.donGia = donGia;
         }
 	}
     
 	@Override
     public String toString() {
-        return "CongDoan{" + "maCongDoan=" + maCongDoan + ", thuTuCongDoan=" + thuTuCongDoan + ", tenCongDoan=" + tenCongDoan + ", soLuongCan=" + soLuongCan + ", tinhTrang=" + tinhTrang + ", thoiHan=" + thoiHan + ", sanPham=" + sanPham + ", tienLuong=" + tienLuong + '}';
+        return "CongDoan{" + "maCongDoan=" + maCongDoan + ", thuTuCongDoan=" + thuTuCongDoan + ", tenCongDoan=" + tenCongDoan + ", soLuongCan=" + soLuongCan + ", tinhTrang=" + tinhTrang + ", thoiHan=" + thoiHan + ", sanPham=" + sanPham + ", donGia=" + donGia + '}';
     }
 	
     
