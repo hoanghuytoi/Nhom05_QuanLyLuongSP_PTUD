@@ -124,7 +124,7 @@ public class Main_GUI extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new Color(255, 255, 255));
 
-        pnHeader.setBackground(new Color(240, 128, 128));
+        pnHeader.setBackground(new Color(222, 184, 135));
         pnHeader.setForeground(new Color(41, 128, 185));
         pnHeader.setFont(new Font("Times New Roman", Font.BOLD, 30)); 
         pnHeader.setPreferredSize(new Dimension(1500, 75));
@@ -148,7 +148,7 @@ public class Main_GUI extends JFrame {
 
         jScrollPane.setBorder(null);
 
-        menus.setBackground(new Color(60, 99, 130));
+        menus.setBackground(new Color(255, 182, 193));
         menus.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
         menus.setLayout(new BoxLayout(menus,BoxLayout.Y_AXIS));
         jScrollPane.setViewportView(menus);
@@ -171,7 +171,7 @@ public class Main_GUI extends JFrame {
 
         getContentPane().add(pnMenu, BorderLayout.LINE_START);
 
-        pnBody.setBackground(new Color(255, 255, 204));
+        pnBody.setBackground(new Color(240, 230, 140));
         pnBody.setLayout(new BorderLayout());
         getContentPane().add(pnBody, BorderLayout.CENTER);
 
