@@ -96,15 +96,38 @@ public class Main_GUI extends JFrame {
 
 	
 	
-    public Main_GUI() throws IOException {
-    	try {
+    public Main_GUI(String userName) throws IOException {
+    	//this.fileName = fileName;
+        this.userName = userName;
+        System.out.println(fileName);
+        congNhan_DAO = new CongNhan_Dao();
+        nhanVien_DAO = new NhanVien_Dao();
+        nhanVienDangNhap = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
+        initComponents();
+        execute();
+        try {
             ConnectionDB.ConnectDB.getInstance().connect();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        initComponents();
-        execute();
+        String loai = userName.substring(0, 4);
+//        if (loai.equals("PPCN")) {
+//            congNhan = congNhan_DAO.layMotCongNhanTheoMa(userName);
+//
+//        } 
+        if (loai.equals("PPNV")) {
+            nhanVien = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
+        }
+//        String hello = "Hello, ";
+//
+//        if (congNhan != null) {
+//            hello += congNhan.getHoTen();
+//        }
+//        if (nhanVien != null) {
+//            hello += nhanVien.getHoTen();
+//        }
+        this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
     }
     
     private void initComponents() {
@@ -296,18 +319,6 @@ public class Main_GUI extends JFrame {
 
         });
         
-        phanCongCongNhan = new MenuItem(iconSubMenuNonSelect, "Phân công công nhân", ((e) -> {
-            pnBody.removeAll();
-            try {
-                pnBody.add(new PhanCongCongNhan_GUI(), BorderLayout.CENTER);
-            } catch (Exception ex) {
-                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            pnBody.repaint();
-            pnBody.revalidate();
-            iconSubMenuMacDinh(phanCongCongNhan);
-        }));
-        
         // subMenu công nhân
         capNhatCongNhan = new MenuItem(iconSubMenuNonSelect, "Cập nhật", ((e) -> {
             pnBody.removeAll();
@@ -319,6 +330,18 @@ public class Main_GUI extends JFrame {
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh(capNhatCongNhan);
+        }));
+        
+        phanCongCongNhan = new MenuItem(iconSubMenuNonSelect, "Phân công công nhân", ((e) -> {
+            pnBody.removeAll();
+            try {
+                pnBody.add(new PhanCongCongNhan_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            pnBody.repaint();
+            pnBody.revalidate();
+            iconSubMenuMacDinh(phanCongCongNhan);
         }));
         
         chamCongCongNhan = new MenuItem(iconSubMenuNonSelect, "Chấm công", ((e) -> {
@@ -488,7 +511,7 @@ public class Main_GUI extends JFrame {
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
             setSelectMenu(menuNhanVien);
-        }, capNhatNhanVien, chamCongNhanVien, phanCongCongNhan, tinhLuongNhanVien, timKiemNhanVien);
+        }, capNhatNhanVien, chamCongNhanVien, tinhLuongNhanVien, timKiemNhanVien);
         
         // menu Công nhân
         menuCongNhan = new MenuItem(iconCongNhan, "Công nhân", (ActionEvent e) -> {
@@ -496,7 +519,7 @@ public class Main_GUI extends JFrame {
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
             setSelectMenu(menuCongNhan);
-        }, capNhatCongNhan, chamCongCongNhan, tinhLuongCongNhan, timKiemCongNhan);
+        }, capNhatCongNhan,phanCongCongNhan, chamCongCongNhan, tinhLuongCongNhan, timKiemCongNhan);
         
         // menu Thống kê
         menuThongKe = new MenuItem(iconThongKe, "Thống kê", (ActionEvent e) -> {
@@ -525,6 +548,29 @@ public class Main_GUI extends JFrame {
         },thongTinCaNhan,doiMatKhau,dangXuat);
         
         addMenu(menuTrangChu,menuPhongBan,menuToNhom,menuHopDong,menuSanPham,menuNhanVien,menuCongNhan,menuThongKe,menuHoTro,menuHeThong);
+        
+        if (this.userName.contains("PPNV")) {
+            pnBody.removeAll();
+            pnBody.add(new TrangChu_GUI(), BorderLayout.CENTER);
+            pnBody.repaint();
+            pnBody.revalidate();
+            setSelectMenu(menuTrangChu);
+            NhanVien_Dao nhanVienDao = new NhanVien_Dao();
+            NhanVien nhanVien = nhanVienDao.layMotNhanVienTheoMaNhanVien(userName);
+            if (nhanVien.getChucVu().equalsIgnoreCase("Quản lý")) {
+                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuThongKe, menuHoTro, menuHeThong);
+            } else {
+                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuThongKe, menuHoTro, menuHeThong);
+                
+                menuPhongBan.setVisible(false);
+                menuToNhom.setVisible(false);
+                menuHopDong.setVisible(false);
+                menuNhanVien.setVisible(false);
+                menuThongKe.setVisible(false);
+                menuHoTro.setVisible(false);
+                
+            }
+        }
         
     }
 	
@@ -599,19 +645,19 @@ public class Main_GUI extends JFrame {
     }
 
     
-    public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-	        public void run() {
-	            try {
-	            	Main_GUI frame = new Main_GUI();
-	                frame.setVisible(true);
-	                frame.setResizable(false);
-	                frame.setLocationRelativeTo(null);
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    });
-	}
+//    public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//	        public void run() {
+//	            try {
+//	            	Main_GUI frame = new Main_GUI();
+//	                frame.setVisible(true);
+//	                frame.setResizable(false);
+//	                frame.setLocationRelativeTo(null);
+//	            } catch (Exception e) {
+//	                e.printStackTrace();
+//	            }
+//	        }
+//	    });
+//	}
 }
 

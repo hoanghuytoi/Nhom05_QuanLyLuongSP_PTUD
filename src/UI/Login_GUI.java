@@ -34,6 +34,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import java.awt.Dimension;
+import javax.swing.JSeparator;
 
 /**
  * Hoàng Huy Tới
@@ -49,8 +50,6 @@ public class Login_GUI extends JFrame {
     private JPanel panelTieuDe;
     private JPanel panelThongTin;
     private JLabel imageUser;
-    private JLabel textPassword;
-    private JLabel textUserName;
     private JLabel imageExit;
     private JLabel lblLogo;
     private JLabel lblMatKhau;
@@ -67,16 +66,18 @@ public class Login_GUI extends JFrame {
     private NhanVien_Dao nhanVien_DAO;
     private CongNhan_Dao congNhan_DAO;
     private ArrayList<String> ngonNguList;
+	private JSeparator jSeparator1;
+	private JSeparator jSeparator1_1;
 
 	public Login_GUI() {
 //		ngonNguList = new ArrayList<>();
-//        try {
-//            ConnectionDB.ConnectDB.getInstance().connect();
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//        congNhan_DAO = new CongNhan_Dao();
-//        nhanVien_DAO = new NhanVien_Dao();
+        try {
+            ConnectionDB.ConnectDB.getInstance().connect();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        congNhan_DAO = new CongNhan_Dao();
+        nhanVien_DAO = new NhanVien_Dao();
 //        File file = new File("config/VietNam.properties");
 //        File file1 = new File("config/English.properties");
 //        ngonNguList.add(file.getAbsolutePath());
@@ -84,14 +85,18 @@ public class Login_GUI extends JFrame {
         initComponents();
         txtDangNhap.setText("PPNV100001");
         txtMatKhau.setText("111111");
-
-//        if (pref.get("userName", "").equals("") || pref.get("userName", "") == null) {
-//            txtDangNhap.setText("PPNV100001");
-//            NhanVien nhanVienDangNhap = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(txtDangNhap.getText());
-//            txtMatKhau.setText(nhanVienDangNhap.getMatKhau());
-//        } else {
-//            getDataRemember();
-//        }
+        
+        if (pref.get("userName", "").equals("") || pref.get("userName", "") == null) {
+            txtDangNhap.setText("PPNV100001");
+            NhanVien nhanVienDangNhap = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(txtDangNhap.getText());
+            if (nhanVienDangNhap != null) {
+                txtMatKhau.setText(nhanVienDangNhap.getMatKhau());
+            } else {
+                JOptionPane.showMessageDialog(null, "Không tìm thấy nhân viên!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            getDataRemember();
+        }
 	}
     
 	public void getDataRemember() {
@@ -147,9 +152,6 @@ public class Login_GUI extends JFrame {
         lblMatKhau = new JLabel();
         lblMatKhau.setBounds(60, 220, 360, 24);
         
-        textUserName = new JLabel();
-        textUserName.setBounds(60, 183, 344, 16);
-        
         disable = new JLabel();
         disable.setBounds(450, 264, 20, 20);
         
@@ -167,8 +169,6 @@ public class Login_GUI extends JFrame {
         btnDangNhap.setBounds(60, 370, 410, 47);
         
         btnDangNhap.setBackground(new Color(255, 140, 0));
-        textPassword = new JLabel();
-        textPassword.setBounds(60, 275, 344, 14);
         
         lblQuenMatKhau = new JLabel();
         lblQuenMatKhau.setBounds(364, 323, 106, 18);
@@ -234,11 +234,18 @@ public class Login_GUI extends JFrame {
         lblMatKhau.setForeground(new Color(0, 0, 0));
         lblMatKhau.setText("Mật khẩu");
         panelThongTin.add(lblMatKhau);
-
-        textUserName.setFont(new Font("Tahoma", 1, 13));
-        textUserName.setForeground(new Color(0, 0, 0));
-        textUserName.setText("_________________________________________");
-        panelThongTin.add(textUserName);
+        
+        jSeparator1 = new JSeparator();
+        jSeparator1.setBackground(new Color(0, 0, 0));
+        jSeparator1.setForeground(Color.BLACK);
+        jSeparator1.setBounds(60, 195, 355, 10);
+        panelThongTin.add(jSeparator1);
+        
+        jSeparator1_1 = new JSeparator();
+        jSeparator1_1.setBackground(new Color(0, 0, 0));
+        jSeparator1_1.setForeground(Color.BLACK);
+        jSeparator1_1.setBounds(60, 286, 355, 10);
+        panelThongTin.add(jSeparator1_1);
 
         disable.setIcon(new ImageIcon(getClass().getResource("/image/icon/iconNoEyes.png")));
         disable.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -295,10 +302,6 @@ public class Login_GUI extends JFrame {
         });
         panelThongTin.add(btnDangNhap);
 
-        textPassword.setForeground(new Color(0, 0, 0));
-        textPassword.setText("_______________________________________________");
-        panelThongTin.add(textPassword);
-
         lblQuenMatKhau.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
         lblQuenMatKhau.setForeground(new Color(0, 0, 0));
         lblQuenMatKhau.setText("Quên mật khẩu?");
@@ -326,17 +329,17 @@ public class Login_GUI extends JFrame {
         txtDangNhap = new JTextField();
         txtDangNhap.setFont(new Font("Times New Roman", Font.BOLD, 20));
         txtDangNhap.setBackground(new Color(255, 182, 193));
-        txtDangNhap.setBounds(60, 159, 344, 36);
+        txtDangNhap.setBounds(60, 159, 355, 36);
         panelThongTin.add(txtDangNhap);
         txtDangNhap.setColumns(10);
         
         txtMatKhau = new JPasswordField();
         txtMatKhau.setFont(new Font("Times New Roman", Font.BOLD, 20));
         txtMatKhau.setBackground(new Color(255, 182, 193));
-        txtMatKhau.setBounds(60, 248, 344, 36);
+        txtMatKhau.setBounds(60, 248, 355, 36);
         panelThongTin.add(txtMatKhau);
 
-        setSize(new Dimension(1045, 496));
+        setSize(new Dimension(1035, 496));
         // Ẩn viền của textField
         txtDangNhap.setBorder(null); 
         txtMatKhau.setBorder(null);
@@ -400,19 +403,19 @@ public class Login_GUI extends JFrame {
     
  
     private void btnDangNhapActionPerformed(ActionEvent evt) {
-
-        String userName = txtDangNhap.getText();
+        String userName = txtDangNhap.getText().trim();
         String password = new String(txtMatKhau.getPassword());
-        if (userName.length() != 8 || password.length() < 6) {
+        if (userName.length() != 10 || password.length() < 6) {
             JOptionPane.showMessageDialog(null, "Tài khoản hoặc Mật khẩu không chính xác!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        String loai = userName.substring(0, 2);
-        if (loai.equals("NV")) {
+        String loai = userName.substring(0, 4);
+        if (loai.equals("PPNV")) {
             NhanVien nhanVien = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
             if (nhanVien != null && nhanVien.getMatKhau().equals(password)) {
                 try {
-                    new Main_GUI();
+                	new Main_GUI(nhanVien.getMaNhanVien()).setVisible(true);
+                	this.setVisible(false);
                 } catch (IOException ex) {
                     Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -422,7 +425,7 @@ public class Login_GUI extends JFrame {
                 return;
             }
         } else {
-            JOptionPane.showMessageDialog(null, "chính xác!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "ERROR", "Thông Báo Đăng nhập", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
     }
