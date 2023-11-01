@@ -311,11 +311,11 @@ public class Main_GUI extends JFrame {
         // subMenu công nhân
         capNhatCongNhan = new MenuItem(iconSubMenuNonSelect, "Cập nhật", ((e) -> {
             pnBody.removeAll();
-//            try {
-//                pnBody.add(new CongNhan_GUI(), BorderLayout.CENTER);
-//            } catch (Exception ex) {
-//                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            try {
+                pnBody.add(new CongNhan_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh(capNhatCongNhan);

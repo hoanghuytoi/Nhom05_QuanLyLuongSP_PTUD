@@ -44,11 +44,44 @@ public class ToNhom_Dao {
         PreparedStatement stm = null;
         ToNhom toNhom = null;
         try {
-            ConnectDB.getInstance();
+            ConnectionDB.ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
             String query = "SELECT * FROM ToNhom WHERE maToNhom = ?";
             stm = con.prepareStatement(query);
             stm.setString(1, maToNhom);
+            ResultSet rs = stm.executeQuery();
+           
+            while (rs.next()){
+                String maToNhomOb = rs.getString("maToNhom");
+                System.out.println("Mã tổ nhóm: " + maToNhomOb);
+                String tenToNhom = rs.getString("tenToNhom");
+                int soLuongCongNhan = rs.getInt("soLuongCongNhan");
+                toNhom = new ToNhom(maToNhomOb, tenToNhom, soLuongCongNhan);
+            }
+//            if (toNhom == null){
+//                throw new Exception("Không tìm thấy tổ nhóm này!");
+//            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }finally {
+			try {
+				stm.close();
+			}catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+        return toNhom;
+    }
+	
+	public ToNhom layMotToNhomTheoTen(String ten){
+        PreparedStatement stm = null;
+        ToNhom toNhom = null;
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "SELECT * FROM ToNhom WHERE tenToNhom = ?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, ten);
             ResultSet rs = stm.executeQuery();
            
             while (rs.next()){
@@ -65,7 +98,7 @@ public class ToNhom_Dao {
         }
         return toNhom;
     }
-	
+
 	public int layRaSoLuongToNhom(){
 		ArrayList<ToNhom> dsToNhom = new ArrayList<ToNhom>();
         Statement stm = null;

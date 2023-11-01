@@ -12,7 +12,7 @@ public class CongNhan {
     private String soDienThoai;
     private String email;
     private Date ngayVaoLam;
-    private boolean gioiTinh; // Nam là True, Nữ là False
+    private boolean gioiTinh;
     private String anhDaiDien;
     private String diaChi;
     private ToNhom toNhom;
@@ -43,8 +43,8 @@ public class CongNhan {
 	public void setMaCongNhan(String maCongNhan) throws Exception{
 		if (maCongNhan.equals("")) {
             throw new Exception("Mã công nhân không được bỏ trống!");
-        } else if (!maCongNhan.matches("^CN[1-9][0-9]{4}$")) {
-            throw new Exception("Mã công nhân phải theo định dạng CNxxxxx với x là các kí tự số, x đầu tiền từ [1-9], x sau từ [0-9]");
+        } else if (!maCongNhan.matches("^PPCN[1-9][0-9]{5}$")) {
+            throw new Exception("Mã công nhân phải theo định dạng PPCNxxxxxx với x là các kí tự số, x đầu tiền từ [1-9], x sau từ [0-9]");
         } else {
             this.maCongNhan = maCongNhan;
         }
@@ -178,12 +178,8 @@ public class CongNhan {
 		return toNhom;
 	}
 
-	public void setToNhom(ToNhom toNhom) throws Exception{
-		if (toNhom.equals("")) {
-            throw new Exception("Tổ nhóm không được để trống!");
-        }else {
-        	this.toNhom = toNhom;
-        }
+	public void setToNhom(ToNhom toNhom) {
+		this.toNhom = toNhom;
 	}
     
 	@Override
