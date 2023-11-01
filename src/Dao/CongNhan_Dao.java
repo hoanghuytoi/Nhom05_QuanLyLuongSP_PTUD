@@ -76,7 +76,7 @@ public class CongNhan_Dao {
         String chuoiCanLay = maCongNhan.split("PPCN")[1];
 
         try {
-            chuoiCanLay = "PPNV" + (Integer.parseInt(chuoiCanLay) + 1);
+            chuoiCanLay = "PPCN" + (Integer.parseInt(chuoiCanLay) + 1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -557,7 +557,7 @@ public class CongNhan_GUI extends JPanel {
 	                {null, null, null, null, null, null, null, null, null, null, null, null}
 	            },
 	            new String [] {
-	                "STT", "Mã công nhân", "Họ và tên", "Sô CCCd", "Giới tính", "Ngày sinh", "Số điện thoại", "Địa chỉ", "Ảnh đại diện", "Email", "Tổ/Nhóm", "Ngày vào làm"
+	                "STT", "Mã công nhân", "Họ và tên", "Số CCCD", "Giới tính", "Ngày sinh", "Số điện thoại", "Địa chỉ", "Ảnh đại diện", "Email", "Tổ/Nhóm", "Ngày vào làm"
 	            }
 		));
 		tblCongNhan.setSelectionBackground(new Color(255, 215, 0));

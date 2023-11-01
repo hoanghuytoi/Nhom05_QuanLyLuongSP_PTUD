@@ -54,37 +54,36 @@ public class CongNhan {
 		return hoTen;
 	}
 
-	public void setHoTen(String hoTen) throws Exception{
-		if (hoTen.equals("")) {
+	public void setHoTen(String hoTen) throws Exception {
+        if (hoTen.equals("")) {
             throw new Exception("Họ tên không được để trống!");
-        } else if (!hoTen.matches("^([A-ZĐÂÁƯ]{1}[a-zvxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)"
-                + "((\\s{1}[A-ZĐÂÁƯ][{1}a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$")) {
-            throw new Exception("Họ tên chỉ chứa các chữ cái!");
+        } else if (!hoTen.matches("^([A-ZĐÂÁƯ][a-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)((\\s[A-ZĐÂÁƯ][a-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$")) {
+            throw new Exception(hoTen);
         } else {
             this.hoTen = hoTen;
         }
-	}
+    }
 
-	public Date getNgaySinh() {
-		return ngaySinh;
-	}
-
-	public void setNgaySinh(Date ngaySinh) throws Exception{
-		if (ngaySinh.after(new Date())) {
-            throw new Exception("Ngày sinh phải trước ngày hiện tại!");
-        } else if (calculateAgeWithJava7(ngaySinh, new Date()) < 18) {
-            throw new Exception("Phải từ 18 tuổi trở lên!");
-        } else {
-            this.ngaySinh = ngaySinh;
-        }
-	}
-	
-	public int calculateAgeWithJava7(Date birthDate, Date currentDate) {                                                                             
+	public int calculateAgeWithJava7(Date birthDate, Date currentDate) {                                                                              
         DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         int d1 = Integer.parseInt(formatter.format(birthDate));
         int d2 = Integer.parseInt(formatter.format(currentDate));
         int age = (d2 - d1) / 10000;
         return age;
+    }
+
+    public Date getNgaySinh() {
+        return ngaySinh;
+    }
+    
+    public void setNgaySinh(Date ngaySinh) throws Exception {
+        if (ngaySinh.after(new Date())) {
+            throw new Exception("Ngày sinh phải trước ngày hiện tại");
+        } else if (calculateAgeWithJava7(ngaySinh, new Date()) < 18) {
+            throw new Exception("Phải từ 18 tuổi trở lên");
+        } else {
+            this.ngaySinh = ngaySinh;
+        }
     }
 
 	public String getMaCCCD() {
