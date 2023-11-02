@@ -79,4 +79,58 @@ public class ChamCongNhanVien_Dao {
         return soDongThemDuoc != 0;
     }
 
+    public boolean suaMotChamCongNhanVien(ChamCongNhanVien chamCongNhanVien) {
+        PreparedStatement stm = null;
+        int soDongSuaDuoc = 0;
+        try {
+            ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+
+            String truyVan = "UPDATE BangChamCongNhanVien set caLam =?, ngayChamCong = ?, trangThaiDiLam = ?, gioDiLam= ?, gioTangCa= ?, maNguoiCham= ? "
+                    + "where maNhanVien =?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, chamCongNhanVien.getCaLam());
+            stm.setDate(2, new java.sql.Date(chamCongNhanVien.getNgayChamCong().getTime()));
+            stm.setString(3, chamCongNhanVien.getTrangThaiDiLam());
+            stm.setString(4, chamCongNhanVien.getGioDiLam());
+            stm.setString(5, chamCongNhanVien.getGioTangCa());
+            stm.setString(6, chamCongNhanVien.getNguoiChamCong().getMaNhanVien());
+            stm.setString(7, chamCongNhanVien.getNhanVien().getMaNhanVien());
+           
+            soDongSuaDuoc = stm.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return soDongSuaDuoc != 0;
+    }
+
+    public boolean xoaMotChamCongNhanVienTheoMaChamCong(String maNhanVien, String caLam, Date ngayChamCong) {
+        PreparedStatement stm = null;
+        int soDongXoaDuoc = 0;
+        try {
+            ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String truyVan = "delete from ChamCongNhanVien where maNhanVien = ?,caLam=?,ngayChamCong=?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, maNhanVien);
+            stm.setString(2, maNhanVien);
+            stm.setDate(3, new java.sql.Date(ngayChamCong.getTime()));
+            soDongXoaDuoc = stm.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return soDongXoaDuoc != 0;
+    }
 }
