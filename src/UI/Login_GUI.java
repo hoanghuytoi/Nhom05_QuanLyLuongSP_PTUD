@@ -415,6 +415,7 @@ public class Login_GUI extends JFrame {
             if (nhanVien != null && nhanVien.getMatKhau().equals(password)) {
                 try {
                 	new Main_GUI(nhanVien.getMaNhanVien()).setVisible(true);
+                	//nhanVien.getMaNhanVien()
                 	this.setVisible(false);
                 } catch (IOException ex) {
                     Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);

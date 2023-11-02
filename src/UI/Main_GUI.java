@@ -97,28 +97,30 @@ public class Main_GUI extends JFrame {
 	
 	
     public Main_GUI(String userName) throws IOException {
-    	//this.fileName = fileName;
-        this.userName = userName;
-        System.out.println(fileName);
-        congNhan_DAO = new CongNhan_Dao();
-        nhanVien_DAO = new NhanVien_Dao();
-        nhanVienDangNhap = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
-        initComponents();
-        execute();
-        try {
+    	try {
             ConnectionDB.ConnectDB.getInstance().connect();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        String loai = userName.substring(0, 4);
+//    	String userName
+//    	this.fileName = fileName;
+        this.userName = userName;
+//        System.out.println(fileName);
+//        congNhan_DAO = new CongNhan_Dao();
+        nhanVien_DAO = new NhanVien_Dao();
+        nhanVienDangNhap = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
+        initComponents();
+        execute();
+        
+//        String loai = userName.substring(0, 4);
 //        if (loai.equals("PPCN")) {
 //            congNhan = congNhan_DAO.layMotCongNhanTheoMa(userName);
 //
 //        } 
-        if (loai.equals("PPNV")) {
-            nhanVien = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
-        }
+//        if (loai.equals("PPNV")) {
+//            nhanVien = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
+//        }
 //        String hello = "Hello, ";
 //
 //        if (congNhan != null) {
@@ -200,8 +202,6 @@ public class Main_GUI extends JFrame {
 
         setSize(new Dimension(1540, 835));
         setLocationRelativeTo(null);
-        
-        setVisible(true);
     }
     
     private void execute() throws IOException {
@@ -278,7 +278,7 @@ public class Main_GUI extends JFrame {
         chamCongNhanVien = new MenuItem(iconSubMenuNonSelect, "Chấm công", (ActionEvent e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new ChamCongNhanVien_GUI(), BorderLayout.CENTER);
+                pnBody.add(new ChamCongNhanVien_GUI(nhanVienDangNhap), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -549,28 +549,28 @@ public class Main_GUI extends JFrame {
         
         addMenu(menuTrangChu,menuPhongBan,menuToNhom,menuHopDong,menuSanPham,menuNhanVien,menuCongNhan,menuThongKe,menuHoTro,menuHeThong);
         
-        if (this.userName.contains("PPNV")) {
-            pnBody.removeAll();
-            pnBody.add(new TrangChu_GUI(), BorderLayout.CENTER);
-            pnBody.repaint();
-            pnBody.revalidate();
-            setSelectMenu(menuTrangChu);
-            NhanVien_Dao nhanVienDao = new NhanVien_Dao();
-            NhanVien nhanVien = nhanVienDao.layMotNhanVienTheoMaNhanVien(userName);
-            if (nhanVien.getChucVu().equalsIgnoreCase("Quản lý")) {
-                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuThongKe, menuHoTro, menuHeThong);
-            } else {
-                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuThongKe, menuHoTro, menuHeThong);
-                
-                menuPhongBan.setVisible(false);
-                menuToNhom.setVisible(false);
-                menuHopDong.setVisible(false);
-                menuNhanVien.setVisible(false);
-                menuThongKe.setVisible(false);
-                menuHoTro.setVisible(false);
-                
-            }
-        }
+//        if (this.userName.contains("PPNV")) {
+//            pnBody.removeAll();
+//            pnBody.add(new TrangChu_GUI(), BorderLayout.CENTER);
+//            pnBody.repaint();
+//            pnBody.revalidate();
+//            setSelectMenu(menuTrangChu);
+//            NhanVien_Dao nhanVienDao = new NhanVien_Dao();
+//            NhanVien nhanVien = nhanVienDao.layMotNhanVienTheoMaNhanVien(userName);
+//            if (nhanVien.getChucVu().equalsIgnoreCase("Quản lý")) {
+//                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuThongKe, menuHoTro, menuHeThong);
+//            } else {
+//                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuThongKe, menuHoTro, menuHeThong);
+//                
+//                menuPhongBan.setVisible(false);
+//                menuToNhom.setVisible(false);
+//                menuHopDong.setVisible(false);
+//                menuNhanVien.setVisible(false);
+//                menuThongKe.setVisible(false);
+//                menuHoTro.setVisible(false);
+//                
+//            }
+//        }
         
     }
 	
@@ -645,19 +645,18 @@ public class Main_GUI extends JFrame {
     }
 
     
-//    public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//	        public void run() {
-//	            try {
-//	            	Main_GUI frame = new Main_GUI();
-//	                frame.setVisible(true);
-//	                frame.setResizable(false);
-//	                frame.setLocationRelativeTo(null);
-//	            } catch (Exception e) {
-//	                e.printStackTrace();
-//	            }
-//	        }
-//	    });
-//	}
+    public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+	        public void run() {
+	            try {
+	            	Main_GUI frame = new Main_GUI("PPNV100001");
+	            	frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	                frame.setVisible(true);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    });
+	}
 }
 
