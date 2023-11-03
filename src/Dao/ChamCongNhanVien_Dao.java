@@ -86,17 +86,16 @@ public class ChamCongNhanVien_Dao {
             ConnectionDB.ConnectDB.getInstance();
             Connection con = ConnectionDB.ConnectDB.getConnection();
 
-            String truyVan = "UPDATE BangChamCongNhanVien set caLam =?, ngayChamCong = ?, trangThaiDiLam = ?, gioDiLam= ?, gioTangCa= ?, maNguoiCham= ? "
-                    + "where maNhanVien =?";
+            String truyVan = "UPDATE BangChamCongNhanVien set trangThaiDiLam =?, gioDiLam = ?,gioTangCa = ? , maNguoiCham = ?\n"
+                    + " where maNhanVien =? and caLam=? and ngayChamCong=?";
             stm = con.prepareStatement(truyVan);
-            stm.setString(1, chamCongNhanVien.getCaLam());
-            stm.setDate(2, new java.sql.Date(chamCongNhanVien.getNgayChamCong().getTime()));
-            stm.setString(3, chamCongNhanVien.getTrangThaiDiLam());
-            stm.setString(4, chamCongNhanVien.getGioDiLam());
-            stm.setString(5, chamCongNhanVien.getGioTangCa());
-            stm.setString(6, chamCongNhanVien.getNguoiChamCong().getMaNhanVien());
-            stm.setString(7, chamCongNhanVien.getNhanVien().getMaNhanVien());
-           
+            stm.setString(1, chamCongNhanVien.getTrangThaiDiLam());
+            stm.setString(2, chamCongNhanVien.getGioDiLam());
+            stm.setString(3, chamCongNhanVien.getGioTangCa());
+            stm.setString(4, chamCongNhanVien.getNguoiChamCong().getMaNhanVien());
+            stm.setString(5, chamCongNhanVien.getNhanVien().getMaNhanVien());
+            stm.setString(6, chamCongNhanVien.getCaLam());
+            stm.setDate(7, new java.sql.Date(chamCongNhanVien.getNgayChamCong().getTime()));
             soDongSuaDuoc = stm.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -110,18 +109,29 @@ public class ChamCongNhanVien_Dao {
         return soDongSuaDuoc != 0;
     }
 
-    public boolean xoaMotChamCongNhanVienTheoMaChamCong(String maNhanVien, String caLam, Date ngayChamCong) {
+    public ArrayList<ChamCongNhanVien> layDanhSachChamCongTheoNgay(String ngayChamCong) {
         PreparedStatement stm = null;
-        int soDongXoaDuoc = 0;
+        NhanVien_Dao nhanVien_Dao = new NhanVien_Dao();
+        ArrayList<ChamCongNhanVien> dsChamCong = new ArrayList<ChamCongNhanVien>();
         try {
             ConnectionDB.ConnectDB.getInstance();
             Connection con = ConnectionDB.ConnectDB.getConnection();
-            String truyVan = "delete from ChamCongNhanVien where maNhanVien = ?,caLam=?,ngayChamCong=?";
+            String truyVan = "select * from BangChamCongNhanVien where ngayChamCong=?";
             stm = con.prepareStatement(truyVan);
-            stm.setString(1, maNhanVien);
-            stm.setString(2, maNhanVien);
-            stm.setDate(3, new java.sql.Date(ngayChamCong.getTime()));
-            soDongXoaDuoc = stm.executeUpdate();
+            stm.setString(1, ngayChamCong);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String maNhanVien = rs.getString("maNhanVien");
+                String caLam = rs.getString("caLam");
+                Date ngayCham = rs.getDate("ngayChamCong");
+                String trangThaiDiLam = rs.getString("trangThaiDiLam");
+                String gioDiLam = rs.getString("gioDiLam");
+                String gioTangCa = rs.getString("gioTangCa");
+                String maNguoiCham = rs.getString("maNguoiCham");
+                NhanVien nhanVien = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNhanVien);
+                NhanVien nguoiChamCong = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNguoiCham);
+                dsChamCong.add(new ChamCongNhanVien(nhanVien, ngayCham, caLam, trangThaiDiLam, gioDiLam,gioTangCa, nguoiChamCong));
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
@@ -131,6 +141,6 @@ public class ChamCongNhanVien_Dao {
                 System.out.println(e.getMessage());
             }
         }
-        return soDongXoaDuoc != 0;
+        return dsChamCong;
     }
 }

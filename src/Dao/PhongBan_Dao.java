@@ -202,28 +202,5 @@ public class PhongBan_Dao {
         return chuoiCanLay;
     }
 
-    public int layRaSoLuongPhongBan(){
-        Statement stm = null;
-        int soLuong = 0;
-        try {
-            ConnectDB.getInstance();
-            Connection con = ConnectDB.getConnection();
-            String truyVan = "select count(maPhongBan) as soLuongPhongBan from PhongBan";
-            stm = con.createStatement();
-            ResultSet rs = stm.executeQuery(truyVan);
-            while(rs.next()){
-                soLuong = rs.getInt("soLuongPhongBan");
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                stm.close();;
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return soLuong;
-    }
 }
 

@@ -40,8 +40,8 @@ import javax.swing.JButton;
 
 public class ChamCongNhanVien_GUI extends JPanel {
 
-    private static final long serialVersionUID = 1L;
-    
+	private static final long serialVersionUID = 1L;
+
 	private JScrollPane scrChamCong;
 	private JTable tblChamCong;
 	private JTextField txtMaNV;
@@ -50,6 +50,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 	private JComboBox<String> cmbCaLam;
 	private JComboBox<String> cmbGio;
 	private JComboBox<String> cmbPhut;
+	private JComboBox<String> cmbGioTangCa;
 	private JComboBox<String> cmbTinhTrang;
 
 	private JScrollPane scrNhanVien;
@@ -65,7 +66,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 	private JLabel lblNgayChamCong;
 	private JDateChooser dcsNgayChamCong;
 	private JPanel pnlThongTinChamCong;
-	private JComboBox<String> cmbGioTangCa;
 	private JButton btnLayDanhSach;
 	private JButton btnLuu;
 	private JButton btnHuy;
@@ -110,51 +110,57 @@ public class ChamCongNhanVien_GUI extends JPanel {
 	private String stErrNgayChamCong;
 	private NhanVien nhanvienDangNhap;
 	private String stNgayThangKhongHople;
-	
+
+	private JLabel lblHienThi;
+
+	private JComboBox<String> cmbHienThi;
+
 
 
 	public ChamCongNhanVien_GUI(NhanVien nhanVien) throws ParseException, Exception {
 		nhanvienDangNhap = nhanVien;
-        ConnectionDB.ConnectDB.getInstance().connect();
-        initComponents();
-        excute();
-        taiDuLieuLenBangNhanVien();
-        while (modelChamCong.getRowCount() != 0) {
-            modelChamCong.removeRow(0);
-        }
-        dcsNgayChamCong.setDate(new Date());
-        btnChamCongTatCa.setEnabled(false);
-        cmbCaLam.setSelectedIndex(0);
-        btnChamLai.setEnabled(false);
-        setEditTextDateChooser();
-  
-	}
-	
-	public void setEditTextDateChooser() {
-        JTextFieldDateEditor ngayChamCong = (JTextFieldDateEditor) dcsNgayChamCong.getDateEditor();
-        ngayChamCong.setEnabled(false);
+		ConnectionDB.ConnectDB.getInstance().connect();
+		initComponents();
+		excute();
+		taiDuLieuLenBangNhanVien();
+		while (modelChamCong.getRowCount() != 0) {
+			modelChamCong.removeRow(0);
+		}
+		dcsNgayChamCong.setDate(new Date());
+		btnChamCongTatCa.setEnabled(false);
+		cmbCaLam.setSelectedIndex(0);
+		btnChamLai.setEnabled(false);
+		setEditTextDateChooser();
 
-    }
+
+
+	}
+
+	public void setEditTextDateChooser() {
+		JTextFieldDateEditor ngayChamCong = (JTextFieldDateEditor) dcsNgayChamCong.getDateEditor();
+		ngayChamCong.setEnabled(false);
+
+	}
 
 	public void excute() throws ParseException {
-        tblNhanVien.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
-        tblNhanVien.getTableHeader().setOpaque(false);
-        ((DefaultTableCellRenderer) tblNhanVien.getTableHeader().getDefaultRenderer())
-                .setHorizontalAlignment(JLabel.CENTER);
-        tblNhanVien.setRowHeight(25);
+		tblNhanVien.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+		tblNhanVien.getTableHeader().setOpaque(false);
+		((DefaultTableCellRenderer) tblNhanVien.getTableHeader().getDefaultRenderer())
+		.setHorizontalAlignment(JLabel.CENTER);
+		tblNhanVien.setRowHeight(25);
 
-        tblChamCong.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
-        tblChamCong.getTableHeader().setOpaque(false);
-        ((DefaultTableCellRenderer) tblChamCong.getTableHeader().getDefaultRenderer())
-                .setHorizontalAlignment(JLabel.CENTER);
-        tblChamCong.setRowHeight(25);
-        
-        modelNhanVien = (DefaultTableModel) tblNhanVien.getModel();
-        modelChamCong = (DefaultTableModel) tblChamCong.getModel();
-        setHidden(btnLuu, btnHuy, btnChamLai);
-        setShow(btnCapNhat);
-    }
-	
+		tblChamCong.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+		tblChamCong.getTableHeader().setOpaque(false);
+		((DefaultTableCellRenderer) tblChamCong.getTableHeader().getDefaultRenderer())
+		.setHorizontalAlignment(JLabel.CENTER);
+		tblChamCong.setRowHeight(25);
+
+		modelNhanVien = (DefaultTableModel) tblNhanVien.getModel();
+		modelChamCong = (DefaultTableModel) tblChamCong.getModel();
+		setHidden(btnLuu, btnHuy, btnChamLai);
+		setShow(btnCapNhat);
+	}
+
 	private void initComponents() {
 		setBackground(new Color(255, 255, 255));
 		setSize(1290, 750);
@@ -208,10 +214,10 @@ public class ChamCongNhanVien_GUI extends JPanel {
 
 		scrChamCong = new JScrollPane(tblChamCong);
 		scrChamCong.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                scrChamCongMouseClicked(evt);
-            }
-        });
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				scrChamCongMouseClicked(evt);
+			}
+		});
 		LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);
 		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Danh sách nhân viên cần chấm công");
 		scrChamCong.setBorder(titledBorder);
@@ -353,7 +359,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		cmbTinhTrang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đi Làm", "Đi Trễ", "Nghỉ Có Phép", "Nghỉ Không Phép" }));
 		cmbTinhTrang.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				cmbTrangThaiActionPerformed(evt);
+				cmbTinhTrangActionPerformed(evt);
 			}
 		});
 
@@ -364,17 +370,17 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		lblGioDiLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 
 		JLabel lblGio = new JLabel();
-        lblGio.setText("giờ");
-        lblGio.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        lblGio.setBounds(216, 195, 57, 30);
-        pnlThongTinChamCong.add(lblGio);
-        
-        JLabel lblGio_1 = new JLabel();
-        lblGio_1.setText("giờ");
-        lblGio_1.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        lblGio_1.setBounds(216, 324, 57, 30);
-        pnlThongTinChamCong.add(lblGio_1);
-        
+		lblGio.setText("giờ");
+		lblGio.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		lblGio.setBounds(216, 195, 57, 30);
+		pnlThongTinChamCong.add(lblGio);
+
+		JLabel lblGio_1 = new JLabel();
+		lblGio_1.setText("giờ");
+		lblGio_1.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		lblGio_1.setBounds(216, 324, 57, 30);
+		pnlThongTinChamCong.add(lblGio_1);
+
 		cmbGio = new JComboBox<String>();
 		cmbGio.setBounds(149, 189, 57, 43);
 		pnlThongTinChamCong.add(cmbGio);
@@ -435,13 +441,30 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			}
 		});
 
+		lblHienThi = new JLabel();
+		lblHienThi.setText("Hiển thị:");
+		lblHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		lblHienThi.setBounds(44, 471, 51, 40);
+		add(lblHienThi);
+
+		cmbHienThi = new JComboBox<String>();
+		cmbHienThi.setBounds(105, 471, 145, 40);
+		add(cmbHienThi);
+		cmbHienThi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Theo ngày chấm" }));
+		cmbHienThi.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				cmbHienThiActionPerformed(evt);
+			}
+		});
+
+
 		btnChamCongTatCa = new JButton();
 		btnChamCongTatCa.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/them.png")));
 		btnChamCongTatCa.setText("Chấm công tất cả");
 		btnChamCongTatCa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		btnChamCongTatCa.setBorder(null);
 		btnChamCongTatCa.setBackground(new Color(255, 215, 0));
-		btnChamCongTatCa.setBounds(109, 471, 170, 40);
+		btnChamCongTatCa.setBounds(287, 470, 170, 40);
 		btnChamCongTatCa.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnChamCongTatCaActionPerformed(evt);
@@ -455,12 +478,12 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		btnChamLai.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		btnChamLai.setBorder(null);
 		btnChamLai.setBackground(new Color(255, 215, 0));
-		btnChamLai.setBounds(336, 471, 170, 40);
+		btnChamLai.setBounds(488, 470, 170, 40);
 		btnChamLai.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChamLaiActionPerformed(evt);
-            }
-        });
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnChamLaiActionPerformed(evt);
+			}
+		});
 		add(btnChamLai);
 
 		btnCapNhat = new JButton();
@@ -469,12 +492,12 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		btnCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		btnCapNhat.setBorder(null);
 		btnCapNhat.setBackground(new Color(255, 215, 0));
-		btnCapNhat.setBounds(557, 471, 170, 40);
+		btnCapNhat.setBounds(690, 470, 170, 40);
 		btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCapNhatActionPerformed(evt);
-            }
-        });
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnCapNhatActionPerformed(evt);
+			}
+		});
 		add(btnCapNhat);
 
 		btnLayDanhSach = new JButton();
@@ -498,12 +521,12 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		btnLuu.setEnabled(false);
 		btnLuu.setBorder(null);
 		btnLuu.setBackground(Color.MAGENTA);
-		btnLuu.setBounds(800, 471, 160, 40);
+		btnLuu.setBounds(885, 471, 160, 40);
 		btnLuu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLuuActionPerformed(evt);
-            }
-        });
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnLuuActionPerformed(evt);
+			}
+		});
 		add(btnLuu);
 
 		btnHuy = new JButton();
@@ -513,420 +536,455 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		btnHuy.setEnabled(false);
 		btnHuy.setBorder(null);
 		btnHuy.setBackground(Color.MAGENTA);
-		btnHuy.setBounds(1023, 471, 160, 40);
+		btnHuy.setBounds(1075, 471, 160, 40);
 		btnHuy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHuyActionPerformed(evt);
-            }
-        });
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnHuyActionPerformed(evt);
+			}
+		});
 		add(btnHuy);
 
 	}
-	
-	
+
+	public void hienThiChamCongTheoNgay() {
+		if (cmbHienThi.getSelectedIndex() == 1) {
+			daoChamCong = new ChamCongNhanVien_Dao();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String strDate = formatter.format(dcsNgayChamCong.getDate());
+			ArrayList<ChamCongNhanVien> listChamCong = daoChamCong.layDanhSachChamCongTheoNgay(strDate);
+			while (modelNhanVien.getRowCount() != 0) {
+				modelNhanVien.removeRow(0);
+			}
+			daoChamCong = new ChamCongNhanVien_Dao();
+			if (daoChamCong != null) {
+				for (ChamCongNhanVien chamCong : listChamCong) {
+					String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
+							chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
+							chamCong.getNhanVien().getPhongBan().getTenPhongBan(), chamCong.getNhanVien().getChucVu(), chamCong.getNgayChamCong().toString(),
+							chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), chamCong.getGioDiLam(),chamCong.getGioTangCa()};
+					modelNhanVien.addRow(data);
+				}
+				if (tblNhanVien.getRowCount() > 0) {
+					tblNhanVien.setRowSelectionInterval(0, 0);
+					try {
+						hienThiDuLieuLenTxtBangNhanVien(0);
+					} catch (ParseException ex) {
+						Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				}
+			}
+		} else {
+			try {
+				taiDuLieuLenBangNhanVien();
+			} catch (ParseException ex) {
+				Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+	}
+
+	private void cmbHienThiActionPerformed(ActionEvent evt) {
+		// TODO Auto-generated method stub
+		hienThiChamCongTheoNgay();
+	}
+
 	private void cmbGioTangCaActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void taiDuLieuLenBangNhanVien() throws ParseException {
-        while (modelNhanVien.getRowCount() != 0) {
-            modelNhanVien.removeRow(0);
-        }
-        daoChamCong = new ChamCongNhanVien_Dao();
-        ArrayList<ChamCongNhanVien> listChamCong = daoChamCong.danhSachChamCongNhanVien();
-        if (listChamCong != null) {
-            for (ChamCongNhanVien chamCong : listChamCong) {
-            	if (chamCong.getNguoiChamCong() != null) {
-                String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
-                    chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
-                    chamCong.getNhanVien().getPhongBan().getTenPhongBan(), chamCong.getNhanVien().getChucVu(), chamCong.getNgayChamCong().toString(),
-                    chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), chamCong.getGioDiLam(),chamCong.getGioTangCa()};
-                modelNhanVien.addRow(data);
-            	}
-            }
-            if (tblNhanVien.getRowCount() > 0) {
-                tblNhanVien.setRowSelectionInterval(0, 0);
-                hienThiDuLieuLenTxtBangNhanVien(0);
-                setEditInput(false);
-            }
-        }
-        
-        setEditInput(false);
-    }
-
-    public void taiDuLieuLenBangChamCongEvt() {
-        daoChamCong = new ChamCongNhanVien_Dao();
-        daoNhanVien = new NhanVien_Dao();
-        ArrayList<ChamCongNhanVien> listChamCong = daoChamCong.danhSachChamCongNhanVien();
-        listNhanVien = daoNhanVien.layDanhSachNhanVien();
-        ArrayList<NhanVien> listTemp1 = new ArrayList<>();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String strDate = formatter.format(dcsNgayChamCong.getDate());
-        listChamCong.forEach(e -> {
-            if (e.getCaLam().equalsIgnoreCase(cmbCaLam.getSelectedItem().toString()) && strDate.equalsIgnoreCase(e.getNgayChamCong().toString())) {
-                listTemp1.add(e.getNhanVien());
-            }
-        });
-        listNhanVienForEvtChamCongTatCa = new ArrayList<>();
-        listNhanVien.forEach(e -> {
-            boolean flag = false;
-            if (e.getNgayVaoLam().after(dcsNgayChamCong.getDate())) {
-//                System.out.println(e.getMaNhanVien() + "Nhan vien nay chua du dk de cham cong");
-            } else {
-                for (NhanVien nhanVien : listTemp1) {
-                    if (nhanVien.getMaNhanVien().equalsIgnoreCase(e.getMaNhanVien())) {
-                        flag = true;
-                    }
-                }
-                if (!flag) {
-                    listNhanVienForEvtChamCongTatCa.add(e);
-                    String data[] = {(modelChamCong.getRowCount() + 1) + "", e.getMaNhanVien(), e.getHoTen(), e.getSoDienThoai(), e.getPhongBan().getTenPhongBan(), e.getChucVu()};
-                    modelChamCong.addRow(data);
-                }
-            }
-        });
-    }
-
-    public void taiDuLieuLenBangChamCong() throws ParseException, InterruptedException {
-        while (modelChamCong.getRowCount() != 0) {
-            modelChamCong.removeRow(0);
-        }
-        taiDuLieuLenBangChamCongEvt();
-        if (tblNhanVien.getRowCount() != 0) {
-            tblNhanVien.setRowSelectionInterval(0, 0);
-        }
-        if (modelChamCong.getRowCount() > 0) {
-            tblChamCong.setRowSelectionInterval(0, 0);
-            hienThiDuLieuLenTxtBangNhanVien(0);
-            setEditInput(false);
-            btnChamLai.setEnabled(false);
-        } else {
-        	btnChamLai.setEnabled(false);
-        }
-    }
-
-    public void setComBoBoxToSunDay() {
-        cmbCaLam.removeAllItems();
-        cmbCaLam.addItem("Sáng chủ nhật");
-        cmbCaLam.addItem("Chiều chủ nhật");
-    }
-
-    public void setComBoBoxToReset() {
-        cmbCaLam.removeAllItems();
-        cmbCaLam.addItem("Sáng");
-        cmbCaLam.addItem("Chiều");
-        cmbCaLam.addItem("Đêm");
-    }
-
-    public void hienThiDuLieuLenTxtBangNhanVien(int dong) throws ParseException {
-        if (modelNhanVien.getRowCount() > 0) {
-            txtMaNV.setText(tblNhanVien.getValueAt(dong, 2).toString());
-            txtTenNV.setText(tblNhanVien.getValueAt(dong, 3).toString());
-            cmbTinhTrang.setSelectedItem(tblNhanVien.getValueAt(dong, 9).toString());
-            if (cmbTinhTrang.getSelectedIndex() != 2 && cmbTinhTrang.getSelectedIndex() != 3) {
-                cmbGio.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString().split("h")[0]);
-                cmbPhut.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString().split("h")[1]);
-                cmbGio.setEditable(true);
-                cmbPhut.setEditable(true);
-            } else {
-                cmbGio.setEditable(true);
-                cmbPhut.setEditable(true);
-            }
-        }
-    }
-
-    public void hienThiDuLieuLenTxtBangChamCong(int dong) throws ParseException {
-        txtMaNV.setText(tblChamCong.getValueAt(dong, 1).toString());
-        txtTenNV.setText(tblChamCong.getValueAt(dong, 2).toString());
-    }
-
-    public void setHidden(JButton... btn) {
-        for (JButton jButton : btn) {
-            jButton.setEnabled(false);
-        }
-    }
-
-    public void setShow(JButton... btn) {
-        for (JButton jButton : btn) {
-            jButton.setEnabled(true);
-        }
-    }
-
-    public void setEditInput(boolean check) {
-        cmbTinhTrang.setEnabled(check);
-        cmbGio.setEnabled(check);
-        cmbPhut.setEnabled(check);
-        cmbGioTangCa.setEnabled(check);
-    }
-
-    private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {
-        try {
-            capNhatCmbGio();
-            hienThiDuLieuLenTxtBangNhanVien(tblNhanVien.getSelectedRow());
-            setEditInput(false);
-            setShow(btnCapNhat);
-            setHidden(btnHuy, btnLuu, btnChamLai);
-            checkChamCong = false;
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "ERRO, please reset (T_T)(T_T)");
-        }
-        if (tblChamCong.getSelectedRow() != -1) {
-            tblChamCong.removeRowSelectionInterval(tblChamCong.getSelectedRow(), 0);
-        }
-    }
-
-    private void tblChamCongMouseClicked(java.awt.event.MouseEvent evt) {
-        try {
-            capNhatCmbGio();
-            hienThiDuLieuLenTxtBangChamCong(tblChamCong.getSelectedRow());
-            setEditInput(false);
-            setHidden(btnHuy, btnLuu, btnCapNhat);
-            setShow(btnChamLai, btnChamCongTatCa);
-            checkChamCong = false;
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "ERRO, please reset (T_T)(T_T)");
-        }
-        if (tblNhanVien.getSelectedRow() != -1) {
-            tblNhanVien.removeRowSelectionInterval(tblNhanVien.getSelectedRow(), 0);
-        }
-    }
-    
-    private void btnLayDanhSachActionPerformed(java.awt.event.ActionEvent evt) {
-        try {
-            if (dcsNgayChamCong.getDate().after(new Date())) {
-                JOptionPane.showMessageDialog(null, stErrNgayChamCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-            try {
-                taiDuLieuLenBangChamCong();
-            } catch (ParseException ex) {
-                Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (tblChamCong.getRowCount() != 0) {
-                setShow(btnChamCongTatCa);
-            } else {
-                setHidden(btnChamLai, btnChamCongTatCa);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, stNgayThangKhongHople, stThongbao, JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void dcsNgayChamCongMouseClicked(java.awt.event.MouseEvent evt) {
-    }
-
-    private void dcsNgayChamCongPropertyChange(java.beans.PropertyChangeEvent evt) {
-        if ("date".equals(evt.getPropertyName())) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(dcsNgayChamCong.getDate());
-            if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
-                setComBoBoxToSunDay();
-            } else {
-                setComBoBoxToReset();
-            }
-        }
-        btnChamLai.setEnabled(false);
-        while (modelChamCong.getRowCount() > 0) {
-            modelChamCong.removeRow(0);
-        }
-
-    }
-
-    private void btnChamCongTatCaActionPerformed(java.awt.event.ActionEvent evt) {
-        daoChamCong = new ChamCongNhanVien_Dao();
-        String gio = "";
-        String gioTangCa = "";
-
-        if (cmbCaLam.getSelectedIndex() == 0) {
-            gio = "7h00";
-        } else if (cmbCaLam.getSelectedIndex() == 1) {
-            gio = "14h00";
-        } else {
-            gio = "22h00";
-        }
-        if (cmbGioTangCa.getSelectedIndex() == 0) {
-            gioTangCa = "0";
-        }
-//      NhanVien nhanVienChamCong = daoNhanVien.layMotNhanVienTheoMaNhanVien("NV100001");
-        cmbTinhTrang.setSelectedIndex(0);
-        taiDuLieuLenBangChamCongEvt();
-        for (NhanVien nhanVien : listNhanVienForEvtChamCongTatCa) {
-            try {
-            	ChamCongNhanVien chamCong = new ChamCongNhanVien(nhanVien, dcsNgayChamCong.getDate(), cmbCaLam.getSelectedItem().toString(), cmbTinhTrang.getSelectedItem().toString(),
-                        gio,gioTangCa, nhanvienDangNhap);
-                daoChamCong.themMotChamCongNhanVien(chamCong);
-				taiDuLieuLenBangNhanVien();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-        }
-        btnChamCongTatCa.setEnabled(false);
-        while (modelChamCong.getRowCount() != 0) {
-            modelChamCong.removeRow(0);
-        }
-        btnChamLai.setEnabled(false);
-        JOptionPane.showMessageDialog(null, "Chấm công thành công");
-    }
-    
-    public void thayDouCmbBox() {
-    	if (cmbTinhTrang.getSelectedIndex() == 0 ) {
-            cmbGio.setEnabled(false);
-            cmbPhut.setEnabled(false);
-            cmbGioTangCa.setEnabled(true);
-        }
-    	else if (cmbTinhTrang.getSelectedIndex() == 2 || cmbTinhTrang.getSelectedIndex() == 3) {
-            cmbGio.setEnabled(false);
-            cmbPhut.setEnabled(false);
-            cmbGioTangCa.setEnabled(false);
-        } else {
-            cmbGio.setEnabled(true);
-            cmbPhut.setEnabled(true);
-            cmbGio.setEditable(false);
-            cmbPhut.setEditable(false);
-            cmbGioTangCa.setEnabled(true);
-            cmbGioTangCa.setEditable(false);
-        }
-    }
-    private void cmbTrangThaiActionPerformed(java.awt.event.ActionEvent evt) {
-        thayDouCmbBox();
-    }
-
-    private void scrChamCongMouseClicked(java.awt.event.MouseEvent evt) {
-    }
-
-    public void capNhatCmbGio() {
-        cmbGio.removeAllItems();
-        if (cmbCaLam.getSelectedIndex() == 0) {
-            for (int i = 7; i < 12; i++) {
-                cmbGio.addItem(i + "");
-            }
-        } else if (cmbCaLam.getSelectedIndex() == 1) {
-            for (int i = 13; i < 18; i++) {
-                cmbGio.addItem(i + "");
-            }
-        } else {
-            for (int i = 19; i <= 24; i++) {
-                cmbGio.addItem(i + "");
-            }
-            for (int i = 0; i < 7; i++) {
-                cmbGio.addItem(i + "");
-            }
-        }
-    }
-    
-    private void cmbCaLamActionPerformed(java.awt.event.ActionEvent evt) {
-        capNhatCmbGio();
-        setHidden(btnHuy, btnLuu, btnChamCongTatCa, btnChamLai, btnCapNhat);
-        setEditInput(false);
-        btnChamLai.setEnabled(false);
-        while (modelChamCong.getRowCount() > 0) {
-            modelChamCong.removeRow(0);
-        }
-    }
-    
-    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {
-        setHidden(btnCapNhat, btnChamLai, btnChamCongTatCa);
-        cmbCaLam.setEnabled(false);
-        setShow(btnHuy, btnLuu);
-        setEditInput(true);
-        thayDouCmbBox();
-    }
-    
-    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
-        String gioLam = "";
-        String gioTangCa = "";
-        if (cmbTinhTrang.getSelectedIndex() == 0) {
-            gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
-        } else if (cmbGio.isEnabled()) {
-            gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
-        } else {
-            gioLam = "";
-        }
-        if (cmbTinhTrang.getSelectedIndex() == 0) {
-        	gioTangCa = cmbGioTangCa.getSelectedItem().toString();
-        } else if (cmbGio.isEnabled()) {
-        	gioTangCa = cmbGioTangCa.getSelectedItem().toString() + "h";
-        } else {
-        	gioTangCa = "";
-        }
-        daoChamCong = new ChamCongNhanVien_Dao();
-        daoNhanVien = new NhanVien_Dao();
-        NhanVien nhanVienDuocChamCong = daoNhanVien.layMotNhanVienTheoMaNhanVien(txtMaNV.getText());
-        if (checkChamCong) {
-            ChamCongNhanVien chamcong = new ChamCongNhanVien(nhanVienDuocChamCong, dcsNgayChamCong.getDate(),
-                    cmbCaLam.getSelectedItem().toString(), cmbTinhTrang.getSelectedItem().toString(), gioLam, gioTangCa, nhanvienDangNhap);
-            if (daoChamCong.themMotChamCongNhanVien(chamcong)) {
-                try {
-                    JOptionPane.showMessageDialog(null, "Chấm công thành công");
-                    modelChamCong.removeRow(0);
-                    taiDuLieuLenBangNhanVien();
-                    setShow(btnCapNhat, btnChamLai);
-                    setHidden(btnLuu, btnHuy);
-                } catch (ParseException ex) {
-                    Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
-                } finally {
-                    if (modelChamCong.getRowCount() > 0) {
-                        setShow(btnChamCongTatCa);
-                    }
-                    setHidden(btnLuu, btnHuy, btnCapNhat, btnChamLai);
-                    checkChamCong = false;
-                }
-            }
-            checkChamCong = false;
-        } else {
-            String ngayCham = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 7).toString();
-            SimpleDateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
-            Date kq = null;
-            try {
-                kq = dfm.parse(ngayCham);
-            } catch (ParseException ex) {
-                Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            ChamCongNhanVien chamcong = new ChamCongNhanVien(nhanVienDuocChamCong, kq,
-                    tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 8).toString(), cmbTinhTrang.getSelectedItem().toString(), gioLam, gioTangCa, nhanvienDangNhap);
-            if (daoChamCong.suaMotChamCongNhanVien(chamcong)) {
-                 try {
-					taiDuLieuLenBangNhanVien();
-				} catch (ParseException e) {
-					e.printStackTrace();
+		while (modelNhanVien.getRowCount() != 0) {
+			modelNhanVien.removeRow(0);
+		}
+		daoChamCong = new ChamCongNhanVien_Dao();
+		ArrayList<ChamCongNhanVien> listChamCong = daoChamCong.danhSachChamCongNhanVien();
+		if (listChamCong != null) {
+			for (ChamCongNhanVien chamCong : listChamCong) {
+				if (chamCong.getNguoiChamCong() != null) {
+					String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
+							chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
+							chamCong.getNhanVien().getPhongBan().getTenPhongBan(), chamCong.getNhanVien().getChucVu(), chamCong.getNgayChamCong().toString(),
+							chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), chamCong.getGioDiLam(),chamCong.getGioTangCa()};
+					modelNhanVien.addRow(data);
 				}
-                JOptionPane.showMessageDialog(null, "Cập nhật thành công");
-                if (modelChamCong.getRowCount() > 0) {
-                    setShow(btnChamCongTatCa, btnChamLai);
-                }
-                setHidden(btnLuu, btnHuy, btnCapNhat);
-            }
-        }
-        cmbGio.setEnabled(false);
-        cmbPhut.setEnabled(false);
-    }
+			}
+			if (tblNhanVien.getRowCount() > 0) {
+				tblNhanVien.setRowSelectionInterval(0, 0);
+				hienThiDuLieuLenTxtBangNhanVien(0);
+				setEditInput(false);
+			}
+		}
 
-    private void btnChamLaiActionPerformed(java.awt.event.ActionEvent evt) {
-        setShow(btnLuu, btnHuy);
-        setHidden(btnChamLai, btnCapNhat, btnChamCongTatCa);
-        setEditInput(true);
-        checkChamCong = true;
-        cmbTinhTrang.setSelectedIndex(0);
-        cmbGio.setEditable(false);
-        cmbGioTangCa.setEditable(false);
-        cmbPhut.setEditable(false);
-        cmbGioTangCa.setEditable(false);
-    }
-    
-    private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {
-        setShow(btnChamLai, btnChamCongTatCa,btnCapNhat);
-        if (modelChamCong.getRowCount() > 0) {
-            setShow(btnChamLai, btnChamCongTatCa);
-        } else {
-            setHidden(btnChamLai, btnChamCongTatCa);
-        }
-        setHidden(btnLuu, btnHuy, btnCapNhat);
-        checkChamCong = false;
-        this.cmbTinhTrang.setEnabled(false);
-        cmbGio.setEnabled(false);
-        cmbPhut.setEnabled(false);
-    }
+		setEditInput(false);
+	}
+
+	public void taiDuLieuLenBangChamCongEvt() {
+		daoChamCong = new ChamCongNhanVien_Dao();
+		daoNhanVien = new NhanVien_Dao();
+		ArrayList<ChamCongNhanVien> listChamCong = daoChamCong.danhSachChamCongNhanVien();
+		listNhanVien = daoNhanVien.layDanhSachNhanVien();
+		ArrayList<NhanVien> listTemp1 = new ArrayList<>();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String strDate = formatter.format(dcsNgayChamCong.getDate());
+		listChamCong.forEach(e -> {
+			if (e.getCaLam().equalsIgnoreCase(cmbCaLam.getSelectedItem().toString()) && strDate.equalsIgnoreCase(e.getNgayChamCong().toString())) {
+				listTemp1.add(e.getNhanVien());
+			}
+		});
+		listNhanVienForEvtChamCongTatCa = new ArrayList<>();
+		listNhanVien.forEach(e -> {
+			boolean flag = false;
+			if (e.getNgayVaoLam().after(dcsNgayChamCong.getDate())) {
+				//                System.out.println(e.getMaNhanVien() + "Nhan vien nay chua du dk de cham cong");
+			} else {
+				for (NhanVien nhanVien : listTemp1) {
+					if (nhanVien.getMaNhanVien().equalsIgnoreCase(e.getMaNhanVien())) {
+						flag = true;
+					}
+				}
+				if (!flag) {
+					listNhanVienForEvtChamCongTatCa.add(e);
+					String data[] = {(modelChamCong.getRowCount() + 1) + "", e.getMaNhanVien(), e.getHoTen(), e.getSoDienThoai(), e.getPhongBan().getTenPhongBan(), e.getChucVu()};
+					modelChamCong.addRow(data);
+				}
+			}
+		});
+	}
+
+	public void taiDuLieuLenBangChamCong() throws ParseException, InterruptedException {
+		while (modelChamCong.getRowCount() != 0) {
+			modelChamCong.removeRow(0);
+		}
+		taiDuLieuLenBangChamCongEvt();
+		if (tblNhanVien.getRowCount() != 0) {
+			tblNhanVien.setRowSelectionInterval(0, 0);
+		}
+		if (modelChamCong.getRowCount() > 0) {
+			tblChamCong.setRowSelectionInterval(0, 0);
+			hienThiDuLieuLenTxtBangNhanVien(0);
+			setEditInput(false);
+			btnChamLai.setEnabled(false);
+		} else {
+			btnChamLai.setEnabled(false);
+		}
+	}
+
+	public void setComBoBoxToSunDay() {
+		cmbCaLam.removeAllItems();
+		cmbCaLam.addItem("Sáng chủ nhật");
+		cmbCaLam.addItem("Chiều chủ nhật");
+	}
+
+	public void setComBoBoxToReset() {
+		cmbCaLam.removeAllItems();
+		cmbCaLam.addItem("Sáng");
+		cmbCaLam.addItem("Chiều");
+		cmbCaLam.addItem("Đêm");
+	}
+
+	public void hienThiDuLieuLenTxtBangNhanVien(int dong) throws ParseException {
+		if (modelNhanVien.getRowCount() > 0) {
+			txtMaNV.setText(tblNhanVien.getValueAt(dong, 2).toString());
+			txtTenNV.setText(tblNhanVien.getValueAt(dong, 3).toString());
+			cmbTinhTrang.setSelectedItem(tblNhanVien.getValueAt(dong, 9).toString());
+			if (cmbTinhTrang.getSelectedIndex() != 2 && cmbTinhTrang.getSelectedIndex() != 3) {
+				cmbGio.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString().split("h")[0]);
+				cmbPhut.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString().split("h")[1]);
+				cmbGioTangCa.setSelectedItem(tblNhanVien.getValueAt(dong, 11).toString().split("h")[0]);
+				cmbGio.setEditable(true);
+				cmbPhut.setEditable(true);
+			} else {
+				cmbGio.setEditable(true);
+				cmbPhut.setEditable(true);
+			}
+		}
+	}
+
+	public void hienThiDuLieuLenTxtBangChamCong(int dong) throws ParseException {
+		txtMaNV.setText(tblChamCong.getValueAt(dong, 1).toString());
+		txtTenNV.setText(tblChamCong.getValueAt(dong, 2).toString());
+	}
+
+	public void setHidden(JButton... btn) {
+		for (JButton jButton : btn) {
+			jButton.setEnabled(false);
+		}
+	}
+
+	public void setShow(JButton... btn) {
+		for (JButton jButton : btn) {
+			jButton.setEnabled(true);
+		}
+	}
+
+	public void setEditInput(boolean check) {
+		cmbTinhTrang.setEnabled(check);
+		cmbGio.setEnabled(check);
+		cmbPhut.setEnabled(check);
+		cmbGioTangCa.setEnabled(check);
+	}
+
+	private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {
+		try {
+			capNhatCmbGio();
+			hienThiDuLieuLenTxtBangNhanVien(tblNhanVien.getSelectedRow());
+			setEditInput(false);
+			setShow(btnCapNhat);
+			setHidden(btnHuy, btnLuu, btnChamLai);
+			checkChamCong = false;
+		} catch (ParseException ex) {
+			JOptionPane.showMessageDialog(null, "ERRO, please reset (T_T)(T_T)");
+		}
+		if (tblChamCong.getSelectedRow() != -1) {
+			tblChamCong.removeRowSelectionInterval(tblChamCong.getSelectedRow(), 0);
+		}
+	}
+
+	private void tblChamCongMouseClicked(java.awt.event.MouseEvent evt) {
+		try {
+			capNhatCmbGio();
+			hienThiDuLieuLenTxtBangChamCong(tblChamCong.getSelectedRow());
+			setEditInput(false);
+			setHidden(btnHuy, btnLuu, btnCapNhat);
+			setShow(btnChamLai, btnChamCongTatCa);
+			checkChamCong = false;
+		} catch (ParseException ex) {
+			JOptionPane.showMessageDialog(null, "ERRO, please reset (T_T)(T_T)");
+		}
+		if (tblNhanVien.getSelectedRow() != -1) {
+			tblNhanVien.removeRowSelectionInterval(tblNhanVien.getSelectedRow(), 0);
+		}
+	}
+
+	private void btnLayDanhSachActionPerformed(java.awt.event.ActionEvent evt) {
+		try {
+			if (dcsNgayChamCong.getDate().after(new Date())) {
+				JOptionPane.showMessageDialog(null, "Ngày chấm công không được sau ngày hiện tại!!!", stThongbao, JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			try {
+				taiDuLieuLenBangChamCong();
+			} catch (ParseException ex) {
+				Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (InterruptedException ex) {
+				Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			if (tblChamCong.getRowCount() != 0) {
+				setShow(btnChamCongTatCa);
+			} else {
+				setHidden(btnChamLai, btnChamCongTatCa);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, stNgayThangKhongHople, stThongbao, JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void dcsNgayChamCongMouseClicked(java.awt.event.MouseEvent evt) {
+	}
+
+	private void dcsNgayChamCongPropertyChange(java.beans.PropertyChangeEvent evt) {
+		if ("date".equals(evt.getPropertyName())) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(dcsNgayChamCong.getDate());
+			if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
+				setComBoBoxToSunDay();
+			} else {
+				setComBoBoxToReset();
+			}
+		}
+		btnChamLai.setEnabled(false);
+		hienThiChamCongTheoNgay();
+		while (modelChamCong.getRowCount() > 0) {
+			modelChamCong.removeRow(0);
+		}
+
+	}
+
+	private void btnChamCongTatCaActionPerformed(java.awt.event.ActionEvent evt) {
+		daoChamCong = new ChamCongNhanVien_Dao();
+		String gio = "";
+		String gioTangCa = "";
+
+		if (cmbCaLam.getSelectedIndex() == 0) {
+			gio = "7h00";
+		} else if (cmbCaLam.getSelectedIndex() == 1) {
+			gio = "14h00";
+		} else {
+			gio = "22h00";
+		}
+		if (cmbGioTangCa.getSelectedIndex() == 0) {
+			gioTangCa = "0h";
+		}
+		cmbTinhTrang.setSelectedIndex(0);
+		taiDuLieuLenBangChamCongEvt();
+		for (NhanVien nhanVien : listNhanVienForEvtChamCongTatCa) {
+			ChamCongNhanVien chamCong = new ChamCongNhanVien(nhanVien, dcsNgayChamCong.getDate(), cmbCaLam.getSelectedItem().toString(), cmbTinhTrang.getSelectedItem().toString(),
+					gio,gioTangCa, nhanvienDangNhap);
+			daoChamCong.themMotChamCongNhanVien(chamCong);
+		}
+		btnChamCongTatCa.setEnabled(false);
+		hienThiChamCongTheoNgay();
+		while (modelChamCong.getRowCount() != 0) {
+			modelChamCong.removeRow(0);
+		}
+		btnChamLai.setEnabled(false);
+		JOptionPane.showMessageDialog(null, "Chấm công thành công");
+	}
+
+	public void thayDouCmbBox() {
+		if (cmbTinhTrang.getSelectedIndex() == 0 ) {
+			cmbGio.setEnabled(false);
+			cmbPhut.setEnabled(false);
+			cmbGioTangCa.setEnabled(true);
+		}
+		else if (cmbTinhTrang.getSelectedIndex() == 2 || cmbTinhTrang.getSelectedIndex() == 3) {
+			cmbGio.setEnabled(false);
+			cmbPhut.setEnabled(false);
+			cmbGioTangCa.setEnabled(false);
+		} else {
+			cmbGio.setEnabled(true);
+			cmbPhut.setEnabled(true);
+			cmbGio.setEditable(false);
+			cmbPhut.setEditable(false);
+			cmbGioTangCa.setEnabled(true);
+			cmbGioTangCa.setEditable(false);
+		}
+	}
+	private void cmbTinhTrangActionPerformed(java.awt.event.ActionEvent evt) {
+		thayDouCmbBox();
+	}
+
+	private void scrChamCongMouseClicked(java.awt.event.MouseEvent evt) {
+	}
+
+	public void capNhatCmbGio() {
+		cmbGio.removeAllItems();
+		if (cmbCaLam.getSelectedIndex() == 0) {
+			for (int i = 7; i < 12; i++) {
+				cmbGio.addItem(i + "");
+			}
+		} else if (cmbCaLam.getSelectedIndex() == 1) {
+			for (int i = 13; i < 18; i++) {
+				cmbGio.addItem(i + "");
+			}
+		} else {
+			for (int i = 19; i <= 24; i++) {
+				cmbGio.addItem(i + "");
+			}
+			for (int i = 0; i < 7; i++) {
+				cmbGio.addItem(i + "");
+			}
+		}
+	}
+
+	private void cmbCaLamActionPerformed(java.awt.event.ActionEvent evt) {
+		capNhatCmbGio();
+		setHidden(btnHuy, btnLuu, btnChamCongTatCa, btnChamLai, btnCapNhat);
+		setEditInput(false);
+		btnChamLai.setEnabled(false);
+		hienThiChamCongTheoNgay();
+		while (modelChamCong.getRowCount() > 0) {
+			modelChamCong.removeRow(0);
+		}
+	}
+
+	private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {
+		setHidden(btnCapNhat, btnChamLai, btnChamCongTatCa);
+		cmbCaLam.setEnabled(false);
+		setShow(btnHuy, btnLuu);
+		setEditInput(true);
+		thayDouCmbBox();
+	}
+
+	private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
+		String gioLam = "";
+		String gioTangCa = "";
+		if (cmbTinhTrang.getSelectedIndex() == 0) {
+			gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
+		} else if (cmbGio.isEnabled()) {
+			gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
+		} else {
+			gioLam = "";
+		}
+		if (cmbTinhTrang.getSelectedIndex() == 0) {
+			gioTangCa = cmbGioTangCa.getSelectedItem().toString() + "h";
+		} else if (cmbGio.isEnabled()) {
+			gioTangCa = cmbGioTangCa.getSelectedItem().toString() + "h";
+		} else {
+			gioTangCa = "";
+		}
+		daoChamCong = new ChamCongNhanVien_Dao();
+		daoNhanVien = new NhanVien_Dao();
+		NhanVien nhanVienDuocChamCong = daoNhanVien.layMotNhanVienTheoMaNhanVien(txtMaNV.getText());
+		if (checkChamCong) {
+			ChamCongNhanVien chamcong = new ChamCongNhanVien(nhanVienDuocChamCong, dcsNgayChamCong.getDate(),
+					cmbCaLam.getSelectedItem().toString(), cmbTinhTrang.getSelectedItem().toString(), gioLam, gioTangCa, nhanvienDangNhap);
+			if (daoChamCong.themMotChamCongNhanVien(chamcong)) {
+				try {
+					JOptionPane.showMessageDialog(null, "Chấm công thành công");
+					taiDuLieuLenBangNhanVien();
+					hienThiChamCongTheoNgay();
+					setShow(btnCapNhat, btnChamLai);
+					setHidden(btnLuu, btnHuy);
+				} catch (ParseException ex) {
+					Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
+				} finally {
+					if (modelChamCong.getRowCount() > 0) {
+						setShow(btnChamCongTatCa);
+					}
+					setHidden(btnLuu, btnHuy, btnCapNhat, btnChamLai);
+					checkChamCong = false;
+				}
+			}
+			checkChamCong = false;
+		} else {
+			String ngayCham = tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 7).toString();
+			SimpleDateFormat dfm = new SimpleDateFormat("yyyy-MM-dd");
+			Date kq = null;
+			try {
+				kq = dfm.parse(ngayCham);
+			} catch (ParseException ex) {
+				Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			ChamCongNhanVien chamcong = new ChamCongNhanVien(nhanVienDuocChamCong, kq,
+					tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 8).toString(), cmbTinhTrang.getSelectedItem().toString(), gioLam, gioTangCa, nhanvienDangNhap);
+			if (daoChamCong.suaMotChamCongNhanVien(chamcong)) {
+				//taiDuLieuLenBangNhanVien();
+				hienThiChamCongTheoNgay();
+				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+				if (modelChamCong.getRowCount() > 0) {
+					setShow(btnChamCongTatCa, btnChamLai);
+				}
+				setHidden(btnLuu, btnHuy, btnCapNhat);
+			}
+		}
+		cmbGio.setEnabled(false);
+		cmbPhut.setEnabled(false);
+	}
+
+	private void btnChamLaiActionPerformed(java.awt.event.ActionEvent evt) {
+		setShow(btnLuu, btnHuy);
+		setHidden(btnChamLai, btnCapNhat, btnChamCongTatCa);
+		setEditInput(true);
+		checkChamCong = true;
+		cmbTinhTrang.setSelectedIndex(0);
+		cmbGio.setEditable(false);
+		cmbGioTangCa.setEditable(false);
+		cmbPhut.setEditable(false);
+		cmbGioTangCa.setEditable(false);
+	}
+
+	private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {
+		setShow(btnChamLai, btnChamCongTatCa,btnCapNhat);
+		if (modelChamCong.getRowCount() > 0) {
+			setShow(btnChamLai, btnChamCongTatCa);
+		} else {
+			setHidden(btnChamLai, btnChamCongTatCa);
+		}
+		setHidden(btnLuu, btnHuy, btnCapNhat);
+		checkChamCong = false;
+		this.cmbTinhTrang.setEnabled(false);
+		cmbGio.setEnabled(false);
+		cmbPhut.setEnabled(false);
+	}
 }
