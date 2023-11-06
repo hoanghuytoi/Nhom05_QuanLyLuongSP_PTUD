@@ -56,9 +56,9 @@ public class Login_GUI extends JFrame {
     private JLabel lblNgonNgu;
     private JLabel lblQuenMatKhau;
     private JLabel lblTenDangNhap;
-    private JLabel lblTietDe;
+    private JLabel lblTieuDe;
     private JLabel lblTieuDeDangNhap;
-    private JLabel lblTieuDePhanMem;
+    
     private JLabel show;
     private JTextField txtDangNhap;
     private JPasswordField txtMatKhau;
@@ -70,7 +70,7 @@ public class Login_GUI extends JFrame {
 	private JSeparator jSeparator1_1;
 
 	public Login_GUI() {
-//		ngonNguList = new ArrayList<>();
+		ngonNguList = new ArrayList<>();
         try {
             ConnectionDB.ConnectDB.getInstance().connect();
         } catch (Exception e) {
@@ -78,10 +78,10 @@ public class Login_GUI extends JFrame {
         }
         congNhan_DAO = new CongNhan_Dao();
         nhanVien_DAO = new NhanVien_Dao();
-//        File file = new File("config/VietNam.properties");
-//        File file1 = new File("config/English.properties");
-//        ngonNguList.add(file.getAbsolutePath());
-//        ngonNguList.add(file1.getAbsolutePath());
+        File file = new File("config/VietNam.properties");
+        File file1 = new File("config/English.properties");
+        ngonNguList.add(file.getAbsolutePath());
+        ngonNguList.add(file1.getAbsolutePath());
         initComponents();
         txtDangNhap.setText("PPNV100001");
         txtMatKhau.setText("111111");
@@ -99,6 +99,22 @@ public class Login_GUI extends JFrame {
         }
 	}
     
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        lblTieuDe.setText(prop.getProperty("Login_lblTieuDe"));
+        lblTieuDeDangNhap.setText(prop.getProperty("Login_lblTieuDeDangNhap"));
+        lblTenDangNhap.setText(prop.getProperty("Login_lblTenDangNhap"));
+        lblMatKhau.setText(prop.getProperty("Login_lblMatKhau"));
+        chkRemerberPassword.setText(prop.getProperty("Login_lblNhoMatKhau"));
+        lblQuenMatKhau.setText(prop.getProperty("Login_lblQuenMatKhau"));
+        btnDangNhap.setText(prop.getProperty("Login_btnDangNhap"));
+        lblNgonNgu.setText(prop.getProperty("Login_lblNgonNgu"));
+        lblHello.setText((prop.getProperty("Login_lblHello")));
+        
+    }
+	
 	public void getDataRemember() {
         String userName = "";
         userName = pref.get("userName", userName);
@@ -106,19 +122,6 @@ public class Login_GUI extends JFrame {
         passWord = pref.get("password", passWord);
         this.txtDangNhap.setText(userName);
         this.txtMatKhau.setText(passWord);
-    }
-    
-	public void caiDatNgonNguChoView(String fileName) throws FileNotFoundException, IOException {
-        FileInputStream fis = new FileInputStream(fileName);
-        Properties prop = new Properties();
-        prop.load(fis);
-        lblTieuDePhanMem.setText(prop.getProperty("Login_lblTieuDePhanMem"));
-        lblTieuDeDangNhap.setText(prop.getProperty("Login_lblTieuDeDangNhap"));
-        lblTenDangNhap.setText(prop.getProperty("Login_lblTenDangNhap"));
-        lblMatKhau.setText(prop.getProperty("Login_lblMatKhau"));
-        lblQuenMatKhau.setText(prop.getProperty("Login_lblQuenMatKhau"));
-        btnDangNhap.setText(prop.getProperty("Login_btnDangNhap"));
-        lblNgonNgu.setText(prop.getProperty("Login_lblNgonNgu"));
     }
 	
     private void initComponents() {
@@ -129,8 +132,8 @@ public class Login_GUI extends JFrame {
         lblLogo.setBounds(-27, 54, 634, 446);
         lblLogo.setIcon(new ImageIcon(Login_GUI.class.getResource("/image/icon/login.PNG")));
         
-        lblTietDe = new JLabel();
-        lblTietDe.setBounds(0, 0, 510, 60);
+        lblTieuDe = new JLabel();
+        lblTieuDe.setBounds(0, 0, 510, 60);
         
         panelThongTin = new javax.swing.JPanel();
         panelThongTin.setBounds(510, 0, 525, 500);
@@ -138,7 +141,7 @@ public class Login_GUI extends JFrame {
         lblTieuDeDangNhap.setBounds(129, 16, 286, 43);
         
         lblHello = new JLabel();
-        lblHello.setBounds(162, 70, 208, 18);
+        lblHello.setBounds(162, 70, 238, 18);
         
         imageExit = new JLabel();
         imageExit.setBounds(475, 0, 50, 53);
@@ -171,7 +174,7 @@ public class Login_GUI extends JFrame {
         btnDangNhap.setBackground(new Color(255, 140, 0));
         
         lblQuenMatKhau = new JLabel();
-        lblQuenMatKhau.setBounds(364, 323, 106, 18);
+        lblQuenMatKhau.setBounds(364, 323, 136, 18);
         
         cmbNgonNgu = new JComboBox<>();
         cmbNgonNgu.setBounds(280, 439, 190, 40);
@@ -187,11 +190,11 @@ public class Login_GUI extends JFrame {
         panelTieuDe.setLayout(null);
         lblLogo.setPreferredSize(new java.awt.Dimension(400, 400));
         panelTieuDe.add(lblLogo);
-        lblTietDe.setFont(new Font("Times New Roman", Font.BOLD, 18));
-        lblTietDe.setForeground(new Color(0, 0, 0));
-        lblTietDe.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTietDe.setText("PHẦN MỀM QUẢN LÝ LƯƠNG SẢN PHẨM - PACEPRO");
-        panelTieuDe.add(lblTietDe);
+        lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        lblTieuDe.setForeground(new Color(0, 0, 0));
+        lblTieuDe.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTieuDe.setText("PHẦN MỀM QUẢN LÝ LƯƠNG SẢN PHẨM - PACEPRO");
+        panelTieuDe.add(lblTieuDe);
 
         getContentPane().add(panelTieuDe);
 
@@ -208,7 +211,7 @@ public class Login_GUI extends JFrame {
         lblHello.setFont(new Font("Times New Roman", Font.ITALIC, 15));
         lblHello.setForeground(new Color(0, 0, 0));
         lblHello.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblHello.setText("Welcome to the system");
+        lblHello.setText("Chào mừng đến hệ thống");
         panelThongTin.add(lblHello);
 
         imageExit.setIcon(new ImageIcon(getClass().getResource("/image/icon/close.png")));
@@ -266,7 +269,7 @@ public class Login_GUI extends JFrame {
         panelThongTin.add(show);
 
         chkRemerberPassword.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 15));
-        chkRemerberPassword.setText("Remember password?");
+        chkRemerberPassword.setText("Nhớ mật khẩu?");
         chkRemerberPassword.setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
         chkRemerberPassword.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -284,11 +287,11 @@ public class Login_GUI extends JFrame {
         lblNgonNgu.setForeground(new Color(0, 0, 0));
         lblNgonNgu.setText("Chọn ngôn ngữ:");
         lblNgonNgu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-//        lblNgonNgu.addMouseListener(new java.awt.event.MouseAdapter() {
-//            public void mouseClicked(java.awt.event.MouseEvent evt) {
-//                lblNgonNguMouseClicked(evt);
-//            }
-//        });
+        lblNgonNgu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblNgonNguMouseClicked(evt);
+            }
+        });
         panelThongTin.add(lblNgonNgu);
 
         btnDangNhap.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -308,10 +311,7 @@ public class Login_GUI extends JFrame {
         lblQuenMatKhau.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblQuenMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-            	QuenMatKhau_GUI quenMatKhau = new QuenMatKhau_GUI();
-                quenMatKhau.setVisible(true);
-                quenMatKhau.setResizable(false);
-                quenMatKhau.setLocationRelativeTo(null);
+                lblQuenMatKhauMouseClicked(evt);
             }
         });
         panelThongTin.add(lblQuenMatKhau);
@@ -319,7 +319,7 @@ public class Login_GUI extends JFrame {
         cmbNgonNgu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VietNam", "English" }));
         cmbNgonNgu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                cmbNgonNguActionPerformed(evt);
+                cmbNgonNguActionPerformed(evt);
             }
         });
         panelThongTin.add(cmbNgonNgu);
@@ -395,7 +395,7 @@ public class Login_GUI extends JFrame {
 
     private void cmbNgonNguActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            caiDatNgonNguChoView(ngonNguList.get(cmbNgonNgu.getSelectedIndex()));
+            caiDatNgonNgu(ngonNguList.get(cmbNgonNgu.getSelectedIndex()));
         } catch (IOException ex) {
             Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -414,8 +414,7 @@ public class Login_GUI extends JFrame {
             NhanVien nhanVien = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
             if (nhanVien != null && nhanVien.getMatKhau().equals(password)) {
                 try {
-                	new Main_GUI(nhanVien.getMaNhanVien()).setVisible(true);
-                	//nhanVien.getMaNhanVien()
+                	new Main_GUI(nhanVien.getMaNhanVien(), ngonNguList.get(cmbNgonNgu.getSelectedIndex())).setVisible(true);
                 	this.setVisible(false);
                 } catch (IOException ex) {
                     Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);

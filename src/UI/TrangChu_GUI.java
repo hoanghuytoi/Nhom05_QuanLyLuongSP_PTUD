@@ -20,12 +20,4 @@ public class TrangChu_GUI extends JPanel {
         add(lblHinhAnh);
 
     }
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("NhanVien_GUI Example");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.getContentPane().add(new TrangChu_GUI());
-//        frame.setSize(1290, 750);
-//        frame.setVisible(true);
-//    }
 }

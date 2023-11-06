@@ -27,8 +27,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.awt.Dimension;
 
 public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
@@ -58,9 +61,8 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 	private Object oFlag;
 	private NhanVien nhanVienDangNhap;
 	private String fileName;
-	private String khongDeTrong;
 	
-    private String stErrKhongDeTrong;
+	private String khongDeTrong;
     private String stErrSoLuong;
     private String stThongbao;
     private String stBanXacNhanXoa;
@@ -68,18 +70,17 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
     private String stXoaThatBai;
     private String stThemThanhCong;
     private String stThemThatBai;
-    private String stKhongTimThayFile;
-    private String stKhongDocDuocFile;
     private String stCapNhatThanhCong;
     private String stCapNhatThatBai;
     private String stTenToTheoMau;
     private String stDaTonTai;
+	private JLabel lblTieuDe;
 
 
-	public ToNhom_GUI() throws IOException {
+	public ToNhom_GUI(String fileName) throws IOException {
 		setBackground(Color.WHITE);
 		initComponents();
-		//caiDatNgonNguChoView(fileName);
+		caiDatNgonNgu(fileName);
 		try {
 			ConnectionDB.ConnectDB.getInstance().connect();
 		} catch (Exception e) {
@@ -97,13 +98,43 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 		btnHuy.setEnabled(false);
 		execute();
 	}
+	
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        lblTieuDe.setText(prop.getProperty("toNhom_TieuDe"));
+        lblMaToNhom.setText(prop.getProperty("toNhom_maToNhom"));
+        lblTenToNhom.setText(prop.getProperty("toNhom_tenToNhom"));
+        lblSoLuongCongNhan.setText(prop.getProperty("toNhom_soLuongCongNhan"));
+        ChangeName(tblToNhom, 0, prop.getProperty("toNhom_STT"));
+        ChangeName(tblToNhom, 1, lblMaToNhom.getText());
+        ChangeName(tblToNhom, 2, lblTenToNhom.getText());
+        ChangeName(tblToNhom, 3, lblSoLuongCongNhan.getText());
+        btnThem.setText(prop.getProperty("btnThem"));
+        btnXoa.setText(prop.getProperty("btnXoa"));
+        btnCapNhat.setText(prop.getProperty("btnCapNhat"));
+        btnLuu.setText(prop.getProperty("btnLuu"));
+        btnHuy.setText(prop.getProperty("btnHuy"));
+        stThongbao = prop.getProperty("thongBao");
+        stBanXacNhanXoa = prop.getProperty("banXacNhanXoa");
+        stXoaThanhCong = prop.getProperty("xoaThanhCong");
+        stXoaThatBai = prop.getProperty("xoaThatBai");
+        stThemThanhCong = prop.getProperty("themThanhCong");
+        stThemThatBai = prop.getProperty("themThatBai");
+        stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
+        stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+        khongDeTrong = prop.getProperty("khongDeTrong");
+        stTenToTheoMau = prop.getProperty("toNhom_tenTheoMau");
+        stDaTonTai = prop.getProperty("toNhom_tenDaTonTai");
+    }
 
 	public void ChangeName(JTable table, int col_index, String col_name) {
 		table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
 	}
 
 	private void initComponents() {
-		JLabel lblTieuDe = new JLabel("QUẢN LÝ TỔ NHÓM");
+		lblTieuDe = new JLabel("QUẢN LÝ TỔ NHÓM");
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		lblTieuDe.setBounds(510, 11, 296, 55);
 		add(lblTieuDe);
@@ -127,7 +158,7 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 				new JLabel();
 		lblAnhTN.setBounds(107, 29, 270, 217);
 		lbErrTenToNhom = new JLabel();
-		lbErrTenToNhom.setBounds(690, 130, 290, 30);
+		lbErrTenToNhom.setBounds(690, 125, 290, 29);
 		lblMaToNhom = new JLabel();
 		lblMaToNhom.setBounds(500, 25, 190, 50);
 		lblSoLuongCongNhan = new JLabel();
@@ -457,10 +488,10 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 			if (oFlag.equals(btnThem)) {
 				String maToNhom = txtMaToNhom.getText();
 				if (txtTenToNhom.getText().equals("")) {
-					lbErrTenToNhom.setText("Không để trống");
+					lbErrTenToNhom.setText(khongDeTrong);
 					return;
 				} else if (!txtTenToNhom.getText().toLowerCase().matches("^tổ [1-9][0-9]*$")) {
-                    lbErrTenToNhom.setText("Tên tổ theo mẫu: Tổ [1-9][0-9]*$");
+                    lbErrTenToNhom.setText(stTenToTheoMau);
                     return;
                 } else {
                     lbErrTenToNhom.setText("");
@@ -469,7 +500,7 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
                 ArrayList<ToNhom> toNhomList = toNhomDao.layDanhSachToNhom();
                 for (ToNhom toNhom : toNhomList) {
                     if (toNhom.getTenToNhom().equalsIgnoreCase(txtTenToNhom.getText())) {
-                        JOptionPane.showMessageDialog(this, "Đã tồn tại", stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, stDaTonTai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
                         return;
                     }
                 }
@@ -484,14 +515,14 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 					btnHuy.setEnabled(false);
 					oFlag = null;
 					khoaMoTxt(false);
-					JOptionPane.showMessageDialog(null,"Thêm tổ nhóm thành công","Thông báo", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(null,"Thêm tổ nhóm thất bại","Thông báo", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else if (oFlag.equals(btnCapNhat)) {
 				String maToNhom = txtMaToNhom.getText();
                 if (txtTenToNhom.getText().equals("")) {
-                    lbErrTenToNhom.setText(stErrKhongDeTrong);
+                    lbErrTenToNhom.setText(khongDeTrong);
                     return;
                 } else if (!txtTenToNhom.getText().toLowerCase().matches("^tổ [1-9][0-9]*$")) {
                     lbErrTenToNhom.setText(stTenToTheoMau);
@@ -517,9 +548,9 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
                     oFlag = null;
                     khoaMoTxt(false);
                     taiDuLieuLenBang();
-                    JOptionPane.showMessageDialog(null, "Cập nhật thành công", stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, stCapNhatThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Cập nhật thất bại", stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
                 }
 			}
 		}
@@ -536,14 +567,14 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 
 			int rowSelected = tblToNhom.getSelectedRow();
 			if (rowSelected != -1) {
-				int coXacNhanXoa = JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa ko", stThongbao, JOptionPane.ERROR_MESSAGE);
+				int coXacNhanXoa = JOptionPane.showConfirmDialog(null, stBanXacNhanXoa, stThongbao, JOptionPane.ERROR_MESSAGE);
 				if (coXacNhanXoa == 0) {
 					boolean coXoaDuoc = toNhom_DAO.xoaMotToNhomTheoMa(tblToNhom.getValueAt(tblToNhom.getSelectedRow(), 1).toString());
 					if (coXoaDuoc) {
-						JOptionPane.showMessageDialog(null, "Xóa thành công", stThongbao, JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 						taiDuLieuLenBang();
 					} else {
-						JOptionPane.showMessageDialog(null, "Xóa thất bại", stThongbao, JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}
