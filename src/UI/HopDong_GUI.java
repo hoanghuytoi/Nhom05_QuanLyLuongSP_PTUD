@@ -30,8 +30,7 @@ import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
 import Entity.HopDong;
 import Entity.NhanVien;
-import XuatFile.ThongTinHD;
-import XuatFile.Relatorio;
+import XuatFile.xuatHD;
 
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -127,8 +126,6 @@ public class HopDong_GUI extends JPanel {
 	private DecimalFormat dcf = new DecimalFormat("###.00");
 	private NhanVien nhanVienDangNhap;
 	private String fileName;
-	
-	List<ThongTinHD> listFileHD = new ArrayList<ThongTinHD>();
 
 	public HopDong_GUI() throws ParseException, IOException {
 		setBackground(new Color(255, 255, 255));
@@ -773,30 +770,32 @@ public class HopDong_GUI extends JPanel {
         }
     }
 
-	protected void btnInHopDongActionPerformed(ActionEvent evt) {
-		Relatorio r = new Relatorio();
-//		int selectedRow = tblHopDong.getSelectedRow();
-//	    if (selectedRow >= 0) {
-//	        // Lấy ra hợp đồng được chọn từ bảng
-//	        HopDong selectedHopDong = hopDongDao.layRaMotHopDongTheoMaHopDong(tblHopDong.getValueAt(selectedRow, 1).toString());
-//
-//	        ThongTinHD thongTinHD = new ThongTinHD();
-//	        thongTinHD.setMaHopDong(selectedHopDong.getMaHopDong());
-//	        thongTinHD.setTenHopDong(selectedHopDong.getTenHopDong());
-//	        thongTinHD.setTenKhachHang(selectedHopDong.getTenKhachHang());
-//	        thongTinHD.setTienDatCoc((long) selectedHopDong.getTienDatCoc());
-//	        thongTinHD.setTriGiaHD((long) selectedHopDong.getTriGiaHD());
-//	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//	        thongTinHD.setNgayBatDau(dateFormat.format(selectedHopDong.getNgayKyKetHD()));
-//	        thongTinHD.setNgayKetThuc(dateFormat.format(selectedHopDong.getNgayKetThucHD()));
-//	        thongTinHD.setYeuCau(selectedHopDong.getYeuCau());
-//	    }
-		try {
-			r.gerarRelatorio();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
+	private void btnInHopDongActionPerformed(ActionEvent evt) {
+	    int selectedRow = tblHopDong.getSelectedRow();
+	    if (selectedRow != -1) {
+	        try {
+	            String maHopDong = tblHopDong.getValueAt(selectedRow, 1).toString();
+	            HopDong selectedHopDong = layHopDongTheoMa(maHopDong);
+	            if (selectedHopDong != null) {
+	                xuatHD r = new xuatHD();
+	                r.inHopDong(selectedHopDong);
+	            } else {
+	                System.out.println("Không tìm thấy thông tin hợp đồng.");
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Vui lòng chọn một hợp đồng để in.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	}
+
+	public HopDong layHopDongTheoMa(String maHopDong) throws ParseException {
+	    hopDongDao = new HopDong_Dao();
+	    HopDong hd = hopDongDao.layRaMotHopDongTheoMaHopDong(maHopDong);
+	    return hd;
+	}
+
 
 	private void txtTenHopDongActionPerformed(ActionEvent evt) {
 	}

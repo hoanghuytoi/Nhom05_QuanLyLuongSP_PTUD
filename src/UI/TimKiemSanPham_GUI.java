@@ -93,8 +93,12 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
         sanPham_DAO = new SanPham_Dao();
         btnXoaRong.addActionListener(this);
         btnTimKiem.addActionListener(this);
-        
-        excute();
+        lblErrDonGia.setText("");
+        lblErrChatLieu.setText("");
+        lblErrKichThuoc.setText("");
+        lblErrTenSP.setText("");
+        lblErrSoLuong.setText("");
+
         taiDuLieuLenBang("all", "all", "all", "all","all","all");
 	}
 
@@ -335,14 +339,6 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
         add(scrSanPham);
         
 	}
-
-	public void excute() {
-		lblErrSoLuong.setText("");
-		lblErrChatLieu.setText("");
-		lblErrDonGia.setText("");
-		lblErrKichThuoc.setText("");
-		lblErrTenSP.setText("");
-    }
 
 	public void taiDuLieuLenBang(String ma, String ten, String kichThuoc, String chatLieu, String soLuong, String donGia) {
 	    while (tblSanPham.getRowCount() != 0) {

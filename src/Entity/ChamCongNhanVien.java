@@ -13,11 +13,11 @@ public class ChamCongNhanVien {
     private String caLam;
     private String trangThaiDiLam;
     private String gioDiLam;
-    private String gioTangCa;
+    private int gioTangCa;
     private NhanVien nguoiChamCong;
 
     
-    public ChamCongNhanVien(NhanVien nhanVien, Date ngayChamCong, String caLam, String trangThaiDiLam, String gioDiLam,String gioTangCa, NhanVien nguoiChamCong) {
+    public ChamCongNhanVien(NhanVien nhanVien, Date ngayChamCong, String caLam, String trangThaiDiLam, String gioDiLam,int gioTangCa, NhanVien nguoiChamCong) {
         try {
             
             setNhanVien(nhanVien);
@@ -32,11 +32,11 @@ public class ChamCongNhanVien {
         }
     }
     
-    public String getGioTangCa() {
+    public int getGioTangCa() {
 		return gioTangCa;
 	}
 
-	public void setGioTangCa(String gioTangCa) {
+	public void setGioTangCa(int gioTangCa) {
 		this.gioTangCa = gioTangCa;
 	}
 

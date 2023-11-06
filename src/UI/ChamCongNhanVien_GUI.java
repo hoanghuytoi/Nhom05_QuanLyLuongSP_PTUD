@@ -558,11 +558,11 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			daoChamCong = new ChamCongNhanVien_Dao();
 			if (daoChamCong != null) {
 				for (ChamCongNhanVien chamCong : listChamCong) {
-					String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
-							chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
-							chamCong.getNhanVien().getPhongBan().getTenPhongBan(), chamCong.getNhanVien().getChucVu(), chamCong.getNgayChamCong().toString(),
-							chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), chamCong.getGioDiLam(),chamCong.getGioTangCa()};
-					modelNhanVien.addRow(data);
+				    String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
+				            chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
+				            chamCong.getNhanVien().getPhongBan().getTenPhongBan(), chamCong.getNhanVien().getChucVu(), chamCong.getNgayChamCong().toString(),
+				            chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), String.valueOf(chamCong.getGioDiLam()), String.valueOf(chamCong.getGioTangCa())};
+				    modelNhanVien.addRow(data);
 				}
 				if (tblNhanVien.getRowCount() > 0) {
 					tblNhanVien.setRowSelectionInterval(0, 0);
@@ -604,7 +604,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 					String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
 							chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
 							chamCong.getNhanVien().getPhongBan().getTenPhongBan(), chamCong.getNhanVien().getChucVu(), chamCong.getNgayChamCong().toString(),
-							chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), chamCong.getGioDiLam(),chamCong.getGioTangCa()};
+							chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), chamCong.getGioDiLam(), String.valueOf(chamCong.getGioTangCa())};
 					modelNhanVien.addRow(data);
 				}
 			}
@@ -690,7 +690,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			if (cmbTinhTrang.getSelectedIndex() != 2 && cmbTinhTrang.getSelectedIndex() != 3) {
 				cmbGio.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString().split("h")[0]);
 				cmbPhut.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString().split("h")[1]);
-				cmbGioTangCa.setSelectedItem(tblNhanVien.getValueAt(dong, 11).toString().split("h")[0]);
+				cmbGioTangCa.setSelectedItem(tblNhanVien.getValueAt(dong, 11));
 				cmbGio.setEditable(true);
 				cmbPhut.setEditable(true);
 			} else {
@@ -803,7 +803,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 	private void btnChamCongTatCaActionPerformed(java.awt.event.ActionEvent evt) {
 		daoChamCong = new ChamCongNhanVien_Dao();
 		String gio = "";
-		String gioTangCa = "";
+		int gioTangCa = 0;
 
 		if (cmbCaLam.getSelectedIndex() == 0) {
 			gio = "7h00";
@@ -813,7 +813,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			gio = "22h00";
 		}
 		if (cmbGioTangCa.getSelectedIndex() == 0) {
-			gioTangCa = "0h";
+			gioTangCa = 0;
 		}
 		cmbTinhTrang.setSelectedIndex(0);
 		taiDuLieuLenBangChamCongEvt();
@@ -898,21 +898,32 @@ public class ChamCongNhanVien_GUI extends JPanel {
 
 	private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
 		String gioLam = "";
-		String gioTangCa = "";
-		if (cmbTinhTrang.getSelectedIndex() == 0) {
-			gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
-		} else if (cmbGio.isEnabled()) {
-			gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
-		} else {
-			gioLam = "";
-		}
-		if (cmbTinhTrang.getSelectedIndex() == 0) {
-			gioTangCa = cmbGioTangCa.getSelectedItem().toString() + "h";
-		} else if (cmbGio.isEnabled()) {
-			gioTangCa = cmbGioTangCa.getSelectedItem().toString() + "h";
-		} else {
-			gioTangCa = "";
-		}
+	    int gioTangCa = 0;
+	    
+	    if (cmbTinhTrang.getSelectedIndex() == 0) {
+	        gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
+	    } else if (cmbGio.isEnabled()) {
+	        gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
+	    } else {
+	        gioLam = "";
+	    }
+
+	    if (cmbTinhTrang.getSelectedIndex() == 0) {
+	        try {
+	            gioTangCa = Integer.parseInt(cmbGioTangCa.getSelectedItem().toString());
+	        } catch (NumberFormatException e) {
+	            // Handle the case where the selected item is not a valid integer.
+	        }
+	    } else if (cmbGio.isEnabled()) {
+	        try {
+	            gioTangCa = Integer.parseInt(cmbGioTangCa.getSelectedItem().toString());
+	        } catch (NumberFormatException e) {
+	            // Handle the case where the selected item is not a valid integer.
+	        }
+	    } else {
+	        gioTangCa = 0;
+	    }
+
 		daoChamCong = new ChamCongNhanVien_Dao();
 		daoNhanVien = new NhanVien_Dao();
 		NhanVien nhanVienDuocChamCong = daoNhanVien.layMotNhanVienTheoMaNhanVien(txtMaNV.getText());

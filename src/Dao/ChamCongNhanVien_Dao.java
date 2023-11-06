@@ -30,7 +30,7 @@ public class ChamCongNhanVien_Dao {
                 Date ngayChamCong = rs.getDate("ngayChamCong");
                 String trangThaiDiLam = rs.getString("trangThaiDiLam");
                 String gioDiLam = rs.getString("gioDiLam");
-                String gioTangCa = rs.getString("gioTangCa");
+                int gioTangCa = rs.getInt("gioTangCa");
                 String maNguoiCham = rs.getString("maNguoiCham");
                 NhanVien nhanVien = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNhanVien);
                 NhanVien nguoiChamCong = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNguoiCham);
@@ -63,7 +63,7 @@ public class ChamCongNhanVien_Dao {
             stm.setDate(3, new java.sql.Date(chamCongNhanVien.getNgayChamCong().getTime()));
             stm.setString(4, chamCongNhanVien.getTrangThaiDiLam());
             stm.setString(5, chamCongNhanVien.getGioDiLam());
-            stm.setString(6, chamCongNhanVien.getGioTangCa());
+            stm.setInt(6, chamCongNhanVien.getGioTangCa());
             stm.setString(7, chamCongNhanVien.getNguoiChamCong().getMaNhanVien());
 
             soDongThemDuoc = stm.executeUpdate();
@@ -91,7 +91,7 @@ public class ChamCongNhanVien_Dao {
             stm = con.prepareStatement(truyVan);
             stm.setString(1, chamCongNhanVien.getTrangThaiDiLam());
             stm.setString(2, chamCongNhanVien.getGioDiLam());
-            stm.setString(3, chamCongNhanVien.getGioTangCa());
+            stm.setInt(3, chamCongNhanVien.getGioTangCa());
             stm.setString(4, chamCongNhanVien.getNguoiChamCong().getMaNhanVien());
             stm.setString(5, chamCongNhanVien.getNhanVien().getMaNhanVien());
             stm.setString(6, chamCongNhanVien.getCaLam());
@@ -126,7 +126,7 @@ public class ChamCongNhanVien_Dao {
                 Date ngayCham = rs.getDate("ngayChamCong");
                 String trangThaiDiLam = rs.getString("trangThaiDiLam");
                 String gioDiLam = rs.getString("gioDiLam");
-                String gioTangCa = rs.getString("gioTangCa");
+                int gioTangCa = rs.getInt("gioTangCa");
                 String maNguoiCham = rs.getString("maNguoiCham");
                 NhanVien nhanVien = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNhanVien);
                 NhanVien nguoiChamCong = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNguoiCham);
@@ -143,4 +143,41 @@ public class ChamCongNhanVien_Dao {
         }
         return dsChamCong;
     }
+    
+    public ArrayList<String[]> layDanhSachChamCongTheoMaNhanVienVaThang(String maNhanVien, String thang, String nam) {
+        PreparedStatement stm = null;
+        ArrayList<String[]> arrayList = new ArrayList<>();
+        try {
+            ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String truyVan = "select caLam, trangThaiDiLam, gioTangCa\n"
+                    + "from BangChamCongNhanVien  where maNhanVien = ? \n"
+                    + "group by maNhanVien, trangThaiDiLam, caLam, gioTangCa, ngayChamCong\n"
+                    + "having Month(ngayChamCong) = ? and year(ngayChamCong) = ?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, maNhanVien);
+            stm.setString(2, thang);
+            stm.setString(3, nam);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String caLam = rs.getString("caLam");
+                String trangThaiDiLam = rs.getString("trangThaiDiLam");
+                int gioTangCa = rs.getInt("gioTangCa");
+                String[] value = {caLam, trangThaiDiLam, String.valueOf(gioTangCa)};
+                arrayList.add(value);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return arrayList;
+    }
+
+
 }
+
