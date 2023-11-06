@@ -531,7 +531,7 @@ public class Main_GUI extends JFrame {
         menuHopDong = new MenuItem(iconHopDong, lblHopDong, (ActionEvent e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new HopDong_GUI(), BorderLayout.CENTER);
+                pnBody.add(new HopDong_GUI(nhanVienDangNhap,fileName), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }

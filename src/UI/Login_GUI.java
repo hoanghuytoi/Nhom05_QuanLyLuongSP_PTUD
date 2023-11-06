@@ -211,7 +211,7 @@ public class Login_GUI extends JFrame {
         lblHello.setFont(new Font("Times New Roman", Font.ITALIC, 15));
         lblHello.setForeground(new Color(0, 0, 0));
         lblHello.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblHello.setText("Chào mừng đến hệ thống");
+        lblHello.setText("Chào mừng đến với hệ thống");
         panelThongTin.add(lblHello);
 
         imageExit.setIcon(new ImageIcon(getClass().getResource("/image/icon/close.png")));

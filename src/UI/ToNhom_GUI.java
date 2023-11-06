@@ -107,15 +107,18 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
         lblMaToNhom.setText(prop.getProperty("toNhom_maToNhom"));
         lblTenToNhom.setText(prop.getProperty("toNhom_tenToNhom"));
         lblSoLuongCongNhan.setText(prop.getProperty("toNhom_soLuongCongNhan"));
-        ChangeName(tblToNhom, 0, prop.getProperty("toNhom_STT"));
-        ChangeName(tblToNhom, 1, lblMaToNhom.getText());
-        ChangeName(tblToNhom, 2, lblTenToNhom.getText());
-        ChangeName(tblToNhom, 3, lblSoLuongCongNhan.getText());
+        
+        doiNgonNguTable(tblToNhom, 0, prop.getProperty("toNhom_STT"));
+        doiNgonNguTable(tblToNhom, 1, lblMaToNhom.getText());
+        doiNgonNguTable(tblToNhom, 2, lblTenToNhom.getText());
+        doiNgonNguTable(tblToNhom, 3, lblSoLuongCongNhan.getText());
+        
         btnThem.setText(prop.getProperty("btnThem"));
         btnXoa.setText(prop.getProperty("btnXoa"));
         btnCapNhat.setText(prop.getProperty("btnCapNhat"));
         btnLuu.setText(prop.getProperty("btnLuu"));
         btnHuy.setText(prop.getProperty("btnHuy"));
+        
         stThongbao = prop.getProperty("thongBao");
         stBanXacNhanXoa = prop.getProperty("banXacNhanXoa");
         stXoaThanhCong = prop.getProperty("xoaThanhCong");
@@ -129,7 +132,7 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
         stDaTonTai = prop.getProperty("toNhom_tenDaTonTai");
     }
 
-	public void ChangeName(JTable table, int col_index, String col_name) {
+	public void doiNgonNguTable(JTable table, int col_index, String col_name) {
 		table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
 	}
 
@@ -574,7 +577,7 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 						JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 						taiDuLieuLenBang();
 					} else {
-						JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, stXoaThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}

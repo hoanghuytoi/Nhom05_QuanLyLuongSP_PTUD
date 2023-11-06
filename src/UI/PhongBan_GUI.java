@@ -109,16 +109,17 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
         lblTenPhongBan.setText(prop.getProperty("PhongBan_TenPhongBan"));
         lblSoLuongNhanVien.setText(prop.getProperty("PhongBan_SoLuongNhanVien"));
         
-        ChangeName(tblPhongBan, 0, prop.getProperty("PhongBan_STT"));
-        ChangeName(tblPhongBan, 1, lblMaPhongBan.getText());
-        ChangeName(tblPhongBan, 2, lblTenPhongBan.getText());
-        ChangeName(tblPhongBan, 3, lblSoLuongNhanVien.getText());
+        doiNgonNguTable(tblPhongBan, 0, prop.getProperty("PhongBan_STT"));
+        doiNgonNguTable(tblPhongBan, 1, lblMaPhongBan.getText());
+        doiNgonNguTable(tblPhongBan, 2, lblTenPhongBan.getText());
+        doiNgonNguTable(tblPhongBan, 3, lblSoLuongNhanVien.getText());
         
         btnThem.setText(prop.getProperty("btnThem"));
         btnXoa.setText(prop.getProperty("btnXoa"));
         btnCapNhat.setText(prop.getProperty("btnCapNhat"));
         btnLuu.setText(prop.getProperty("btnLuu"));
         btnHuy.setText(prop.getProperty("btnHuy"));
+        
         stErrTenPhongBan=prop.getProperty("lblErrTenPhongBan");
         stThongbao = prop.getProperty("thongBao");
         stBanXacNhanXoa = prop.getProperty("banXacNhanXoa");
@@ -131,7 +132,7 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
         stErrKhongDeTrong = prop.getProperty("khongDeTrong");
     }
 	
-	public void ChangeName(JTable table, int col_index, String col_name) {
+	public void doiNgonNguTable(JTable table, int col_index, String col_name) {
         table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
     }
 	
