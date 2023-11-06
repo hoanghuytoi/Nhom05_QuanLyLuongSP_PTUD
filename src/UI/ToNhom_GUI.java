@@ -18,6 +18,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 
 import Custom_UI.ScrollBarCustom;
+import Dao.CongNhan_Dao;
 import Dao.ToNhom_Dao;
 import Entity.NhanVien;
 import Entity.ToNhom;
@@ -367,9 +368,10 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 			defaultTableToNhom.removeRow(0);
 		}
 		ArrayList<ToNhom> danhSachToNhom = toNhom_DAO.layDanhSachToNhom();
-
+		CongNhan_Dao congNhan_dao = new CongNhan_Dao();
 		for (ToNhom toNhom : danhSachToNhom) {
-			String data[] = {(defaultTableToNhom.getRowCount() + 1) + "", toNhom.getMaToNhom(), toNhom.getTenToNhom(), toNhom.getSoLuongCongNhan() + ""};
+	        int soLuongCongNhan = congNhan_dao.laySoLuongCongNhanTheoToNhom(toNhom.getMaToNhom());
+			String data[] = {(defaultTableToNhom.getRowCount() + 1) + "", toNhom.getMaToNhom(), toNhom.getTenToNhom(), String.valueOf(soLuongCongNhan)};
 			defaultTableToNhom.addRow(data);
 		}
 		if (tblToNhom.getRowCount() != 0) {

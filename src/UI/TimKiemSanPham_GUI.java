@@ -262,7 +262,7 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
 	    btnXoaRong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    btnXoaRong.setBorder(null);
 	    btnXoaRong.setBackground(new Color(255, 192, 203));
-	    btnXoaRong.setBounds(331, 364, 140, 40);
+	    btnXoaRong.setBounds(245, 364, 201, 40);
 	    btnXoaRong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnXoaRongActionPerformed(evt);
@@ -276,7 +276,7 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
 	    btnTimKiem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 	    btnTimKiem.setBorder(null);
 	    btnTimKiem.setBackground(new Color(255, 215, 0));
-	    btnTimKiem.setBounds(584, 364, 140, 40);
+	    btnTimKiem.setBounds(535, 364, 201, 40);
 	    btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTimKiemActionPerformed(evt);
@@ -290,7 +290,7 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
         btnQuayLai.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         btnQuayLai.setBorder(null);
         btnQuayLai.setBackground(new Color(255, 192, 203));
-        btnQuayLai.setBounds(842, 364, 140, 40);
+        btnQuayLai.setBounds(842, 364, 172, 40);
         add(btnQuayLai);
         btnQuayLai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

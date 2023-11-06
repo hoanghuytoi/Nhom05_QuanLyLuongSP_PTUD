@@ -3,9 +3,12 @@ package Dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 import ConnectionDB.ConnectDB;
 import Entity.NhanVien;
@@ -307,28 +310,32 @@ public class NhanVien_Dao {
         return soDongXoaDuoc != 0;
     }
     
-    public int laySoLuongNhanVien() {
-        Statement stm = null;
+    public int laySoLuongNhanVienTheoPhongBan(String maPhongBan) {
+        PreparedStatement stm = null;
+        ResultSet rs = null;
         int soLuong = 0;
+
         try {
-            ConnectDB.getInstance();
-            Connection con = ConnectDB.getConnection();
-            String truyVan = "select count(maNhanVien) as soLuongNhanVien from NhanVien";
-            stm = con.createStatement();
-            ResultSet rs = stm.executeQuery(truyVan);
-            while (rs.next()) {
+        	ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String truyVan = "SELECT COUNT(*) AS soLuongNhanVien FROM NhanVien WHERE maPhongBan = ?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, maPhongBan);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
                 soLuong = rs.getInt("soLuongNhanVien");
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             try {
-                stm.close();;
+                stm.close();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
+
         return soLuong;
     }
-    
 }

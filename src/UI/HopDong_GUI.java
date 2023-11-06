@@ -778,7 +778,7 @@ public class HopDong_GUI extends JPanel {
 	            HopDong selectedHopDong = layHopDongTheoMa(maHopDong);
 	            if (selectedHopDong != null) {
 	                xuatHD r = new xuatHD();
-	                r.inHopDong(selectedHopDong);
+	                //r.inHopDong(selectedHopDong);
 	            } else {
 	                System.out.println("Không tìm thấy thông tin hợp đồng.");
 	            }

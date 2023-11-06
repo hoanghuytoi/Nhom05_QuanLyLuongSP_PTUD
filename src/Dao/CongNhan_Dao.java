@@ -253,4 +253,33 @@ public class CongNhan_Dao {
         }
         return soLuongXoaDuoc != 0;
     }
+    
+    public int laySoLuongCongNhanTheoToNhom(String maToNhom) {
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int soLuong = 0;
+
+        try {
+        	ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String truyVan = "SELECT COUNT(*) AS soLuongCongNhan FROM CongNhan WHERE maToNhom = ?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, maToNhom);
+            rs = stm.executeQuery();
+
+            if (rs.next()) {
+                soLuong = rs.getInt("soLuongCongNhan");
+            }
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return soLuong;
+    }
 }

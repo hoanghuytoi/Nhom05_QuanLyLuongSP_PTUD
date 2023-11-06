@@ -18,6 +18,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 
 import Custom_UI.ScrollBarCustom;
+import Dao.NhanVien_Dao;
 import Dao.PhongBan_Dao;
 import Entity.NhanVien;
 import Entity.PhongBan;
@@ -348,20 +349,25 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 	}
 
 	public void taiDuLieuLenBang() {
-		while (tblPhongBan.getRowCount() != 0) {
-			defaultTablePhongBan.removeRow(0);
-		}
-		ArrayList<PhongBan> danhSachPhongBan = phongBan_DAO.layDanhSachPhongBan();
+	    while (tblPhongBan.getRowCount() != 0) {
+	        defaultTablePhongBan.removeRow(0);
+	    }
 
-		for (PhongBan phongBan : danhSachPhongBan) {
-			String data[] = {(defaultTablePhongBan.getRowCount() + 1) + "", phongBan.getMaPhongBan(), phongBan.getTenPhongBan(), phongBan.getSoLuongNhanVien() + ""};
-			defaultTablePhongBan.addRow(data);
-		}
-		if (tblPhongBan.getRowCount() != 0) {
-			tblPhongBan.setRowSelectionInterval(0, 0);
-			hienThiDuLieuLenTxt(0);
-		}
+	    ArrayList<PhongBan> danhSachPhongBan = phongBan_DAO.layDanhSachPhongBan();
+	    NhanVien_Dao nhanVien_Dao = new NhanVien_Dao();
+
+	    for (PhongBan phongBan : danhSachPhongBan) {
+	        int soLuongNhanVien = nhanVien_Dao.laySoLuongNhanVienTheoPhongBan(phongBan.getMaPhongBan());
+	        String data[] = {(defaultTablePhongBan.getRowCount() + 1) + "", phongBan.getMaPhongBan(), phongBan.getTenPhongBan(), String.valueOf(soLuongNhanVien)};
+	        defaultTablePhongBan.addRow(data);
+	    }
+
+	    if (tblPhongBan.getRowCount() != 0) {
+	        tblPhongBan.setRowSelectionInterval(0, 0);
+	        hienThiDuLieuLenTxt(0);
+	    }
 	}
+
 
 	public void hienThiDuLieuLenTxt(int dong) {
 		txtMaPhongBan.setText(tblPhongBan.getValueAt(dong, 1).toString());
