@@ -3,11 +3,15 @@ package UI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,42 +86,18 @@ public class ChamCongNhanVien_GUI extends JPanel {
 	private boolean checkChamCong = false;
 
 
-	private String stErrKhongDeTrong;
-	private String stErrSoLuong;
 	private String stThongbao;
-	private String stBanXacNhanXoa;
-	private String stXoaThanhCong;
-	private String stXoaThatBai;
-	private String stThemThanhCong;
-	private String stThemThatBai;
-	private String stTren;
-	private String stSanPham;
-	private String stKhongTimThayFile;
-	private String stKhongDocDuocFile;
 	private String stCapNhatThanhCong;
 	private String stCapNhatThatBai;
-	private String stChonMauSacChoSanPham;
-	private String stErrHoTen;
-	private String stErrSoCCCD;
-	private String stErrEmail;
-	private String stErrSdt;
-	private String stErrNgaySinh;
-	private String stErrNgayVaoLam;
-	private String stErrNhanVienKhongDuTuoi;
-	private String stErrTienKhongHopLe;
-	private String stSoTienLonHonKhong;
 	private String stChamCongThanhCong;
 	private String stErrNgayChamCong;
 	private NhanVien nhanvienDangNhap;
 	private String stNgayThangKhongHople;
 
 	private JLabel lblHienThi;
-
 	private JComboBox<String> cmbHienThi;
 
-
-
-	public ChamCongNhanVien_GUI(NhanVien nhanVien) throws ParseException, Exception {
+	public ChamCongNhanVien_GUI(NhanVien nhanVien, String fileName) throws ParseException, Exception {
 		nhanvienDangNhap = nhanVien;
 		ConnectionDB.ConnectDB.getInstance().connect();
 		initComponents();
@@ -130,12 +110,72 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		btnChamCongTatCa.setEnabled(false);
 		cmbCaLam.setSelectedIndex(0);
 		btnChamLai.setEnabled(false);
+        caiDatNgonNgu(fileName);
 		setEditTextDateChooser();
-
-
 
 	}
 
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        btnCapNhat.setText(prop.getProperty("btnCapNhat"));
+        btnLuu.setText(prop.getProperty("btnLuu"));
+        btnHuy.setText(prop.getProperty("btnHuy"));
+        btnLayDanhSach.setText(prop.getProperty("chamCong_layDanhSachChamCong"));
+        btnChamCongTatCa.setText(prop.getProperty("chamCong_btnChamCongTatCa"));
+        btnChamLai.setText(prop.getProperty("chamCong_btnChamLai"));
+        scrChamCong.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeChamCong")));
+        scrNhanVien.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeDanhSachNhanVien")));
+        pnlThongTinChamCong.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeThongTinChamCong")));
+        
+        lblNgayChamCong.setText(prop.getProperty("chamCong_NgayChamCong"));
+        lblCaLam.setText(prop.getProperty("chamCong_CaLam"));
+        lblMaNV.setText(prop.getProperty("chamCong_maNhanVien"));
+        lblTenNV.setText(prop.getProperty("chamCong_hoTen"));
+        lblTinhTrang.setText(prop.getProperty("chamCong_tinhTrang"));
+        lblGioDiLam.setText(prop.getProperty("chamCong_gio"));
+        lblGioTangCa.setText(prop.getProperty("chamCong_gioTangCa"));
+        lblPhut.setText(prop.getProperty("chamCong_phut"));
+        lblHienThi.setText(prop.getProperty("chamCong_hienThi"));
+
+        doiNgonNguTable(tblChamCong, 0, prop.getProperty("chamCong_stt"));
+        doiNgonNguTable(tblChamCong, 1, lblMaNV.getText());
+        doiNgonNguTable(tblChamCong, 2, lblTenNV.getText());
+        doiNgonNguTable(tblChamCong, 3, prop.getProperty("chamCong_sdt"));
+        doiNgonNguTable(tblChamCong, 4, prop.getProperty("chamCong_phongBan"));
+        doiNgonNguTable(tblChamCong, 5, prop.getProperty("chamCong_chucVu"));
+
+        doiNgonNguTable(tblNhanVien, 0, prop.getProperty("chamCong_stt"));
+        doiNgonNguTable(tblNhanVien, 1, prop.getProperty("chamCong_maNhanVienChamCong"));
+        doiNgonNguTable(tblNhanVien, 2, lblMaNV.getText());
+        doiNgonNguTable(tblNhanVien, 3, lblTenNV.getText());
+        doiNgonNguTable(tblNhanVien, 4, prop.getProperty("chamCong_sdt"));
+        doiNgonNguTable(tblNhanVien, 5, prop.getProperty("chamCong_phongBan"));
+        doiNgonNguTable(tblNhanVien, 6, prop.getProperty("chamCong_chucVu"));
+        doiNgonNguTable(tblNhanVien, 7, lblNgayChamCong.getText());
+        doiNgonNguTable(tblNhanVien, 8, lblCaLam.getText());
+        doiNgonNguTable(tblNhanVien, 9, lblTinhTrang.getText());
+        doiNgonNguTable(tblNhanVien, 10, lblGioDiLam.getText());
+        doiNgonNguTable(tblNhanVien, 11, lblGioTangCa.getText());
+
+        cmbHienThi.removeAllItems();
+        cmbHienThi.addItem(prop.getProperty("cmbHienThiAll"));
+        cmbHienThi.addItem(prop.getProperty("cmbHienThiLoc"));
+
+        stChamCongThanhCong = prop.getProperty("chamCong_chamCongThanhCong");
+        stErrNgayChamCong = prop.getProperty("chamCong_errNgayChamCong");
+
+        stThongbao = prop.getProperty("thongBao");
+        stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
+        stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+        stNgayThangKhongHople = prop.getProperty("ngayThangKhongHopLe");
+    }
+
+    public void doiNgonNguTable(JTable table, int col_index, String col_name) {
+        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
+    }
+    
 	public void setEditTextDateChooser() {
 		JTextFieldDateEditor ngayChamCong = (JTextFieldDateEditor) dcsNgayChamCong.getDateEditor();
 		ngayChamCong.setEnabled(false);
@@ -733,7 +773,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			setHidden(btnHuy, btnLuu, btnChamLai);
 			checkChamCong = false;
 		} catch (ParseException ex) {
-			JOptionPane.showMessageDialog(null, "ERRO, please reset (T_T)(T_T)");
+			JOptionPane.showMessageDialog(null, "ERRO");
 		}
 		if (tblChamCong.getSelectedRow() != -1) {
 			tblChamCong.removeRowSelectionInterval(tblChamCong.getSelectedRow(), 0);
@@ -749,7 +789,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			setShow(btnChamLai, btnChamCongTatCa);
 			checkChamCong = false;
 		} catch (ParseException ex) {
-			JOptionPane.showMessageDialog(null, "ERRO, please reset (T_T)(T_T)");
+			JOptionPane.showMessageDialog(null, "ERRO");
 		}
 		if (tblNhanVien.getSelectedRow() != -1) {
 			tblNhanVien.removeRowSelectionInterval(tblNhanVien.getSelectedRow(), 0);
@@ -759,7 +799,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 	private void btnLayDanhSachActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
 			if (dcsNgayChamCong.getDate().after(new Date())) {
-				JOptionPane.showMessageDialog(null, "Ngày chấm công không được sau ngày hiện tại!!!", stThongbao, JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, stErrNgayChamCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 			try {
@@ -828,7 +868,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			modelChamCong.removeRow(0);
 		}
 		btnChamLai.setEnabled(false);
-		JOptionPane.showMessageDialog(null, "Chấm công thành công");
+		JOptionPane.showMessageDialog(null, stChamCongThanhCong);
 	}
 
 	public void thayDouCmbBox() {
@@ -932,7 +972,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 					cmbCaLam.getSelectedItem().toString(), cmbTinhTrang.getSelectedItem().toString(), gioLam, gioTangCa, nhanvienDangNhap);
 			if (daoChamCong.themMotChamCongNhanVien(chamcong)) {
 				try {
-					JOptionPane.showMessageDialog(null, "Chấm công thành công");
+					JOptionPane.showMessageDialog(null,stChamCongThanhCong);
 					taiDuLieuLenBangNhanVien();
 					hienThiChamCongTheoNgay();
 					setShow(btnCapNhat, btnChamLai);
@@ -962,7 +1002,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			if (daoChamCong.suaMotChamCongNhanVien(chamcong)) {
 				//taiDuLieuLenBangNhanVien();
 				hienThiChamCongTheoNgay();
-				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+				JOptionPane.showMessageDialog(null, stCapNhatThanhCong);
 				if (modelChamCong.getRowCount() > 0) {
 					setShow(btnChamCongTatCa, btnChamLai);
 				}

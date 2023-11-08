@@ -31,12 +31,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -89,9 +93,28 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 	private DecimalFormat df;
 	private Object oFlag;
 
-	public CongDoanSanPham_GUI() {
-		initComponents();
+	private String stErrKhongDeTrong;
+	private String stErrSoLuong;
+	private String stThongbao;
+	private String stBanXacNhanXoa;
+	private String stXoaThanhCong;
+	private String stXoaThatBai;
+	private String stThemThanhCong;
+	private String stThemThatBai;
+	private String stCapNhatThanhCong;
+	private String stCapNhatThatBai;
+	private String stChuaKiTuChu;
+	private String stSoLuongPhaiLonHonHoacBang;
+	private String stSoNguyen;
+	private String stThuTuLam;
+	private String stSauNgayHienTai;
+	private String stThuTuLamPhaiLonHon;
+	private String stThuTuCongDoanHienTai;
 
+	public CongDoanSanPham_GUI(String fileName)throws IOException {
+		initComponents();
+        caiDatNgonNgu(fileName);
+        
 		nf = new DecimalFormat("#,###.00");
 		df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
@@ -122,6 +145,66 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 
 		moKhoaTextField(false);
 		excute();
+	}
+
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+		FileInputStream fis = new FileInputStream(fileName);
+		Properties prop = new Properties();
+		prop.load(fis);
+		lblTieuDe.setText(prop.getProperty("pcd_TieuDe"));
+		lblMaSanPham.setText(prop.getProperty("pcd_maSanPham"));
+		lblMaCD.setText(prop.getProperty("pcd_maCongDoan"));
+		lblTenCD.setText(prop.getProperty("pcd_tenCongDoan"));
+		lblSoLuongCan.setText(prop.getProperty("pcd_soLuongCan"));
+		lblDonGia.setText(prop.getProperty("pcd_luongSanPham"));
+		lblThoiHan.setText(prop.getProperty("pcd_thoiHan"));
+		lblThuTu.setText(prop.getProperty("pcd_thuTuLam"));
+
+		doiNgonNguTable(tblDanhSachSanPham, 0, prop.getProperty("sp_stt"));
+		doiNgonNguTable(tblDanhSachSanPham, 1, lblMaSanPham.getText());
+		doiNgonNguTable(tblDanhSachSanPham, 2, prop.getProperty("sp_tenSP"));
+		doiNgonNguTable(tblDanhSachSanPham, 2, prop.getProperty("sp_donGia"));
+		
+		doiNgonNguTable(tblCongDoan, 0, lblThuTu.getText());
+		doiNgonNguTable(tblCongDoan, 1, lblMaCD.getText());
+		doiNgonNguTable(tblCongDoan, 2, lblTenCD.getText());
+		doiNgonNguTable(tblCongDoan, 3, lblSoLuongCan.getText());
+		doiNgonNguTable(tblCongDoan, 4, prop.getProperty("pcd_soLuongDaLam"));
+		doiNgonNguTable(tblCongDoan, 5, lblDonGia.getText());
+		doiNgonNguTable(tblCongDoan, 6, lblThoiHan.getText());
+		doiNgonNguTable(tblCongDoan, 7, prop.getProperty("pcd_mucDoHoanThanh"));
+		scrTableSanPham.setBorder(new TitledBorder(prop.getProperty("pcd_tieuDeSanPham")));
+		scrTableCongDoan.setBorder(new TitledBorder(prop.getProperty("pcd_tieuDeCongDoan")));
+		panelCDSP.setBorder(new TitledBorder(prop.getProperty("pcd_tieuDeThongTinCD")));
+
+		btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
+		btnThem.setText(prop.getProperty("btnThem"));
+		btnXoa.setText(prop.getProperty("btnXoa"));
+		btnCapNhat.setText(prop.getProperty("btnCapNhat"));
+		btnLuu.setText(prop.getProperty("btnLuu"));
+		btnHuy.setText(prop.getProperty("btnHuy"));
+
+		stThongbao = prop.getProperty("thongBao");
+		stBanXacNhanXoa = prop.getProperty("banXacNhanXoa");
+		stXoaThanhCong = prop.getProperty("xoaThanhCong");
+		stXoaThatBai = prop.getProperty("xoaThatBai");
+		stThemThanhCong = prop.getProperty("themThanhCong");
+		stThemThatBai = prop.getProperty("themThatBai");
+		stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
+		stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+		stChuaKiTuChu = prop.getProperty("pcd_ErrChiChua1KyTu");
+		stErrSoLuong = prop.getProperty("sp_lblErrSoLuong");
+		stErrKhongDeTrong = prop.getProperty("khongDeTrong");
+		stSoLuongPhaiLonHonHoacBang = prop.getProperty("pcd_ErrSoLuongPhaiLonHon");
+		stSoNguyen = prop.getProperty("pcd_ErrPhaiLaSoNguyen");
+		stThuTuLam = prop.getProperty("pcd_ErrThuTuLam");
+		stSauNgayHienTai = prop.getProperty("pcd_ErrPhaiBangHoacSauNgayHienTai");
+		stThuTuLamPhaiLonHon = prop.getProperty("pcd_thuThuTuLamPhaiBeHon");
+		stThuTuCongDoanHienTai = prop.getProperty("pcd_thuThuCongDoanHienTai");
+	}
+
+	public void doiNgonNguTable(JTable table, int col_index, String col_name) {
+		table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
 	}
 
 	private void initComponents() {
@@ -495,7 +578,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		txtTenCD.setEditable(b);
 		txtSoLuongCan.setEditable(b);
 		txtDonGia.setEditable(b);
-		txtThuTu.setEnabled(b);
 		dcsThoiHan.setEnabled(b);
 	}
 
@@ -550,13 +632,10 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		for (CongDoan congDoan : dsCongDoan) {
 			String maCongDoan = congDoan.getMaCongDoan();
 
-			String data[] = {(modelTableCongDoan.getRowCount() + 1) + "", congDoan.getMaCongDoan(), congDoan.getTenCongDoan(),
-					congDoan.getSoLuongCan() + "", congDoan_DAO.laySoLuongLamDuocTheoMaCongDoan(maCongDoan) + "", nf.format(congDoan.getDonGia()), congDoan.getThoiHan().toString(),
-					String.format("%.2f", congDoan_DAO.layMucDoHoanThanhCuaMotCongDoan(maCongDoan)) + "%"};
+			String data[] = {congDoan.getThuTuCongDoan() + "", congDoan.getMaCongDoan(), congDoan.getTenCongDoan(),
+	                congDoan.getSoLuongCan() + "", congDoan_DAO.laySoLuongLamDuocTheoMaCongDoan(maCongDoan) + "", nf.format(congDoan.getDonGia()), congDoan.getThoiHan().toString(),
+	                String.format("%.2f", congDoan_DAO.layMucDoHoanThanhCuaMotCongDoan(maCongDoan)) + "%"};
 
-			//			String data[] = {congDoan.getThuTuCongDoan() + "", congDoan.getMaCongDoan(), congDoan.getTenCongDoan(),
-			//					congDoan.getSoLuongCan() + "", congDoan_DAO.laySoLuongLamDuocTheoMaCongDoan(maCongDoan) + "", nf.format(congDoan.getDonGia()), congDoan.getThoiHan().toString(),
-			//					String.format("%.2f", congDoan_DAO.layMucDoHoanThanhCuaMotCongDoan(maCongDoan)) + "%"};
 			modelTableCongDoan.addRow(data);
 		}
 		if (tblCongDoan.getRowCount() != 0) {
@@ -565,28 +644,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		} else {
 			xoaTrangTextField();
 		}
-
-		//		while (tblCongDoan.getRowCount() != 0) {
-		//			modelTableCongDoan.removeRow(0);
-		//		}
-		//		ArrayList<CongDoan> dsCongDoan = congDoan_DAO.layDanhSachCongDoanTheoMaSP(maSanPham);
-		//		for (CongDoan congDoan : dsCongDoan) {
-		//			String maCongDoan = congDoan.getMaCongDoan();
-		//			String data[] = {congDoan.getThuTuCongDoan() + "", congDoan.getMaCongDoan(), congDoan.getTenCongDoan(),
-		//					congDoan.getSoLuongCan() + "", congDoan_DAO.laySoLuongLamDuocTheoMaCongDoan(maCongDoan) + "", nf.format(congDoan.getDonGia()), congDoan.getThoiHan().toString(),
-		//					String.format("%.2f", congDoan_DAO.layMucDoHoanThanhCuaMotCongDoan(maCongDoan)) + "%"};
-		//			modelTableCongDoan.addRow(data);
-		//		}
-		//		if (tblCongDoan.getRowCount() != 0) {
-		//			hienThiCongDoanLenTxt(0);
-		//			tblDanhSachSanPham.setRowSelectionInterval(0, 0);
-		//			btnCapNhat.setEnabled(true);
-		//			btnXoa.setEnabled(true);
-		//		} 
-		//		else {
-		//			xoaTrangTextField();
-		//		}
-
 
 	}
 
@@ -646,7 +703,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		txtTenCD.setEditable(false);
 		txtSoLuongCan.setEditable(false);
 		txtDonGia.setEditable(false);
-		txtThuTu.setEditable(false);
 		dcsThoiHan.setEnabled(false);
 		btnLuu.setEnabled(false);
 		btnHuy.setEnabled(false);
@@ -720,6 +776,124 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 
 	}
 
+	public boolean kiemTraDuLieuHopLe() {
+		//Ten CD
+		boolean flag = true;
+		int soLuongCan = 0;
+		double donGia = 0;
+		int thuTuLam = 0;
+		if (txtTenCD.getText().trim().equals("")) {
+			lblErrTenCD.setText(stErrKhongDeTrong);
+			flag = false;
+		} else if (!txtTenCD.getText().matches("^[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]{2,}(\\s[A-Za-zÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýĂăĐđĨĩŨũƠơƯưẠ-ỹ]{1,})*$")) {
+			lblErrTenCD.setText(stChuaKiTuChu);
+			flag = false;
+		} else {
+			lblErrTenCD.setText("");
+		}
+		// so luong can
+		try {
+			soLuongCan = Integer.parseInt(txtSoLuongCan.getText());
+		} catch (Exception e) {
+			lblErrSoLuongCan.setText(stErrSoLuong);
+			flag = false;
+		}
+
+		if (soLuongCan > 0) {
+			lblErrSoLuongCan.setText("");
+		}
+		if (soLuongCan <= 0) {
+			lblErrSoLuongCan.setText(stErrSoLuong);
+			flag = false;
+		} else {
+			lblErrSoLuongCan.setText("");
+		}
+		
+		SanPham sanPham = sanPham_DAO.layMotSanPhamTheoMa(txtHienThiMaSP.getText());
+		if (soLuongCan < sanPham.getSoLuongSanPham()) {
+			lblErrSoLuongCan.setText(stSoLuongPhaiLonHonHoacBang + sanPham.getSoLuongSanPham());
+			flag = false;
+		} else {
+			lblErrSoLuongCan.setText("");
+		}
+		// Thu tu lam
+		try {
+			thuTuLam = Integer.parseInt(txtThuTu.getText());
+		} catch (Exception e) {
+			lblErrThuTu.setText(stSoNguyen);
+			flag = false;
+		}
+		
+		String maSanPham = txtHienThiMaSP.getText().trim();
+		ArrayList<CongDoan> dsCongDoan = congDoan_DAO.layRaThuTuLamLonNhatCuaMotSanPham(maSanPham);
+		int thuTuMax = 0;
+		if (dsCongDoan.size() > 0) {
+			thuTuMax = dsCongDoan.get(0).getThuTuCongDoan();
+		}
+		if (thuTuLam <= 0) {
+			lblErrThuTu.setText(stThuTuLam);
+			flag = false;
+		} else if (thuTuLam > thuTuMax + 1 && oFlag.equals(btnThem)) {
+			lblErrThuTu.setText(stThuTuLamPhaiLonHon + " " + (thuTuMax + 1));
+			flag = false;
+		} else if (oFlag.equals(btnCapNhat) && thuTuLam > thuTuMax + 1 && dsCongDoan.size() > 1) {
+			lblErrThuTu.setText(stThuTuLamPhaiLonHon + " " + (thuTuMax + 1));
+			flag = false;
+		} else if (oFlag.equals(btnCapNhat) && thuTuLam > thuTuMax && dsCongDoan.size() == 1) {
+			lblErrThuTu.setText(stThuTuLamPhaiLonHon + " " + (thuTuMax));
+			flag = false;
+		} else {
+			lblErrThuTu.setText("");
+		}
+
+		if (oFlag.equals(btnCapNhat)) {
+			CongDoan congDoanDangCapNhat = congDoan_DAO.layMotCongDoanTheoMaCongDoan(txtMaCD.getText().trim());
+
+			ArrayList<CongDoan> dsCongDoanCungThuTu = congDoan_DAO.layDanhSachCongDoanTheoThuTuSanPham(congDoanDangCapNhat.getSanPham().getMaSanPham(), congDoanDangCapNhat.getThuTuCongDoan());
+			if (dsCongDoanCungThuTu.size() == 1 && dsCongDoanCungThuTu.get(0).getThuTuCongDoan() != thuTuLam
+					&& dsCongDoanCungThuTu.get(0).getThuTuCongDoan() != thuTuMax) {
+				lblErrThuTu.setText(stThuTuCongDoanHienTai);
+				flag = false;
+			}
+		}
+		
+		// ThoiHan
+		if (dcsThoiHan.getDate().before(new Date())) {
+			lblErrThoiHan.setText(stSauNgayHienTai);
+			flag = false;
+		} else {
+			lblErrThoiHan.setText("");
+		}
+		// don gia
+		try {
+			donGia = Double.parseDouble(txtDonGia.getText());
+		} catch (Exception e) {
+			lblErrDonGia.setText(stErrSoLuong);
+			flag = false;
+		}
+		if (donGia > 0) {
+			lblErrDonGia.setText("");
+		}
+		if (donGia <= 0) {
+			lblErrDonGia.setText(stErrSoLuong);
+			flag = false;
+		}
+		// kiểm tra rỗng
+		if (txtTenCD.getText().equals("")) {
+			lblErrTenCD.setText(stErrKhongDeTrong);
+			flag = false;
+		}
+		if (txtDonGia.getText().equals("")) {
+			lblErrDonGia.setText(stErrKhongDeTrong);
+			flag = false;
+		}
+		if (txtSoLuongCan.getText().equals("")) {
+			lblErrSoLuongCan.setText(stErrKhongDeTrong);
+			flag = false;
+		}
+		return flag;
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -780,24 +954,24 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		else if (o.equals(btnXoa)) {
 			int rowSelected = tblCongDoan.getSelectedRow();
 			if (rowSelected != -1) {
-				int coXacNhanXoa = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa không", "Thông báo", JOptionPane.ERROR_MESSAGE);
+				int coXacNhanXoa = JOptionPane.showConfirmDialog(null, stBanXacNhanXoa, stThongbao, JOptionPane.ERROR_MESSAGE);
 				if (coXacNhanXoa == 0) {
 					boolean coXoaDuoc = congDoan_DAO.xoaMotCongDoanTheoMa(tblCongDoan.getValueAt(tblCongDoan.getSelectedRow(), 1).toString());
 					if (coXoaDuoc) {
-						JOptionPane.showMessageDialog(null,"Xóa thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 						taiDuLieuLenBangCongDoan();
 					} else {
-						JOptionPane.showMessageDialog(null,"Xóa thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, stXoaThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}
 		} 
 		else if (o.equals(btnLuu)) {
 			if (oFlag.equals(btnThem)) {
-				//                boolean kiemTra = kiemTraDuLieuHopLe();
-				//                if (!kiemTra) {
-				//                    return;
-				//                }
+				boolean kiemTra = kiemTraDuLieuHopLe();
+				if (!kiemTra) {
+					return;
+				}
 				lblErrTenCD.setText("");
 				lblErrSoLuongCan.setText("");
 				lblErrDonGia.setText("");
@@ -826,16 +1000,16 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 					btnHuy.setEnabled(false);
 					btnLuu.setEnabled(false);
 					oFlag = null;
-					JOptionPane.showMessageDialog(null, "Thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(null, "Thêm thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 				}
 			} 
 			else if (oFlag.equals(btnCapNhat)) {
-				//				boolean kiemTra = kiemTraDuLieuHopLe();
-				//				if (!kiemTra) {
-				//					return;
-				//				}
+				boolean kiemTra = kiemTraDuLieuHopLe();
+				if (!kiemTra) {
+					return;
+				}
 				lblErrTenCD.setText("");
 				lblErrSoLuongCan.setText("");
 				lblErrDonGia.setText("");
@@ -864,9 +1038,9 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 					btnHuy.setEnabled(false);
 					btnLuu.setEnabled(false);
 					oFlag = null;
-					JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, stCapNhatThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(null, "Cập nhật thất bại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 

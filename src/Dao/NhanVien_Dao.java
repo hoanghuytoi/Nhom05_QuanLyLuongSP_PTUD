@@ -335,7 +335,6 @@ public class NhanVien_Dao {
                 System.out.println(e.getMessage());
             }
         }
-
         return soLuong;
     }
 }

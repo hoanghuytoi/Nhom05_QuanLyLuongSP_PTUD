@@ -108,7 +108,10 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
         lblMaPhongBan.setText(prop.getProperty("PhongBan_MaPhongBan"));
         lblTenPhongBan.setText(prop.getProperty("PhongBan_TenPhongBan"));
         lblSoLuongNhanVien.setText(prop.getProperty("PhongBan_SoLuongNhanVien"));
-        
+		pnlPhongBan.setBorder(new TitledBorder(prop.getProperty("PhongBan_ThongTinPB")));
+		scrPhongBan.setBorder(new TitledBorder(prop.getProperty("PhongBan_TablePB")));
+
+
         doiNgonNguTable(tblPhongBan, 0, prop.getProperty("PhongBan_STT"));
         doiNgonNguTable(tblPhongBan, 1, lblMaPhongBan.getText());
         doiNgonNguTable(tblPhongBan, 2, lblTenPhongBan.getText());

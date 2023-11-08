@@ -270,7 +270,7 @@ public class Main_GUI extends JFrame {
         capNhatSanPham = new MenuItem(iconSubMenuNonSelect,lblCapNhat, ((e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new SanPham_GUI(), BorderLayout.CENTER);
+                pnBody.add(new SanPham_GUI(fileName), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -282,7 +282,7 @@ public class Main_GUI extends JFrame {
         phanCongDoanSanPham = new MenuItem(iconSubMenuNonSelect, lblPhanCongDoanSanPham, ((e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new CongDoanSanPham_GUI(), BorderLayout.CENTER);
+                pnBody.add(new CongDoanSanPham_GUI(fileName), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -294,7 +294,7 @@ public class Main_GUI extends JFrame {
         timKiemSanPham = new MenuItem(iconSubMenuNonSelect, lblTimKiem, ((e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new TimKiemSanPham_GUI(), BorderLayout.CENTER);
+                pnBody.add(new TimKiemSanPham_GUI(fileName), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -309,7 +309,7 @@ public class Main_GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 pnBody.removeAll();
                 try {
-                    pnBody.add(new NhanVien_GUI(), BorderLayout.CENTER);
+                    pnBody.add(new NhanVien_GUI(fileName), BorderLayout.CENTER);
                 } catch (Exception ex) {
                     Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -322,7 +322,7 @@ public class Main_GUI extends JFrame {
         chamCongNhanVien = new MenuItem(iconSubMenuNonSelect, lblChamCong, (ActionEvent e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new ChamCongNhanVien_GUI(nhanVienDangNhap), BorderLayout.CENTER);
+                pnBody.add(new ChamCongNhanVien_GUI(nhanVienDangNhap,fileName), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }

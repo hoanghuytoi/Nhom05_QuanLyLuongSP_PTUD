@@ -17,6 +17,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 
 import Custom_UI.ScrollBarCustom;
+import Dao.CongDoan_Dao;
 import Dao.HopDong_Dao;
 import Dao.SanPham_Dao;
 import Entity.HopDong;
@@ -33,8 +34,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
@@ -99,58 +104,109 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 	private Object oFlag;
 	private DecimalFormat dcf = new DecimalFormat("###.00");
 	private JPanel pnlAnhSanPham;
-	private JLabel lblAnhSanPhamOfPnl;
-	
+	private JLabel lblThemAnhSanPham;
+
 	private String stErrKhongDeTrong;
-    private String stErrSoLuong;
-    private String stThongbao;
-    private String stBanXacNhanXoa;
-    private String stXoaThanhCong;
-    private String stXoaThatBai;
-    private String stThemThanhCong;
-    private String stThemThatBai;
-    private String stTren;
-    private String stSanPham;
-    private String stKhongTimThayFile;
-    private String stKhongDocDuocFile;
-    private String stCapNhatThanhCong;
-    private String stCapNhatThatBai;
-    private String stChonMauSacChoSanPham;
+	private String stErrSoLuong;
+	private String stThongbao;
+	private String stBanXacNhanXoa;
+	private String stXoaThanhCong;
+	private String stXoaThatBai;
+	private String stThemThanhCong;
+	private String stThemThatBai;
+	private String stCapNhatThanhCong;
+	private String stCapNhatThatBai;
+	private TitledBorder titledBorder2;
 
 
-	public SanPham_GUI() {
+	public SanPham_GUI(String fileName) throws IOException{
 		initComponents();
-		
+		caiDatNgonNgu(fileName);
 		txtMaSanPham.setText("");
 
-        try {
-            ConnectionDB.ConnectDB.getInstance().connect();
+		try {
+			ConnectionDB.ConnectDB.getInstance().connect();
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        sanPham_DAO = new SanPham_Dao();
-        hopDong_DAO = new HopDong_Dao();
-        modelSanPham = (DefaultTableModel) tblDanhSachSanPham.getModel();
-        modelHopDong = (DefaultTableModel) tblHopDong.getModel();
-        oFlag = null;
-        
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		sanPham_DAO = new SanPham_Dao();
+		hopDong_DAO = new HopDong_Dao();
+		modelSanPham = (DefaultTableModel) tblDanhSachSanPham.getModel();
+		modelHopDong = (DefaultTableModel) tblHopDong.getModel();
+		oFlag = null;
+
 		// Gắn sự kiện
-        btnCapNhat.addActionListener(this);
-        btnHuy.addActionListener(this);
-        btnLuu.addActionListener(this);
-        btnThem.addActionListener(this);
-        btnXoa.addActionListener(this);
-        tblDanhSachSanPham.addMouseListener(this);
-        tblHopDong.addMouseListener(this);
+		btnCapNhat.addActionListener(this);
+		btnHuy.addActionListener(this);
+		btnLuu.addActionListener(this);
+		btnThem.addActionListener(this);
+		btnXoa.addActionListener(this);
+		tblDanhSachSanPham.addMouseListener(this);
+		tblHopDong.addMouseListener(this);
 
-        xoaTrangField();
-        btnLuu.setEnabled(false);
-        btnHuy.setEnabled(false);
-        lblAnhSanPhamOfPnl.setEnabled(false);
-        
-        excute();
-        moKhoaTextField(false);
+		xoaTrangField();
+		btnLuu.setEnabled(false);
+		btnHuy.setEnabled(false);
+		lblThemAnhSanPham.setEnabled(false);
+		txtSoCongDoan.setEnabled(false);
+		excute();
+		moKhoaTextField(false);
+	}
+
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+		FileInputStream fis = new FileInputStream(fileName);
+		Properties prop = new Properties();
+		prop.load(fis);
+		lblTieuDe.setText(prop.getProperty("sp_tieuDe"));
+		lblMaHopDong.setText(prop.getProperty("sp_maHopDong"));
+		lblMaSanPham.setText(prop.getProperty("sp_maSanPham"));
+		lblTenSanPham.setText(prop.getProperty("sp_tenSanPham"));
+		lblChatLieu.setText(prop.getProperty("sp_chatLieu"));
+		lblKichThuoc.setText(prop.getProperty("sp_kichThuoc"));
+		lblSoLuong.setText(prop.getProperty("sp_soLuong"));
+		lblDonGia.setText(prop.getProperty("sp_donGia"));
+		lblSoLuongCongDoan.setText(prop.getProperty("sp_soLuongCongDoan"));
+		lblThemAnhSanPham.setText(prop.getProperty("sp_anhSanPham"));
+
+		doiNgonNguTable(tblHopDong, 0, prop.getProperty("sp_stt"));
+		doiNgonNguTable(tblHopDong, 1, lblMaHopDong.getText());
+		doiNgonNguTable(tblHopDong, 2, prop.getProperty("sp_tenHopDong"));
+		doiNgonNguTable(tblHopDong, 3, prop.getProperty("sp_tenKhachHang"));
+
+		doiNgonNguTable(tblDanhSachSanPham, 0, prop.getProperty("sp_stt"));
+		doiNgonNguTable(tblDanhSachSanPham, 1, lblMaSanPham.getText());
+		doiNgonNguTable(tblDanhSachSanPham, 2, lblTenSanPham.getText());
+		doiNgonNguTable(tblDanhSachSanPham, 3, lblSoLuong.getText());
+		doiNgonNguTable(tblDanhSachSanPham, 5, lblChatLieu.getText());
+		doiNgonNguTable(tblDanhSachSanPham, 6, lblKichThuoc.getText());
+		doiNgonNguTable(tblDanhSachSanPham, 7, lblThemAnhSanPham.getText());
+		doiNgonNguTable(tblDanhSachSanPham, 8, lblSoLuongCongDoan.getText());
+		scrHopDong.setBorder(new TitledBorder(prop.getProperty("sp_tieuDeTblHopDong")));
+		scrTableSanPham.setBorder(new TitledBorder(prop.getProperty("sp_tieuDeTblSanPham")));
+		pnlThongTinSP.setBorder(new TitledBorder(prop.getProperty("sp_tieuDeThongTinSanPham")));
+		
+		btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
+		btnThem.setText(prop.getProperty("btnThem"));
+		btnXoa.setText(prop.getProperty("btnXoa"));
+		btnCapNhat.setText(prop.getProperty("btnCapNhat"));
+		btnLuu.setText(prop.getProperty("btnLuu"));
+		btnHuy.setText(prop.getProperty("btnHuy"));
+
+		stThongbao = prop.getProperty("thongBao");
+		stBanXacNhanXoa = prop.getProperty("banXacNhanXoa");
+		stXoaThanhCong = prop.getProperty("xoaThanhCong");
+		stXoaThatBai = prop.getProperty("xoaThatBai");
+		stThemThanhCong = prop.getProperty("themThanhCong");
+		stThemThatBai = prop.getProperty("themThatBai");
+		stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
+		stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+		stErrSoLuong = prop.getProperty("errSoLuong");
+		stErrKhongDeTrong = prop.getProperty("khongDeTrong");
+	}
+
+	public void doiNgonNguTable(JTable table, int col_index, String col_name) {
+		table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
 	}
 
 	private void initComponents() {
@@ -162,7 +218,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		setPreferredSize(new Dimension(1290, 750));
 		lblTieuDe = new JLabel("QUẢN LÝ SẢN PHẨM");
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblTieuDe.setBounds(533, 11, 296, 40);
+		lblTieuDe.setBounds(504, 11, 397, 40);
 		add(lblTieuDe);
 
 		scrHopDong = new JScrollPane();
@@ -177,23 +233,23 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		tblHopDong.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblHopDong.setFont(new java.awt.Font("Times New Roman", 0, 16));
 		tblHopDong.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			new String[] {
-				"STT", "M\u00E3 h\u1EE3p \u0111\u1ED3ng", "T\u00EAn h\u1EE3p \u0111\u1ED3ng", "T\u00EAn kh\u00E1ch h\u00E0ng"
-			}
-		));
+				new Object[][] {
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+					{null, null, null, null},
+				},
+				new String[] {
+						"STT", "M\u00E3 h\u1EE3p \u0111\u1ED3ng", "T\u00EAn h\u1EE3p \u0111\u1ED3ng", "T\u00EAn kh\u00E1ch h\u00E0ng"
+				}
+				));
 		tblHopDong.getColumnModel().getColumn(0).setPreferredWidth(40);
 		tblHopDong.getColumnModel().getColumn(1).setPreferredWidth(73);
 		tblHopDong.getColumnModel().getColumn(2).setPreferredWidth(91);
@@ -215,7 +271,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		pnlThongTinSP = new JPanel();
 		pnlThongTinSP.setBackground(new Color(255, 255, 255));
 		LineBorder blackLineBorder2 = new LineBorder(Color.BLACK, 2);
-		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(blackLineBorder2, "Thông tin sản phẩm");
+		titledBorder2 = BorderFactory.createTitledBorder(blackLineBorder2, "Thông tin sản phẩm");
 		pnlThongTinSP.setBorder(titledBorder2);
 		pnlThongTinSP.setBounds(482, 62, 773, 317);
 		add(pnlThongTinSP);
@@ -232,27 +288,27 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		pnlAnhSanPham.setBounds(46, 193, 120, 40);
 		pnlThongTinSP.add(pnlAnhSanPham);
 
-		lblAnhSanPhamOfPnl = new JLabel();
-		lblAnhSanPhamOfPnl.setFont(new Font("Times New Roman", Font.BOLD, 16));
-		lblAnhSanPhamOfPnl.setText("Ảnh sản phẩm");
-		lblAnhSanPhamOfPnl.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAnhSanPhamOfPnl.setEnabled(false);
+		lblThemAnhSanPham = new JLabel();
+		lblThemAnhSanPham.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		lblThemAnhSanPham.setText("Ảnh sản phẩm");
+		lblThemAnhSanPham.setHorizontalAlignment(SwingConstants.CENTER);
+		lblThemAnhSanPham.setEnabled(false);
 
-		lblAnhSanPhamOfPnl.addMouseListener(new java.awt.event.MouseAdapter() {
+		lblThemAnhSanPham.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				lblAnhSanPhamOfPnlMouseClicked(evt);
+				lblThemAnhSanPhamMouseClicked(evt);
 			}
 		});
 
 		GroupLayout gl_pnlAnhSanPham = new GroupLayout(pnlAnhSanPham);
 		gl_pnlAnhSanPham.setHorizontalGroup(
 				gl_pnlAnhSanPham.createParallelGroup(Alignment.TRAILING)
-				.addComponent(lblAnhSanPhamOfPnl, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+				.addComponent(lblThemAnhSanPham, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
 				);
 		gl_pnlAnhSanPham.setVerticalGroup(
 				gl_pnlAnhSanPham.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnlAnhSanPham.createSequentialGroup()
-						.addComponent(lblAnhSanPhamOfPnl, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblThemAnhSanPham, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				);
 		pnlAnhSanPham.setLayout(gl_pnlAnhSanPham);
@@ -453,8 +509,8 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 				txtChatLieuActionPerformed(evt);
 			}
 		});
-		
-		
+
+
 		btnThemNhieu = new JButton();
 		btnThemNhieu.setBounds(72, 403, 140, 40);
 		add(btnThemNhieu);
@@ -546,18 +602,18 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 
 		scrTableSanPham.setFont(new java.awt.Font("Segoe UI", 0, 10));
 		tblDanhSachSanPham.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"STT", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng", "\u0110\u01A1n gi\u00E1", "Ch\u1EA5t li\u1EC7u", "K\u00EDch th\u01B0\u1EDBc", "\u1EA2nh s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng c\u00F4ng \u0111o\u1EA1n"
-			}
-		));
+				new Object[][] {
+					{null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null},
+				},
+				new String[] {
+						"STT", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng", "\u0110\u01A1n gi\u00E1", "Ch\u1EA5t li\u1EC7u", "K\u00EDch th\u01B0\u1EDBc", "\u1EA2nh s\u1EA3n ph\u1EA9m", "S\u1ED1 l\u01B0\u1EE3ng c\u00F4ng \u0111o\u1EA1n"
+				}
+				));
 		tblDanhSachSanPham.getColumnModel().getColumn(8).setPreferredWidth(100);
 		tblDanhSachSanPham.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblDanhSachSanPham.setRowHeight(28);
@@ -583,55 +639,55 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 
 	protected void tblHopDongMouseClicked(MouseEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void tblDanhSachSanPhamMouseClicked(MouseEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void btnHuyActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void btnLuuActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void btnCapNhatActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void btnXoaActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void btnThemActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void txtChatLieuActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void txtSoCongDoanActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void txtSoLuongActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	private void lblAnhSanPhamOfPnlMouseClicked(java.awt.event.MouseEvent evt) {
+	private void lblThemAnhSanPhamMouseClicked(java.awt.event.MouseEvent evt) {
 		JFileChooser fileChooser = new JFileChooser("d:");
 		fileChooser.setCurrentDirectory(new File(".\\src\\image\\sanPham"));
 		int respone = fileChooser.showSaveDialog(null);
@@ -657,7 +713,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		tblDanhSachSanPham.getTableHeader().setOpaque(false);
 		((DefaultTableCellRenderer) tblDanhSachSanPham.getTableHeader().getDefaultRenderer())
 		.setHorizontalAlignment(JLabel.CENTER);
-		
+
 		lblErrChatLieu.setText("");
 		lblErrSoLuong.setText("");
 		lblErrDonGia.setText("");
@@ -694,9 +750,11 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 			modelSanPham.removeRow(0);
 		}
 		ArrayList<SanPham> dsSanPham = sanPham_DAO.layDanhSachSanPhamTheoMaHopDong(maHopDong);
+		CongDoan_Dao congDoan_dao = new CongDoan_Dao();
 		for (SanPham sanPham : dsSanPham) {
+	        int soLuongCongDoan = congDoan_dao.laySoLuongCongDoanTheoMaSP(sanPham.getMaSanPham());
 			String data[] = {(modelSanPham.getRowCount() + 1) + "", sanPham.getMaSanPham(), sanPham.getTenSanPham(), sanPham.getSoLuongSanPham() + "",
-					dcf.format(sanPham.getDonGia()).replaceAll("\\,", "."), sanPham.getChatLieu(), sanPham.getKichThuoc() + "", sanPham.getAnhSanPham(), sanPham.getSoLuongCongDoan() + ""};
+					dcf.format(sanPham.getDonGia()).replaceAll("\\,", "."), sanPham.getChatLieu(), sanPham.getKichThuoc() + "", sanPham.getAnhSanPham(), String.valueOf(soLuongCongDoan)};
 			modelSanPham.addRow(data);
 		}
 		if (tblDanhSachSanPham.getRowCount() != 0) {
@@ -729,218 +787,253 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		lblAnhSanPham.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/sanPham/" + tblDanhSachSanPham.getValueAt(row, 7).toString())));
 		txtSoCongDoan.setText(tblDanhSachSanPham.getValueAt(row, 8).toString());
 	}
-	
-	public void moKhoaTextField(Boolean b) {
-        txtMaHopDong.setEditable(false);
-        txtMaSanPham.setEditable(false);
-        txtSoCongDoan.setEditable(b);
-        txtTenSanPham.setEditable(b);
-        txtSoLuong.setEditable(b);
-        txtDonGia.setEditable(b);
-        txtChatLieu.setEditable(b);
-        txtKichThuoc.setEditable(b);
-        pnlAnhSanPham.setEnabled(b);
-    }
-	
-	@Override
-    public void actionPerformed(ActionEvent e) {
-        Object o = e.getSource();
-        if (o.equals(btnThem)) {
-            oFlag = e.getSource();
-            btnThem.setEnabled(false);
-            btnXoa.setEnabled(false);
-            btnCapNhat.setEnabled(false);
-            btnLuu.setEnabled(true);
-            btnHuy.setEnabled(true);
-            btnThemNhieu.setEnabled(false);
-            lblAnhSanPhamOfPnl.setEnabled(true);
-            xoaTrangField();
-            txtMaSanPham.setText(sanPham_DAO.layMaSanPhamDeThem());
-            moKhoaTextField(true);
-        } else if (o.equals(btnCapNhat)) {
-            oFlag = e.getSource();
-            btnThem.setEnabled(false);
-            btnThemNhieu.setEnabled(false);
-            btnXoa.setEnabled(false);
-            btnCapNhat.setEnabled(false);
-            btnLuu.setEnabled(true);
-            btnHuy.setEnabled(true);
-            lblAnhSanPhamOfPnl.setEnabled(true);
-            txtTenSanPham.requestFocus();
-            moKhoaTextField(true);
-        }
-        else if (o.equals(btnXoa)) {
-            int rowSelected = tblDanhSachSanPham.getSelectedRow();
-            if (rowSelected != -1) {
-                int coXacNhanXoa = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa không", stThongbao, JOptionPane.ERROR_MESSAGE);
-                if (coXacNhanXoa == 0) {
-                    boolean coXoaDuoc = sanPham_DAO.xoaMotSanPhamTheoMa(tblDanhSachSanPham.getValueAt(tblDanhSachSanPham.getSelectedRow(), 1).toString());
-                    if (coXoaDuoc) {
-                        JOptionPane.showMessageDialog(null, "Xóa thành công", stThongbao, JOptionPane.INFORMATION_MESSAGE);
-                        taiDuLieuLenBangSanPham(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Xóa thất bại", stThongbao, JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }
-            }
-        } 
-            else if (o.equals(btnLuu)) {
-            if (oFlag.equals(btnThem)) {
-                //boolean hopLe = validateForm();
-                int soLuongSanPham = 0, soCongDoan = 0;
-//                if (!hopLe) {
-//                    return;
-//                }
-                String maSanPham = txtMaSanPham.getText().trim();
-                String tenSanPham = txtTenSanPham.getText().trim();
-                String kichThuocStr = txtKichThuoc.getText().toString();
-                int kichThuoc = 0;
-                try {
-                    soLuongSanPham = Integer.parseInt(txtSoLuong.getText().trim());
-                    soCongDoan = Integer.parseInt(txtSoCongDoan.getText().trim());
-                    kichThuoc = Integer.parseInt(kichThuocStr);
-                } catch (Exception e2) {
-                    System.out.println(e2.getMessage());
-                }
-                String chatLieu = txtChatLieu.getText();
-                Double donGia =  Double.parseDouble(txtDonGia.getText());
-                String iconfilename = lblAnhSanPham.getIcon().toString();
-                String anhSanPham = iconfilename.substring(iconfilename.lastIndexOf("/") + 1);
-                
-                HopDong hd = new HopDong(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
-                boolean coThemDuoc = sanPham_DAO.themMotSanPham(new SanPham(maSanPham, tenSanPham, soLuongSanPham, donGia, chatLieu, kichThuoc, anhSanPham, soCongDoan, hd));
-                if (coThemDuoc) {
-                    taiDuLieuLenBangSanPham(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
-                    btnThem.setEnabled(true);
-                    btnThemNhieu.setEnabled(true);
-                    btnXoa.setEnabled(true);
-                    btnCapNhat.setEnabled(true);
-                    btnLuu.setEnabled(false);
-                    btnHuy.setEnabled(false);
-                    moKhoaTextField(false);
-                    lblAnhSanPhamOfPnl.setEnabled(false);
-                    JOptionPane.showMessageDialog(null, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
-                    oFlag = null;
-                } else {
-                    JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
-                }
 
-            } 
-            else if (oFlag.equals(btnCapNhat)) {
-                //boolean hopLe = validateForm();
-                int soLuongSanPham = 0, soCongDoan = 0;
-//                if (!hopLe) {
-//                    return;
-//                }
-                String maSanPham = txtMaSanPham.getText().trim();
-                String tenSanPham = txtTenSanPham.getText().trim();
-                String kichThuocStr = txtKichThuoc.getText().toString();
-                int kichThuoc = 0;
-                try {
-                    soLuongSanPham = Integer.parseInt(txtSoLuong.getText().trim());
-                    soCongDoan = Integer.parseInt(txtSoCongDoan.getText().trim());
-                    kichThuoc = Integer.parseInt(kichThuocStr);
-                } catch (Exception e2) {
-                    System.out.println(e2.getMessage());
-                }
-                String chatLieu = txtChatLieu.getText();
-                Double donGia =  Double.parseDouble(txtDonGia.getText());
-                String iconfilename = lblAnhSanPham.getIcon().toString();
-                String anhSanPham = iconfilename.substring(iconfilename.lastIndexOf("/") + 1);
-                
-                HopDong hd = new HopDong(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
-                boolean coSuaDuoc = sanPham_DAO.suaMotSanPham(new SanPham(maSanPham, tenSanPham, soLuongSanPham, donGia, chatLieu, kichThuoc, anhSanPham, soCongDoan, hd));
-                if (coSuaDuoc) {
-                    taiDuLieuLenBangSanPham(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
-                    btnThem.setEnabled(true);
-                    btnThemNhieu.setEnabled(true);
-                    btnXoa.setEnabled(true);
-                    btnCapNhat.setEnabled(true);
-                    btnLuu.setEnabled(false);
-                    btnHuy.setEnabled(false);
-                    moKhoaTextField(false);
-                    lblAnhSanPhamOfPnl.setEnabled(false);
-                    oFlag = null;
-                    JOptionPane.showMessageDialog(null, "Cập nhật thành công", stThongbao, JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
-                }
-            }
-        } else if (o.equals(btnHuy)) {
-            moKhoaTextField(false);
-            lblErrSoLuong.setText("");
-            lblErrDonGia.setText("");
-            lblErrKichThuoc.setText("");
-            lblErrChatLieu.setText("");
-            lblErrTenSanPham.setText("");
-            if (tblDanhSachSanPham.getRowCount() != 0) {
-                hienThiLenTxt(0);
-                tblDanhSachSanPham.setRowSelectionInterval(0, 0);
-            }
-            btnThem.setEnabled(true);
-            btnThemNhieu.setEnabled(true);
-            btnXoa.setEnabled(true);
-            btnCapNhat.setEnabled(true);
-            btnLuu.setEnabled(false);
-            btnHuy.setEnabled(false);
-            lblAnhSanPhamOfPnl.setEnabled(false);
-            if (tblDanhSachSanPham.getRowCount() == 0) {
-                btnCapNhat.setEnabled(false);
-                btnXoa.setEnabled(false);
-            }
-        }
-    }
+	public void moKhoaTextField(Boolean b) {
+		txtMaHopDong.setEditable(false);
+		txtMaSanPham.setEditable(false);
+		txtSoCongDoan.setEditable(b);
+		txtTenSanPham.setEditable(b);
+		txtSoLuong.setEditable(b);
+		txtDonGia.setEditable(b);
+		txtChatLieu.setEditable(b);
+		txtKichThuoc.setEditable(b);
+		pnlAnhSanPham.setEnabled(b);
+	}
+
+	public boolean kiemTraDieuKien() {
+		boolean flag = true;
+		if (txtTenSanPham.getText().trim().equals("")) {
+			lblErrTenSanPham.setText(stErrKhongDeTrong);
+			flag = false;
+		} else {
+			lblErrTenSanPham.setText("");
+		}
+		if (txtChatLieu.getText().trim().equals("")) {
+			lblErrChatLieu.setText(stErrKhongDeTrong);
+			flag = false;
+		} else {
+			lblErrChatLieu.setText("");
+		}
+		if (!txtSoLuong.getText().matches("^[1-9][0-9]*$") || Integer.parseInt(txtSoLuong.getText()) < 0) {
+			lblErrSoLuong.setText(stErrSoLuong);
+			flag = false;
+		} else {
+			lblErrSoLuong.setText("");
+		}
+		if (!txtKichThuoc.getText().matches("^[1-9][0-9]*$")) {
+			lblErrKichThuoc.setText(stErrSoLuong);
+			flag = false;
+		} else {
+			lblErrKichThuoc.setText("");
+		}
+		if (!txtDonGia.getText().matches("^[1-9][0-9]*$") || Integer.parseInt(txtDonGia.getText()) < 0) {
+			lblErrDonGia.setText(stErrSoLuong);
+			flag = false;
+		} else {
+			lblErrDonGia.setText("");
+		}
+		return flag;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
+		if (o.equals(btnThem)) {
+			oFlag = e.getSource();
+			btnThem.setEnabled(false);
+			btnXoa.setEnabled(false);
+			btnCapNhat.setEnabled(false);
+			btnLuu.setEnabled(true);
+			btnHuy.setEnabled(true);
+			btnThemNhieu.setEnabled(false);
+			lblThemAnhSanPham.setEnabled(true);
+			xoaTrangField();
+			txtMaSanPham.setText(sanPham_DAO.layMaSanPhamDeThem());
+			moKhoaTextField(true);
+		} else if (o.equals(btnCapNhat)) {
+			oFlag = e.getSource();
+			btnThem.setEnabled(false);
+			btnThemNhieu.setEnabled(false);
+			btnXoa.setEnabled(false);
+			btnCapNhat.setEnabled(false);
+			btnLuu.setEnabled(true);
+			btnHuy.setEnabled(true);
+			lblThemAnhSanPham.setEnabled(true);
+			txtTenSanPham.requestFocus();
+			moKhoaTextField(true);
+		}
+		else if (o.equals(btnXoa)) {
+			int rowSelected = tblDanhSachSanPham.getSelectedRow();
+			if (rowSelected != -1) {
+				int coXacNhanXoa = JOptionPane.showConfirmDialog(null, stBanXacNhanXoa, stThongbao, JOptionPane.ERROR_MESSAGE);
+				if (coXacNhanXoa == 0) {
+					boolean coXoaDuoc = sanPham_DAO.xoaMotSanPhamTheoMa(tblDanhSachSanPham.getValueAt(tblDanhSachSanPham.getSelectedRow(), 1).toString());
+					if (coXoaDuoc) {
+						JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao,  JOptionPane.INFORMATION_MESSAGE);
+						taiDuLieuLenBangSanPham(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
+					} else {
+						JOptionPane.showMessageDialog(null, stXoaThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+			}
+		} 
+		else if (o.equals(btnLuu)) {
+			if (oFlag.equals(btnThem)) {
+				boolean hopLe = kiemTraDieuKien();
+				int soLuongSanPham = 0, soCongDoan = 0;
+				if (!hopLe) {
+					return;
+				}
+				String maSanPham = txtMaSanPham.getText().trim();
+				String tenSanPham = txtTenSanPham.getText().trim();
+				String kichThuocStr = txtKichThuoc.getText().toString();
+				int kichThuoc = 0;
+				try {
+					soLuongSanPham = Integer.parseInt(txtSoLuong.getText().trim());
+					soCongDoan = Integer.parseInt(txtSoCongDoan.getText().trim());
+					kichThuoc = Integer.parseInt(kichThuocStr);
+				} catch (Exception e2) {
+					System.out.println(e2.getMessage());
+				}
+				String chatLieu = txtChatLieu.getText();
+				Double donGia =  Double.parseDouble(txtDonGia.getText());
+				String iconfilename = lblAnhSanPham.getIcon().toString();
+				String anhSanPham = iconfilename.substring(iconfilename.lastIndexOf("/") + 1);
+
+				HopDong hd = new HopDong(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
+				boolean coThemDuoc = sanPham_DAO.themMotSanPham(new SanPham(maSanPham, tenSanPham, soLuongSanPham, donGia, chatLieu, kichThuoc, anhSanPham, soCongDoan, hd));
+				if (coThemDuoc) {
+					taiDuLieuLenBangSanPham(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
+					btnThem.setEnabled(true);
+					btnThemNhieu.setEnabled(true);
+					btnXoa.setEnabled(true);
+					btnCapNhat.setEnabled(true);
+					btnLuu.setEnabled(false);
+					btnHuy.setEnabled(false);
+					moKhoaTextField(false);
+					lblThemAnhSanPham.setEnabled(false);
+					JOptionPane.showMessageDialog(null, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+					oFlag = null;
+				} else {
+					JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+				}
+
+			} 
+			else if (oFlag.equals(btnCapNhat)) {
+				boolean hopLe = kiemTraDieuKien();
+				int soLuongSanPham = 0, soCongDoan = 0;
+				if (!hopLe) {
+					return;
+				}
+				String maSanPham = txtMaSanPham.getText().trim();
+				String tenSanPham = txtTenSanPham.getText().trim();
+				String kichThuocStr = txtKichThuoc.getText().toString();
+				int kichThuoc = 0;
+				try {
+					soLuongSanPham = Integer.parseInt(txtSoLuong.getText().trim());
+					soCongDoan = Integer.parseInt(txtSoCongDoan.getText().trim());
+					kichThuoc = Integer.parseInt(kichThuocStr);
+				} catch (Exception e2) {
+					System.out.println(e2.getMessage());
+				}
+				String chatLieu = txtChatLieu.getText();
+				Double donGia =  Double.parseDouble(txtDonGia.getText());
+				String iconfilename = lblAnhSanPham.getIcon().toString();
+				String anhSanPham = iconfilename.substring(iconfilename.lastIndexOf("/") + 1);
+
+				HopDong hd = new HopDong(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
+				boolean coSuaDuoc = sanPham_DAO.suaMotSanPham(new SanPham(maSanPham, tenSanPham, soLuongSanPham, donGia, chatLieu, kichThuoc, anhSanPham, soCongDoan, hd));
+				if (coSuaDuoc) {
+					taiDuLieuLenBangSanPham(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
+					btnThem.setEnabled(true);
+					btnThemNhieu.setEnabled(true);
+					btnXoa.setEnabled(true);
+					btnCapNhat.setEnabled(true);
+					btnLuu.setEnabled(false);
+					btnHuy.setEnabled(false);
+					moKhoaTextField(false);
+					lblThemAnhSanPham.setEnabled(false);
+					oFlag = null;
+					JOptionPane.showMessageDialog(null, stCapNhatThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		} else if (o.equals(btnHuy)) {
+			moKhoaTextField(false);
+			lblErrSoLuong.setText("");
+			lblErrDonGia.setText("");
+			lblErrKichThuoc.setText("");
+			lblErrChatLieu.setText("");
+			lblErrTenSanPham.setText("");
+			if (tblDanhSachSanPham.getRowCount() != 0) {
+				hienThiLenTxt(0);
+				tblDanhSachSanPham.setRowSelectionInterval(0, 0);
+			}
+			btnThem.setEnabled(true);
+			btnThemNhieu.setEnabled(true);
+			btnXoa.setEnabled(true);
+			btnCapNhat.setEnabled(true);
+			btnLuu.setEnabled(false);
+			btnHuy.setEnabled(false);
+			lblThemAnhSanPham.setEnabled(false);
+			if (tblDanhSachSanPham.getRowCount() == 0) {
+				btnCapNhat.setEnabled(false);
+				btnXoa.setEnabled(false);
+			}
+		}
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();
-        if (o.equals(tblDanhSachSanPham)) {
-            int row = tblDanhSachSanPham.getSelectedRow();
-            if (row != -1) {
-                hienThiLenTxt(row);
-                moKhoaTextField(false);
-                btnThem.setEnabled(true);
-                btnCapNhat.setEnabled(true);
-                btnXoa.setEnabled(true);
-                btnThemNhieu.setEnabled(true);
-                btnHuy.setEnabled(false);
-                btnLuu.setEnabled(false);
-                lblErrSoLuong.setText("");
-                lblErrChatLieu.setText("");
-                lblErrTenSanPham.setText("");
-                lblAnhSanPhamOfPnl.setEnabled(false);
-            }
-        } else if (o.equals(tblHopDong)) {
-            int rowSelect = tblHopDong.getSelectedRow();
-            if (rowSelect != -1) {
-                taiDuLieuLenBangSanPham(tblHopDong.getValueAt(rowSelect, 1).toString());
-                txtMaHopDong.setText(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
-            }
-        }
+		if (o.equals(tblDanhSachSanPham)) {
+			int row = tblDanhSachSanPham.getSelectedRow();
+			if (row != -1) {
+				hienThiLenTxt(row);
+				moKhoaTextField(false);
+				btnThem.setEnabled(true);
+				btnCapNhat.setEnabled(true);
+				btnXoa.setEnabled(true);
+				btnThemNhieu.setEnabled(true);
+				btnHuy.setEnabled(false);
+				btnLuu.setEnabled(false);
+				lblErrSoLuong.setText("");
+				lblErrChatLieu.setText("");
+				lblErrTenSanPham.setText("");
+				lblThemAnhSanPham.setEnabled(false);
+			}
+		} else if (o.equals(tblHopDong)) {
+			int rowSelect = tblHopDong.getSelectedRow();
+			if (rowSelect != -1) {
+				taiDuLieuLenBangSanPham(tblHopDong.getValueAt(rowSelect, 1).toString());
+				txtMaHopDong.setText(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
+			}
+		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

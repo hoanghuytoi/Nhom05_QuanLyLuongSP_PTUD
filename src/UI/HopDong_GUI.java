@@ -71,8 +71,8 @@ public class HopDong_GUI extends JPanel {
 	private JSeparator jSeparator3;
 	private JSeparator jSeparator4;
 	private JSeparator jSeparator5;
-	private JLabel lblErrNgayKetThucHD;
-	private JLabel lblErrNgayKiKetHD;
+	private JLabel lblErrNgayKetThuc;
+	private JLabel lblErrNgayKiKet;
 	private JLabel lblErrTenHopDong;
 	private JLabel lblErrTenKhachHang;
 	private JLabel lblErrTienDatCoc;
@@ -116,8 +116,6 @@ public class HopDong_GUI extends JPanel {
 	private String stXoaThatBai;
 	private String stThemThanhCong;
 	private String stThemThatBai;
-	private String stKhongTimThayFile;
-	private String stKhongDocDuocFile;
 	private String stCapNhatThanhCong;
 	private String stCapNhatThatBai;
 	private String stErrTienKhongHopLe;
@@ -149,9 +147,10 @@ public class HopDong_GUI extends JPanel {
         lblNgayKyKetHD.setText(prop.getProperty("HopDong_NgayKyKetHD"));
         lblNgayKetThucHD.setText(prop.getProperty("HopDong_NgayKetThucHD"));
         lblYeuCau.setText(prop.getProperty("HopDong_YeuCau"));
-        lblYeuCau.setText(prop.getProperty("HopDong_YeuCau"));
         lblNguoiKyKet.setText(prop.getProperty("HopDong_NguoiKyKet"));
-        
+        pnlHopDong.setBorder(new TitledBorder(prop.getProperty("HopDong_ThongTinHD")));
+		scrHopDong.setBorder(new TitledBorder(prop.getProperty("HopDong_TableHD")));
+		
         btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
         btnThem.setText(prop.getProperty("btnThem"));
         btnXoa.setText(prop.getProperty("btnXoa"));
@@ -183,8 +182,6 @@ public class HopDong_GUI extends JPanel {
         stThemThanhCong = prop.getProperty("themThanhCong");
         stThemThatBai = prop.getProperty("themThatBai");
         stErrTienKhongHopLe = prop.getProperty("soTienKhongHople");
-        stKhongDocDuocFile = prop.getProperty("khongDocDuocFile");
-        stKhongTimThayFile = prop.getProperty("khongTimThayFile");
         stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
         stCapNhatThatBai = prop.getProperty("capNhatThatBai");
     }
@@ -256,8 +253,8 @@ public class HopDong_GUI extends JPanel {
 		lblErrTenKhachHang = new JLabel();
 		lblErrTenKhachHang.setBounds(930, 70, 290, 30);
 		
-		lblErrNgayKiKetHD = new JLabel();
-		lblErrNgayKiKetHD.setBounds(930, 128, 210, 30);
+		lblErrNgayKiKet = new JLabel();
+		lblErrNgayKiKet.setBounds(930, 128, 210, 30);
 		
 		lblNgayKetThucHD = new JLabel();
 		lblNgayKetThucHD.setBounds(760, 168, 170, 30);
@@ -271,8 +268,8 @@ public class HopDong_GUI extends JPanel {
 		lblNgayKyKetHD = new JLabel();
 		lblNgayKyKetHD.setBounds(760, 99, 170, 30);
 		
-		lblErrNgayKetThucHD = new JLabel();
-		lblErrNgayKetThucHD.setBounds(930, 200, 210, 24);
+		lblErrNgayKetThuc = new JLabel();
+		lblErrNgayKetThuc.setBounds(930, 200, 210, 24);
 		
 		lblErrTienDatCoc = new JLabel();
 		lblErrTienDatCoc.setBounds(490, 180, 210, 30);
@@ -387,10 +384,10 @@ public class HopDong_GUI extends JPanel {
 		lblErrTenKhachHang.setText("lblErrTenKhachHang");
 		pnlHopDong.add(lblErrTenKhachHang);
 
-		lblErrNgayKiKetHD.setFont(new Font("Times New Roman", Font.PLAIN, 15)); 
-		lblErrNgayKiKetHD.setForeground(new java.awt.Color(204, 0, 0));
-		lblErrNgayKiKetHD.setText("đây là dòng thông báo lỗi");
-		pnlHopDong.add(lblErrNgayKiKetHD);
+		lblErrNgayKiKet.setFont(new Font("Times New Roman", Font.PLAIN, 15)); 
+		lblErrNgayKiKet.setForeground(new java.awt.Color(204, 0, 0));
+		lblErrNgayKiKet.setText("đây là dòng thông báo lỗi");
+		pnlHopDong.add(lblErrNgayKiKet);
 
 		lblNgayKetThucHD.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		lblNgayKetThucHD.setText("Ngày kết thúc HĐ:");
@@ -424,10 +421,10 @@ public class HopDong_GUI extends JPanel {
 		lblNgayKyKetHD.setText("Ngày ký kết HĐ:");
 		pnlHopDong.add(lblNgayKyKetHD);
 
-		lblErrNgayKetThucHD.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		lblErrNgayKetThucHD.setForeground(new Color(204, 0, 0));
-		lblErrNgayKetThucHD.setText("đây là dòng thông báo lỗi");
-		pnlHopDong.add(lblErrNgayKetThucHD);
+		lblErrNgayKetThuc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		lblErrNgayKetThuc.setForeground(new Color(204, 0, 0));
+		lblErrNgayKetThuc.setText("đây là dòng thông báo lỗi");
+		pnlHopDong.add(lblErrNgayKetThuc);
 
 		lblErrTienDatCoc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		lblErrTienDatCoc.setForeground(new java.awt.Color(204, 0, 0));
@@ -624,8 +621,8 @@ public class HopDong_GUI extends JPanel {
 		lblErrTenHopDong.setText("");
 		lblErrTienDatCoc.setText("");
 		lblErrTriGiaHD.setText("");
-		lblErrNgayKiKetHD.setText("");
-		lblErrNgayKetThucHD.setText("");
+		lblErrNgayKiKet.setText("");
+		lblErrNgayKetThuc.setText("");
 
 		btnLuu.setEnabled(false);
 		btnHuy.setEnabled(false);
@@ -643,8 +640,8 @@ public class HopDong_GUI extends JPanel {
 				lblErrTenHopDong.setText("");
 				lblErrTriGiaHD.setText("");
 				lblErrTienDatCoc.setText("");
-				lblErrNgayKetThucHD.setText("");
-				lblErrNgayKiKetHD.setText("");
+				lblErrNgayKetThuc.setText("");
+				lblErrNgayKiKet.setText("");
 			}
 		} catch (ParseException ex) {
 			Logger.getLogger(HopDong_GUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -696,7 +693,6 @@ public class HopDong_GUI extends JPanel {
 
 	public void setEnableForSelected(boolean check) {
 		txtTenKhachHang.setEditable(check);
-
 		txtMaHopDong.setEditable(false);
 		txtTenHopDong.setEditable(check);
 		txtTienDatCoc.setEditable(check);
@@ -743,8 +739,8 @@ public class HopDong_GUI extends JPanel {
 		setHidden(btnHuy, btnLuu);
 		isThem = false;
 		setEnableForSelected(false);
-		lblErrNgayKetThucHD.setText("");
-		lblErrNgayKiKetHD.setText("");
+		lblErrNgayKetThuc.setText("");
+		lblErrNgayKiKet.setText("");
 		lblErrTenHopDong.setText("");
 		lblErrTenKhachHang.setText("");
 		lblErrTienDatCoc.setText("");
@@ -770,17 +766,18 @@ public class HopDong_GUI extends JPanel {
 	}
 	
 	public boolean kiemTraDieuKienNhap() {
+		// Ten KH
         boolean check = true;
         if (txtTenKhachHang.getText().equals("")) {
             lblErrTenKhachHang.setText(stErrKhongDeTrong);
             check = false;
-        } else if (!txtTenKhachHang.getText().toLowerCase().matches("^([a-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổ"
-                + "ẵẻỡơôưăêâđ]+)((\\s[A-ZĐÂÁƯ][a-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){0,})$")) {
+        } else if (!txtTenKhachHang.getText().matches("^[A-ZĐÂÁƯ][a-zA-Zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+(\\s[A-ZĐÂÁƯ][a-zA-Zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)*$")) {
             lblErrTenKhachHang.setText(stErrTenKhachHangKhongHopLe);
             check = false;
         } else {
             lblErrTenKhachHang.setText("");
         }
+        // Tien dat coc
         boolean checkTien = false;
         try {
             if (this.txtTienDatCoc.getText().equals("")) {
@@ -797,13 +794,14 @@ public class HopDong_GUI extends JPanel {
             this.lblErrTienDatCoc.setText(stErrTienKhongHopLe);
             check = false;
         }
-
+        // Tên HD
         if (txtTenHopDong.getText().trim().equals("")) {
             lblErrTenHopDong.setText(stErrKhongDeTrong);
             check = false;
         } else {
             lblErrTenHopDong.setText("");
         }
+        // Trị giá HD
         try {
             if (txtTriGiaHD.getText().trim().equals("")) {
                 this.lblErrTriGiaHD.setText(stErrKhongDeTrong);
@@ -814,7 +812,7 @@ public class HopDong_GUI extends JPanel {
             } else {
                 try {
                     if (checkTien) {
-                        if (Double.parseDouble(txtTienDatCoc.getText().trim()) >= Double.parseDouble(txtTriGiaHD.getText().trim())) {
+                        if (Double.parseDouble(txtTienDatCoc.getText().trim()) > Double.parseDouble(txtTriGiaHD.getText().trim())) {
                             this.lblErrTriGiaHD.setText(stErrTriGiaHD);
                             check = false;
                         } else {
@@ -832,18 +830,21 @@ public class HopDong_GUI extends JPanel {
             this.lblErrTriGiaHD.setText(stErrTienKhongHopLe);
             check = false;
         }
+        // Ngay ky ket
         if (dcsNgayKyKetHD.getDate().after(new Date())) {
-            lblErrNgayKiKetHD.setText(stErrNgayKyKet);
+            lblErrNgayKiKet.setText(stErrNgayKyKet);
             check = false;
         } else {
-            lblErrNgayKiKetHD.setText("");
+            lblErrNgayKiKet.setText("");
         }
+        // Ngay ket thuc
         if (!dcsNgayKetThucHD.getDate().after(new Date())) {
-            lblErrNgayKetThucHD.setText(stErrNgayKetThuc);
+            lblErrNgayKetThuc.setText(stErrNgayKetThuc);
             check = false;
         } else {
-        	lblErrNgayKetThucHD.setText("");
+        	lblErrNgayKetThuc.setText("");
         }
+        
         return check;
     }
 

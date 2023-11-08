@@ -63,7 +63,6 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 	private String fileName;
 	
 	private String khongDeTrong;
-    private String stErrSoLuong;
     private String stThongbao;
     private String stBanXacNhanXoa;
     private String stXoaThanhCong;
@@ -107,7 +106,9 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
         lblMaToNhom.setText(prop.getProperty("toNhom_maToNhom"));
         lblTenToNhom.setText(prop.getProperty("toNhom_tenToNhom"));
         lblSoLuongCongNhan.setText(prop.getProperty("toNhom_soLuongCongNhan"));
-        
+        pnlToNhom.setBorder(new TitledBorder(prop.getProperty("toNhom_ThongTinTN")));
+		scrToNhom.setBorder(new TitledBorder(prop.getProperty("toNhom_TableTN")));
+		
         doiNgonNguTable(tblToNhom, 0, prop.getProperty("toNhom_STT"));
         doiNgonNguTable(tblToNhom, 1, lblMaToNhom.getText());
         doiNgonNguTable(tblToNhom, 2, lblTenToNhom.getText());

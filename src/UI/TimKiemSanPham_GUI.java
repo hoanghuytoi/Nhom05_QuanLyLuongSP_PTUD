@@ -27,7 +27,11 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -77,12 +81,15 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
 
 	private SanPham_Dao sanPham_DAO;
     private DefaultTableModel modelTableSanPham;
-    private String stThongBao;
-    private String stTimKiemKhongThay;
 	private JButton btnQuayLai;
 	
-	public TimKiemSanPham_GUI() {
+	private String stThongBao;
+    private String stTimKiemKhongThay;
+	private TitledBorder titledBorder;
+    
+	public TimKiemSanPham_GUI(String fileName)throws IOException  {
 		initComponents();
+        caiDatNgonNgu(fileName);
 		modelTableSanPham = (DefaultTableModel) tblSanPham.getModel();
         try {
             ConnectionDB.ConnectDB.getInstance().connect();
@@ -102,6 +109,42 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
         taiDuLieuLenBang("all", "all", "all", "all","all","all");
 	}
 
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        lblTieuDe.setText(prop.getProperty("sp_TieuDeTimKiem"));
+        lblMaSanPham.setText(prop.getProperty("sp_maSanPham"));
+        lblTenSP.setText(prop.getProperty("sp_tenSanPham"));
+        lblChatLieu.setText(prop.getProperty("sp_chatLieu"));
+        lblKichThuoc.setText(prop.getProperty("sp_kichThuoc"));
+        lblSoLuongSP.setText(prop.getProperty("sp_soLuong"));
+        lblDonGia.setText(prop.getProperty("sp_donGia"));
+        scrSanPham.setBorder(new TitledBorder(prop.getProperty("sp_tieuDeTblSanPham")));
+
+        doiNgonNguTable(tblSanPham, 0, prop.getProperty("sp_stt"));
+        doiNgonNguTable(tblSanPham, 1, prop.getProperty("sp_maSanPham"));
+        doiNgonNguTable(tblSanPham, 2, prop.getProperty("sp_tenSanPham"));
+        doiNgonNguTable(tblSanPham, 3, prop.getProperty("sp_soLuong"));
+        doiNgonNguTable(tblSanPham, 4, prop.getProperty("sp_chatLieu"));
+        doiNgonNguTable(tblSanPham, 5, prop.getProperty("sp_kichThuoc"));
+        doiNgonNguTable(tblSanPham, 6, prop.getProperty("sp_anhSanPham"));
+        doiNgonNguTable(tblSanPham, 7, prop.getProperty("sp_donGia"));
+
+        
+        btnTimKiem.setText(prop.getProperty("btnTimKiem"));
+        btnQuayLai.setText(prop.getProperty("btnQuayLai"));
+        btnXoaRong.setText(prop.getProperty("btnXoaRong"));
+        
+        stThongBao = prop.getProperty("thongBao");
+        stTimKiemKhongThay=prop.getProperty("timKiem_KhongThay");
+        
+    }
+
+    public void doiNgonNguTable(JTable table, int col_index, String col_name) {
+        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
+    }
+    
 	private void initComponents() {
 		setSize(1290, 750);
 		setBackground(Color.WHITE);
@@ -110,7 +153,7 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
 	    lblTieuDe = new JLabel("TÌM KIẾM SẢN PHẨM");
 	    lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
 	    lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
-	    lblTieuDe.setBounds(344, 22, 490, 50);
+	    lblTieuDe.setBounds(438, 33, 490, 50);
 	    add(lblTieuDe);
 	    
 	    panelSP = new JPanel();
@@ -330,7 +373,7 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
 	    scrSanPham.setBounds(46, 443, 1225, 252);
 	    scrSanPham.setBackground(new java.awt.Color(255, 255, 255));
 	    LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);
-		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Danh sách sản phẩm");
+		titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Danh sách sản phẩm");
 		scrSanPham.setBorder(titledBorder);
 	   
         ScrollBarCustom scrollBar = new ScrollBarCustom();
@@ -376,7 +419,7 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
 	    }
 
 	    if (tblSanPham.getRowCount() == 0) {
-	        JOptionPane.showMessageDialog(null, "Không tìm thấy", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	        JOptionPane.showMessageDialog(null, stTimKiemKhongThay, stThongBao, JOptionPane.INFORMATION_MESSAGE);
 	    }
 
 	    if (tblSanPham.getRowCount() != 0) {

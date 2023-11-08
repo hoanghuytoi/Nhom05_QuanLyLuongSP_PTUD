@@ -35,12 +35,17 @@ import javax.swing.JFileChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -104,13 +109,24 @@ public class NhanVien_GUI extends JPanel {
 	private boolean isThem = false;
 	private boolean isCapNhat = false;
 
-	private String stThongbao;
-	private String stBanXacNhanXoa;
-	private String stXoaThanhCong;
-	private String stXoaThatBai;
-	private String stThemThanhCong;
-	private String stThemThatBai;
-	private String stCapNhatThatBai;
+	private String stErrKhongDeTrong;
+    private String stThongbao;
+    private String stBanXacNhanXoa;
+    private String stXoaThanhCong;
+    private String stXoaThatBai;
+    private String stThemThanhCong;
+    private String stThemThatBai;
+    private String stCapNhatThanhCong;
+    private String stCapNhatThatBai;
+    private String stErrHoTen;
+    private String stErrSoCCCD;
+    private String stErrEmail;
+    private String stErrSdt;
+    private String stErrNgaySinh;
+    private String stErrNgayVaoLam;
+    private String stErrNhanVienKhongDuTuoi;
+    private String stErrTienKhongHopLe;
+    private String stSoTienLonHonKhong;
 
 	private JSeparator jSeparator1_2;
 	private JSeparator jSeparator1_3;
@@ -120,16 +136,86 @@ public class NhanVien_GUI extends JPanel {
 	private JLabel lblTieuDe;
 
 
-	public NhanVien_GUI() throws Exception {
+	public NhanVien_GUI(String fileName) throws Exception {
 		setBackground(new Color(255, 255, 255));
 		initComponents();
-		//caiDatNgonNguChoView(fileName);
+		caiDatNgonNgu(fileName);
 		excute();
 		taiDuLieuLenBang();
 		this.txtMaNhanVien.setEditable(false);
 
 	}
 
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
+        btnThem.setText(prop.getProperty("btnThem"));
+        btnXoa.setText(prop.getProperty("btnXoa"));
+        btnCapNhat.setText(prop.getProperty("btnCapNhat"));
+        btnLuu.setText(prop.getProperty("btnLuu"));
+        btnHuy.setText(prop.getProperty("btnHuy"));
+
+        panelNhanVien.setBorder(new TitledBorder(prop.getProperty("nhanVien_ThongTinNV")));
+        srcNhanVien.setBorder(new TitledBorder(prop.getProperty("nhanVien_TableNV")));
+        
+        lblTieuDe.setText(prop.getProperty("nhanVien_TieuDe"));
+        lblMaNhanVien.setText(prop.getProperty("maNhanVien"));
+        lblHoVaTen.setText(prop.getProperty("hoTen"));
+        lblSoCCCD.setText(prop.getProperty("soCCCD"));
+        lblEmail.setText(prop.getProperty("email"));
+        lblSoDienThoai.setText(prop.getProperty("sdt"));
+        lblDiaChi.setText(prop.getProperty("diaChi"));
+        lblNgaySinh.setText(prop.getProperty("ngaySinh"));
+        lblGioiTinh.setText(prop.getProperty("gioiTinh"));
+        lblPhongBan.setText(prop.getProperty("phongBan"));
+        lblChucVu.setText(prop.getProperty("chucVu"));
+        lblNgayVaoLam.setText(prop.getProperty("ngayVaoLam"));
+        lblLuongCoBan.setText(prop.getProperty("luongCoBan"));
+        lblAnhDaiDien.setText(prop.getProperty("anhDaiDien"));
+        rdoNam.setText(prop.getProperty("nam"));
+        rdoNu.setText(prop.getProperty("nu"));
+
+        doiNgonNguTable(tblNhanVien, 0, prop.getProperty("pcd_stt"));
+        doiNgonNguTable(tblNhanVien, 1, lblMaNhanVien.getText());
+        doiNgonNguTable(tblNhanVien, 2, lblHoVaTen.getText());
+        doiNgonNguTable(tblNhanVien, 3, lblSoCCCD.getText());
+        doiNgonNguTable(tblNhanVien, 4, lblGioiTinh.getText());
+        doiNgonNguTable(tblNhanVien, 5, lblNgaySinh.getText());
+        doiNgonNguTable(tblNhanVien, 6, lblSoDienThoai.getText());
+        doiNgonNguTable(tblNhanVien, 7, lblDiaChi.getText());
+        doiNgonNguTable(tblNhanVien, 8, lblAnhDaiDien.getText());
+        doiNgonNguTable(tblNhanVien, 9, lblEmail.getText());
+        doiNgonNguTable(tblNhanVien, 10, lblPhongBan.getText());
+        doiNgonNguTable(tblNhanVien, 11, lblChucVu.getText());
+        doiNgonNguTable(tblNhanVien, 12, lblNgayVaoLam.getText());
+        doiNgonNguTable(tblNhanVien, 13, lblLuongCoBan.getText());
+
+        stThongbao = prop.getProperty("thongBao");
+        stBanXacNhanXoa = prop.getProperty("banXacNhanXoa");
+        stXoaThanhCong = prop.getProperty("xoaThanhCong");
+        stXoaThatBai = prop.getProperty("xoaThatBai");
+        stThemThanhCong = prop.getProperty("themThanhCong");
+        stThemThatBai = prop.getProperty("themThatBai");
+        stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
+        stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+        stErrKhongDeTrong = prop.getProperty("khongDeTrong");
+        stErrHoTen = prop.getProperty("hoTenKhongHopLe");
+        stErrSoCCCD = prop.getProperty("soCCCDKhongHopLe");
+        stErrEmail = prop.getProperty("emailKhongHopLe");
+        stErrSdt = prop.getProperty("sdtKhongHopLe");
+        stErrNgaySinh = prop.getProperty("ngaySinhKhongHopLe");
+        stErrNgayVaoLam = prop.getProperty("ngayVaoLamKhongHopLe");
+        stErrNhanVienKhongDuTuoi = prop.getProperty("nhanVienChuaDuTuoi");
+        stErrTienKhongHopLe = prop.getProperty("soTienKhongHople");
+        stSoTienLonHonKhong = prop.getProperty("soTienLonHonKhong");
+    }
+
+    public void doiNgonNguTable(JTable table, int col_index, String col_name) {
+        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
+    }
+    
 	public void excute() throws Exception {
 		model = (DefaultTableModel) tblNhanVien.getModel();
 		ButtonGroup btnGroup = new ButtonGroup();
@@ -144,20 +230,24 @@ public class NhanVien_GUI extends JPanel {
 	private void initComponents() {
 		panelNhanVien = new JPanel();
 		panelNhanVien.setBounds(26, 50, 1231, 422);
+		
 		lblHinhAnh = new JLabel();
 		lblHinhAnh.setBounds(40, 100, 128, 128);
+		
 		btnAnhNhanVien = new JPanel();
 		btnAnhNhanVien.setBounds(40, 260, 120, 40);
-		btnAnhNhanVien.setBackground(Color.PINK);
+		btnAnhNhanVien.setBackground(Color.PINK);	
 		lblAnhDaiDien = new JLabel();
 		lblAnhDaiDien.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		
 		lblErrHoVaTen = new JLabel();
-		lblErrHoVaTen.setBounds(930, 70, 290, 29);
+		lblErrHoVaTen.setBounds(930, 70, 290, 29);		
 		txtHoVaTen = new JTextField();
 		txtHoVaTen.setBackground(Color.WHITE);
-		txtHoVaTen.setBounds(930, 30, 290, 40);
+		txtHoVaTen.setBounds(930, 30, 290, 40);	
 		lblHoVaTen = new JLabel();
 		lblHoVaTen.setBounds(780, 40, 140, 40);
+		
 		txtEmail = new JTextField();
 		txtEmail.setBackground(Color.WHITE);
 		txtEmail.setBounds(930, 100, 290, 40);
@@ -165,6 +255,7 @@ public class NhanVien_GUI extends JPanel {
 		lblErrEmail.setBounds(930, 140, 290, 29);
 		lblEmail = new JLabel();
 		lblEmail.setBounds(780, 100, 140, 40);
+		
 		txtSoCCCD = new JTextField();
 		txtSoCCCD.setBackground(Color.WHITE);
 		txtSoCCCD.setBounds(420, 81, 280, 38);
@@ -172,25 +263,32 @@ public class NhanVien_GUI extends JPanel {
 		lblErrSoCCCD.setBounds(420, 130, 290, 18);
 		lblSoCCCD = new JLabel();
 		lblSoCCCD.setBounds(270, 100, 140, 40);
+		
 		txtMaNhanVien = new JTextField();
 		txtMaNhanVien.setBackground(Color.WHITE);
 		txtMaNhanVien.setBounds(420, 30, 280, 40);
 		lblMaNhanVien = new JLabel();
 		lblMaNhanVien.setBounds(270, 40, 140, 40);
+		
 		txtSoDienThoai = new JTextField();
 		txtSoDienThoai.setBackground(Color.WHITE);
 		txtSoDienThoai.setBounds(420, 150, 280, 38);
+		
 		lblErrNgaySinh = new JLabel();
 		lblErrNgaySinh.setBounds(420, 260, 300, 18);
+		
 		lblChucVu = new JLabel();
 		lblChucVu.setBounds(780, 290, 130, 40);
+		
 		lblErrDiaChi = new JLabel();
 		lblErrDiaChi.setBounds(930, 200, 280, 28);
 		txtDiaChi = new JTextField();
 		txtDiaChi.setBackground(Color.WHITE);
 		txtDiaChi.setBounds(930, 160, 290, 40);
+		
 		lblGioiTinh = new JLabel();
 		lblGioiTinh.setBounds(780, 220, 140, 40);
+		
 		lblErrLuongCoBan = new JLabel();
 		lblErrLuongCoBan.setBounds(930, 390, 280, 29);
 		txtLuongCoBan = new JTextField();
@@ -198,35 +296,45 @@ public class NhanVien_GUI extends JPanel {
 		txtLuongCoBan.setBounds(930, 350, 290, 40);
 		lblLuongCoBan = new JLabel();
 		lblLuongCoBan.setBounds(780, 361, 140, 40);
+		
 		lblDiaChi = new JLabel();
 		lblDiaChi.setBounds(780, 160, 140, 40);
+		
 		rdoNam = new JRadioButton();
 		rdoNam.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		rdoNam.setBackground(Color.WHITE);
-		rdoNam.setBounds(930, 230, 71, 30);
+		rdoNam.setBounds(930, 230, 83, 30);
 		rdoNu = new JRadioButton();
 		rdoNu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		rdoNu.setBackground(Color.WHITE);
-		rdoNu.setBounds(1020, 230, 64, 30);
+		rdoNu.setBounds(1020, 230, 83, 30);
+		
 		dcsNgaySinh = new JDateChooser();
 		dcsNgaySinh.setBackground(Color.WHITE);
 		dcsNgaySinh.setBounds(420, 220, 280, 40);
+		
 		cboPhongBan = new JComboBox<>();
 		cboPhongBan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		cboPhongBan.setBackground(Color.WHITE);
 		cboPhongBan.setBounds(420, 290, 280, 40);
+		
 		cboChucVu = new JComboBox<>();
 		cboChucVu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		cboChucVu.setBackground(Color.WHITE);
 		cboChucVu.setBounds(930, 290, 290, 40);
+		
 		lblSoDienThoai = new JLabel();
 		lblSoDienThoai.setBounds(270, 160, 140, 40);
+		
 		lblNgaySinh = new JLabel();
 		lblNgaySinh.setBounds(270, 220, 140, 40);
+		
 		lblErrSoDienThoai = new JLabel();
 		lblErrSoDienThoai.setBounds(420, 190, 300, 18);
+		
 		lblPhongBan = new JLabel();
 		lblPhongBan.setBounds(270, 290, 130, 40);
+		
 		dcsNgayVaoLam = new JDateChooser();
 		dcsNgayVaoLam.setBackground(Color.WHITE);
 		dcsNgayVaoLam.setBounds(420, 350, 280, 40);
@@ -234,6 +342,7 @@ public class NhanVien_GUI extends JPanel {
 		lblNgayVaoLam.setBounds(270, 350, 140, 40);
 		lblErrNgayVaoLam = new JLabel();
 		lblErrNgayVaoLam.setBounds(420, 390, 320, 18);
+		
 		srcNhanVien = new JScrollPane();
 		srcNhanVien.setBounds(10, 548, 1257, 167);
 		tblNhanVien = new JTable();
@@ -736,6 +845,118 @@ public class NhanVien_GUI extends JPanel {
 		ngaySinh.setEnabled(false);
 		ngayVaoLam.setEnabled(false);
 	}
+	
+	public boolean kiemTraDieuKienNhap() throws ParseException {
+        boolean flag = true;
+        // Ho và ten
+        if (this.txtHoVaTen.getText().equals("")) {
+            this.lblErrHoVaTen.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!this.txtHoVaTen.getText().matches("^([A-ZĐÂÁƯ][a-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổ"
+                + "ẵẻỡơôưăêâđ]+)((\\s[A-ZĐÂÁƯ][a-zỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$")) {
+            this.lblErrHoVaTen.setText(stErrHoTen);
+            flag = false;
+        } else {
+            this.lblErrHoVaTen.setText("");
+        }
+        
+        // CCCD
+        if (txtSoCCCD.getText().equals("")) {
+            lblErrSoCCCD.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!txtSoCCCD.getText().matches("^[0-9]{12}$")) {
+            lblErrSoCCCD.setText(stErrSoCCCD);
+            flag = false;
+        } else {
+            lblErrSoCCCD.setText("");
+        }
+        
+        // Email
+        if (txtEmail.getText().equals("")) {
+            lblErrEmail.setText(stErrKhongDeTrong);
+        } else if (!txtEmail.getText().matches("^[a-z]\\w*@gmail.com$")) {
+            lblErrEmail.setText(stErrEmail);
+            flag = false;
+        } else {
+            lblErrEmail.setText("");
+        }
+        
+        // Dia chi
+        if (txtDiaChi.getText().equals("")) {
+            lblErrDiaChi.setText(stErrKhongDeTrong);
+            flag = false;
+        } else {
+            lblErrDiaChi.setText("");
+        }
+        
+        // SDT
+        if (txtSoDienThoai.getText().equals("")) {
+            lblErrSoDienThoai.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!txtSoDienThoai.getText().matches("^\\+84[1-9][0-9]{8}$")) {
+            lblErrSoDienThoai.setText(stErrSdt);
+            flag = false;
+        } else {
+            lblErrSoDienThoai.setText("");
+        }
+        
+        // Ngay sinh
+        if (new Date().before(dcsNgaySinh.getDate())) {
+            lblErrNgaySinh.setText(stErrNgaySinh);
+            flag = false;
+        } else {
+            lblErrNgaySinh.setText("");
+        }
+        // ngay vao lam
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        long khoangCach2Ngay = sdf.parse(sdf.format(dcsNgayVaoLam.getDate())).getTime() - sdf.parse(sdf.format(dcsNgaySinh.getDate())).getTime();
+        long getYearDiff = TimeUnit.MILLISECONDS.toDays(khoangCach2Ngay) / 365;
+        if (new Date().before(dcsNgayVaoLam.getDate())) {
+            lblErrNgayVaoLam.setText(stErrNgayVaoLam);
+            flag = false;
+        } else if (getYearDiff < 18) {
+            lblErrNgayVaoLam.setText(stErrNhanVienKhongDuTuoi);
+            flag = false;
+        } else {
+            lblErrNgayVaoLam.setText("");
+        }
+        
+        // luong co ban
+        try {
+            if (txtLuongCoBan.getText().trim().equals("")) {
+                this.lblErrLuongCoBan.setText(stErrKhongDeTrong);
+                flag = false;
+            } else if (Double.parseDouble(txtLuongCoBan.getText()) <= 0) {
+                this.lblErrLuongCoBan.setText(stSoTienLonHonKhong);
+                flag = false;
+            } else {
+                this.lblErrLuongCoBan.setText("");
+            }
+        } catch (Exception e) {
+            this.lblErrLuongCoBan.setText(stErrTienKhongHopLe);
+            flag = false;
+        }
+        return flag;
+    }
+	
+	private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {
+		int rowSelected = tblNhanVien.getSelectedRow();
+        if (rowSelected != -1) {
+            if (JOptionPane.showConfirmDialog(null, stBanXacNhanXoa, stThongbao, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (daoNhanVien.xoaMotNhanVienTheoMa(tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString())) {
+                    JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                    try {
+                        taiDuLieuLenBang();
+                    } catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(null, "Error", stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+					JOptionPane.showMessageDialog(null, stXoaThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+				}
+            }
+        }
+	}
+	
 	private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {
 		setHidden(btnThem, btnXoa, btnCapNhat, btnThemNhieu);
 		setShow(btnLuu, btnHuy);
@@ -759,22 +980,6 @@ public class NhanVien_GUI extends JPanel {
 		setEditTextDateChooser();
 	}
 
-	private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {
-		int rowSelected = tblNhanVien.getSelectedRow();
-		if (rowSelected != -1) {
-			if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa nhân viên này không","Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				if (daoNhanVien.xoaMotNhanVienTheoMa(tblNhanVien.getValueAt(tblNhanVien.getSelectedRow(), 1).toString())) {
-					JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
-					try {
-						taiDuLieuLenBang();
-					} catch (ParseException ex) {
-						JOptionPane.showMessageDialog(null, "Lỗi!!!", stThongbao, JOptionPane.INFORMATION_MESSAGE);
-					}
-				}
-			}
-		}
-	}
-
 	private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {
 		setHidden(btnThem, btnXoa, btnCapNhat);
 		setShow(btnLuu, btnHuy);
@@ -784,56 +989,55 @@ public class NhanVien_GUI extends JPanel {
 		setEditTextDateChooser();
 		isThem = false;
 	}
-
+	
 	private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
-		try {
-			PhongBan_Dao dao = new PhongBan_Dao();
-			PhongBan pb = dao.layMotPhongBanTheoTen(cboPhongBan.getSelectedItem().toString());
-			System.out.println(pb.getMaPhongBan());
-			String tienLuong = txtLuongCoBan.getText();
-			if (txtLuongCoBan.getText().contains(",")) {
-				tienLuong = txtLuongCoBan.getText().replaceAll(",", "");
-			}
-			if (dcsNgaySinh.getDate() != null && dcsNgayVaoLam.getDate() != null) {
-				nhanvienEntity = new NhanVien(txtMaNhanVien.getText(), txtHoVaTen.getText(), dcsNgaySinh.getDate(),
-						txtSoCCCD.getText(), txtSoDienThoai.getText(), txtEmail.getText(), "111111", cboChucVu.getSelectedItem().toString(),
-						dcsNgayVaoLam.getDate(), Double.parseDouble(tienLuong), rdoNam.isSelected(), lblHinhAnh.getIcon().toString().split("anhNhanVien/")[1], txtDiaChi.getText(), pb);
-				nhanvienEntity.toString();
-				if (isThem) {
-					if (this.daoNhanVien.themMotNhanVien(nhanvienEntity)) {
-						taiDuLieuLenBang();
-						JOptionPane.showMessageDialog(this,"Thêm nhân viên thành công");
-						setHidden(btnLuu, btnHuy);
-						setShow(btnThem, btnThemNhieu, btnXoa, btnCapNhat);
-						setEnableForInput(false);
-						isThem = false;
-					} else {
-						JOptionPane.showMessageDialog(null, "Thêm nhân viên thất bại");
-						setHidden(btnLuu, btnHuy);
-						setShow(btnThem, btnThemNhieu, btnXoa, btnCapNhat);
-						setEnableForInput(false);
-					}
-				} else {
-					if (this.daoNhanVien.suaThongTinMotNhanVien(nhanvienEntity)) {
-						taiDuLieuLenBang();
-						JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thành công", stThongbao, JOptionPane.INFORMATION_MESSAGE);
-						setHidden(btnLuu, btnHuy);
-						setShow(btnThem, btnThemNhieu, btnCapNhat, btnXoa);
-						setEnableForInput(false);
-					} else {
-						JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
-						setHidden(btnLuu, btnHuy);
-						setShow(btnThem, btnThemNhieu, btnXoa, btnCapNhat);
-						setEnableForInput(false);
-					}
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "ERROR: NgayVaoLam cannot be null");
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "ERROR");
-		}
-	}
+        try {
+            if (kiemTraDieuKienNhap()) {
+                PhongBan_Dao dao = new PhongBan_Dao();
+                PhongBan pb = dao.layMotPhongBanTheoTen(cboPhongBan.getSelectedItem().toString());
+                System.out.println(pb.getMaPhongBan());
+                String tienLuong = txtLuongCoBan.getText();
+                if (txtLuongCoBan.getText().contains(",")) {
+                    tienLuong = txtLuongCoBan.getText().replaceAll(",", "");
+                }
+                nhanvienEntity = new NhanVien(txtMaNhanVien.getText(), txtHoVaTen.getText(), dcsNgaySinh.getDate(),
+                        txtSoCCCD.getText(), txtSoDienThoai.getText(), txtEmail.getText(), "111111", cboChucVu.getSelectedItem().toString(),
+                        dcsNgayVaoLam.getDate(), Double.parseDouble(tienLuong), rdoNam.isSelected(), lblHinhAnh.getIcon().toString().split("anhNhanVien/")[1], txtDiaChi.getText(), pb);
+                nhanvienEntity.toString();
+                if (isThem) {
+                    if (this.daoNhanVien.themMotNhanVien(nhanvienEntity)) {
+                        taiDuLieuLenBang();
+                        JOptionPane.showMessageDialog(this, stThemThanhCong);
+                        setHidden(btnLuu, btnHuy);
+                        setShow(btnThem, btnThemNhieu, btnXoa, btnCapNhat);
+                        setEnableForInput(false);
+                        isThem = false;
+                    } else {
+                        JOptionPane.showMessageDialog(null, stThemThatBai);
+                        setHidden(btnLuu, btnHuy);
+                        setShow(btnThem, btnThemNhieu, btnXoa, btnCapNhat);
+                        setEnableForInput(false);
+                    }
+                } else {
+                    if (this.daoNhanVien.suaThongTinMotNhanVien(nhanvienEntity)) {
+                        taiDuLieuLenBang();
+                        JOptionPane.showMessageDialog(this, stCapNhatThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                        setHidden(btnLuu, btnHuy);
+                        setShow(btnThem, btnThemNhieu, btnCapNhat, btnXoa);
+                        setEnableForInput(false);
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                        setHidden(btnLuu, btnHuy);
+                        setShow(btnThem, btnThemNhieu, btnXoa, btnCapNhat);
+                        setEnableForInput(false);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERRO");
+        }
+    }
 
 	private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {
 		setHidden(btnLuu, btnHuy);
