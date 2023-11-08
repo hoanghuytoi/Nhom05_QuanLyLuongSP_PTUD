@@ -302,22 +302,32 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		tblNhanVien.setRowHeight(20);
 
 		tblNhanVien.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-					{null, null, null, null, null, null, null, null, null, null, null, null},
-				},
-				new String[] {
-						"STT", "Mã người chấm", "Mã nhân viên", "Họ và tên", "SĐT", "Phòng ban", "Chức vụ", "Ngày chấm công", "Ca làm", "Trạng thái", "Giờ đi làm","Giờ tăng ca"
-				}
-				));
+			new Object[][] {
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"STT", "M\u00E3 ng\u01B0\u1EDDi ch\u1EA5m", "M\u00E3 nh\u00E2n vi\u00EAn", "H\u1ECD v\u00E0 t\u00EAn", "S\u0110T", "Ph\u00F2ng ban", "Ch\u1EE9c v\u1EE5", "Ng\u00E0y ch\u1EA5m c\u00F4ng", "Ca l\u00E0m", "Tr\u1EA1ng th\u00E1i", "Gi\u1EDD \u0111i l\u00E0m", "Gi\u1EDD t\u0103ng ca"
+			}
+		));
 		tblNhanVien.setSelectionBackground(new java.awt.Color(232, 57, 95));
 		tblNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -489,14 +499,13 @@ public class ChamCongNhanVien_GUI extends JPanel {
 
 		cmbHienThi = new JComboBox<String>();
 		cmbHienThi.setBounds(105, 471, 145, 40);
-		add(cmbHienThi);
 		cmbHienThi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Theo ngày chấm" }));
 		cmbHienThi.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cmbHienThiActionPerformed(evt);
 			}
 		});
-
+		add(cmbHienThi);
 
 		btnChamCongTatCa = new JButton();
 		btnChamCongTatCa.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/them.png")));
