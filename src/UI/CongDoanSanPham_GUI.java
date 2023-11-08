@@ -110,6 +110,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 	private String stSauNgayHienTai;
 	private String stThuTuLamPhaiLonHon;
 	private String stThuTuCongDoanHienTai;
+	private SanPham_Dao daoSanPham;
 
 	public CongDoanSanPham_GUI(String fileName)throws IOException {
 		initComponents();
@@ -603,8 +604,9 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		while (tblDanhSachSanPham.getRowCount() != 0) {
 			modelTableSanPham.removeRow(0);
 		}
-		ArrayList<SanPham> dsSanPham = SanPham_Dao.layDanhSachSanPham();
-		for (SanPham sanPham : dsSanPham) {
+		 daoSanPham = new SanPham_Dao();
+	        ArrayList<SanPham> listSanPham = daoSanPham.layDanhSachSanPham();
+		for (SanPham sanPham : listSanPham) {
 			String data[] = {(modelTableSanPham.getRowCount() + 1) + "", sanPham.getMaSanPham(), sanPham.getTenSanPham(),sanPham.getSoLuongSanPham() + "",};
 			modelTableSanPham.addRow(data);
 		}

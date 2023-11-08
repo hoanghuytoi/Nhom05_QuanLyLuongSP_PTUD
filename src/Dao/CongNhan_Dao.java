@@ -9,7 +9,6 @@ import java.util.Date;
 
 import ConnectionDB.ConnectDB;
 import Entity.CongNhan;
-import Entity.NhanVien;
 import Entity.ToNhom;
 
 public class CongNhan_Dao {
@@ -37,7 +36,7 @@ public class CongNhan_Dao {
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                String maToNhom = rs.getString("matoNhom");
+                String maToNhom = rs.getString("maToNhom");
                 ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
                 dsCongNhan.add(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
             }
@@ -105,7 +104,7 @@ public class CongNhan_Dao {
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                String maToNhom = rs.getString("matoNhom");
+                String maToNhom = rs.getString("maToNhom");
                 ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
                 congNhan = new CongNhan(maCongNhanOb, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom);
             }
@@ -166,7 +165,7 @@ public class CongNhan_Dao {
         try {
             ConnectionDB.ConnectDB.getInstance();
             Connection con = ConnectionDB.ConnectDB.getConnection();
-            String query = "INSERT INTO CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, gioiTinh, anhDaiDien, diaChi, ngayVaoLam, matoNhom) "
+            String query = "INSERT INTO CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, gioiTinh, anhDaiDien, diaChi, ngayVaoLam, maToNhom) "
                     + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             stm = con.prepareStatement(query);
             stm.setString(1, congNhan.getMaCongNhan());
@@ -203,7 +202,7 @@ public class CongNhan_Dao {
                     + " SET hoTen = ?, ngaySinh = ?, maCCCD = ?,"
                     + " soDienThoai = ?, email = ?,"
                     + " gioiTinh = ?, anhDaiDien = ?, diaChi = ?,"
-                    + " ngayVaoLam = ?, matoNhom = ?"
+                    + " ngayVaoLam = ?, maToNhom = ?"
                     + " WHERE maCongNhan = ? ";
             stm = con.prepareStatement(query);
             stm.setString(1, congNhan.getHoTen());
@@ -281,5 +280,43 @@ public class CongNhan_Dao {
         }
 
         return soLuong;
+    }
+    
+    public ArrayList<CongNhan> layDanhSachCongNhanTheoMaTo(String maTo) {
+        ArrayList<CongNhan> dsCongNhan = new ArrayList<CongNhan>();
+        PreparedStatement stm = null;
+        ToNhom_Dao toNhom_DAO = new ToNhom_Dao();
+        try {
+            ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String truyVan = "select * from CongNhan where maToNhom = ?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, maTo);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String maCongNhan = rs.getString("maCongNhan");
+                String hoTen = rs.getString("hoTen");
+                Date ngaySinh = rs.getDate("ngaySinh");
+                String maCCCD = rs.getString("maCCCD");
+                String soDienThoai = rs.getString("soDienThoai");
+                String email = rs.getString("email");
+                Boolean gioiTinh = rs.getBoolean("gioiTinh");
+                String anhDaiDien = rs.getString("anhDaiDien");
+                String diaChi = rs.getString("diaChi");
+                Date ngayVaoLam = rs.getDate("ngayVaoLam");
+                String maToNhom = rs.getString("maToNhom");
+                ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
+                dsCongNhan.add(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return dsCongNhan;
     }
 }

@@ -33,8 +33,8 @@ public class PhanCongCongNhan {
 	public void setMaPhanCong(String maPhanCong)throws Exception {
 		if (maPhanCong.equals("")) {
             throw new Exception("Mã phân công không được để trống!");
-        } else if (!maPhanCong.matches("^PC[1-9][0-9]{4}$")) {
-            throw new Exception("Mã phân công công phải theo dạng PCxxxxx với x là các kí tự số x đầu tiền từ [1-9], x sau từ [0-9]");
+        } else if (!maPhanCong.matches("^PPPC[1-9][0-9]{5}$")) {
+            throw new Exception("Mã phân công công phải theo dạng PPPCxxxxxx với x là các kí tự số x đầu tiền từ [1-9], x sau từ [0-9]");
         } else {
             this.maPhanCong = maPhanCong;
         }
