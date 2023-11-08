@@ -36,7 +36,7 @@ public class CongNhan_Dao {
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                String maToNhom = rs.getString("maToNhom");
+                String maToNhom = rs.getString("toNhom");
                 ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
                 dsCongNhan.add(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
             }
@@ -104,7 +104,7 @@ public class CongNhan_Dao {
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                String maToNhom = rs.getString("maToNhom");
+                String maToNhom = rs.getString("toNhom");
                 ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
                 congNhan = new CongNhan(maCongNhanOb, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom);
             }
@@ -119,44 +119,6 @@ public class CongNhan_Dao {
         }
         return congNhan;
     }
-    
-//    public CongNhan layMotCongNhanTheoMa(String maCongNhan) {
-//        PreparedStatement stm = null;
-//        CongNhan congNhan = null;
-//        ToNhom_Dao toNhom_DAO = new ToNhom_Dao();
-//        try {
-//            ConnectionDB.ConnectDB.getInstance();
-//            Connection con = ConnectionDB.ConnectDB.getConnection();
-//            String query = "SELECT * FROM CongNhan where maCongNhan = ?";
-//            stm = con.prepareStatement(query);
-//            stm.setString(1, maCongNhan);
-//            ResultSet rs = stm.executeQuery();
-//            while (rs.next()) {
-//                String maCongNhanOB = rs.getString("maCongNhan");
-//                String hoTen = rs.getString("hoTen");
-//                Date ngaySinh = rs.getDate("ngaySinh");
-//                String maCCCD = rs.getString("maCCCD");
-//                String soDienThoai = rs.getString("soDienThoai");
-//                String email = rs.getString("email");
-//                Date ngayVaoLam = rs.getDate("ngayVaoLam");
-//                boolean gioiTinh = rs.getBoolean("gioiTinh");
-//                String anhDaiDien = rs.getString("anhDaiDien");
-//                String diaChi = rs.getString("diaChi");
-//                String maToNhom = rs.getString("maToNhom");
-//                ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
-//                congNhan = new CongNhan(maCongNhanOB, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom);
-//            }
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        } finally {
-//            try {
-//                stm.close();
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
-//        return congNhan;
-//    }
 
     public boolean themMotCongNhan(CongNhan congNhan) {
         PreparedStatement stm = null;
@@ -165,7 +127,7 @@ public class CongNhan_Dao {
         try {
             ConnectionDB.ConnectDB.getInstance();
             Connection con = ConnectionDB.ConnectDB.getConnection();
-            String query = "INSERT INTO CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, gioiTinh, anhDaiDien, diaChi, ngayVaoLam, maToNhom) "
+            String query = "INSERT INTO CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, gioiTinh, anhDaiDien, diaChi, ngayVaoLam, toNhom) "
                     + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             stm = con.prepareStatement(query);
             stm.setString(1, congNhan.getMaCongNhan());
@@ -202,7 +164,7 @@ public class CongNhan_Dao {
                     + " SET hoTen = ?, ngaySinh = ?, maCCCD = ?,"
                     + " soDienThoai = ?, email = ?,"
                     + " gioiTinh = ?, anhDaiDien = ?, diaChi = ?,"
-                    + " ngayVaoLam = ?, maToNhom = ?"
+                    + " ngayVaoLam = ?, toNhom = ?"
                     + " WHERE maCongNhan = ? ";
             stm = con.prepareStatement(query);
             stm.setString(1, congNhan.getHoTen());
@@ -261,7 +223,7 @@ public class CongNhan_Dao {
         try {
         	ConnectionDB.ConnectDB.getInstance();
             Connection con = ConnectionDB.ConnectDB.getConnection();
-            String truyVan = "SELECT COUNT(*) AS soLuongCongNhan FROM CongNhan WHERE maToNhom = ?";
+            String truyVan = "SELECT COUNT(*) AS soLuongCongNhan FROM CongNhan WHERE toNhom = ?";
             stm = con.prepareStatement(truyVan);
             stm.setString(1, maToNhom);
             rs = stm.executeQuery();
@@ -289,7 +251,7 @@ public class CongNhan_Dao {
         try {
             ConnectionDB.ConnectDB.getInstance();
             Connection con = ConnectionDB.ConnectDB.getConnection();
-            String truyVan = "select * from CongNhan where maToNhom = ?";
+            String truyVan = "select * from CongNhan where toNhom = ?";
             stm = con.prepareStatement(truyVan);
             stm.setString(1, maTo);
             ResultSet rs = stm.executeQuery();
@@ -304,7 +266,7 @@ public class CongNhan_Dao {
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                String maToNhom = rs.getString("maToNhom");
+                String maToNhom = rs.getString("toNhom");
                 ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
                 dsCongNhan.add(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
             }

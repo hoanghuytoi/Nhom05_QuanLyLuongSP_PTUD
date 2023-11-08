@@ -391,7 +391,7 @@ public class Main_GUI extends JFrame {
         chamCongCongNhan = new MenuItem(iconSubMenuNonSelect, lblChamCong, ((e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new ChamCongCongNhan_GUI(), BorderLayout.CENTER);
+                pnBody.add(new ChamCongCongNhan_GUI(fileName), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }

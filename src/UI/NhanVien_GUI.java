@@ -960,8 +960,8 @@ public class NhanVien_GUI extends JPanel {
 	private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {
 		setHidden(btnThem, btnXoa, btnCapNhat, btnThemNhieu);
 		setShow(btnLuu, btnHuy);
-		String EmployeeID = daoNhanVien.layRaMaNhanVienDeThem();
-		this.txtMaNhanVien.setText(EmployeeID);
+		int maNhaNVien = Integer.parseInt(tblNhanVien.getValueAt(tblNhanVien.getRowCount() - 1, 1).toString().split("V")[1]);
+        this.txtMaNhanVien.setText("PPNV" + (maNhaNVien + 1));
 
 		this.txtHoVaTen.setText("");
 		this.txtSoCCCD.setText("");

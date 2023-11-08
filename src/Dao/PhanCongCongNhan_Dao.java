@@ -290,7 +290,78 @@ public class PhanCongCongNhan_Dao {
                 System.out.println(e.getMessage());
             }
         }
-        // return true if sl == 0(duoc phan cong) else false
         return sl == 0;
+    }
+    
+    public String layRaMaPhanCongTheoMaCongDoanMaCongNhan(String maCongDoan, String maCongNhan) {
+        String maPhanCong = "";
+        PreparedStatement stm = null;
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "select * from PhanCongCongNhan where maCongDoan = ? AND maCongNhan = ?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, maCongDoan);
+            stm.setString(2, maCongNhan);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                maPhanCong = rs.getString("maPhanCong");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return maPhanCong;
+    }
+    
+    public ArrayList<CongNhan> layRaDanhSachCongNhanTheoCongDoanVaToNhom(String maCongDoan, String maToNhom, String ngayChamCong, String caLam) {
+        PreparedStatement stm = null;
+        ArrayList<CongNhan> dsCongNhan = new ArrayList<>();
+        ToNhom_Dao toNhom_DAO = new ToNhom_Dao();
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String sql = "select * from PhanCongCongNhan PCCN join CongNhan CN\n"
+                    + "on PCCN.maCongNhan = CN.maCongNhan where maCongDoan = ? and maToNhom = ? \n"
+                    + "and PCCN.maPhanCong not in (\n"
+                    + "select maPhanCong from BangChamCongCongNhan where ngayChamCong = ? and  caLam = ? \n"
+                    + ")";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, maCongDoan);
+            stm.setString(2, maToNhom);
+            stm.setString(3,ngayChamCong);
+            stm.setString(4,caLam);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String maCongNhan = rs.getString("maCongNhan");
+                String hoTen = rs.getString("hoTen");
+                Date ngaySinh = rs.getDate("ngaySinh");
+                String maCCCD = rs.getString("maCCCD");
+                String soDienThoai = rs.getString("soDienThoai");
+                String email = rs.getString("email");
+                Boolean gioiTinh = rs.getBoolean("gioiTinh");
+                String anhDaiDien = rs.getString("anhDaiDien");
+                String diaChi = rs.getString("diaChi");
+                Date ngayVaoLam = rs.getDate("ngayVaoLam");
+                String maToNhomTemp = rs.getString("toNhom");
+                ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhomTemp);
+                dsCongNhan.add(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return dsCongNhan;
     }
 }

@@ -237,4 +237,39 @@ public class SanPham_Dao {
         }
         return soLuongXoaDuoc != 0;
     }
+    
+    public ArrayList<SanPham> layDanhSachSanPhamDuocPhanCongChoTo(String maToNhom) {
+        PreparedStatement stm = null;
+        ArrayList<SanPham> dsSanPham = new ArrayList<SanPham>();
+
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "SELECT SP.maSanPham FROM ToNhom TN JOIN PhanCongCongNhan PCCN ON TN.maToNhom = PCCN.maToNhom"
+                    + " JOIN CongDoan CD ON PCCN.maCongDoan = CD.maCongDoan"
+                    + " JOIN SanPham SP ON SP.maSanPham = CD.maSanPham WHERE TN.maToNhom = ? and "
+                    + " SP.maSanPham in "
+                    + " (select SP2.maSanPham from SanPham SP2 JOIN CongDoan CD2 ON SP2.maSanPham = CD2.maSanPham"
+                    + " join PhanCongCongNhan PCCC2 ON CD2.maCongDoan = PCCC2.maCongDoan"
+                    + " where tinhTrang != '100,00%')"
+                    + " group by SP.maSanPham";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, maToNhom);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String maSanPham = rs.getString("maSanPham");
+
+                dsSanPham.add(layMotSanPhamTheoMa(maSanPham));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return dsSanPham;
+    }
 }

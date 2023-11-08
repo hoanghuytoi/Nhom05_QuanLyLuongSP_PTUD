@@ -174,12 +174,14 @@ public class PhanCongCongNhan_GUI extends JPanel {
         }
         ToNhom_Dao daoToNhom = new ToNhom_Dao();
         ArrayList<ToNhom> toNhomList = daoToNhom.layDanhSachToNhom();
+		CongNhan_Dao congNhan_dao = new CongNhan_Dao();
         cmbToNhom.removeAllItems();
-        toNhomList.forEach(e -> {
-            if (e.getSoLuongCongNhan()>= 0) {
-                cmbToNhom.addItem(e.getTenToNhom());
+        for (ToNhom toNhom : toNhomList) {
+	        int soLuongCongNhan = congNhan_dao.laySoLuongCongNhanTheoToNhom(toNhom.getMaToNhom());
+            if (soLuongCongNhan> 0) {
+                cmbToNhom.addItem(toNhom.getTenToNhom());
             }
-        });
+        }
         dcsNgayPhanCong.setDate(new Date());
         txtMaPhanCong.setText("");
         cmbMaCongDoan.removeAllItems();

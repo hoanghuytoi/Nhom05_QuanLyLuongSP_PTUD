@@ -1,363 +1,1435 @@
 package UI;
 
+import Entity.ChamCongCongNhan;
+import Entity.CongDoan;
+import Entity.CongNhan;
+import Entity.PhanCongCongNhan;
+import Entity.SanPham;
+import Entity.ToNhom;
+
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
+
+import Dao.ChamCongCongNhan_Dao;
+import Dao.CongDoan_Dao;
+import Dao.CongNhan_Dao;
+import Dao.PhanCongCongNhan_Dao;
+import Dao.SanPham_Dao;
+import Dao.ToNhom_Dao;
+
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-
-import Custom_UI.ScrollBarCustom;
-
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
 import javax.swing.JSeparator;
-import javax.swing.JComboBox;
-import com.toedter.calendar.JDateChooser;
-import Custom_UI.RoundedButton;
-import java.awt.SystemColor;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
-public class ChamCongCongNhan_GUI extends JPanel {
 
-	private JScrollPane scrCongNhan;
-    private JTable tblCongNhan;
-    private JTextField txtMaCN;
-    private JTextField txtTenCN;
-
+public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, MouseListener {
+	private JButton btnCapNhat;
+    private JButton btnChamCong;
+    private JButton btnHuy;
+    private JButton btnLayDanhSach;
+    private JButton btnLuu;
+    private JButton btnXoa;
     private JComboBox<String> cmbCaLam;
-    private JComboBox<String> cmbGio;
-    private JComboBox<String> cmbPhut;
-    private JComboBox<String> cmbTinhTrang;
-    
-    private JScrollPane scrDSChamCongCN;
-    private JTable tblDSChamCongCN;
+    private JComboBox<String> cmbGioDiLam;
+    private JComboBox<String> cmbHienThi;
+    private JComboBox<String> cmbMaCongDoan;
+    private JComboBox<String> cmbMaSanPham;
+    private JComboBox<String> cmbPhutDiLam;
+    private JComboBox<String> cmbTenCongDoan;
+    private JComboBox<String> cmbTenSanPham;
+    private JComboBox<String> cmbTenToNhom;
+    private JComboBox<String> cmbTrangThai;
+    private JDateChooser dtcNgayChamCong;
+    private JPanel pnlChamCongCN;
+    private JSeparator jSeparator1;
+    private JLabel lblCaLam;
+    private JLabel lblErrSoLuongSP;
+    private JLabel lblGioDiLam;
+    private JLabel lblHienThi;
+    private JLabel lblHoTen;
+    private JLabel lblHoVaTenHienThi;
+    private JLabel lblMaCongDoan;
+    private JLabel lblMaCongNhan;
+    private JLabel lblMaCongNhanHienThi;
+    private JLabel lblMaSanPham;
+    private JLabel lblNgayChamCong;
+    private JLabel lblPhut;
+    private JLabel lblSoLuongSanPham;
+    private JLabel lblTenCongDoan;
+    private JLabel lblTenCongDoanOutput;
+    private JLabel lblTenCongDoanRight;
+    private JLabel lblTenSanPham;
+    private JLabel lblTenSanPhamOutput;
+    private JLabel lblTenSanPhamRight;
+    private JLabel lblToNhom;
+    private JLabel lblTrangThai;
+    private JScrollPane scrChamCong;
+    private JScrollPane scrTableCongNhan;
+    private JTable tblChamCong;
+    private JTable tblCongNhan;
     private JTextField txtSoLuongLam;
     
-	public ChamCongCongNhan_GUI() {
-		setBackground(new Color(255, 255, 255));
-		initComponents();
-	}
+    private DefaultTableModel modelTableCongNhan;
+    private DefaultTableModel modelTableChamCong;
+    private SanPham_Dao sanPham_DAO;
+    private CongDoan_Dao congDoan_DAO;
+    private ToNhom_Dao toNhom_DAO;
+    private PhanCongCongNhan_Dao phanCong_DAO;
+    private String maCongDoanFlag;
+    private String caLamFlag;
+    private Date ngayChamCongFlag;
+    private ChamCongCongNhan_Dao chamCongCN_DAO;
+    private ItemListener itemMaCongDoan, itemTenCongDoan, itemMaSanPham, itemTenSanPham;
 
-	private void initComponents() {
-		setSize(1290, 750);
-	    setLayout(null);
-	    
-	    JLabel lblTieuDe = new JLabel("QUẢN LÝ CHẤM CÔNG CÔNG NHÂN");
-	    lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
-	    lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 23));
-	    lblTieuDe.setBounds(413, 11, 490, 50);
-	    add(lblTieuDe);
-	    
-	    JLabel lblDanhSachCN = new JLabel("Danh sách phân công công nhân:");
-	    lblDanhSachCN.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/muiTen.png")));
-	    lblDanhSachCN.setFont(new Font("Times New Roman", Font.BOLD, 16));
-	    lblDanhSachCN.setBounds(74, 84, 287, 41);
-	    add(lblDanhSachCN);
+    private String stErrKhongDeTrong;
+    private String stErrSoLuong;
+    private String stThongbao;
+    private String stBanXacNhanXoa;
+    private String stXoaThanhCong;
+    private String stXoaThatBai;
+    private String stThemThanhCong;
+    private String stThemThatBai;
+    private String stCapNhatThanhCong;
+    private String stCapNhatThatBai;
+    private String stChamCongThanhCong;
+    private String stErrNgayChamCong;
+    private String stErrBeHonTongSanPhamCongDoan;
+    private String stErrChamCong;
+    private JSeparator jSeparator1_3;
+    private JSeparator jSeparator1_4;
 
-	    tblCongNhan = new JTable();
-	    tblCongNhan.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-	    tblCongNhan.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 14));
-	    
-	    tblCongNhan.setRowHeight(18);
+    public ChamCongCongNhan_GUI(String fileName) throws IOException {
+    	setBackground(new Color(255, 255, 255));
+        initComponents();
+        excute();
+        lblErrSoLuongSP.setText("");
+        try {
+            ConnectionDB.ConnectDB.getInstance().connect();
 
-	    tblCongNhan.setModel(new DefaultTableModel(
-	    	new Object[][] {
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    		{null, null, null, null, null, null, null, null},
-	    	},
-	    	new String[] {
-	    		"STT", "M\u00E3 ph\u00E2n c\u00F4ng", "M\u00E3 s\u1EA3n ph\u1EA9m", "T\u00EAn s\u1EA3n ph\u1EA9m", "M\u00E3 c\u00F4ng \u0111o\u1EA1n", "T\u00EAn c\u00F4ng \u0111o\u1EA1n", "T\u1ED5 Nh\u00F3m", "S\u1ED1 l\u01B0\u1EE3ng c\u1EA7n"
-	    	}
-	    ));
-	    tblCongNhan.getColumnModel().getColumn(0).setPreferredWidth(40);
-	    tblCongNhan.getColumnModel().getColumn(0).setMinWidth(20);
-	    tblCongNhan.getColumnModel().getColumn(0).setMaxWidth(40);
-	    tblCongNhan.getColumnModel().getColumn(1).setPreferredWidth(79);
-	    tblCongNhan.getColumnModel().getColumn(2).setPreferredWidth(76);
-	    tblCongNhan.getColumnModel().getColumn(3).setPreferredWidth(86);
-	    tblCongNhan.getColumnModel().getColumn(5).setPreferredWidth(78);
-	    tblCongNhan.getColumnModel().getColumn(6).setPreferredWidth(78);
-	    tblCongNhan.getColumnModel().getColumn(7).setPreferredWidth(82);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        maCongDoanFlag = "";
+        caLamFlag = "";
+        ngayChamCongFlag = new Date();
+        btnChamCong.setEnabled(false);
+        btnCapNhat.setEnabled(false);
+        btnXoa.setEnabled(false);
+        btnHuy.setEnabled(false);
+        btnLuu.setEnabled(false);
+        
+        // add su kien cho cac button, table
+        btnLayDanhSach.addActionListener(this);
+        btnChamCong.addActionListener(this);
+        btnCapNhat.addActionListener(this);
+        btnLuu.addActionListener(this);
+        btnXoa.addActionListener(this);
+        btnHuy.addActionListener(this);
+        tblCongNhan.addMouseListener(this);
+        tblChamCong.addMouseListener(this);
+        cmbHienThi.addItemListener(this::hienThiChamCongTheoYeuCau);
 
-	    scrCongNhan = new JScrollPane(tblCongNhan);
-	    scrCongNhan.setBounds(10, 125, 684, 245);
-	    add(scrCongNhan);
-	    
-        ScrollBarCustom scrollBar = new ScrollBarCustom();
-        scrollBar.setForeground(Color.RED);
+        // chinh lai txt hien thi
+        lblMaCongNhanHienThi.setText("");
+        lblHoVaTenHienThi.setText("");
+        lblTenSanPhamOutput.setText("");
+        lblTenCongDoanOutput.setText("");
 
-        // Chèn ScrollBarCustom vào JScrollPane
-        scrCongNhan.setVerticalScrollBar(scrollBar);
+        sanPham_DAO = new SanPham_Dao();
+        congDoan_DAO = new CongDoan_Dao();
+        phanCong_DAO = new PhanCongCongNhan_Dao();
+        chamCongCN_DAO = new ChamCongCongNhan_Dao();
+        toNhom_DAO = new ToNhom_Dao();
+        modelTableChamCong = (DefaultTableModel) tblChamCong.getModel();
+        modelTableCongNhan = (DefaultTableModel) tblCongNhan.getModel();
+        dtcNgayChamCong.setDate(new Date());
         
-        JLabel lblNgayChamCong = new JLabel();
-        lblNgayChamCong.setText("Ngày chấm công:");
-        lblNgayChamCong.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        lblNgayChamCong.setBounds(74, 381, 115, 41);
-        add(lblNgayChamCong);
-        
-        JDateChooser dcsNgayChamCong = new JDateChooser();
-        dcsNgayChamCong.setDateFormatString("yyyy-MM-dd");
-        dcsNgayChamCong.setBounds(198, 381, 177, 41);
-        add(dcsNgayChamCong);
-        
-        RoundedButton btnLayDanhSach = new RoundedButton("Thêm", SystemColor.inactiveCaption, (Color) null);
-        btnLayDanhSach.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/them.png")));
-        btnLayDanhSach.setText("Lấy danh sách");
-        btnLayDanhSach.setFont(new Font("Times New Roman", Font.BOLD, 16));
-        btnLayDanhSach.setBounds(463, 381, 209, 40);
-        add(btnLayDanhSach);
-        
-        JPanel panelButton = new JPanel();
-        panelButton.setLayout(null);
-        panelButton.setBackground(Color.WHITE);
-        panelButton.setBounds(0, 432, 1280, 62);
-        add(panelButton);
-        
-        RoundedButton btnChamCongTatCa = new RoundedButton("Thêm", SystemColor.inactiveCaption, (Color) null);
-        btnChamCongTatCa.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/them.png")));
-        btnChamCongTatCa.setText("Chấm công tất cả");
-        btnChamCongTatCa.setFont(new Font("Times New Roman", Font.BOLD, 16));
-        btnChamCongTatCa.setBounds(75, 14, 184, 40);
-        panelButton.add(btnChamCongTatCa);
-        
-        RoundedButton btnChamCong = new RoundedButton("Xóa", new Color(222, 184, 135), (Color) null);
-        btnChamCong.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/them.png")));
-        btnChamCong.setText("Chấm công");
-        btnChamCong.setFont(new Font("Times New Roman", Font.BOLD, 16));
-        btnChamCong.setBounds(346, 14, 150, 40);
-        panelButton.add(btnChamCong);
-        
-        RoundedButton btnCapNhat = new RoundedButton("Cập nhật", new Color(255, 218, 185), (Color) null);
-        btnCapNhat.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/capNhat.png")));
-        btnCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 16));
-        btnCapNhat.setBounds(583, 14, 150, 40);
-        panelButton.add(btnCapNhat);
-        
-        RoundedButton btnLuu = new RoundedButton("Lưu", Color.LIGHT_GRAY, (Color) null);
-        btnLuu.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/luu.png")));
-        btnLuu.setFont(new Font("Times New Roman", Font.BOLD, 16));
-        btnLuu.setBounds(823, 14, 150, 40);
-        panelButton.add(btnLuu);
-        
-        RoundedButton btnHuy = new RoundedButton("Hủy", new Color(255, 222, 173), (Color) null);
-        btnHuy.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/huy.png")));
-        btnHuy.setFont(new Font("Times New Roman", Font.BOLD, 16));
-        btnHuy.setBounds(1060, 14, 150, 40);
-        panelButton.add(btnHuy);
-        
-        JLabel lblDanhSachChamCongNV = new JLabel("Danh sách chấm công nhân viên:");
-        lblDanhSachChamCongNV.setFont(new Font("Times New Roman", Font.BOLD, 15));
-        lblDanhSachChamCongNV.setBounds(74, 519, 229, 37);
-        add(lblDanhSachChamCongNV);
-        
-        JLabel lblMuiTen = new JLabel();
-        lblMuiTen.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/muitenNgang.png")));
-        lblMuiTen.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        lblMuiTen.setBounds(704, 240, 57, 30);
-        add(lblMuiTen);
-        
-        tblDSChamCongCN = new JTable();
-        tblDSChamCongCN.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        tblDSChamCongCN.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 14));
-	    
-        tblDSChamCongCN.setRowHeight(18);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dtcNgayChamCong.getDate());
+        if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
+            setComBoBoxToSunDay();
+        } else {
+            setComBoBoxToReset();
+        }
 
-        tblDSChamCongCN.setModel(new DefaultTableModel(
-        	new Object[][] {
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        		{null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-        	},
-        	new String[] {
-        		"STT", "M\u00E3 Ph\u00E2n c\u00F4ng", "M\u00E3 c\u00F4ng nh\u00E2n", "H\u1ECD v\u00E0 t\u00EAn", "T\u1ED5/Nh\u00F3m", "Ng\u00E0y ch\u1EA5m c\u00F4ng", "Ca l\u00E0m", "Tr\u1EA1ng th\u00E1i", "Gi\u1EDD \u0111i l\u00E0m", "M\u00E3 s\u1EA3n ph\u1EA9m", "S\u1EA3n ph\u1EA9m", "M\u00E3 c\u00F4ng \u0111o\u1EA1n", "C\u00F4ng \u0111o\u1EA1n", "S\u1ED1 l\u01B0\u1EE3ng l\u00E0m"
-        	}
-        ));
-        tblDSChamCongCN.getColumnModel().getColumn(0).setPreferredWidth(40);
-        tblDSChamCongCN.getColumnModel().getColumn(0).setMinWidth(20);
-        tblDSChamCongCN.getColumnModel().getColumn(0).setMaxWidth(40);
-        tblDSChamCongCN.getColumnModel().getColumn(1).setPreferredWidth(78);
-        tblDSChamCongCN.getColumnModel().getColumn(2).setPreferredWidth(84);
-        tblDSChamCongCN.getColumnModel().getColumn(3).setPreferredWidth(86);
-        tblDSChamCongCN.getColumnModel().getColumn(5).setPreferredWidth(97);
-        tblDSChamCongCN.getColumnModel().getColumn(5).setMinWidth(29);
-        tblDSChamCongCN.getColumnModel().getColumn(11).setPreferredWidth(77);
+        taiDuLieuChamCongLenBang();
+        itemMaSanPham = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    if (cmbMaSanPham.getItemCount() != 0 && cmbTenSanPham.getItemCount() != 0) {
+                        cmbTenSanPham.removeItemListener(itemTenSanPham);
+                        cmbTenSanPham.setSelectedIndex(cmbMaSanPham.getSelectedIndex());
+                        cmbTenSanPham.addItemListener(itemTenSanPham);
+                        taiDuLieuLenCmbCongDoan();
+                        reloadTableCongNhan();
+                    }
+                }
+            }
+        };
+        itemTenSanPham = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    if (cmbMaSanPham.getItemCount() != 0 && cmbTenSanPham.getItemCount() != 0) {
+                        cmbMaSanPham.removeItemListener(itemMaSanPham);
+                        cmbMaSanPham.setSelectedIndex(cmbTenSanPham.getSelectedIndex());
+                        cmbMaSanPham.addItemListener(itemMaSanPham);
+                        taiDuLieuLenCmbCongDoan();
+                        reloadTableCongNhan();
+                    }
+                }
+            }
+        };
+        itemMaCongDoan = new ItemListener() {
+            public void itemStateChanged(ItemEvent itemEvent) {
+                if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
 
-	    scrDSChamCongCN = new JScrollPane(tblDSChamCongCN);
-	    scrDSChamCongCN.setBounds(10, 556, 1254, 183);
-	    add(scrDSChamCongCN);
-	    
-        ScrollBarCustom scrollBar1 = new ScrollBarCustom();
-        scrollBar1.setForeground(Color.RED);
+                    if (cmbTenCongDoan.getItemCount() != 0) {
 
-        scrDSChamCongCN.setVerticalScrollBar(scrollBar1);
-        
-        JPanel panelChamCongNV = new JPanel();
-        panelChamCongNV.setBackground(new Color(255, 255, 255));
-        panelChamCongNV.setBounds(757, 56, 477, 374);
-        add(panelChamCongNV);
-        panelChamCongNV.setLayout(null);
-        
-        JLabel lblMaCN = new JLabel();
-        lblMaCN.setBounds(27, 33, 102, 20);
-        panelChamCongNV.add(lblMaCN);
-        lblMaCN.setText("Mã công nhân:");
-        lblMaCN.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        
-        txtMaCN = new JTextField();
-        txtMaCN.setBounds(149, 11, 301, 36);
-        panelChamCongNV.add(txtMaCN);
-        txtMaCN.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        txtMaCN.setBorder(null);
-        
-        JSeparator jSeparator = new JSeparator();
-        jSeparator.setBounds(149, 47, 301, 10);
-        panelChamCongNV.add(jSeparator);
-        jSeparator.setForeground(Color.BLACK);
-        
-        JLabel lblTenNV = new JLabel();
-        lblTenNV.setBounds(29, 86, 102, 30);
-        panelChamCongNV.add(lblTenNV);
-        lblTenNV.setText("Họ và tên:");
-        lblTenNV.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        
-        txtTenCN = new JTextField();
-        txtTenCN.setBounds(149, 68, 301, 36);
-        panelChamCongNV.add(txtTenCN);
-        txtTenCN.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        txtTenCN.setBorder(null);
-        
-        JSeparator jSeparator1 = new JSeparator();
-        jSeparator1.setBounds(149, 106, 301, 10);
-        panelChamCongNV.add(jSeparator1);
-        jSeparator1.setForeground(Color.BLACK);
-        
-        JLabel lblErrTenCN = new JLabel();
-        lblErrTenCN.setBounds(149, 112, 200, 20);
-        panelChamCongNV.add(lblErrTenCN);
-        lblErrTenCN.setText("lblErrTenCN");
-        lblErrTenCN.setForeground(new Color(204, 0, 0));
-        lblErrTenCN.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-        
-        JLabel lblTrangThai = new JLabel();
-        lblTrangThai.setBounds(27, 150, 102, 30);
-        panelChamCongNV.add(lblTrangThai);
-        lblTrangThai.setText("Tình trạng:");
-        lblTrangThai.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        
-        cmbTinhTrang = new JComboBox<String>();
-        cmbTinhTrang.setBounds(149, 139, 301, 36);
-        panelChamCongNV.add(cmbTinhTrang);
-        cmbTinhTrang.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        cmbTinhTrang.setBackground(Color.WHITE);
-        
-        cmbTinhTrang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đi Làm", "Đi Trễ", "Nghỉ Có Phép", "Nghỉ Không Phép" }));
-        
-        JLabel lblGioDiLam = new JLabel();
-        lblGioDiLam.setBounds(27, 210, 102, 30);
-        panelChamCongNV.add(lblGioDiLam);
-        lblGioDiLam.setText("Giờ đi làm:");
-        lblGioDiLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        
-        cmbGio = new JComboBox<String>();
-        cmbGio.setBounds(149, 189, 57, 43);
-        panelChamCongNV.add(cmbGio);
-        cmbGio.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        cmbGio.setBackground(Color.WHITE);
-        
-        cmbGio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "1", "2", "3", "4", "5", "6" }));
-        
-        JLabel lblPhut = new JLabel();
-        lblPhut.setBounds(216, 195, 57, 30);
-        panelChamCongNV.add(lblPhut);
-        lblPhut.setText("phút");
-        lblPhut.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        
-        cmbPhut = new JComboBox<String>();
-        cmbPhut.setBounds(283, 189, 57, 43);
-        panelChamCongNV.add(cmbPhut);
-        cmbPhut.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        cmbPhut.setBackground(Color.WHITE);
-        
-        cmbPhut.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "15", "30", "45" }));
-        
-        JLabel lblCaLam = new JLabel();
-        lblCaLam.setBounds(27, 277, 102, 30);
-        panelChamCongNV.add(lblCaLam);
-        lblCaLam.setText("Ca làm:");
-        lblCaLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        
-        cmbCaLam = new JComboBox<String>();
-        cmbCaLam.setBounds(149, 255, 301, 41);
-        panelChamCongNV.add(cmbCaLam);
+                        cmbTenCongDoan.removeItemListener(itemTenCongDoan);
+                        cmbTenCongDoan.setSelectedIndex(cmbMaCongDoan.getSelectedIndex());
+                        cmbTenCongDoan.addItemListener(itemTenCongDoan);
+                        reloadTableCongNhan();
+                    }
+
+                }
+            }
+        };
+        itemTenCongDoan = new ItemListener() {
+            public void itemStateChanged(ItemEvent itemEvent) {
+                if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+
+                    if (cmbMaCongDoan.getItemCount() != 0) {
+                        cmbMaCongDoan.removeItemListener(itemMaCongDoan);
+                        cmbMaCongDoan.setSelectedIndex(cmbTenCongDoan.getSelectedIndex());
+                        cmbMaCongDoan.addItemListener(itemMaCongDoan);
+                        reloadTableCongNhan();
+                    }
+
+                }
+            }
+        };
+        cmbMaCongDoan.addItemListener(itemMaCongDoan);
+        cmbTenCongDoan.addItemListener(itemTenCongDoan);
+        taiDuLieuLenCmbToNhom();
+        cmbTenToNhom.addItemListener(this::comboBoxItemStateChangedToNhom);
+        cmbMaSanPham.addItemListener(itemMaSanPham);
+        cmbTenSanPham.addItemListener(itemTenSanPham);
+        cmbCaLam.addItemListener(this::toggleThoiGianLam);
+        cmbTrangThai.addItemListener(this::toggleCmbTrangThai);
+
+        setCmbGio("Sáng");
+        //caiDatNgonNguChoView(fileName);
+        setEditTextDateChooser();
+    }
+
+    public void reloadTableCongNhan() {
+        while (tblCongNhan.getRowCount() > 0) {
+                modelTableCongNhan.removeRow(0);
+        }
+    }
+
+    public void setEditTextDateChooser() {
+        JTextFieldDateEditor ngaySinh = (JTextFieldDateEditor) dtcNgayChamCong.getDateEditor();
+        ngaySinh.setEnabled(false);
+    }
+
+    public void caiDatNgonNguChoView(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        btnCapNhat.setText(prop.getProperty("btnCapNhat"));
+        btnLuu.setText(prop.getProperty("btnLuu"));
+        btnHuy.setText(prop.getProperty("btnHuy"));
+        btnXoa.setText(prop.getProperty("btnXoa"));
+        btnChamCong.setText(prop.getProperty("chamCong_btnChamCong"));
+        btnLayDanhSach.setText(prop.getProperty("cccc_layDanhSach"));
+
+        lblToNhom.setText(prop.getProperty("cccc_toNhom"));
+        lblNgayChamCong.setText(prop.getProperty("cccc_ngayCham"));
+        lblMaSanPham.setText(prop.getProperty("cccc_maSanPham"));
+        lblTenSanPham.setText(prop.getProperty("cccc_tenSanPham"));
+        lblMaCongDoan.setText(prop.getProperty("cccc_maCongDoan"));
+        lblTenCongDoan.setText(prop.getProperty("cccc_tenCongDoan"));
+        lblMaCongNhan.setText(prop.getProperty("cccc_maCongNhan"));
+        lblHoTen.setText(prop.getProperty("cccc_hoVaTen"));
+        lblTrangThai.setText(prop.getProperty("cccc_trangThai"));
+        lblCaLam.setText(prop.getProperty("cccc_caLam"));
+        lblGioDiLam.setText(prop.getProperty("cccc_gioLam"));
+        lblPhut.setText(prop.getProperty("cccc_phut"));
+        lblTenSanPhamRight.setText(prop.getProperty("cccc_sanPham"));
+        lblTenCongDoanRight.setText(prop.getProperty("cccc_congDoanLam"));
+        lblSoLuongSanPham.setText(prop.getProperty("cccc_soLuongLam"));
+        lblHienThi.setText(prop.getProperty("chamCong_hienThi"));
+
+        scrTableCongNhan.setBorder(new TitledBorder(prop.getProperty("cccc_tieuDe1")));
+        scrChamCong.setBorder(new TitledBorder(prop.getProperty("cccc_tieuDe2")));
+
+        cmbHienThi.removeAllItems();
+        cmbHienThi.addItem(prop.getProperty("cmbHienThiAll"));
+        cmbHienThi.addItem(prop.getProperty("cmbHienThiLoc"));
+
+        ChangeName(tblCongNhan, 0, prop.getProperty("cccc_stt"));
+        ChangeName(tblCongNhan, 1, lblMaCongNhan.getText());
+        ChangeName(tblCongNhan, 2, lblHoTen.getText());
+
+        ChangeName(tblChamCong, 0, prop.getProperty("cccc_stt"));
+        ChangeName(tblChamCong, 1, prop.getProperty("cccc_maPhanCong"));
+        ChangeName(tblChamCong, 2, lblMaCongNhan.getText());
+        ChangeName(tblChamCong, 3, lblHoTen.getText());
+        ChangeName(tblChamCong, 4, lblToNhom.getText());
+        ChangeName(tblChamCong, 5, lblNgayChamCong.getText());
+        ChangeName(tblChamCong, 6, lblCaLam.getText());
+        ChangeName(tblChamCong, 7, lblTrangThai.getText());
+        ChangeName(tblChamCong, 8, lblGioDiLam.getText());
+        ChangeName(tblChamCong, 9, lblMaSanPham.getText());
+        ChangeName(tblChamCong, 10, lblTenSanPham.getText());
+        ChangeName(tblChamCong, 11, lblMaCongDoan.getText());
+        ChangeName(tblChamCong, 12, lblTenCongDoan.getText());
+        ChangeName(tblChamCong, 13, lblSoLuongSanPham.getText());
+
+        stErrBeHonTongSanPhamCongDoan = prop.getProperty("lblErrSoLuongLam");
+        stThongbao = prop.getProperty("thongBao");
+        stBanXacNhanXoa = prop.getProperty("banXacNhanXoa");
+        stXoaThanhCong = prop.getProperty("xoaThanhCong");
+        stXoaThatBai = prop.getProperty("xoaThatBai");
+        stThemThanhCong = prop.getProperty("cccc_themThanhCong");
+        stThemThatBai = prop.getProperty("cccc_themThatBai");
+        stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
+        stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+        stErrSoLuong = prop.getProperty("sp_lblErrSoLuong");
+        stErrKhongDeTrong = prop.getProperty("KhongDeTrong");
+        stErrChamCong = prop.getProperty("chamCong_errNgayChamCong");
+    }
+
+    public void ChangeName(JTable table, int col_index, String col_name) {
+        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
+    }
+
+    public void hienThiChamCongTheoYeuCau(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            if (cmbHienThi.getSelectedIndex() == 0) {
+                taiDuLieuChamCongLenBang();
+            } else {
+                hienThiChamCongTheoNgay();
+            }
+        }
+    }
+
+    public void hienThiChamCongTheoNgay() {
+        Date ngayChon = dtcNgayChamCong.getDate();
+        while (tblChamCong.getRowCount() != 0) {
+            modelTableChamCong.removeRow(0);
+        }
+        ArrayList<ChamCongCongNhan> dsChamCong = chamCongCN_DAO.layDanhSachChamCongTheoNgay(ngayChon);
+        for (ChamCongCongNhan cccn : dsChamCong) {
+            String data[] = {(modelTableChamCong.getRowCount() + 1) + "", cccn.getPhanCong().getMaPhanCong(), cccn.getPhanCong().getCongNhan().getMaCongNhan(),
+                cccn.getPhanCong().getCongNhan().getHoTen(), cccn.getPhanCong().getCongNhan().getToNhom().getTenToNhom(),
+                cccn.getNgayChamCong().toString(), cccn.getCaLam(), cccn.getTrangThaiDiLam(), cccn.getGioDiLam(), cccn.getPhanCong().getCongDoan().getSanPham().getMaSanPham(),
+                cccn.getPhanCong().getCongDoan().getSanPham().getTenSanPham(),
+                cccn.getPhanCong().getCongDoan().getMaCongDoan(), cccn.getPhanCong().getCongDoan().getTenCongDoan(), cccn.getSoLuongLam() + ""};
+            modelTableChamCong.addRow(data);
+        }
+
+    }
+
+    public void comboBoxItemStateChangedToNhom(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            taiDuLieuLenCmbSanPham();
+            reloadTableCongNhan();
+        }
+    }
+
+    public void taiDuLieuLenCmbSanPham() {
+        cmbMaSanPham.removeItemListener(itemMaSanPham);
+        cmbTenSanPham.removeItemListener(itemTenSanPham);
+        String tenToNhom = cmbTenToNhom.getSelectedItem().toString();
+        ToNhom toNhom = toNhom_DAO.layMotToNhomTheoTen(tenToNhom);
+        if (cmbMaSanPham.getItemCount() != 0 || cmbTenSanPham.getItemCount() != 0) {
+            cmbMaSanPham.removeAllItems();
+            cmbTenSanPham.removeAllItems();
+        }
+        ArrayList<SanPham> dsSanPham = sanPham_DAO.layDanhSachSanPhamDuocPhanCongChoTo(toNhom.getMaToNhom());
+        for (SanPham sp : dsSanPham) {
+            cmbMaSanPham.addItem(sp.getMaSanPham());
+            cmbTenSanPham.addItem(sp.getTenSanPham());
+        }
+
+        if (dsSanPham.size() == 0) {
+            cmbMaCongDoan.removeAllItems();
+            cmbTenCongDoan.removeAllItems();
+            setEnAbleForCmb(false);
+        } else {
+            setEnAbleForCmb(true);
+        }
+        if (cmbMaSanPham.getItemCount() != 0) {
+            taiDuLieuLenCmbCongDoan();
+        }
+        cmbMaSanPham.addItemListener(itemMaSanPham);
+        cmbTenSanPham.addItemListener(itemTenSanPham);
+    }
+
+    public void setEnAbleForCmb(boolean kq) {
+        cmbMaCongDoan.setEnabled(kq);
+        cmbTenCongDoan.setEnabled(kq);
+        cmbTenSanPham.setEnabled(kq);
+        cmbMaSanPham.setEnabled(kq);
+        cmbMaCongDoan.setEnabled(kq);
+        cmbTenCongDoan.setEnabled(kq);
+        btnLayDanhSach.setEnabled(kq);
+    }
+
+    public void comboBoxitemStateChangedTenCongDoan(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            if (cmbMaCongDoan.getItemCount() != 0) {
+                cmbMaCongDoan.setSelectedIndex(cmbTenCongDoan.getSelectedIndex());
+            }
+        }
+    }
+
+    public void toggleThoiGianLam(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            if (e.getItem().toString().equalsIgnoreCase("Sáng") || e.getItem().toString().equalsIgnoreCase("Sáng chủ nhật")) {
+                setCmbGio("Sáng");
+            } else if (e.getItem().toString().equalsIgnoreCase("Chiều") || e.getItem().toString().equalsIgnoreCase("Chiều chủ nhật")) {
+                setCmbGio("Chiều");
+            } else {
+                setCmbGio("Đêm");
+            }
+
+        }
+    }
+
+    public void taiDuLieuLenCmbToNhom() {
+        cmbTenToNhom.removeItemListener(this::comboBoxItemStateChangedToNhom);
+        cmbTenToNhom.removeAllItems();
+		CongNhan_Dao congNhan_dao = new CongNhan_Dao();
+        ArrayList<ToNhom> dsToNhom = toNhom_DAO.layDanhSachToNhom();
+        for (ToNhom toNhom : dsToNhom) {
+	        int soLuongCongNhan = congNhan_dao.laySoLuongCongNhanTheoToNhom(toNhom.getMaToNhom());
+            if (soLuongCongNhan > 0) {
+                cmbTenToNhom.addItem(toNhom.getTenToNhom());
+            }
+        }
+        if (cmbTenToNhom.getItemCount() != 0) {
+            ToNhom toNhom = toNhom_DAO.layMotToNhomTheoTen(cmbTenToNhom.getSelectedItem().toString());
+            if (toNhom != null) {
+                taiDuLieuLenCmbSanPham();
+            }
+        }
+        cmbTenToNhom.addItemListener(this::comboBoxItemStateChangedToNhom);
+    }
+
+    public void setCmbGio(String ca) {
+        if (ca.equalsIgnoreCase("Sáng") || ca.equalsIgnoreCase("Sáng chủ nhật")) {
+            cmbGioDiLam.removeAllItems();
+            for (int i = 6; i <= 14; i++) {
+                cmbGioDiLam.addItem(i + "");
+            }
+        } else if (ca.equalsIgnoreCase("Chiều") || ca.equalsIgnoreCase("Chiều chủ nhật")) {
+            cmbGioDiLam.removeAllItems();
+            for (int i = 14; i <= 22; i++) {
+                cmbGioDiLam.addItem(i + "");
+            }
+        } else {
+            cmbGioDiLam.removeAllItems();
+            cmbGioDiLam.addItem("22");
+            cmbGioDiLam.addItem("23");
+            cmbGioDiLam.addItem("24");
+            cmbGioDiLam.addItem("1");
+            cmbGioDiLam.addItem("2");
+            cmbGioDiLam.addItem("3");
+            cmbGioDiLam.addItem("4");
+            cmbGioDiLam.addItem("5");
+            cmbGioDiLam.addItem("6");
+        }
+    }
+
+    public void toggleCmbTrangThai(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            String trangThai = e.getItem().toString();
+            if (trangThai.equalsIgnoreCase("Nghỉ có phép") || trangThai.equalsIgnoreCase("Nghỉ không phép")) {
+                cmbGioDiLam.setEnabled(false);
+                cmbPhutDiLam.setEnabled(false);
+                txtSoLuongLam.setText("0");
+                txtSoLuongLam.setEditable(false);
+                cmbGioDiLam.addItem("0");
+                cmbGioDiLam.setSelectedItem("0");
+                cmbPhutDiLam.setSelectedIndex(0);
+            } else {
+                cmbGioDiLam.removeItem("0");
+                if (tblChamCong.getSelectedRow() != -1 && btnCapNhat.isEnabled()) {
+                    cmbGioDiLam.setEnabled(false);
+                    cmbPhutDiLam.setEnabled(false);
+                    txtSoLuongLam.setEditable(false);
+                } else if (!btnCapNhat.isEnabled() || tblCongNhan.getSelectedRow() != -1) {
+                    cmbGioDiLam.setEnabled(true);
+                    cmbPhutDiLam.setEnabled(true);
+                    txtSoLuongLam.setEditable(true);
+                }
+            }
+
+        }
+    }
+
+    public void excute() {
+        // custom table
+        tblCongNhan.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        tblCongNhan.getTableHeader().setOpaque(false);
+        ((DefaultTableCellRenderer) tblCongNhan.getTableHeader().getDefaultRenderer())
+                .setHorizontalAlignment(JLabel.CENTER);
+        tblCongNhan.setRowHeight(25);
+
+        tblChamCong.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        tblChamCong.getTableHeader().setOpaque(false);
+        ((DefaultTableCellRenderer) tblChamCong.getTableHeader().getDefaultRenderer())
+                .setHorizontalAlignment(JLabel.CENTER);
+        tblChamCong.setRowHeight(25);
+        this.txtSoLuongLam.setBackground(new Color(255, 255, 255));
+    }
+
+    public void taiDuLieuLenCmbCongDoan() {
+        cmbMaCongDoan.removeItemListener(itemMaCongDoan);
+        cmbTenCongDoan.removeItemListener(itemTenCongDoan);
+        cmbMaCongDoan.removeAllItems();
+        cmbTenCongDoan.removeAllItems();
+        String maToNhom = toNhom_DAO.layMotToNhomTheoTen(cmbTenToNhom.getSelectedItem().toString()).getMaToNhom();
+        String maSanPham = cmbMaSanPham.getSelectedItem().toString();
+        ArrayList<CongDoan> dsCongDoan = congDoan_DAO.layDanhSachCongDoanDuocPhanCongTheoMaSpMaTN(maToNhom, maSanPham);
+        for (CongDoan cd : dsCongDoan) {
+            cmbMaCongDoan.addItem(cd.getMaCongDoan());
+            cmbTenCongDoan.addItem(cd.getTenCongDoan());
+        }
+        if (cmbMaCongDoan.getItemCount() == 0 || cmbTenCongDoan.getItemCount() == 0) {
+            btnLayDanhSach.setEnabled(false);
+            cmbMaCongDoan.setEnabled(false);
+            cmbTenCongDoan.setEnabled(false);
+        } else {
+            btnLayDanhSach.setEnabled(true);
+            cmbMaCongDoan.setEnabled(true);
+            cmbTenCongDoan.setEnabled(true);
+        }
+        cmbMaCongDoan.addItemListener(itemMaCongDoan);
+        cmbTenCongDoan.addItemListener(itemTenCongDoan);
+    }
+
+    
+    private void initComponents() {
+        pnlChamCongCN = new JPanel();
+        pnlChamCongCN.setBounds(0, 0, 1290, 450);
+        dtcNgayChamCong = new JDateChooser();
+        dtcNgayChamCong.setBounds(440, 20, 130, 40);
+        scrTableCongNhan = new JScrollPane();
+        scrTableCongNhan.setBounds(20, 190, 810, 180);
+        tblCongNhan = new JTable();
+        lblNgayChamCong = new JLabel();
+        lblNgayChamCong.setBounds(290, 20, 130, 40);
+        lblSoLuongSanPham = new JLabel();
+        lblSoLuongSanPham.setBounds(880, 324, 150, 30);
+        lblMaCongNhanHienThi = new JLabel();
+        lblMaCongNhanHienThi.setBounds(1040, 9, 180, 30);
+        lblHoVaTenHienThi = new javax.swing.JLabel();
+        lblHoVaTenHienThi.setBounds(1040, 50, 180, 30);
+        lblMaCongNhan = new javax.swing.JLabel();
+        lblMaCongNhan.setBounds(880, 9, 140, 40);
+        lblHoTen = new javax.swing.JLabel();
+        lblHoTen.setBounds(880, 68, 140, 21);
+        lblTenCongDoanRight = new javax.swing.JLabel();
+        lblTenCongDoanRight.setBounds(880, 273, 150, 30);
+        lblTenSanPhamRight = new javax.swing.JLabel();
+        lblTenSanPhamRight.setBounds(880, 221, 120, 30);
+        lblTenSanPhamOutput = new javax.swing.JLabel();
+        lblTenSanPhamOutput.setBounds(1040, 208, 180, 30);
+        lblTenCongDoanOutput = new javax.swing.JLabel();
+        lblTenCongDoanOutput.setBounds(1040, 259, 180, 30);
+        txtSoLuongLam = new javax.swing.JTextField();
+        txtSoLuongLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        txtSoLuongLam.setBounds(1040, 314, 180, 30);
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator1.setForeground(new Color(0, 0, 0));
+        jSeparator1.setBounds(1040, 344, 180, 10);
+        lblErrSoLuongSP = new javax.swing.JLabel();
+        lblErrSoLuongSP.setBounds(1040, 300, 190, 0);
+        cmbMaCongDoan = new javax.swing.JComboBox<>();
+        cmbMaCongDoan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        cmbMaCongDoan.setBounds(140, 140, 120, 40);
+        lblTrangThai = new javax.swing.JLabel();
+        lblTrangThai.setBounds(880, 118, 140, 30);
+        lblMaCongDoan = new javax.swing.JLabel();
+        lblMaCongDoan.setBounds(20, 140, 120, 40);
+        cmbCaLam = new javax.swing.JComboBox<>();
         cmbCaLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        cmbCaLam.setBackground(Color.WHITE);
-        
-        cmbCaLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sáng ", "Chiều", "Đêm" }));
-        
-        JLabel lblSoLuongLam = new JLabel();
-        lblSoLuongLam.setBounds(27, 330, 102, 30);
-        panelChamCongNV.add(lblSoLuongLam);
-        lblSoLuongLam.setText("Số lượng làm:");
-        lblSoLuongLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        
-        txtSoLuongLam = new JTextField();
-        txtSoLuongLam.setText("0");
-        txtSoLuongLam.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        cmbCaLam.setBounds(680, 20, 150, 40);
+        cmbGioDiLam = new javax.swing.JComboBox<>();
+        cmbGioDiLam.setBounds(1040, 173, 60, 30);
+        lblGioDiLam = new javax.swing.JLabel();
+        lblGioDiLam.setBounds(880, 172, 140, 30);
+        lblPhut = new javax.swing.JLabel();
+        lblPhut.setBounds(1110, 173, 40, 30);
+        cmbPhutDiLam = new javax.swing.JComboBox<>();
+        cmbPhutDiLam.setBounds(1160, 174, 60, 29);
+        cmbTrangThai = new javax.swing.JComboBox<>();
+        cmbTrangThai.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        cmbTrangThai.setBounds(1040, 109, 180, 30);
+        lblCaLam = new javax.swing.JLabel();
+        lblCaLam.setBounds(590, 20, 90, 40);
+        lblMaSanPham = new javax.swing.JLabel();
+        lblMaSanPham.setBounds(20, 80, 110, 30);
+        btnLayDanhSach = new javax.swing.JButton();
+        btnLayDanhSach.setBounds(620, 140, 210, 40);
+        lblTenSanPham = new javax.swing.JLabel();
+        lblTenSanPham.setBounds(290, 80, 120, 30);
+        cmbTenCongDoan = new javax.swing.JComboBox<>();
+        cmbTenCongDoan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        cmbTenCongDoan.setBounds(440, 140, 160, 40);
+        lblTenCongDoan = new javax.swing.JLabel();
+        lblTenCongDoan.setBounds(290, 140, 120, 40);
+        lblHienThi = new javax.swing.JLabel();
+        lblHienThi.setBounds(20, 409, 60, 21);
+        cmbHienThi = new javax.swing.JComboBox<>();
+        cmbHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        cmbHienThi.setBounds(106, 398, 170, 40);
+        cmbTenToNhom = new javax.swing.JComboBox<>();
+        cmbTenToNhom.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        cmbTenToNhom.setBounds(140, 20, 120, 40);
+        lblToNhom = new javax.swing.JLabel();
+        lblToNhom.setBounds(20, 20, 90, 40);
+        btnChamCong = new javax.swing.JButton();
+        btnChamCong.setBounds(327, 396, 160, 40);
+        btnXoa = new javax.swing.JButton();
+        btnXoa.setBounds(742, 397, 150, 40);
+        btnCapNhat = new javax.swing.JButton();
+        btnCapNhat.setBackground(new Color(255, 215, 0));
+        btnCapNhat.setBounds(543, 396, 150, 40);
+        btnLuu = new javax.swing.JButton();
+        btnLuu.setBounds(946, 397, 140, 40);
+        btnHuy = new javax.swing.JButton();
+        btnHuy.setBackground(new Color(255, 0, 255));
+        btnHuy.setBounds(1130, 397, 150, 40);
+        cmbMaSanPham = new javax.swing.JComboBox<>();
+        cmbMaSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        cmbMaSanPham.setBounds(140, 80, 120, 40);
+        cmbTenSanPham = new javax.swing.JComboBox<>();
+        cmbTenSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        cmbTenSanPham.setBounds(440, 80, 390, 40);
+        scrChamCong = new javax.swing.JScrollPane();
+        scrChamCong.setBounds(21, 471, 1242, 250);
+        tblChamCong = new javax.swing.JTable();
+
+        setPreferredSize(new java.awt.Dimension(1290, 750));
+
+        pnlChamCongCN.setBackground(new java.awt.Color(255, 255, 255));
+        pnlChamCongCN.setPreferredSize(new java.awt.Dimension(1250, 450));
+
+        dtcNgayChamCong.setDateFormatString("yyyy-MM-dd");
+        dtcNgayChamCong.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                dtcNgayChamCongPropertyChange(evt);
+            }
+        });
+        pnlChamCongCN.setLayout(null);
+        pnlChamCongCN.add(dtcNgayChamCong);
+
+        scrTableCongNhan.setBackground(new java.awt.Color(255, 255, 255));
+        scrTableCongNhan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách chấm công", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 16))); // NOI18N
+
+        tblCongNhan.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        tblCongNhan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+            	{null, null, null},
+            	{null, null, null},
+            	{null, null, null},
+            	{null, null, null},
+            	{null, null, null}
+            },
+            new String [] {
+                "STT", "Mã công nhân", "Họ và tên"
+            }
+        ));
+        tblCongNhan.setSelectionBackground(new java.awt.Color(232, 57, 95));
+        scrTableCongNhan.setViewportView(tblCongNhan);
+
+        pnlChamCongCN.add(scrTableCongNhan);
+
+        lblNgayChamCong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblNgayChamCong.setText("Ngày chấm công:");
+        pnlChamCongCN.add(lblNgayChamCong);
+
+        lblSoLuongSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblSoLuongSanPham.setHorizontalAlignment(SwingConstants.LEFT);
+        lblSoLuongSanPham.setText("Số lượng sản phẩm:");
+        pnlChamCongCN.add(lblSoLuongSanPham);
+
+        lblMaCongNhanHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        lblMaCongNhanHienThi.setText("NV001");
+        pnlChamCongCN.add(lblMaCongNhanHienThi);
+
+        lblHoVaTenHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        lblHoVaTenHienThi.setText("Nguyễn Văn A");
+        pnlChamCongCN.add(lblHoVaTenHienThi);
+
+        lblMaCongNhan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblMaCongNhan.setHorizontalAlignment(SwingConstants.LEFT);
+        lblMaCongNhan.setText("Mã công nhân:");
+        pnlChamCongCN.add(lblMaCongNhan);
+
+        lblHoTen.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblHoTen.setHorizontalAlignment(SwingConstants.LEFT);
+        lblHoTen.setText("Họ và tên:");
+        pnlChamCongCN.add(lblHoTen);
+
+        lblTenCongDoanRight.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblTenCongDoanRight.setHorizontalAlignment(SwingConstants.LEFT);
+        lblTenCongDoanRight.setText("Công đoạn làm:");
+        pnlChamCongCN.add(lblTenCongDoanRight);
+
+        lblTenSanPhamRight.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblTenSanPhamRight.setHorizontalAlignment(SwingConstants.LEFT);
+        lblTenSanPhamRight.setText("Sản phẩm:");
+        pnlChamCongCN.add(lblTenSanPhamRight);
+
+        lblTenSanPhamOutput.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        lblTenSanPhamOutput.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblTenSanPhamOutput.setText("Giày loại 1");
+        pnlChamCongCN.add(lblTenSanPhamOutput);
+
+        lblTenCongDoanOutput.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        lblTenCongDoanOutput.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblTenCongDoanOutput.setText("Sơn màu");
+        pnlChamCongCN.add(lblTenCongDoanOutput);
         txtSoLuongLam.setBorder(null);
-        txtSoLuongLam.setBounds(149, 317, 301, 36);
-        panelChamCongNV.add(txtSoLuongLam);
+        pnlChamCongCN.add(txtSoLuongLam);
+        pnlChamCongCN.add(jSeparator1);
+
+        lblErrSoLuongSP.setFont(new java.awt.Font("Segoe UI", 0, 11));
+        lblErrSoLuongSP.setForeground(new java.awt.Color(204, 0, 0));
+        lblErrSoLuongSP.setText("đây là dòng thông báo lỗi");
+        pnlChamCongCN.add(lblErrSoLuongSP);
         
-        JSeparator jSeparator3 = new JSeparator();
-        jSeparator3.setForeground(Color.BLACK);
-        jSeparator3.setBounds(149, 353, 301, 10);
-        panelChamCongNV.add(jSeparator3);
+        JSeparator jSeparator1_1 = new JSeparator();
+        jSeparator1_1.setForeground(Color.BLACK);
+        jSeparator1_1.setBounds(1040, 293, 180, 10);
+        pnlChamCongCN.add(jSeparator1_1);
         
-        JLabel lblErrSoLuong = new JLabel();
-        lblErrSoLuong.setText("thông báo lỗi");
-        lblErrSoLuong.setForeground(new Color(204, 0, 0));
-        lblErrSoLuong.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-        lblErrSoLuong.setBounds(149, 356, 301, 18);
-        panelChamCongNV.add(lblErrSoLuong);
+        JSeparator jSeparator1_2 = new JSeparator();
+        jSeparator1_2.setForeground(Color.BLACK);
+        jSeparator1_2.setBounds(1040, 241, 180, 10);
+        pnlChamCongCN.add(jSeparator1_2);
+        
+        jSeparator1_3 = new JSeparator();
+        jSeparator1_3.setForeground(Color.BLACK);
+        jSeparator1_3.setBounds(1040, 80, 180, 10);
+        pnlChamCongCN.add(jSeparator1_3);
+        
+        jSeparator1_4 = new JSeparator();
+        jSeparator1_4.setForeground(Color.BLACK);
+        jSeparator1_4.setBounds(1040, 39, 180, 10);
+        pnlChamCongCN.add(jSeparator1_4);
+
+        cmbMaCongDoan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cd001" }));
+        cmbMaCongDoan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMaCongDoanActionPerformed(evt);
+            }
+        });
+        pnlChamCongCN.add(cmbMaCongDoan);
+
+        lblTrangThai.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblTrangThai.setHorizontalAlignment(SwingConstants.LEFT);
+        lblTrangThai.setText("Trạng thái:");
+        pnlChamCongCN.add(lblTrangThai);
+
+        lblMaCongDoan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblMaCongDoan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblMaCongDoan.setText("Mã công đoạn:");
+        pnlChamCongCN.add(lblMaCongDoan);
+
+        cmbCaLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ca 01", "Ca 02", "Ca 03", "Chủ nhật" }));
         cmbCaLam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //cmbCaLamActionPerformed(evt);
+                cmbCaLamActionPerformed(evt);
             }
         });
-        cmbPhut.addActionListener(new java.awt.event.ActionListener() {
+        pnlChamCongCN.add(cmbCaLam);
+
+        cmbGioDiLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        cmbGioDiLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "24" }));
+        pnlChamCongCN.add(cmbGioDiLam);
+
+        lblGioDiLam.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblGioDiLam.setHorizontalAlignment(SwingConstants.LEFT);
+        lblGioDiLam.setText("Giờ đi làm:");
+        pnlChamCongCN.add(lblGioDiLam);
+
+        lblPhut.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        lblPhut.setHorizontalAlignment(SwingConstants.LEFT);
+        lblPhut.setText("Phút");
+        pnlChamCongCN.add(lblPhut);
+
+        cmbPhutDiLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        cmbPhutDiLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "15", "30", "45" }));
+        pnlChamCongCN.add(cmbPhutDiLam);
+
+        cmbTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đi Làm", "Đi Trễ", "Nghỉ Không Phép", "Nghỉ Có Phép" }));
+        pnlChamCongCN.add(cmbTrangThai);
+
+        lblCaLam.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        lblCaLam.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblCaLam.setText("Ca làm:");
+        lblCaLam.setToolTipText("");
+        pnlChamCongCN.add(lblCaLam);
+
+        lblMaSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 18)); 
+        lblMaSanPham.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblMaSanPham.setText("Mã sản phẩm:");
+        pnlChamCongCN.add(lblMaSanPham);
+
+        btnLayDanhSach.setBackground(new java.awt.Color(46, 204, 113));
+        btnLayDanhSach.setFont(new Font("Times New Roman", Font.BOLD, 18)); 
+        btnLayDanhSach.setIcon(new ImageIcon(ChamCongCongNhan_GUI.class.getResource("/image/icon/them.png"))); 
+        btnLayDanhSach.setText("Lấy danh sách");
+        btnLayDanhSach.setBorder(null);
+        btnLayDanhSach.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //cmbTrangThaiActionPerformed(evt);
+                btnLayDanhSachActionPerformed(evt);
             }
         });
-        cmbGio.addActionListener(new java.awt.event.ActionListener() {
+        pnlChamCongCN.add(btnLayDanhSach);
+
+        lblTenSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 18)); // NOI18N
+        lblTenSanPham.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblTenSanPham.setText("Tên sản phẩm:");
+        pnlChamCongCN.add(lblTenSanPham);
+
+        cmbTenCongDoan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rap giày" }));
+        pnlChamCongCN.add(cmbTenCongDoan);
+
+        lblTenCongDoan.setFont(new Font("Times New Roman", Font.PLAIN, 18)); // NOI18N
+        lblTenCongDoan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblTenCongDoan.setText("Công đoạn:");
+        pnlChamCongCN.add(lblTenCongDoan);
+
+        lblHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 18)); // NOI18N
+        lblHienThi.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblHienThi.setText("Hiển thị");
+        pnlChamCongCN.add(lblHienThi);
+
+        cmbHienThi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Theo ngày chấm công" }));
+        cmbHienThi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //cmbTrangThaiActionPerformed(evt);
+                cmbHienThiActionPerformed(evt);
             }
         });
-        cmbTinhTrang.addActionListener(new java.awt.event.ActionListener() {
+        pnlChamCongCN.add(cmbHienThi);
+
+        cmbTenToNhom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SP001", " " }));
+        cmbTenToNhom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //cmbTrangThaiActionPerformed(evt);
+                cmbTenToNhomActionPerformed(evt);
             }
         });
-	}
+        pnlChamCongCN.add(cmbTenToNhom);
+
+        lblToNhom.setFont(new Font("Times New Roman", Font.PLAIN, 18)); 
+        lblToNhom.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblToNhom.setText("Tổ/nhóm:");
+        pnlChamCongCN.add(lblToNhom);
+
+        btnChamCong.setBackground(new java.awt.Color(46, 204, 113));
+        btnChamCong.setFont(new Font("Times New Roman", Font.BOLD, 18)); 
+        btnChamCong.setIcon(new ImageIcon(ChamCongCongNhan_GUI.class.getResource("/image/icon/them.png"))); 
+        btnChamCong.setText("Chấm công");
+        btnChamCong.setBorder(null);
+        btnChamCong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChamCongActionPerformed(evt);
+            }
+        });
+        pnlChamCongCN.add(btnChamCong);
+
+        btnXoa.setBackground(new Color(255, 215, 0));
+        btnXoa.setFont(new Font("Times New Roman", Font.BOLD, 18)); 
+        btnXoa.setIcon(new ImageIcon(ChamCongCongNhan_GUI.class.getResource("/image/icon/xoa.png"))); 
+        btnXoa.setText("Xóa");
+        btnXoa.setBorder(null);
+        btnXoa.setMaximumSize(new java.awt.Dimension(67, 31));
+        btnXoa.setMinimumSize(new java.awt.Dimension(67, 31));
+        btnXoa.setPreferredSize(new java.awt.Dimension(67, 31));
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
+        pnlChamCongCN.add(btnXoa);
+
+        btnCapNhat.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        btnCapNhat.setIcon(new ImageIcon(ChamCongCongNhan_GUI.class.getResource("/image/icon/capNhat.png")));
+        btnCapNhat.setText("Cập nhật");
+        btnCapNhat.setBorder(null);
+        btnCapNhat.setMaximumSize(new java.awt.Dimension(67, 31));
+        btnCapNhat.setMinimumSize(new java.awt.Dimension(67, 31));
+        btnCapNhat.setPreferredSize(new java.awt.Dimension(67, 31));
+        btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhatActionPerformed(evt);
+            }
+        });
+        pnlChamCongCN.add(btnCapNhat);
+
+        btnLuu.setBackground(new Color(255, 0, 255));
+        btnLuu.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        btnLuu.setIcon(new ImageIcon(ChamCongCongNhan_GUI.class.getResource("/image/icon/luu.png")));
+        btnLuu.setText("Lưu");
+        btnLuu.setBorder(null);
+        btnLuu.setMaximumSize(new java.awt.Dimension(67, 31));
+        btnLuu.setMinimumSize(new java.awt.Dimension(67, 31));
+        btnLuu.setPreferredSize(new java.awt.Dimension(67, 31));
+        btnLuu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLuuActionPerformed(evt);
+            }
+        });
+        pnlChamCongCN.add(btnLuu);
+
+        btnHuy.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        btnHuy.setIcon(new ImageIcon(ChamCongCongNhan_GUI.class.getResource("/image/icon/huy.png")));
+        btnHuy.setText("Hủy");
+        btnHuy.setBorder(null);
+        btnHuy.setMaximumSize(new java.awt.Dimension(67, 31));
+        btnHuy.setMinimumSize(new java.awt.Dimension(67, 31));
+        btnHuy.setPreferredSize(new java.awt.Dimension(67, 31));
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
+            }
+        });
+        pnlChamCongCN.add(btnHuy);
+
+        cmbMaSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cd001" }));
+        cmbMaSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMaSanPhamActionPerformed(evt);
+            }
+        });
+        pnlChamCongCN.add(cmbMaSanPham);
+
+        cmbTenSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "" }));
+        cmbTenSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTenSanPhamActionPerformed(evt);
+            }
+        });
+        setLayout(null);
+        pnlChamCongCN.add(cmbTenSanPham);
+
+        add(pnlChamCongCN);
+
+        scrChamCong.setBackground(new java.awt.Color(255, 255, 255));
+        scrChamCong.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Bảng chấm công", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 16))); // NOI18N
+
+        tblChamCong.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        tblChamCong.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "STT", "Mã Phân công", "Mã công nhân", "Họ và tên", "Tổ/Nhóm", "Ngày chấm công", "Ca làm", "Trạng thái", "Giờ đi làm", "Mã sản phẩm", "Sản phẩm", "Mã công đoạn", "Công đoạn", "Số lượng làm"
+            }
+        ));
+        tblChamCong.setSelectionBackground(new java.awt.Color(232, 57, 95));
+        tblChamCong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblChamCongMouseClicked(evt);
+            }
+        });
+        scrChamCong.setViewportView(tblChamCong);
+
+        add(scrChamCong);
+    }
+
+    private void btnLayDanhSachActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tblCongNhan.getRowCount() == 0) {
+            btnChamCong.setEnabled(false);
+        } else {
+            btnChamCong.setEnabled(true);
+        }
+        lblTenSanPhamOutput.setText(cmbTenSanPham.getSelectedItem().toString());
+        lblTenCongDoanOutput.setText(cmbTenCongDoan.getSelectedItem().toString());
+        setEditTextDateChooser();
+    }
+
+    private void dtcNgayChamCongPropertyChange(java.beans.PropertyChangeEvent evt) {
+        if ("date".equals(evt.getPropertyName())) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dtcNgayChamCong.getDate());
+            if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
+                setComBoBoxToSunDay();
+            } else {
+                setComBoBoxToReset();
+            }
+        }
+        Date ngayChon = dtcNgayChamCong.getDate();
+        if (ngayChon.after(new Date())) {
+            JOptionPane.showMessageDialog(null, stErrChamCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+            dtcNgayChamCong.setDate(new Date());
+        }
+        btnChamCong.setEnabled(false);
+        while (tblCongNhan.getRowCount() != 0) {
+            modelTableCongNhan.removeRow(0);
+        }
+    }
+
+    private void cmbHienThiActionPerformed(java.awt.event.ActionEvent evt) {
+    }
+
+    private void btnChamCongActionPerformed(java.awt.event.ActionEvent evt) {
+        setEditTextDateChooser();
+    }
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {
+    }
+
+    private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {
+        setEditTextDateChooser();
+    }
+
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
+    }
+
+    private void cmbTenSanPhamActionPerformed(java.awt.event.ActionEvent evt) {
+    }
+
+    private void cmbTenToNhomActionPerformed(java.awt.event.ActionEvent evt) {
+        btnChamCong.setEnabled(false);
+    }
+
+    private void cmbMaSanPhamActionPerformed(java.awt.event.ActionEvent evt) {
+        btnChamCong.setEnabled(false);
+    }
+
+    private void cmbMaCongDoanActionPerformed(java.awt.event.ActionEvent evt) {
+        btnChamCong.setEnabled(false);
+    }
+
+    private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {
+        setEditTextDateChooser();
+    }
+
+    private void tblChamCongMouseClicked(java.awt.event.MouseEvent evt) {
+        setEditTextDateChooser();
+    }
+
+    private void cmbCaLamActionPerformed(java.awt.event.ActionEvent evt) {
+        btnChamCong.setEnabled(false);
+        while (tblCongNhan.getRowCount() != 0) {
+            modelTableCongNhan.removeRow(0);
+        }
+    }
+
+    public void setComBoBoxToSunDay() {
+        cmbCaLam.removeAllItems();
+        cmbCaLam.addItem("Sáng chủ nhật");
+        cmbCaLam.addItem("Chiều chủ nhật");
+    }
+
+    public void setComBoBoxToReset() {
+        cmbCaLam.removeAllItems();
+        cmbCaLam.addItem("Sáng");
+        cmbCaLam.addItem("Chiều");
+        cmbCaLam.addItem("Đêm");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object o = e.getSource();
+        if (o.equals(btnLayDanhSach)) {
+            cmbCaLam.setEnabled(true);
+            taiDuLieuLenBangCongNhan();
+            cmbTrangThai.setEnabled(true);
+            cmbGioDiLam.setEnabled(true);
+            cmbPhutDiLam.setEnabled(true);
+            txtSoLuongLam.setEditable(true);
+            btnCapNhat.setEnabled(false);
+            btnHuy.setEnabled(false);
+            btnXoa.setEnabled(false);
+            btnLuu.setEnabled(false);
+            cmbTrangThai.setSelectedIndex(0);
+            if (modelTableCongNhan.getRowCount() == 0) {
+                lblMaCongNhanHienThi.setText("");
+                lblHoVaTenHienThi.setText("");
+                lblTenCongDoanOutput.setText("");
+                lblTenCongDoanOutput.setText("");
+                txtSoLuongLam.setText("");
+                txtSoLuongLam.setEditable(false);
+                cmbTrangThai.setEnabled(false);
+                cmbGioDiLam.setEnabled(false);
+                cmbPhutDiLam.setEnabled(false);
+                txtSoLuongLam.setEditable(false);
+                btnChamCong.setEnabled(false);
+            }
+            maCongDoanFlag = cmbMaCongDoan.getSelectedItem().toString();
+            caLamFlag = cmbCaLam.getSelectedItem().toString();
+            ngayChamCongFlag = dtcNgayChamCong.getDate();
+            lblTenCongDoanOutput.setText(cmbTenCongDoan.getSelectedItem().toString());
+        } else if (o.equals(btnChamCong)) {
+            boolean isValid = validateForm();
+            if (!isValid) {
+                return;
+            }
+            if (lblMaCongNhanHienThi.getText().equals("")) {
+                return;
+            }
+            String maPhanCong = phanCong_DAO.layRaMaPhanCongTheoMaCongDoanMaCongNhan(maCongDoanFlag, lblMaCongNhanHienThi.getText().trim());
+            PhanCongCongNhan phanCong = phanCong_DAO.layMotPhanCongCongNhanTheoMaPhanCong(maPhanCong);
+            String gioDiLam = cmbGioDiLam.getSelectedItem().toString() + "h" + cmbPhutDiLam.getSelectedItem().toString();
+            if (cmbTrangThai.getSelectedIndex() >= 2) {
+                gioDiLam = "";
+            }
+            int soLuongLam = Integer.parseInt(txtSoLuongLam.getText().trim());
+            boolean chamDuoc = chamCongCN_DAO
+                    .themMotChamCongCongNhan(new ChamCongCongNhan(phanCong, cmbCaLam.getSelectedItem().toString(), ngayChamCongFlag, soLuongLam, cmbTrangThai.getSelectedItem().toString(), gioDiLam));
+            if (chamDuoc) {
+                JOptionPane.showMessageDialog(null, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                taiDuLieuChamCongLenBang();
+                taiDuLieuLenBangCongNhan();
+                btnChamCong.setEnabled(false);
+                cmbTrangThai.setEnabled(false);
+
+                cmbGioDiLam.setEnabled(false);
+                cmbPhutDiLam.setEnabled(false);
+                txtSoLuongLam.setEditable(false);
+                if (tblChamCong.getRowCount() != 0) {
+                    if (tblCongNhan.getSelectedRow() != -1) {
+                        tblCongNhan.removeRowSelectionInterval(tblCongNhan.getSelectedRow(), tblCongNhan.getSelectedRow());
+                    }
+                    tblChamCong.setRowSelectionInterval(0, 0);
+                }
+                congDoan_DAO.updateTinhTrangHoanThanhCuaCacCongDoan();
+            } else {
+                JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } else if (o.equals(btnCapNhat)) {
+            cmbCaLam.setEnabled(false);
+            cmbTrangThai.setEnabled(true);
+            if (cmbTrangThai.getSelectedIndex() >= 2) {
+                cmbGioDiLam.setEnabled(false);
+                cmbPhutDiLam.setEnabled(false);
+                txtSoLuongLam.setEditable(false);
+            } else {
+                cmbGioDiLam.setEnabled(true);
+                cmbPhutDiLam.setEnabled(true);
+                txtSoLuongLam.setEditable(true);
+            }
+            btnCapNhat.setEnabled(false);
+            btnXoa.setEnabled(false);
+            btnLuu.setEnabled(true);
+            btnHuy.setEnabled(true);
+        } else if (o.equals(btnHuy)) {
+
+            cmbTrangThai.setEnabled(false);
+            cmbGioDiLam.setEnabled(false);
+            cmbPhutDiLam.setEnabled(false);
+            txtSoLuongLam.setEditable(false);
+            btnCapNhat.setEnabled(true);
+            btnXoa.setEnabled(true);
+            btnLuu.setEnabled(false);
+            btnHuy.setEnabled(false);
+            lblErrSoLuongSP.setText("");
+            cmbCaLam.setEnabled(true);
+        } else if (o.equals(btnLuu)) {
+            boolean isHople = validateForm();
+            if (!isHople) {
+                return;
+            }
+            String maPhanCong = tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 1).toString();
+            PhanCongCongNhan phanCong = phanCong_DAO.layMotPhanCongCongNhanTheoMaPhanCong(maPhanCong);
+            String caLam = tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 6).toString();
+            String ngayChamCongStr = tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 5).toString();
+            Date ngayChamCong = new Date();
+            try {
+                ngayChamCong = new SimpleDateFormat("yyyy-MM-dd").parse(ngayChamCongStr);
+            } catch (ParseException ex) {
+                System.out.println("đổi chuỗi ngày sang object date ngày lỗi tại view cham cong nhan vien");
+            }
+            int soLuongLam = Integer.parseInt(txtSoLuongLam.getText().trim());
+            String trangThaiDiLam = cmbTrangThai.getSelectedItem().toString();
+            String gioDiLam = cmbGioDiLam.getSelectedItem().toString() + "h" + cmbPhutDiLam.getSelectedItem().toString();
+            if (cmbTrangThai.getSelectedIndex() >= 2) {
+                gioDiLam = "";
+            }
+            ChamCongCongNhan cccn = new ChamCongCongNhan(phanCong, caLam, ngayChamCong, soLuongLam, trangThaiDiLam, gioDiLam);
+            boolean isCapNhat = chamCongCN_DAO.suaMotChamCongCongNhan(cccn);
+            if (isCapNhat) {
+                taiDuLieuChamCongLenBang();
+                if (tblChamCong.getRowCount() != 0) {
+                    if (tblCongNhan.getSelectedRow() != -1) {
+                        tblCongNhan.removeRowSelectionInterval(tblCongNhan.getSelectedRow(), tblCongNhan.getSelectedRow());
+                    }
+                    tblChamCong.setRowSelectionInterval(0, 0);
+                }
+                JOptionPane.showMessageDialog(null, stCapNhatThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                congDoan_DAO.updateTinhTrangHoanThanhCuaCacCongDoan();
+
+                cmbTrangThai.setEnabled(false);
+                cmbGioDiLam.setEnabled(false);
+                cmbPhutDiLam.setEnabled(false);
+                txtSoLuongLam.setEditable(false);
+                btnCapNhat.setEnabled(true);
+                btnXoa.setEnabled(true);
+                btnLuu.setEnabled(false);
+                btnHuy.setEnabled(false);
+                cmbCaLam.setEnabled(true);
+            } else {
+                JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else if (o.equals(btnXoa)) {
+            int rowChamCongSelect = tblChamCong.getSelectedRow();
+            if (rowChamCongSelect != -1) {
+                int isAccept = JOptionPane.showConfirmDialog(null, stBanXacNhanXoa, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                if (isAccept == 0) {
+                    String maPhanCong = tblChamCong.getValueAt(rowChamCongSelect, 1).toString();
+                    String caLam = tblChamCong.getValueAt(rowChamCongSelect, 6).toString();
+                    String ngayChamCongStr = tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 5).toString();
+                    Date ngayChamCong = new Date();
+                    try {
+                        ngayChamCong = new SimpleDateFormat("yyyy-MM-dd").parse(ngayChamCongStr);
+                    } catch (ParseException ex) {
+                        System.out.println("đổi chuỗi ngày sang object date ngày lỗi tại view cham cong nhan vien");
+                    }
+                    boolean coXoaDuoc = chamCongCN_DAO.xoaChamCongCongNhanTheoMa(maPhanCong, caLam, ngayChamCong);
+                    if (coXoaDuoc) {
+                        JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                        taiDuLieuChamCongLenBang();
+                        congDoan_DAO.updateTinhTrangHoanThanhCuaCacCongDoan();
+                        if (tblChamCong.getRowCount() != 0) {
+                            if (tblCongNhan.getSelectedRow() != -1) {
+                                tblCongNhan.removeRowSelectionInterval(tblCongNhan.getSelectedRow(), tblCongNhan.getSelectedRow());
+                            }
+                            tblChamCong.setRowSelectionInterval(0, 0);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, stXoaThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean validateForm() {
+        if (txtSoLuongLam.getText().trim().equals("")) {
+            lblErrSoLuongSP.setText(stErrKhongDeTrong);
+            return false;
+        }
+        int soLuong = -1;
+        try {
+            soLuong = Integer.parseInt(txtSoLuongLam.getText().trim());
+        } catch (Exception e) {
+            lblErrSoLuongSP.setText(stErrSoLuong);
+            return false;
+        }
+        if (soLuong < 0) {
+            lblErrSoLuongSP.setText(stErrSoLuong);
+            return false;
+        }
+        CongDoan congDoanDangCham = congDoan_DAO.layMotCongDoanTheoMaCongDoan(maCongDoanFlag);
+
+        if (congDoanDangCham != null) {
+            if (congDoanDangCham.getThuTuCongDoan() != 1) {
+                int thuTuTruoc = congDoanDangCham.getThuTuCongDoan() - 1;
+                String maSanPham = congDoanDangCham.getSanPham().getMaSanPham();
+                ArrayList<CongDoan> dsCongDoan = congDoan_DAO.layDanhSachCongDoanTheoThuTuSanPham(maSanPham, thuTuTruoc);
+                for (CongDoan cd : dsCongDoan) {
+                    if (soLuong > congDoan_DAO.laySoLuongLamDuocTheoMaCongDoan(cd.getMaCongDoan())) {
+                        lblErrSoLuongSP.setText("Phải <= số lượng làm công đoạn trước");
+                        return false;
+                    }
+                }
+            }
+        }
+        ArrayList<PhanCongCongNhan> phanCongDS = phanCong_DAO.layDanhSachPhanCongTheoMaCongDoan(maCongDoanFlag);
+        if (phanCongDS.size() > 0) {
+            int soLuongLamCuaPhanCong = phanCongDS.get(0).getSoLuongCanLam();
+            if (soLuong > soLuongLamCuaPhanCong) {
+                lblErrSoLuongSP.setText(stErrBeHonTongSanPhamCongDoan);
+                return false;
+            }
+        }
+        lblErrSoLuongSP.setText("");
+        return true;
+    }
+
+    public void taiDuLieuLenBangCongNhan() {
+        while (tblCongNhan.getRowCount() != 0) {
+            modelTableCongNhan.removeRow(0);
+        }
+        if (cmbMaCongDoan.getItemCount() == 0 || cmbCaLam.getItemCount() == 0) {
+            return;
+        }
+        String maCongDoan = cmbMaCongDoan.getSelectedItem().toString();
+        String maToNhom = toNhom_DAO.layMotToNhomTheoTen(cmbTenToNhom.getSelectedItem().toString()).getMaToNhom();
+        SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+        String ngayChamCong = sm.format(dtcNgayChamCong.getDate());
+        ArrayList<CongNhan> dsCongNhan = phanCong_DAO.layRaDanhSachCongNhanTheoCongDoanVaToNhom(maCongDoan, maToNhom, ngayChamCong, cmbCaLam.getSelectedItem().toString());
+        for (CongNhan congNhan : dsCongNhan) {
+            String data[] = {(modelTableCongNhan.getRowCount() + 1) + "", congNhan.getMaCongNhan(), congNhan.getHoTen()};
+            modelTableCongNhan.addRow(data);
+        }
+        if (modelTableCongNhan.getRowCount() != 0) {
+            tblCongNhan.setRowSelectionInterval(0, 0);
+            btnChamCong.setEnabled(true);
+            int rowSelectTblChamCong = tblChamCong.getSelectedRow();
+            if (rowSelectTblChamCong != -1) {
+                tblChamCong.removeRowSelectionInterval(rowSelectTblChamCong, rowSelectTblChamCong);
+            }
+            hienThiThongTinCongNhanLenTxt(0);
+        } else {
+            btnChamCong.setEnabled(false);
+        }
+
+    }
+
+    public void hienThiThongTinCongNhanLenTxt(int row) {
+        lblMaCongNhanHienThi.setText(tblCongNhan.getValueAt(row, 1).toString());
+        lblHoVaTenHienThi.setText(tblCongNhan.getValueAt(row, 2).toString());
+    }
+
+    public void taiDuLieuChamCongLenBang() {
+        while (tblChamCong.getRowCount() != 0) {
+            modelTableChamCong.removeRow(0);
+        }
+        ArrayList<ChamCongCongNhan> dsChamCong = chamCongCN_DAO.layDanhSachChamCong();
+        for (ChamCongCongNhan cccn : dsChamCong) {
+            String data[] = {(modelTableChamCong.getRowCount() + 1) + "", cccn.getPhanCong().getMaPhanCong(), cccn.getPhanCong().getCongNhan().getMaCongNhan(),
+                cccn.getPhanCong().getCongNhan().getHoTen(), cccn.getPhanCong().getCongNhan().getToNhom().getTenToNhom(),
+                cccn.getNgayChamCong().toString(), cccn.getCaLam(), cccn.getTrangThaiDiLam(), cccn.getGioDiLam(), cccn.getPhanCong().getCongDoan().getSanPham().getMaSanPham(),
+                cccn.getPhanCong().getCongDoan().getSanPham().getTenSanPham(),
+                cccn.getPhanCong().getCongDoan().getMaCongDoan(), cccn.getPhanCong().getCongDoan().getTenCongDoan(), cccn.getSoLuongLam() + ""};
+
+            modelTableChamCong.addRow(data);
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        Object o = e.getSource();
+        if (o.equals(tblCongNhan)) {
+            cmbCaLam.setEnabled(true);
+            int rowSelectOfChamCong = tblChamCong.getSelectedRow();
+            if (rowSelectOfChamCong != -1) {
+                tblChamCong.removeRowSelectionInterval(rowSelectOfChamCong, rowSelectOfChamCong);
+
+            }
+            int row = tblCongNhan.getSelectedRow();
+            if (row != -1) {
+                hienThiThongTinCongNhanLenTxt(row);
+                txtSoLuongLam.setText("0");
+                txtSoLuongLam.requestFocus();
+                btnCapNhat.setEnabled(false);
+                btnHuy.setEnabled(false);
+                btnLuu.setEnabled(false);
+                btnXoa.setEnabled(false);
+                btnChamCong.setEnabled(true);
+                cmbTrangThai.setEnabled(true);
+                cmbGioDiLam.setEnabled(true);
+                cmbPhutDiLam.setEnabled(true);
+                txtSoLuongLam.setEditable(true);
+            }
+        } else if (o.equals(tblChamCong)) {
+            int rowSelectCongNhan = tblCongNhan.getSelectedRow();
+            lblErrSoLuongSP.setText("");
+            if (rowSelectCongNhan != -1) {
+                tblCongNhan.removeRowSelectionInterval(rowSelectCongNhan, rowSelectCongNhan);
+            }
+            int rowSelectChamCong = tblChamCong.getSelectedRow();
+            if (rowSelectChamCong != -1) {
+                btnChamCong.setEnabled(false);
+                btnCapNhat.setEnabled(true);
+                btnHuy.setEnabled(false);
+                btnLuu.setEnabled(false);
+                btnXoa.setEnabled(true);
+                lblErrSoLuongSP.setText("");
+                if (btnCapNhat.isEnabled()) {
+                    cmbTrangThai.setEnabled(false);
+                    cmbGioDiLam.setEnabled(false);
+                    cmbPhutDiLam.setEnabled(false);
+                    txtSoLuongLam.setEditable(false);
+                } else {
+                    cmbTrangThai.setEnabled(true);
+                    cmbGioDiLam.setEnabled(true);
+                    cmbPhutDiLam.setEnabled(true);
+                    txtSoLuongLam.setEditable(true);
+                }
+                taiDuLieuTuBangChamCongLenTxt();
+            }
+        }
+    }
+
+    public void taiDuLieuTuBangChamCongLenTxt() {
+        lblMaCongNhanHienThi.setText(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 2).toString());
+        lblHoVaTenHienThi.setText(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 3).toString());
+        cmbTrangThai.setSelectedItem(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 7).toString());
+        setCmbGio(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 6).toString());
+        String times[] = tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 8).toString().split("h");
+        if (times.length > 1) {
+            cmbGioDiLam.setSelectedItem(times[0]);
+            cmbPhutDiLam.setSelectedItem(times[1]);
+        }
+        lblTenSanPhamOutput.setText(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 10).toString());
+        lblTenCongDoanOutput.setText(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 12).toString());
+        txtSoLuongLam.setText(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 13).toString());
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

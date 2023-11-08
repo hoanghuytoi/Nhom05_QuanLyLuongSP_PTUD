@@ -765,7 +765,7 @@ public class CongNhan_GUI extends JPanel {
 						setEnableForInput(false);
 						isThem = false;
 					} else {
-						JOptionPane.showMessageDialog(null, "Thêm nhân viên thất bại");
+						JOptionPane.showMessageDialog(null, "Thêm công nhân thất bại");
 						setHidden(btnLuu, btnHuy);
 						setShow(btnThem, btnThemNhieu, btnXoa, btnCapNhat);
 						setEnableForInput(false);

@@ -354,7 +354,7 @@ public class CongDoan_Dao {
         try {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
-            String truyVan = "select * from CongDoan where maSanPham = ? and thuTu = ?";
+            String truyVan = "select * from CongDoan where maSanPham = ? and thuTuCD = ?";
             stm = con.prepareStatement(truyVan);
             stm.setString(1, maSanPham);
             stm.setInt(2, thuTu);
@@ -409,5 +409,37 @@ public class CongDoan_Dao {
             }
         }
         return soLuong;
+    }
+    
+    public ArrayList<CongDoan> layDanhSachCongDoanDuocPhanCongTheoMaSpMaTN(String maToNhom, String maSanPham) {
+        PreparedStatement stm = null;
+        ArrayList<CongDoan> dsCongDoan = new ArrayList<CongDoan>();
+        String tinhTrangHoanThanh = "100,00%";
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "SELECT CD.maCongDoan FROM ToNhom TN JOIN PhanCongCongNhan PCCN ON TN.maToNhom = PCCN.maToNhom"
+                    + " JOIN CongDoan CD ON PCCN.maCongDoan = CD.maCongDoan"
+                    + " JOIN SanPham SP ON SP.maSanPham = CD.maSanPham WHERE TN.maToNhom = ? and SP.maSanPham = ? and CD.tinhTrang != ?"
+                    + " group by CD.maCongDoan";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, maToNhom);
+            stm.setString(2, maSanPham);
+            stm.setString(3, tinhTrangHoanThanh);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()){
+                String maCongDoan = rs.getString("maCongDoan");
+                dsCongDoan.add(layMotCongDoanTheoMaCongDoan(maCongDoan));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return dsCongDoan;
     }
 }
