@@ -36,7 +36,7 @@ public class CongNhan_Dao {
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                String maToNhom = rs.getString("toNhom");
+                String maToNhom = rs.getString("maToNhom");
                 ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
                 dsCongNhan.add(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
             }
@@ -104,8 +104,8 @@ public class CongNhan_Dao {
                 String anhDaiDien = rs.getString("anhDaiDien");
                 String diaChi = rs.getString("diaChi");
                 Date ngayVaoLam = rs.getDate("ngayVaoLam");
-                String maToNhom = rs.getString("toNhom");
-                ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
+                String maToNhomOb = rs.getString("maToNhom");
+                ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhomOb);
                 congNhan = new CongNhan(maCongNhanOb, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom);
             }
         } catch (Exception e) {
