@@ -676,7 +676,9 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
                 "STT", "Mã công nhân", "Họ và tên"
             }
         ));
-        tblCongNhan.setSelectionBackground(new java.awt.Color(232, 57, 95));
+        tblCongNhan.getTableHeader().setBackground(new Color(128, 200, 255));
+		tblCongNhan.setSelectionBackground(new Color(255, 215, 0));
+        
         scrTableCongNhan.setViewportView(tblCongNhan);
 
         pnlChamCongCN.add(scrTableCongNhan);
@@ -969,7 +971,8 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
                 "STT", "Mã Phân công", "Mã công nhân", "Họ và tên", "Tổ/Nhóm", "Ngày chấm công", "Ca làm", "Trạng thái", "Giờ đi làm", "Mã sản phẩm", "Sản phẩm", "Mã công đoạn", "Công đoạn", "Số lượng làm"
             }
         ));
-        tblChamCong.setSelectionBackground(new java.awt.Color(232, 57, 95));
+        tblChamCong.getTableHeader().setBackground(new Color(128, 200, 255));
+        tblChamCong.setSelectionBackground(new Color(255, 215, 0));
         tblChamCong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblChamCongMouseClicked(evt);

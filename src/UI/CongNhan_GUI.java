@@ -547,8 +547,6 @@ public class CongNhan_GUI extends JPanel {
 		srcCongNhan.setBorder(titledBorder1);
 
 		srcCongNhan.setBackground(Color.WHITE);
-		tblCongNhan.getTableHeader().setBackground(new Color(128, 200, 255));
-
 		tblCongNhan.setModel(new DefaultTableModel(
 				new Object [][] {
 	                {null, null, null, null, null, null, null, null, null, null, null, null},
@@ -560,6 +558,7 @@ public class CongNhan_GUI extends JPanel {
 	                "STT", "Mã công nhân", "Họ và tên", "Số CCCD", "Giới tính", "Ngày sinh", "Số điện thoại", "Địa chỉ", "Ảnh đại diện", "Email", "Tổ/Nhóm", "Ngày vào làm"
 	            }
 		));
+		tblCongNhan.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblCongNhan.setSelectionBackground(new Color(255, 215, 0));
 		tblCongNhan.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
