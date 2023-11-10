@@ -281,4 +281,77 @@ public class CongNhan_Dao {
         }
         return dsCongNhan;
     }
+    
+    public ArrayList<CongNhan> layDanhSachCongNhanLamTrongThang(int thang, int nam) {
+        ArrayList<CongNhan> dsCongNhan = new ArrayList<CongNhan>();
+        PreparedStatement stm = null;
+        
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "select CN.maCongNhan from BangChamCongCongNhan CCCN JOIN PhanCongCongNhan PCCC on CCCN.maPhanCong = PCCC.maPhanCong"
+                    + " join CongNhan CN on CN.maCongNhan = PCCC.maCongNhan"
+                    + " where MONTH(ngayChamCong) = ? and year(ngayChamCong) = ? group by CN.maCongNhan";
+            stm = con.prepareStatement(truyVan);
+            stm.setInt(1, thang);
+            stm.setInt(2, nam);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String maCongNhan = rs.getString("maCongNhan");
+                CongNhan congNhan = layMotCongNhanTheoMa(maCongNhan);
+                dsCongNhan.add(congNhan);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return dsCongNhan;
+    }
+    
+    public ArrayList<CongNhan> layDanhSachCongNhanKhongDiLamTrongThang(int thang, int nam) {
+        PreparedStatement stm = null;
+        ArrayList<CongNhan> dsCongNhan = new ArrayList<CongNhan>();
+        ToNhom_Dao toNhom_DAO = new ToNhom_Dao();
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "select * from CongNhan CN"
+                    + " where CN.maCongNhan not in (select distinct maCongNhan from PhanCongCongNhan PCCN "
+                    + " join BangChamCongCongNhan CCCN on PCCN.maPhanCong = CCCN.maPhanCong"
+                    + " where month(ngayChamCong) = ? and year(ngayChamCong) = ?)";
+            stm = con.prepareCall(truyVan);
+            stm.setInt(1, thang);
+            stm.setInt(2, nam);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String maCongNhan = rs.getString("maCongNhan");
+                String hoTen = rs.getString("hoTen");
+                Date ngaySinh = rs.getDate("ngaySinh");
+                String maCCCD = rs.getString("maCCCD");
+                String soDienThoai = rs.getString("soDienThoai");
+                String email = rs.getString("email");
+                Boolean gioiTinh = rs.getBoolean("gioiTinh");
+                String anhDaiDien = rs.getString("anhDaiDien");
+                String diaChi = rs.getString("diaChi");
+                Date ngayVaoLam = rs.getDate("ngayVaoLam");
+                String maToNhom = rs.getString("toNhom");
+                ToNhom toNhom = toNhom_DAO.layMotToNhomTheoMa(maToNhom);
+                dsCongNhan.add(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD, soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return dsCongNhan;
+    }
 }

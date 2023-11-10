@@ -53,7 +53,6 @@ public class BangLuongNhanVien_GUI extends JPanel {
 	private JComboBox<String> cmbNam;
 
 	private DefaultTableModel model;
-	private BangLuongNhanVien_Dao daoLuong;
 	private NhanVien_Dao nhanVienDao;
 	private BangLuongNhanVien_Dao bangLuongNhanVienDao;
 	private ChamCongNhanVien_Dao chamCongNhanVienDao;
@@ -274,9 +273,9 @@ public class BangLuongNhanVien_GUI extends JPanel {
 		while (model.getRowCount() != 0) {
 			model.removeRow(0);
 		}
-		daoLuong = new BangLuongNhanVien_Dao();
+		bangLuongNhanVienDao = new BangLuongNhanVien_Dao();
 		DecimalFormat dfm = new DecimalFormat("###,###,###,###,###");
-		ArrayList<BangLuongNhanVien> bangLuongNhanVienList = daoLuong.danhSachBangLuong();
+		ArrayList<BangLuongNhanVien> bangLuongNhanVienList = bangLuongNhanVienDao.danhSachBangLuong();
 		if (bangLuongNhanVienList != null) {
 			if (cmbHienThi.getSelectedIndex() == 0) {
 				for (BangLuongNhanVien l : bangLuongNhanVienList) {
@@ -318,7 +317,6 @@ public class BangLuongNhanVien_GUI extends JPanel {
 	        double luongTangCa = 0;
 	        double phuCapCV = 0;
 	        double phuCapThamNien = 0;
-            int soNgayChuNhatDiLam = 0;
 
 	        // Lấy thông tin chấm công
 	        ArrayList<String[]> danhSach = chamCongNhanVienDao.layDanhSachChamCongTheoMaNhanVienVaThang(nv.getMaNhanVien(),
@@ -326,9 +324,6 @@ public class BangLuongNhanVien_GUI extends JPanel {
 	        for (String[] string : danhSach) {
 	            if (string[1].contains("Đi")) {
 	                soNgayDiLam++;
-	                if (string[0].contains("chủ nhật")) {
-                        soNgayChuNhatDiLam++;
-                    }
 	            }
 	            if (string[1].contains("Nghỉ")) {
 	                soNgayNghi++;

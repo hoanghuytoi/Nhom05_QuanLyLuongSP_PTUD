@@ -39,8 +39,8 @@ public class BangLuongCongNhan {
     private void setMaBangLuong(String maBangLuong) throws Exception {
         if (maBangLuong.equals("")) {
             throw new Exception("Mã bảng lương không được rỗng!");
-        } else if (!maBangLuong.matches("^LC[1-9][0-9]{4}$")) {
-            throw new Exception("Mã bảng lương phải theo dạng LCxxxxx với x là các kí tự số x đầu tiền từ [1-9], x sau từ [0-9]");
+        } else if (!maBangLuong.matches("^PPLC[1-9][0-9]{5}$")) {
+            throw new Exception("Mã bảng lương phải theo dạng PPLCxxxxxx với x là các kí tự số x đầu tiền từ [1-9], x sau từ [0-9]");
         } else {
             this.maBangLuong = maBangLuong;
         }
