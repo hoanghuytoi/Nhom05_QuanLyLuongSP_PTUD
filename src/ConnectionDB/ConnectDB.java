@@ -15,7 +15,7 @@ public class ConnectDB {
 
     public void connect() throws Exception {
 
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=QLyLuongSP";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=QLyLuongSP;";
         String user = "sa";
         String password = "sapassword";
         con = DriverManager.getConnection(url, user, password);

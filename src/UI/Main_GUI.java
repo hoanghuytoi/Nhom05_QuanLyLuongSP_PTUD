@@ -435,6 +435,11 @@ public class Main_GUI extends JFrame {
         
         thongKeNhanVien = new MenuItem(iconSubMenuNonSelect, lblNhanVien, ((e) -> {
             pnBody.removeAll();
+            try {
+                pnBody.add(new ThongKeNhanVien1_GUI(fileName), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh((thongKeNhanVien));
