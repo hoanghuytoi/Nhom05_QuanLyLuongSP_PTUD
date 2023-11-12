@@ -18,5 +18,16 @@
 	<classpathentry kind="lib" path="Lib/itext-2.1.7.jar"/>
 	<classpathentry kind="lib" path="Lib/commons-logging-api-1.1.jar"/>
 	<classpathentry kind="lib" path="Lib/commons-digester-2.1.jar"/>
+	<classpathentry kind="lib" path="Lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="Lib/poi-ooxml-schemas-4.1.1.jar"/>
+	<classpathentry kind="lib" path="Lib/poi-4.1.1.jar"/>
+	<classpathentry kind="lib" path="Lib/smslib-3.5.1.jar"/>
+	<classpathentry kind="lib" path="Lib/poi-ooxml-4.1.1.jar"/>
+	<classpathentry kind="lib" path="Lib/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="Lib/xmlbeans-3.1.0.jar"/>
+	<classpathentry kind="lib" path="Lib/filechooser-1.0.1.jar"/>
+	<classpathentry kind="lib" path="Lib/jssc.jar"/>
+	<classpathentry kind="lib" path="Lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="Lib/commons-compress-1.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

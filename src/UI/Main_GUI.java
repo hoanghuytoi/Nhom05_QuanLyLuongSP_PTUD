@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -427,6 +426,11 @@ public class Main_GUI extends JFrame {
         // subMenu thống kê
         thongKeDoanhThu = new MenuItem(iconSubMenuNonSelect, lblDoanhThu, ((e) -> {
             pnBody.removeAll();
+            try {
+                pnBody.add(new ThongKeDoanhThu_GUI(fileName), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh((thongKeDoanhThu));
@@ -435,6 +439,11 @@ public class Main_GUI extends JFrame {
         
         thongKeNhanVien = new MenuItem(iconSubMenuNonSelect, lblNhanVien, ((e) -> {
             pnBody.removeAll();
+            try {
+                pnBody.add(new ThongKeNhanVien_GUI(fileName), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh((thongKeNhanVien));
@@ -443,7 +452,11 @@ public class Main_GUI extends JFrame {
         
         thongKeCongNhan = new MenuItem(iconSubMenuNonSelect, lblCongNhan, ((e) -> {
             pnBody.removeAll();
-            
+            try {
+                pnBody.add(new ThongKeCongNhan_GUI(fileName), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh((thongKeCongNhan));
@@ -452,9 +465,16 @@ public class Main_GUI extends JFrame {
         // subMenu he thong
         thongTinCaNhan = new MenuItem(iconSubMenuNonSelect, lblThongTinCaNhan, ((e) -> {
             pnBody.removeAll();
+            String username = "";
+            if (congNhan != null) {
+                username = congNhan.getMaCongNhan();
+
+            } else if (nhanVien != null) {
+                username = nhanVien.getMaNhanVien();
+            }
             try {
-                pnBody.add(new ThongTinCaNhan_GUI(), BorderLayout.CENTER);
-            } catch (Exception ex) {
+                pnBody.add(new ThongTinCaNhan_GUI(this.fileName,username), BorderLayout.CENTER);
+            } catch (IOException ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             pnBody.repaint();
@@ -464,7 +484,18 @@ public class Main_GUI extends JFrame {
         
         doiMatKhau = new MenuItem(iconResetPassword, lblDoiMatKhau, ((e) -> {
             pnBody.removeAll();
-            
+            String userName = "";
+            if (congNhan != null) {
+                userName = congNhan.getMaCongNhan();
+
+            } else if (nhanVien != null) {
+                userName = nhanVien.getMaNhanVien();
+            }
+            try {
+                pnBody.add(new DoiMatKhau_GUI(this.fileName,userName), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             iconSubMenuMacDinh((doiMatKhau));

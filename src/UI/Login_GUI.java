@@ -40,9 +40,7 @@ import javax.swing.JSeparator;
  * Hoàng Huy Tới
  */
 
-public class Login_GUI extends JFrame {
-
-	private JButton btnDangNhap;
+public class Login_GUI extends JFrame {	private JButton btnDangNhap;
     private JCheckBox chkRemerberPassword;
     private JComboBox<String> cmbNgonNgu;
     private JLabel disable;

@@ -2,7 +2,6 @@ package UI;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Panel;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -10,20 +9,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 
-import com.toedter.calendar.JDateChooser;
-import Custom_UI.RoundedButton;
 import Custom_UI.ScrollBarCustom;
 import Dao.SanPham_Dao;
-import Entity.HopDong;
 import Entity.SanPham;
 
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -34,13 +28,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import java.awt.Component;
-import java.awt.Container;
 
 /**
  * Hoàng Huy Tới

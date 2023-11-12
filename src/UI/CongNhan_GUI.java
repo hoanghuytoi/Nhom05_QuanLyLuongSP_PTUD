@@ -9,8 +9,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -35,12 +42,16 @@ import javax.swing.JFileChooser;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -104,12 +115,17 @@ public class CongNhan_GUI extends JPanel {
 	private String stThemThanhCong;
 	private String stThemThatBai;
 	private String stCapNhatThatBai;
+	private String stKhongTimThayFile;
+    private String stKhongDocDuocFile;
+    private String stTren;
+    private String stCongNhan;
 
 	private JSeparator jSeparator1_2;
 	private JSeparator jSeparator1_3;
 	private JSeparator jSeparator1_4;
 	private JSeparator jSeparator1_5;
 	private JLabel lblTieuDe;
+	private ToNhom_Dao toNhom_Dao;
 
 
 	public CongNhan_GUI() throws Exception {
@@ -117,6 +133,7 @@ public class CongNhan_GUI extends JPanel {
 		//caiDatNgonNguChoView(fileName);
 		ConnectionDB.ConnectDB.getInstance().connect();
         daoCongNhan = new CongNhan_Dao();
+        toNhom_Dao = new ToNhom_Dao();
 		excute();
 		taiDuLieuLenBang();
 		this.txtMaCongNhan.setEditable(false);
@@ -465,11 +482,11 @@ public class CongNhan_GUI extends JPanel {
 		btnThemNhieu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
 		btnThemNhieu.setText("Thêm nhiều");
 		btnThemNhieu.setBorder(null);
-		btnThemNhieu.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnThemNhieuActionPerformed(evt);
-			}
-		});
+		btnThemNhieu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnThemNhieuMouseClicked(evt);
+            }
+        });
 
 		
 		btnThem = new JButton();
@@ -807,6 +824,110 @@ public class CongNhan_GUI extends JPanel {
 		setInit();
 	}
 
+	private void btnThemNhieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemNhieuMouseClicked
+        // TODO add your handling code here:
+        File file = new File("./excelData");
+        JFileChooser fileChooser = new JFileChooser(file.getAbsolutePath());
+//        int respone = fileChooser.showOpenDialog(null);
+        fileChooser.setCurrentDirectory(new File("../excelData"));
+        fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel File (.xlsx)", "xlsx");
+        fileChooser.setFileFilter(filter);
+        int count = 0, total = 0;
+        int respone = fileChooser.showSaveDialog(null);
+        if (respone == JFileChooser.APPROVE_OPTION) {
+            File inputFile = fileChooser.getSelectedFile();
+
+            try (FileInputStream in = new FileInputStream(inputFile)) {
+                XSSFWorkbook importedFile = new XSSFWorkbook(in);
+                XSSFSheet sheet1 = importedFile.getSheetAt(0);
+                Iterator<Row> rowIterator = sheet1.iterator();
+                while (rowIterator.hasNext()) {
+                    total++;
+                    Row row = rowIterator.next();
+                    Iterator<Cell> cellItera = row.cellIterator();
+                    // khai báo biến 
+                    try {
+                        String hoTen = "", maCCCD = "", soDienThoai = "", email = "", anhDaiDien = "", diaChi = "";
+                        String maToNhom = "";
+                        Date ngaySinh = new Date(), ngayVaoLam = new Date();
+                        Boolean gioiTinh = false;
+                        while (cellItera.hasNext()) {
+                            Cell cell = cellItera.next();
+                            if (row.getRowNum() == 0) {
+                                continue;
+                            } else {
+                                if (cell.getColumnIndex() == 0) {
+                                    hoTen = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 1) {
+                                    String chuoiNgaySinh = cell.getStringCellValue();
+                                    try {
+                                        ngaySinh = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiNgaySinh);
+                                        System.out.println("Ngay Sinh" + ngaySinh);
+                                    } catch (ParseException ex) {
+                                        System.out.println(ex.getMessage());
+                                    }
+                                } else if (cell.getColumnIndex() == 2) {
+                                    maCCCD = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 3) {
+                                    soDienThoai = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 4) {
+                                    email = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 5) {
+                                    String gioiTinhStr = cell.getStringCellValue();
+                                    if (gioiTinhStr.equalsIgnoreCase("Nữ") || gioiTinhStr.equalsIgnoreCase("Nu")) {
+                                        gioiTinh = false;
+                                    } else {
+                                        gioiTinh = true;
+                                    }
+                                } else if (cell.getColumnIndex() == 6) {
+                                    anhDaiDien = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 7) {
+                                    diaChi = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 8) {
+                                    String chuoiNgayVaoLam = cell.getStringCellValue();
+                                    try {
+                                        ngayVaoLam = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiNgayVaoLam);
+                                    } catch (ParseException ex) {
+                                        System.out.println(ex.getMessage());
+                                    }
+
+                                } else if (cell.getColumnIndex() == 9) {
+                                    maToNhom = cell.getStringCellValue();
+                                }
+                            }
+
+                        }
+
+                        String maCongNhan = daoCongNhan.layRaMaCongNhanDeThem();
+                        ToNhom toNhom = toNhom_Dao.layMotToNhomTheoMa(maToNhom);
+                        boolean coThemDuoc
+                                = daoCongNhan.themMotCongNhan(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD,
+                                        soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
+                        if (coThemDuoc) {
+                            count++;
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                in.close();
+                JOptionPane.showMessageDialog(null, stThemThanhCong + " " + count + " " + stTren + (--total) + stCongNhan);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, stKhongTimThayFile, stThongbao, JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, stKhongDocDuocFile, stThongbao, JOptionPane.ERROR_MESSAGE);
+            }
+            if (count != 0) {
+                try {
+                    taiDuLieuLenBang();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+	
 	private void rdoNamActionPerformed(java.awt.event.ActionEvent evt) {
 	}
 	

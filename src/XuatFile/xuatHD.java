@@ -7,6 +7,7 @@ import java.util.Map;
 import Entity.HopDong;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
@@ -21,34 +22,37 @@ import net.sf.jasperreports.view.JasperViewer;
 
 public class xuatHD {
 
-	public void inHopDong(HopDong hd,ArrayList<HopDong> dsHD) throws JRException {
+	public void inHopDong(ArrayList<HopDong> dsHD) throws JRException {
 	    try {
 	        InputStream arq = getClass().getResourceAsStream("/FileReport/InHopDong.jrxml");
 	        JasperReport report = JasperCompileManager.compileReport(arq);
-	        Map<String, Object> tthd = new HashMap<String, Object>();
-	        tthd.put("time", hd.getNgayKyKetHD());
-	        tthd.put("maHopDong", hd.getMaHopDong());
-	        tthd.put("tenHopDong", hd.getTenHopDong());
-	        tthd.put("tenKhachHang", hd.getTenKhachHang());
-	        tthd.put("ngayBatDau", new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayKyKetHD()));
-	        tthd.put("ngayKetThuc", new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayKetThucHD()));
-	        tthd.put("triGiaHD", new DecimalFormat("#,###").format(hd.getTriGiaHD()) + " VNĐ");
-	        tthd.put("tienDatCoc", new DecimalFormat("#,###").format(hd.getTienDatCoc()) + " VNĐ");
-	        tthd.put("yeuCau", hd.getYeuCau());
-	        tthd.put("nguoiKyKet", hd.getNguoiKyKet().getHoTen());
 
+	        Map<String, Object> parameters = new HashMap<String, Object>();
 	        ArrayList<HopDongForm> list = new ArrayList<>();
-			
-			for(int i = 0; i < dsHD.size(); i++) {
-				list.add(new HopDongForm());
-			}
-			
-	        JasperPrint print = JasperFillManager.fillReport(report, tthd, new JRBeanCollectionDataSource(list));
+
+	        for (HopDong hd : dsHD) {
+	            HopDongForm hopDongForm = new HopDongForm();
+	            hopDongForm.setTime(hd.getNgayKyKetHD());
+	            hopDongForm.setMaHopDong(hd.getMaHopDong());
+	            hopDongForm.setTenHopDong(hd.getTenHopDong());
+	            hopDongForm.setTenKhachHang(hd.getTenKhachHang());
+	            hopDongForm.setNgayBatDau(new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayKyKetHD()));
+	            hopDongForm.setNgayKetThuc(new SimpleDateFormat("dd-MM-yyyy").format(hd.getNgayKetThucHD()));
+	            hopDongForm.setTriGiaHD(new BigDecimal(hd.getTriGiaHD()));
+	            hopDongForm.setTienDatCoc(new BigDecimal(hd.getTienDatCoc()));
+	            hopDongForm.setYeuCau(hd.getYeuCau());
+	            hopDongForm.setNguoiKyKet(hd.getNguoiKyKet().getHoTen());
+
+	            list.add(hopDongForm);
+	        }
+
+	        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
+	        JasperPrint print = JasperFillManager.fillReport(report, parameters, dataSource);
 	        JasperViewer.viewReport(print, false);
 
 	    } catch (JRException e) {
 	        e.printStackTrace();
 	    }
 	}
-	
+
 }

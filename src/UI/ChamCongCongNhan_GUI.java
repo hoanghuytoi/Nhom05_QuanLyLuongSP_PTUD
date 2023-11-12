@@ -547,101 +547,140 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
     private void initComponents() {
         pnlChamCongCN = new JPanel();
         pnlChamCongCN.setBounds(0, 0, 1290, 450);
+        
         dtcNgayChamCong = new JDateChooser();
         dtcNgayChamCong.setBounds(440, 20, 130, 40);
+        
         scrTableCongNhan = new JScrollPane();
         scrTableCongNhan.setBounds(20, 190, 810, 180);
+        
         tblCongNhan = new JTable();
         lblNgayChamCong = new JLabel();
         lblNgayChamCong.setBounds(290, 20, 130, 40);
+        
         lblSoLuongSanPham = new JLabel();
         lblSoLuongSanPham.setBounds(880, 324, 150, 30);
+        
         lblMaCongNhanHienThi = new JLabel();
         lblMaCongNhanHienThi.setBounds(1040, 9, 180, 30);
+        
         lblHoVaTenHienThi = new javax.swing.JLabel();
         lblHoVaTenHienThi.setBounds(1040, 50, 180, 30);
+        
         lblMaCongNhan = new javax.swing.JLabel();
         lblMaCongNhan.setBounds(880, 9, 140, 40);
+        
         lblHoTen = new javax.swing.JLabel();
         lblHoTen.setBounds(880, 68, 140, 21);
+        
         lblTenCongDoanRight = new javax.swing.JLabel();
         lblTenCongDoanRight.setBounds(880, 273, 150, 30);
+        
         lblTenSanPhamRight = new javax.swing.JLabel();
         lblTenSanPhamRight.setBounds(880, 221, 120, 30);
+        
         lblTenSanPhamOutput = new javax.swing.JLabel();
         lblTenSanPhamOutput.setBounds(1040, 208, 180, 30);
+        
         lblTenCongDoanOutput = new javax.swing.JLabel();
         lblTenCongDoanOutput.setBounds(1040, 259, 180, 30);
+        
         txtSoLuongLam = new javax.swing.JTextField();
         txtSoLuongLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         txtSoLuongLam.setBounds(1040, 314, 180, 30);
+        
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator1.setForeground(new Color(0, 0, 0));
         jSeparator1.setBounds(1040, 344, 180, 10);
+        
         lblErrSoLuongSP = new javax.swing.JLabel();
         lblErrSoLuongSP.setBounds(1040, 300, 190, 0);
+        
         cmbMaCongDoan = new javax.swing.JComboBox<>();
         cmbMaCongDoan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         cmbMaCongDoan.setBounds(140, 140, 120, 40);
+        
         lblTrangThai = new javax.swing.JLabel();
         lblTrangThai.setBounds(880, 118, 140, 30);
+        
         lblMaCongDoan = new javax.swing.JLabel();
         lblMaCongDoan.setBounds(20, 140, 120, 40);
+        
         cmbCaLam = new javax.swing.JComboBox<>();
         cmbCaLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         cmbCaLam.setBounds(680, 20, 150, 40);
+        
         cmbGioDiLam = new javax.swing.JComboBox<>();
         cmbGioDiLam.setBounds(1040, 173, 60, 30);
         lblGioDiLam = new javax.swing.JLabel();
         lblGioDiLam.setBounds(880, 172, 140, 30);
+        
         lblPhut = new javax.swing.JLabel();
         lblPhut.setBounds(1110, 173, 40, 30);
+        
         cmbPhutDiLam = new javax.swing.JComboBox<>();
         cmbPhutDiLam.setBounds(1160, 174, 60, 29);
+        
         cmbTrangThai = new javax.swing.JComboBox<>();
         cmbTrangThai.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         cmbTrangThai.setBounds(1040, 109, 180, 30);
+        
         lblCaLam = new javax.swing.JLabel();
         lblCaLam.setBounds(590, 20, 90, 40);
+        
         lblMaSanPham = new javax.swing.JLabel();
         lblMaSanPham.setBounds(20, 80, 110, 30);
+        
         btnLayDanhSach = new javax.swing.JButton();
         btnLayDanhSach.setBounds(620, 140, 210, 40);
+        
         lblTenSanPham = new javax.swing.JLabel();
         lblTenSanPham.setBounds(290, 80, 120, 30);
+        
         cmbTenCongDoan = new javax.swing.JComboBox<>();
         cmbTenCongDoan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         cmbTenCongDoan.setBounds(440, 140, 160, 40);
         lblTenCongDoan = new javax.swing.JLabel();
         lblTenCongDoan.setBounds(290, 140, 120, 40);
+        
         lblHienThi = new javax.swing.JLabel();
         lblHienThi.setBounds(20, 409, 60, 21);
         cmbHienThi = new javax.swing.JComboBox<>();
         cmbHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         cmbHienThi.setBounds(106, 398, 170, 40);
+        
         cmbTenToNhom = new javax.swing.JComboBox<>();
         cmbTenToNhom.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         cmbTenToNhom.setBounds(140, 20, 120, 40);
+        
         lblToNhom = new javax.swing.JLabel();
         lblToNhom.setBounds(20, 20, 90, 40);
+        
         btnChamCong = new javax.swing.JButton();
         btnChamCong.setBounds(327, 396, 160, 40);
+        
         btnXoa = new javax.swing.JButton();
         btnXoa.setBounds(742, 397, 150, 40);
+        
         btnCapNhat = new javax.swing.JButton();
         btnCapNhat.setBackground(new Color(255, 215, 0));
         btnCapNhat.setBounds(543, 396, 150, 40);
+        
         btnLuu = new javax.swing.JButton();
         btnLuu.setBounds(946, 397, 140, 40);
+        
         btnHuy = new javax.swing.JButton();
         btnHuy.setBackground(new Color(255, 0, 255));
         btnHuy.setBounds(1130, 397, 150, 40);
+        
         cmbMaSanPham = new javax.swing.JComboBox<>();
         cmbMaSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         cmbMaSanPham.setBounds(140, 80, 120, 40);
+        
         cmbTenSanPham = new javax.swing.JComboBox<>();
         cmbTenSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         cmbTenSanPham.setBounds(440, 80, 390, 40);
+        
         scrChamCong = new javax.swing.JScrollPane();
         scrChamCong.setBounds(21, 471, 1242, 250);
         tblChamCong = new javax.swing.JTable();

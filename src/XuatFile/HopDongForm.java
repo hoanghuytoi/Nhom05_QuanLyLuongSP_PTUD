@@ -1,7 +1,11 @@
 package XuatFile;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Date;
+
 public class HopDongForm {
-	private String time;
+	private Date time;
 	private String maHopDong;
 	private String tenHopDong;
 	private String tenKhachHang;
@@ -9,8 +13,8 @@ public class HopDongForm {
 	private String yeuCau;
 	private String ngayBatDau;
 	private String ngayKetThuc;
-	private long triGiaHD;
-	private long tienDatCoc;
+	private BigDecimal triGiaHD;
+    private BigDecimal tienDatCoc;
 	
 	
 	
@@ -26,9 +30,14 @@ public class HopDongForm {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	private String formatCurrency(BigDecimal amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(amount) + " VNĐ";
+    }
 
-	public HopDongForm(String time, String maHopDong, String tenHopDong, String tenKhachHang, String nguoiKyKet,
-			String yeuCau, String ngayBatDau, String ngayKetThuc, long triGiaHD, long tienDatCoc) {
+	public HopDongForm(Date time, String maHopDong, String tenHopDong, String tenKhachHang, String nguoiKyKet,
+			String yeuCau, String ngayBatDau, String ngayKetThuc, BigDecimal triGiaHD, BigDecimal tienDatCoc) {
 		super();
 		this.time = time;
 		this.maHopDong = maHopDong;
@@ -42,12 +51,12 @@ public class HopDongForm {
 		this.tienDatCoc = tienDatCoc;
 	}
 
-	public String getTime() {
+	public Date getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
-		this.time = time;
+	public void setTime(Date date) {
+		this.time = date;
 	}
 
 	public String getMaHopDong() {
@@ -106,21 +115,22 @@ public class HopDongForm {
 		this.ngayKetThuc = ngayKetThuc;
 	}
 
-	public long getTriGiaHD() {
-		return triGiaHD;
-	}
+	public BigDecimal getTriGiaHD() {
+        return triGiaHD;
+    }
 
-	public void setTriGiaHD(long triGiaHD) {
-		this.triGiaHD = triGiaHD;
-	}
+    public void setTriGiaHD(BigDecimal triGiaHD) {
+        this.triGiaHD = triGiaHD;
+    }
 
-	public long getTienDatCoc() {
-		return tienDatCoc;
-	}
+    public BigDecimal getTienDatCoc() {
+        return tienDatCoc;
+    }
 
-	public void setTienDatCoc(long tienDatCoc) {
-		this.tienDatCoc = tienDatCoc;
-	}
+    public void setTienDatCoc(BigDecimal tienDatCoc) {
+        this.tienDatCoc = tienDatCoc;
+    }
+
 	
 	
 	

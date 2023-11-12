@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HopDong-TPT" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fad74b6a-6ad6-4bc5-a36e-93423972d8b0">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="428"/>
+	<property name="ireport.y" value="140"/>
 	<field name="time" class="java.lang.String"/>
 	<field name="maHopDong" class="java.lang.String"/>
 	<field name="tenHopDong" class="java.lang.String"/>
@@ -62,42 +62,42 @@
 	<detail>
 		<band height="691" splitType="Stretch">
 			<staticText>
-				<reportElement x="2" y="316" width="170" height="20" uuid="8ed27fad-f84d-4f72-a2b9-2fa3cf15405d"/>
+				<reportElement x="0" y="361" width="170" height="20" uuid="8ed27fad-f84d-4f72-a2b9-2fa3cf15405d"/>
 				<textElement markup="none">
 					<font fontName="Times New Roman" size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[II. Điều khoản hợp đồng]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="46" y="347" width="189" height="20" uuid="45a35e0a-c836-4a67-8bb7-98665ddf7faa"/>
+				<reportElement x="46" y="391" width="189" height="20" uuid="45a35e0a-c836-4a67-8bb7-98665ddf7faa"/>
 				<textElement markup="none">
 					<font fontName="Times New Roman" size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[1. Điều khoản thông tin các bên]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="46" y="381" width="189" height="20" uuid="6c971c51-826a-4a79-8aff-3424409a541c"/>
+				<reportElement x="46" y="421" width="189" height="20" uuid="6c971c51-826a-4a79-8aff-3424409a541c"/>
 				<textElement markup="none">
 					<font fontName="Times New Roman" size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[2. Điều khoản về sản phẩm]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="46" y="417" width="189" height="20" uuid="d9272536-e76d-49e6-b1e0-2421657d0743"/>
+				<reportElement x="46" y="451" width="189" height="20" uuid="d9272536-e76d-49e6-b1e0-2421657d0743"/>
 				<textElement markup="none">
 					<font fontName="Times New Roman" size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[3. Điều khoản về giá cả]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="46" y="452" width="189" height="20" uuid="389f0c43-cedb-467d-8703-068180c3e033"/>
+				<reportElement x="46" y="481" width="189" height="20" uuid="389f0c43-cedb-467d-8703-068180c3e033"/>
 				<textElement markup="none">
 					<font fontName="Times New Roman" size="14" isBold="false"/>
 				</textElement>
 				<text><![CDATA[4. Điều khoản về thanh toán]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="340" y="208" width="35" height="20" uuid="4492fd5c-5a6e-452f-b910-d47d6cc10a63"/>
+				<reportElement x="305" y="208" width="35" height="20" uuid="4492fd5c-5a6e-452f-b910-d47d6cc10a63"/>
 				<textElement>
 					<font fontName="Times New Roman" size="15"/>
 				</textElement>
@@ -118,7 +118,7 @@
 				<text><![CDATA[Người đại diện]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="505" width="457" height="17" uuid="f9225961-2578-4794-ba95-d2a8963da797"/>
+				<reportElement x="30" y="515" width="457" height="17" uuid="f9225961-2578-4794-ba95-d2a8963da797"/>
 				<textElement markup="none">
 					<font fontName="Times New Roman" size="14" isBold="false" isItalic="true"/>
 				</textElement>
@@ -216,28 +216,28 @@
 				<text><![CDATA[Trị giá hợp đồng:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="185" y="208" width="155" height="20" uuid="01942235-2fa7-4c52-a90b-28b5c9ab3296"/>
+				<reportElement x="185" y="208" width="118" height="20" uuid="01942235-2fa7-4c52-a90b-28b5c9ab3296"/>
 				<textElement>
 					<font fontName="Times New Roman" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{triGiaHD}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="56" y="243" width="75" height="20" uuid="dbb1a039-e557-4a9c-9976-373673254da2"/>
+				<reportElement x="56" y="243" width="100" height="20" uuid="dbb1a039-e557-4a9c-9976-373673254da2"/>
 				<textElement>
 					<font fontName="Times New Roman" size="15"/>
 				</textElement>
 				<text><![CDATA[Tiền đặt cọc:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="185" y="243" width="155" height="20" uuid="840cfa91-5e3f-43bb-8913-8248054b4741"/>
+				<reportElement x="185" y="243" width="120" height="20" uuid="840cfa91-5e3f-43bb-8913-8248054b4741"/>
 				<textElement>
 					<font fontName="Times New Roman" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tienDatCoc}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="340" y="243" width="35" height="20" uuid="5d7fd115-5590-40af-98c1-e1b52a85c183"/>
+				<reportElement x="305" y="243" width="35" height="20" uuid="5d7fd115-5590-40af-98c1-e1b52a85c183"/>
 				<textElement>
 					<font fontName="Times New Roman" size="15"/>
 				</textElement>
@@ -251,7 +251,7 @@
 				<text><![CDATA[Yêu cầu:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="185" y="278" width="322" height="20" uuid="274236b9-d73f-4a78-ac14-9fb5757d6638"/>
+				<reportElement x="185" y="278" width="350" height="72" uuid="274236b9-d73f-4a78-ac14-9fb5757d6638"/>
 				<textElement>
 					<font fontName="Times New Roman" size="15"/>
 				</textElement>

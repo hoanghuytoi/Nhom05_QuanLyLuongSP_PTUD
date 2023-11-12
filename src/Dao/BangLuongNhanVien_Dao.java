@@ -52,6 +52,52 @@ public class BangLuongNhanVien_Dao {
         return dsBangLuong;
     }
     
+    public ArrayList<BangLuongNhanVien> danhSachBangLuongTheoThangNam(String thang, String nam) {
+        PreparedStatement stm = null;
+        ArrayList<BangLuongNhanVien> dsBangLuong = new ArrayList<>();
+        NhanVien_Dao nhanVien_DAO = new NhanVien_Dao();
+
+        try {
+            ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String truyVan = "SELECT * FROM BangLuongNhanVien WHERE MONTH(ngayTinh) = ? AND YEAR(ngayTinh) = ?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, thang);
+            stm.setString(2, nam);
+
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                String maBangLuong = rs.getString("maBangLuong");
+                String maNhanVien = rs.getString("maNhanVien");
+                int soNgayDiLam = rs.getInt("soNgayDiLam");
+                int soNgayNghi = rs.getInt("soNgayNghi");
+                int soPhepNghi = rs.getInt("soPhepNghi");
+                Date ngayTinh = rs.getDate("ngayTinh");
+                String luongTheoThang = rs.getString("luongTheoThang");
+                double luongTangCa = rs.getBigDecimal("luongTangCa").doubleValue();
+                double phuCap = rs.getBigDecimal("phuCap").doubleValue();
+                double thucLanh = rs.getBigDecimal("thucLanh").doubleValue();
+                String donViTien = rs.getString("donViTien");
+                NhanVien nhanVien = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(maNhanVien);
+                dsBangLuong.add(new BangLuongNhanVien(maBangLuong, nhanVien, soNgayDiLam, soNgayNghi, soPhepNghi, ngayTinh, luongTheoThang,luongTangCa,phuCap, thucLanh, donViTien));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        return dsBangLuong;
+    }
+    
     public ArrayList<BangLuongNhanVien> layDanhSachBangLuongTheoMaNhanVien(String maNhanVien) {
         PreparedStatement stm = null;
         ArrayList<BangLuongNhanVien> dsBangLuong = new ArrayList<BangLuongNhanVien>();

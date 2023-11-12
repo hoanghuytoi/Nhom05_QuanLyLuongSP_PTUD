@@ -9,8 +9,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
@@ -44,6 +51,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -127,6 +135,7 @@ public class NhanVien_GUI extends JPanel {
     private String stErrNhanVienKhongDuTuoi;
     private String stErrTienKhongHopLe;
     private String stSoTienLonHonKhong;
+    private String stTren;
 
 	private JSeparator jSeparator1_2;
 	private JSeparator jSeparator1_3;
@@ -604,7 +613,7 @@ public class NhanVien_GUI extends JPanel {
 		add(btnThem);
 		btnThemNhieu.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnThemNhieuActionPerformed(evt);
+				btnThemNhieuActionPerformed(evt);
 			}
 		});
 
@@ -1054,6 +1063,77 @@ public class NhanVien_GUI extends JPanel {
 		setInit();
 	}
 
+	private void btnThemNhieuActionPerformed(java.awt.event.ActionEvent evt) {
+        ArrayList<NhanVien> nhanVienList = new ArrayList<>();
+        File file = new File("./excelData");
+        JFileChooser openFileChooser = new JFileChooser(file.getAbsolutePath());
+        openFileChooser.setDialogTitle("Open file");
+        openFileChooser.removeChoosableFileFilter(openFileChooser.getFileFilter());
+        FileFilter filter = new FileNameExtensionFilter("Excel FIle(.xlsx)", "xlsx");
+        openFileChooser.setFileFilter(filter);
+        int count = 0;
+        int total;
+        if (openFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            File inpuFile = openFileChooser.getSelectedFile();
+            try {
+                FileInputStream in = new FileInputStream(inpuFile);
+                try {
+                    XSSFWorkbook importFile = new XSSFWorkbook(in);
+                    XSSFSheet sheeth = importFile.getSheetAt(0);
+                    Iterator<Row> rowIterator = sheeth.iterator();
+                    Row row;
+                    try {
+                        for (int i = 1; i <= sheeth.getLastRowNum(); i++) {
+                            try {
+                                row = sheeth.getRow(i);
+                                String hoTen = row.getCell(0).getStringCellValue();
+                                String soCCCD = row.getCell(1).getStringCellValue();
+                                String email = row.getCell(2).getStringCellValue();
+                                String sdt = row.getCell(3).getStringCellValue();
+                                String diaChi = row.getCell(4).getStringCellValue();
+                                String ngaySinh = row.getCell(5).getStringCellValue();
+                                String gioiTinh = row.getCell(6).getStringCellValue();
+                                String phongBan = row.getCell(7).getStringCellValue();
+                                String chucVu = row.getCell(8).getStringCellValue();
+                                String ngayVaoLam = row.getCell(9).getStringCellValue();
+                                String luongThoaThuan = row.getCell(10).getStringCellValue();
+                                String maNhanVien = "PPNV100001";
+                                daoNhanVien = new NhanVien_Dao();
+                                if (daoNhanVien.layDanhSachNhanVien().size() > 0) {
+                                    maNhanVien = "PPNV" + (Integer.parseInt(daoNhanVien.layDanhSachNhanVien().get(daoNhanVien.layDanhSachNhanVien().size() - 1).getMaNhanVien().split("V")[1]) + 1);
+                                }
+                                Date ngaySinh1 = new SimpleDateFormat("yyyy-MM-dd").parse(ngaySinh);
+                                Date ngayVaoLam1 = new SimpleDateFormat("yyyy-MM-dd").parse(ngayVaoLam);
+                                PhongBan_Dao phongBanDao = new PhongBan_Dao();
+                                PhongBan phongBan1 = phongBanDao.layMotPhongBanTheoTen(phongBan);
+                                NhanVien nhanVienThem = new NhanVien(maNhanVien, hoTen, ngaySinh1, soCCCD, sdt, email,
+                                        "111111", chucVu, ngayVaoLam1, Double.parseDouble(luongThoaThuan), "Nam".equals(gioiTinh) ? true : false, "man.png", diaChi, phongBan1);
+                                if (nhanVienThem != null) {
+                                    if (daoNhanVien.themMotNhanVien(nhanVienThem)) {
+                                        count++;
+                                    }
+                                }
+                            } catch (Exception e) {
+                                System.out.println("erro");
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Lỗi get data ");
+                    } finally {
+                        JOptionPane.showMessageDialog(null, stThemThanhCong + " " + count + " " + stTren + " " + sheeth.getLastRowNum());
+                        taiDuLieuLenBang();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(NhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(NhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(NhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+	
 	private void rdoNamActionPerformed(java.awt.event.ActionEvent evt) {
 	}
 	

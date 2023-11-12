@@ -959,24 +959,32 @@ public class HopDong_GUI extends JPanel {
     }
 
 	private void btnInHopDongActionPerformed(ActionEvent evt) {
-//	    int selectedRow = tblHopDong.getSelectedRow();
-//	    if (selectedRow != -1) {
-//	        try {
-//	            String maHopDong = tblHopDong.getValueAt(selectedRow, 1).toString();
-//	            HopDong selectedHopDong = layHopDongTheoMa(maHopDong);
-//	            if (selectedHopDong != null) {
-//	                xuatHD r = new xuatHD();
-//	                //r.inHopDong(selectedHopDong);
-//	            } else {
-//	                System.out.println("Không tìm thấy thông tin hợp đồng.");
-//	            }
-//	        } catch (Exception e) {
-//	            e.printStackTrace();
-//	        }
-//	    } else {
-//	        JOptionPane.showMessageDialog(this, "Vui lòng chọn một hợp đồng để in.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-//	    }
+	    int selectedRow = tblHopDong.getSelectedRow();
+	    if (selectedRow != -1) {
+	        try {
+	            String maHopDong = tblHopDong.getValueAt(selectedRow, 1).toString();
+	            hopDongDao = new HopDong_Dao();
+	            HopDong selectedHopDong = hopDongDao.layRaMotHopDongTheoMaHopDong(maHopDong);
+	            
+	            if (selectedHopDong != null) {
+	                xuatHD r = new xuatHD();
+
+	                ArrayList<HopDong> dsHopDong = new ArrayList<>();
+	                dsHopDong.add(selectedHopDong);
+
+	                r.inHopDong(dsHopDong);
+	            } else {
+	                System.out.println("Không tìm thấy thông tin hợp đồng.");
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Vui lòng chọn một hợp đồng để in.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	}
+
+
 
 
 	private void txtTenHopDongActionPerformed(ActionEvent evt) {

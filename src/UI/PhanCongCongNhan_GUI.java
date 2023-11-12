@@ -631,12 +631,14 @@ public class PhanCongCongNhan_GUI extends JPanel {
         lblErrSoLuongCan.setText("");
         ToNhom_Dao daoToNhom = new ToNhom_Dao();
         ArrayList<ToNhom> toNhomList = daoToNhom.layDanhSachToNhom();
+		CongNhan_Dao congNhan_dao = new CongNhan_Dao();
         cmbToNhom.removeAllItems();
-        toNhomList.forEach(e -> {
-            if (e.getSoLuongCongNhan() >= 0) {
-                cmbToNhom.addItem(e.getTenToNhom());
+        for (ToNhom toNhom : toNhomList) {
+	        int soLuongCongNhan = congNhan_dao.laySoLuongCongNhanTheoToNhom(toNhom.getMaToNhom());
+            if (soLuongCongNhan> 0) {
+                cmbToNhom.addItem(toNhom.getTenToNhom());
             }
-        });
+        }
         
         SanPham sp = daoSanPham.layMotSanPhamTheoMa(tblPhanCong.getValueAt(tblPhanCong.getSelectedRow(), 2).toString());
         ArrayList<CongDoan> listCongDoan = daoCongDoan.layDanhSachCongDoanTheoMaSP(sp.getMaSanPham());

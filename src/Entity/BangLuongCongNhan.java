@@ -14,7 +14,15 @@ public class BangLuongCongNhan {
     private String donViTien;
     private String luongTheoThang;
     
-    public BangLuongCongNhan(String maBangLuong, CongNhan congNhan, int soLuongSanPhamLam, int soNgayDiLam, int soNgayNghi, int soPhepNghi, Date ngayTinh, double tongLuong, String donViTien, String luongTheoThang) {
+    
+    
+    public BangLuongCongNhan() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public BangLuongCongNhan(String maBangLuong, CongNhan congNhan, int soLuongSanPhamLam, int soNgayDiLam, int soNgayNghi, int soPhepNghi, Date ngayTinh, double tongLuong, String donViTien, String luongTheoThang) {
         try {
             setMaBangLuong(maBangLuong);
             setCongNhan(congNhan);
