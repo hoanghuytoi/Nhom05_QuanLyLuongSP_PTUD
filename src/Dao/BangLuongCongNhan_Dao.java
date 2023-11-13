@@ -55,6 +55,43 @@ public class BangLuongCongNhan_Dao {
         return dsBangLuongCongNhan;
     }
     
+    public BangLuongCongNhan layDanhSachBangLuongCNTheoMaBangLuong(String maBangLuong) {
+        PreparedStatement stm = null;
+        BangLuongCongNhan dsBangLuong = null;
+        CongNhan_Dao congNhan_DAO = new CongNhan_Dao();
+        try {
+        	ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String truyVan = "SELECT * FROM BangLuongCongNhan WHERE maBangLuong = ?";
+            stm = con.prepareCall(truyVan);
+            stm.setString(1, maBangLuong);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+            	String maBangLuongtmp = rs.getString("maBangLuong");
+                String maCongNhan = rs.getString("maCongNhan");
+                Date ngayTinh = rs.getDate("ngayTinh");
+                int soLuongSanPhamLam = rs.getInt("soLuongSanPhamLam");
+                int soNgayDiLam = rs.getInt("soNgayDiLam");
+                int soNgayNghi = rs.getInt("soNgayNghi");
+                int soPhepNghi = rs.getInt("soPhepNghi");
+                double tongLuong = rs.getBigDecimal("tongLuong").doubleValue();
+                String donViTien = rs.getString("donViTien");
+                String luongTheoThang = rs.getString("luongTheoThang");
+                CongNhan congNhan = congNhan_DAO.layMotCongNhanTheoMa(maCongNhan);
+                dsBangLuong = new BangLuongCongNhan(maBangLuongtmp, congNhan,soLuongSanPhamLam, soNgayDiLam, soNgayNghi, soPhepNghi, ngayTinh, tongLuong, donViTien, luongTheoThang);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return dsBangLuong;
+    }
+    
     public ArrayList<BangLuongCongNhan> layDanhSachBangLuongTheoMaCongNhan(String maCongNhan) {
         ArrayList<BangLuongCongNhan> dsBangLuong = new ArrayList<BangLuongCongNhan>();
         PreparedStatement stm = null;

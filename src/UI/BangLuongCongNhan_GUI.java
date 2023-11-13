@@ -1,6 +1,8 @@
 package UI;
 
 import Entity.BangLuongCongNhan;
+import Entity.BangLuongNhanVien;
+import XuatFile.xuatIreport;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -33,6 +35,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Custom_UI.ScrollBarCustom;
 import Dao.BangLuongCongNhan_Dao;
+import Dao.BangLuongNhanVien_Dao;
 import Dao.ChamCongCongNhan_Dao;
 
 
@@ -184,7 +187,7 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 		btnChiTiet.setBounds(972, 11, 170, 40);
 		btnChiTiet.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnChiTietActionPerformed(evt);
+				btnChiTietActionPerformed(evt);
 			}
 		});
 		panelButton.add(btnChiTiet);
@@ -242,6 +245,33 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 				cmbNamTinhActionPerformed(evt);
 			}
 		});
+	}
+
+	private void btnChiTietActionPerformed(ActionEvent evt) {
+		int selectedRow = tblBangLuong.getSelectedRow();
+	    if (selectedRow != -1) {
+	        try {
+	            String maBangLuong = tblBangLuong.getValueAt(selectedRow, 1).toString();
+	            bangLuongCN_DAO = new BangLuongCongNhan_Dao();
+	            BangLuongCongNhan selectedBangLuong = bangLuongCN_DAO.layDanhSachBangLuongCNTheoMaBangLuong(maBangLuong);
+	            
+	            if (selectedBangLuong != null) {
+	                xuatIreport r = new xuatIreport();
+
+	                ArrayList<BangLuongCongNhan> dsBangLuong = new ArrayList<>();
+	                dsBangLuong.add(selectedBangLuong);
+
+	                r.xuatChiTietLuongCN(dsBangLuong);
+	            } else {
+	                System.out.println("Không tìm thấy thông tin bảng lương.");
+	            }
+	        } catch (Exception e) {
+	            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi xử lý chi tiết: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            e.printStackTrace();
+	        }
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Vui lòng chọn một bảng lương để xem", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	}
 
 	public void setNamChoCmbNam() {

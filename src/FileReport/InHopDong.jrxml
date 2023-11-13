@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HopDong-TPT" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fad74b6a-6ad6-4bc5-a36e-93423972d8b0">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="140"/>
+	<property name="ireport.y" value="428"/>
 	<field name="time" class="java.lang.String"/>
 	<field name="maHopDong" class="java.lang.String"/>
 	<field name="tenHopDong" class="java.lang.String"/>
@@ -33,9 +33,9 @@
 				<text><![CDATA[HỢP ĐỒNG SẢN XUẤT]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="367" y="0" width="188" height="20" uuid="122dbdb6-f674-4d0e-ba2c-576abd6ae8a5"/>
+				<reportElement x="442" y="0" width="113" height="30" uuid="122dbdb6-f674-4d0e-ba2c-576abd6ae8a5"/>
 				<textElement>
-					<font isItalic="true"/>
+					<font fontName="Times New Roman" size="20" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{time}]]></textFieldExpression>
 			</textField>
@@ -125,14 +125,14 @@
 				<text><![CDATA[Hợp đồng được in thành 2 bản, mỗi bên giữ một bản và có giá trị như nhau.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="35" y="648" width="109" height="20" uuid="eb2eb1f9-e792-4e51-a1af-b4ff6598d106"/>
+				<reportElement x="46" y="618" width="109" height="20" uuid="eb2eb1f9-e792-4e51-a1af-b4ff6598d106"/>
 				<textElement markup="none">
 					<font fontName="Times New Roman" size="13" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[(Ký tên, đóng dấu)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="389" y="648" width="109" height="20" uuid="bc1b21e4-1dc4-4c66-8add-5b24d0a745e5"/>
+				<reportElement x="398" y="618" width="109" height="20" uuid="bc1b21e4-1dc4-4c66-8add-5b24d0a745e5"/>
 				<textElement markup="none">
 					<font fontName="Times New Roman" size="13" isItalic="true"/>
 				</textElement>
@@ -258,19 +258,31 @@
 				<textFieldExpression><![CDATA[$F{yeuCau}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="30" y="628" width="165" height="20" uuid="2ec90661-7884-4769-b0e7-84c9a3a07660"/>
+				<reportElement x="30" y="588" width="165" height="20" uuid="2ec90661-7884-4769-b0e7-84c9a3a07660"/>
 				<textElement>
 					<font fontName="Times New Roman" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tenKhachHang}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="375" y="628" width="160" height="20" uuid="86654b64-90a7-4e20-afaf-8ff358ff2917"/>
+				<reportElement x="375" y="588" width="160" height="20" uuid="86654b64-90a7-4e20-afaf-8ff358ff2917"/>
 				<textElement>
 					<font fontName="Times New Roman" size="15"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nguoiKyKet}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="487" y="149" width="158" height="129" uuid="4d59a98c-3dbf-4fac-ad57-d1c872c7766d"/>
+				<imageExpression><![CDATA["C:\\Users\\hoang\\Videos\\Nhom05_QuanLyLuongSP_PTUD-main\\src\\image\\dauMocCTy.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="487" y="372" width="158" height="129" uuid="b87504bc-19f7-41a0-9915-20de9e2f828e"/>
+				<imageExpression><![CDATA["C:\\Users\\hoang\\Videos\\Nhom05_QuanLyLuongSP_PTUD-main\\src\\image\\dauMocCTy.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="487" y="79" width="158" height="129" uuid="acd50d4b-9718-44aa-b8b4-579256fe73da"/>
+				<imageExpression><![CDATA["C:\\Users\\hoang\\Videos\\Nhom05_QuanLyLuongSP_PTUD-main\\src\\image\\dauMocCTy.png"]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>

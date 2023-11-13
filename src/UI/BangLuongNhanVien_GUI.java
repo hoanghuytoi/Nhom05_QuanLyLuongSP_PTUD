@@ -21,7 +21,9 @@ import Dao.ChamCongNhanVien_Dao;
 import Dao.NhanVien_Dao;
 import Entity.BangLuongNhanVien;
 import Entity.ChamCongNhanVien;
+import Entity.HopDong;
 import Entity.NhanVien;
+import XuatFile.xuatIreport;
 
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
@@ -259,8 +261,30 @@ public class BangLuongNhanVien_GUI extends JPanel {
 	}
 
 	private void btnChiTietActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
-		
+		int selectedRow = tblBangLuong.getSelectedRow();
+	    if (selectedRow != -1) {
+	        try {
+	            String maBangLuong = tblBangLuong.getValueAt(selectedRow, 1).toString();
+	            bangLuongNhanVienDao = new BangLuongNhanVien_Dao();
+	            BangLuongNhanVien selectedBangLuong = bangLuongNhanVienDao.layDanhSachBangLuongTheoMaBangLuong(maBangLuong);
+	            
+	            if (selectedBangLuong != null) {
+	                xuatIreport r = new xuatIreport();
+
+	                ArrayList<BangLuongNhanVien> dsBangLuong = new ArrayList<>();
+	                dsBangLuong.add(selectedBangLuong);
+
+	                r.xuatChiTietLuong(dsBangLuong);
+	            } else {
+	                System.out.println("Không tìm thấy thông tin bảng lương.");
+	            }
+	        } catch (Exception e) {
+	            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi xử lý chi tiết: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+	            e.printStackTrace();
+	        }
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Vui lòng chọn một bảng lương để xem", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	}
 
 	private void btnTinhLuongActionPerformed(java.awt.event.ActionEvent evt) {

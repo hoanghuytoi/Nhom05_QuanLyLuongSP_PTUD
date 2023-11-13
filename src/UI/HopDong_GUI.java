@@ -30,7 +30,7 @@ import Dao.HopDong_Dao;
 import Dao.NhanVien_Dao;
 import Entity.HopDong;
 import Entity.NhanVien;
-import XuatFile.xuatHD;
+import XuatFile.xuatIreport;
 
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -967,7 +967,7 @@ public class HopDong_GUI extends JPanel {
 	            HopDong selectedHopDong = hopDongDao.layRaMotHopDongTheoMaHopDong(maHopDong);
 	            
 	            if (selectedHopDong != null) {
-	                xuatHD r = new xuatHD();
+	                xuatIreport r = new xuatIreport();
 
 	                ArrayList<HopDong> dsHopDong = new ArrayList<>();
 	                dsHopDong.add(selectedHopDong);
