@@ -91,7 +91,6 @@ public class HopDong_GUI extends JPanel {
 	private JComboBox<String> cboNhanVien;
 
 	private JButton btnThem;
-	private JButton btnThemNhieu;
 	private JButton btnXoa;
 	private JButton btnCapNhat;
 	private JButton btnLuu;
@@ -150,8 +149,6 @@ public class HopDong_GUI extends JPanel {
         lblNguoiKyKet.setText(prop.getProperty("HopDong_NguoiKyKet"));
         pnlHopDong.setBorder(new TitledBorder(prop.getProperty("HopDong_ThongTinHD")));
 		scrHopDong.setBorder(new TitledBorder(prop.getProperty("HopDong_TableHD")));
-		
-        btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
         btnThem.setText(prop.getProperty("btnThem"));
         btnXoa.setText(prop.getProperty("btnXoa"));
         btnCapNhat.setText(prop.getProperty("btnCapNhat"));
@@ -467,22 +464,8 @@ public class HopDong_GUI extends JPanel {
 		cboNhanVien.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		pnlHopDong.add(cboNhanVien);
 
-		btnThemNhieu = new JButton();
-		btnThemNhieu.setBounds(62, 434, 140, 40);
-		add(btnThemNhieu);
-		btnThemNhieu.setBackground(new Color(255, 215, 0));
-		btnThemNhieu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		btnThemNhieu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
-		btnThemNhieu.setText("Thêm nhiều");
-		btnThemNhieu.setBorder(null);
-		btnThemNhieu.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnThemNhieuActionPerformed(evt);
-			}
-		});
-
 		btnThem = new JButton();
-		btnThem.setBounds(235, 434, 140, 40);
+		btnThem.setBounds(102, 434, 140, 40);
 		add(btnThem);
 		btnThem.setBackground(new Color(255, 215, 0));
 		btnThem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -496,7 +479,7 @@ public class HopDong_GUI extends JPanel {
 		});
 
 		btnXoa = new JButton();
-		btnXoa.setBounds(406, 434, 140, 40);
+		btnXoa.setBounds(298, 434, 140, 40);
 		add(btnXoa);
 		btnXoa.setBackground(new Color(255, 215, 0));
 		btnXoa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -510,7 +493,7 @@ public class HopDong_GUI extends JPanel {
 		});
 
 		btnCapNhat = new JButton();
-		btnCapNhat.setBounds(576, 434, 140, 40);
+		btnCapNhat.setBounds(486, 434, 140, 40);
 		add(btnCapNhat);
 		btnCapNhat.setBackground(new Color(255, 215, 0));
 		btnCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -524,7 +507,7 @@ public class HopDong_GUI extends JPanel {
 		});
 
 		btnInHopDong = new JButton();
-		btnInHopDong.setBounds(742, 434, 140, 40);
+		btnInHopDong.setBounds(674, 434, 140, 40);
 		add(btnInHopDong);
 		btnInHopDong.setBackground(new Color(255, 218, 185));
 		btnInHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -538,7 +521,7 @@ public class HopDong_GUI extends JPanel {
 		});
 
 		btnLuu = new JButton();
-		btnLuu.setBounds(909, 434, 140, 40);
+		btnLuu.setBounds(870, 434, 140, 40);
 		add(btnLuu);
 		btnLuu.setBackground(new Color(255, 0, 255));
 		btnLuu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -552,7 +535,7 @@ public class HopDong_GUI extends JPanel {
 		});
 
 		btnHuy = new JButton();
-		btnHuy.setBounds(1083, 434, 140, 40);
+		btnHuy.setBounds(1072, 434, 140, 40);
 		add(btnHuy);
 		btnHuy.setBackground(new Color(255, 0, 255));
 		btnHuy.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -634,7 +617,7 @@ public class HopDong_GUI extends JPanel {
 			if (rowSelect != -1) {
 				hienThiDuLieuLenTxt(tblHopDong.getSelectedRow());
 				setEnableForSelected(false);
-				setShow(btnThem, btnCapNhat, btnXoa, btnThemNhieu);
+				setShow(btnThem, btnCapNhat, btnXoa);
 				setHidden(btnHuy, btnLuu);
 				lblErrTenKhachHang.setText("");
 				lblErrTenHopDong.setText("");
@@ -735,7 +718,7 @@ public class HopDong_GUI extends JPanel {
 	}
 
 	private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {
-		setShow(btnThem, btnXoa, btnCapNhat, btnThemNhieu);
+		setShow(btnThem, btnXoa, btnCapNhat);
 		setHidden(btnHuy, btnLuu);
 		isThem = false;
 		setEnableForSelected(false);
@@ -759,7 +742,7 @@ public class HopDong_GUI extends JPanel {
 		isThem = false;
 		setEnableForSelected(true);
 		setShow(btnLuu, btnHuy);
-		setHidden(btnThem, btnCapNhat, btnXoa, btnThemNhieu);
+		setHidden(btnThem, btnCapNhat, btnXoa);
 		txtTienDatCoc.setText(txtTienDatCoc.getText().replaceAll(",", "").trim());
 		txtTriGiaHD.setText(txtTriGiaHD.getText().replaceAll(",", "").trim());
 		setEditTextDateChooser();
@@ -880,7 +863,7 @@ public class HopDong_GUI extends JPanel {
                     System.out.println(e.getMessage());
                 }
                 setEnableForSelected(false);
-                setShow(btnThem, btnCapNhat, btnXoa, btnThemNhieu);
+                setShow(btnThem, btnCapNhat, btnXoa);
                 setHidden(btnLuu, btnHuy);
                 isThem = false;
             } else {
@@ -917,7 +900,7 @@ public class HopDong_GUI extends JPanel {
                     System.out.println(e.getMessage());
                 }
                 setEnableForSelected(false);
-                setShow(btnThem, btnCapNhat, btnXoa, btnThemNhieu);
+                setShow(btnThem, btnCapNhat, btnXoa);
                 setHidden(btnLuu, btnHuy);
             } else {
                 JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
@@ -928,7 +911,7 @@ public class HopDong_GUI extends JPanel {
 	
 	private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {
 		setShow(btnHuy, btnLuu);
-		setHidden(btnThem, btnXoa, btnCapNhat, btnThemNhieu);
+		setHidden(btnThem, btnXoa, btnCapNhat);
 
 		this.isThem = true;
 		xoaTrangTextField();

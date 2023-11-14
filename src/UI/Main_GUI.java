@@ -366,7 +366,7 @@ public class Main_GUI extends JFrame {
         capNhatCongNhan = new MenuItem(iconSubMenuNonSelect, lblCapNhat, ((e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new CongNhan_GUI(), BorderLayout.CENTER);
+                pnBody.add(new CongNhan_GUI(fileName), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -607,7 +607,11 @@ public class Main_GUI extends JFrame {
         // menu Hỗ trợ
         menuHoTro = new MenuItem(iconHoTro, lblHoTro, (ActionEvent e) -> {
             pnBody.removeAll();
-            
+            try {
+                pnBody.add(new HuongDanSuDung_GUI(), BorderLayout.CENTER);
+            } catch (Exception ex) {
+                Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             pnBody.repaint();
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);

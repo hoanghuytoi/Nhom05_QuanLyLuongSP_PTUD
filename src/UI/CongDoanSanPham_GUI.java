@@ -63,7 +63,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 	private JTextField txtSoLuongCan;
 	private JPanel panelCDSP;
 	private JLabel lblTieuDe;
-	private JButton btnThemNhieu;
 	private JButton btnThem;
 	private JButton btnXoa;
 	private JButton btnCapNhat;
@@ -177,8 +176,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		scrTableSanPham.setBorder(new TitledBorder(prop.getProperty("pcd_tieuDeSanPham")));
 		scrTableCongDoan.setBorder(new TitledBorder(prop.getProperty("pcd_tieuDeCongDoan")));
 		panelCDSP.setBorder(new TitledBorder(prop.getProperty("pcd_tieuDeThongTinCD")));
-
-		btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
 		btnThem.setText(prop.getProperty("btnThem"));
 		btnXoa.setText(prop.getProperty("btnXoa"));
 		btnCapNhat.setText(prop.getProperty("btnCapNhat"));
@@ -432,22 +429,8 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		jSeparator_1.setBounds(134, 54, 251, 10);
 		panelCDSP.add(jSeparator_1);
 
-		btnThemNhieu = new JButton();
-		btnThemNhieu.setBounds(76, 476, 140, 40);
-		add(btnThemNhieu);
-		btnThemNhieu.setBackground(new Color(255, 215, 0));
-		btnThemNhieu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		btnThemNhieu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
-		btnThemNhieu.setText("Thêm nhiều");
-		btnThemNhieu.setBorder(null);
-		btnThemNhieu.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnThemNhieuActionPerformed(evt);
-			}
-		});
-
 		btnThem = new JButton();
-		btnThem.setBounds(266, 476, 140, 40);
+		btnThem.setBounds(134, 476, 140, 40);
 		add(btnThem);
 		btnThem.setBackground(new Color(255, 215, 0));
 		btnThem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -461,7 +444,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		});
 
 		btnXoa = new JButton();
-		btnXoa.setBounds(450, 476, 140, 40);
+		btnXoa.setBounds(365, 476, 140, 40);
 		add(btnXoa);
 		btnXoa.setBackground(new Color(255, 215, 0));
 		btnXoa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -475,7 +458,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		});
 
 		btnCapNhat = new JButton();
-		btnCapNhat.setBounds(645, 476, 140, 40);
+		btnCapNhat.setBounds(589, 476, 140, 40);
 		add(btnCapNhat);
 		btnCapNhat.setBackground(new Color(255, 215, 0));
 		btnCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -489,7 +472,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		});
 
 		btnLuu = new JButton();
-		btnLuu.setBounds(838, 476, 140, 40);
+		btnLuu.setBounds(800, 476, 140, 40);
 		add(btnLuu);
 		btnLuu.setBackground(new Color(255, 0, 255));
 		btnLuu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -503,7 +486,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		});
 
 		btnHuy = new JButton();
-		btnHuy.setBounds(1035, 476, 140, 40);
+		btnHuy.setBounds(1020, 476, 140, 40);
 		add(btnHuy);
 		btnHuy.setBackground(new Color(255, 0, 255));
 		btnHuy.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -709,7 +692,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		btnLuu.setEnabled(false);
 		btnHuy.setEnabled(false);
 		btnThem.setEnabled(true);
-		btnThemNhieu.setEnabled(true);
 	}
 
 	@Override
@@ -723,7 +705,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 				btnCapNhat.setEnabled(true);
 				btnXoa.setEnabled(true);
 				btnThem.setEnabled(true);
-				btnThemNhieu.setEnabled(true);
 				btnHuy.setEnabled(false);
 				btnLuu.setEnabled(false);
 				lblErrTenCD.setText("");
@@ -909,7 +890,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 			btnCapNhat.setEnabled(false);
 			btnXoa.setEnabled(false);
 			btnThem.setEnabled(false);
-			btnThemNhieu.setEnabled(false);
 			btnHuy.setEnabled(true);
 			btnLuu.setEnabled(true);
 		}
@@ -920,7 +900,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 			// mở | khóa các btn
 			btnCapNhat.setEnabled(false);
 			btnXoa.setEnabled(false);
-			btnThemNhieu.setEnabled(false);
 			btnThem.setEnabled(false);
 			btnHuy.setEnabled(true);
 			btnLuu.setEnabled(true);
@@ -937,7 +916,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 			btnCapNhat.setEnabled(true);
 			btnXoa.setEnabled(true);
 			btnThem.setEnabled(true);
-			btnThemNhieu.setEnabled(true);
 			btnHuy.setEnabled(false);
 			btnLuu.setEnabled(false);
 
@@ -998,7 +976,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 					btnCapNhat.setEnabled(true);
 					btnXoa.setEnabled(true);
 					btnThem.setEnabled(true);
-					btnThemNhieu.setEnabled(true);
 					btnHuy.setEnabled(false);
 					btnLuu.setEnabled(false);
 					oFlag = null;
@@ -1036,7 +1013,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 					btnCapNhat.setEnabled(true);
 					btnXoa.setEnabled(true);
 					btnThem.setEnabled(true);
-					btnThemNhieu.setEnabled(true);
 					btnHuy.setEnabled(false);
 					btnLuu.setEnabled(false);
 					oFlag = null;

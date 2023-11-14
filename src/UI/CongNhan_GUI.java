@@ -52,6 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -108,16 +109,25 @@ public class CongNhan_GUI extends JPanel {
 	private boolean isThem = false;
 	private boolean isCapNhat = false;
 
-	private String stThongbao;
-	private String stBanXacNhanXoa;
-	private String stXoaThanhCong;
-	private String stXoaThatBai;
-	private String stThemThanhCong;
-	private String stThemThatBai;
-	private String stCapNhatThatBai;
-	private String stKhongTimThayFile;
-    private String stKhongDocDuocFile;
+	private String stErrKhongDeTrong;
+    private String stThongbao;
+    private String stBanXacNhanXoa;
+    private String stXoaThanhCong;
+    private String stXoaThatBai;
+    private String stThemThanhCong;
+    private String stThemThatBai;
     private String stTren;
+    private String stKhongTimThayFile;
+    private String stKhongDocDuocFile;
+    private String stCapNhatThanhCong;
+    private String stCapNhatThatBai;
+    private String stErrHoTen;
+    private String stErrSoCCCD;
+    private String stErrEmail;
+    private String stErrSdt;
+    private String stErrNgaySinh;
+    private String stErrNgayVaoLam;
+    private String stErrCongNhanKhongDuTuoi;
     private String stCongNhan;
 
 	private JSeparator jSeparator1_2;
@@ -128,9 +138,9 @@ public class CongNhan_GUI extends JPanel {
 	private ToNhom_Dao toNhom_Dao;
 
 
-	public CongNhan_GUI() throws Exception {
+	public CongNhan_GUI(String fileName) throws Exception {
 		initComponents();
-		//caiDatNgonNguChoView(fileName);
+		caiDatNgonNgu(fileName);
 		ConnectionDB.ConnectDB.getInstance().connect();
         daoCongNhan = new CongNhan_Dao();
         toNhom_Dao = new ToNhom_Dao();
@@ -139,6 +149,70 @@ public class CongNhan_GUI extends JPanel {
 		this.txtMaCongNhan.setEditable(false);
 
 	}
+	
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
+        btnThem.setText(prop.getProperty("btnThem"));
+        btnXoa.setText(prop.getProperty("btnXoa"));
+        btnCapNhat.setText(prop.getProperty("btnCapNhat"));
+        btnLuu.setText(prop.getProperty("btnLuu"));
+        btnHuy.setText(prop.getProperty("btnHuy"));
+
+        lblMaCongNhan.setText(prop.getProperty("maCongNhan"));
+        lblHoVaTen.setText(prop.getProperty("hoTen"));
+        lblSoCCCD.setText(prop.getProperty("soCCCD"));
+        lblEmail.setText(prop.getProperty("email"));
+        lblSoDienThoai.setText(prop.getProperty("sdt"));
+        lblDiaChi.setText(prop.getProperty("diaChi"));
+        lblNgaySinh.setText(prop.getProperty("ngaySinh"));
+        lblGioiTinh.setText(prop.getProperty("gioiTinh"));
+        lblToNhom.setText(prop.getProperty("toNhom"));
+        lblNgayVaoLam.setText(prop.getProperty("ngayVaoLam"));
+        lblAnhDaiDien.setText(prop.getProperty("anhDaiDien"));
+        rdoNam.setText(prop.getProperty("nam"));
+        rdoNu.setText(prop.getProperty("nu"));
+        stCongNhan = prop.getProperty("congNhan");
+
+        ChangeName(tblCongNhan, 0, prop.getProperty("pcd_stt"));
+        ChangeName(tblCongNhan, 1, lblMaCongNhan.getText());
+        ChangeName(tblCongNhan, 2, lblHoVaTen.getText());
+        ChangeName(tblCongNhan, 3, lblSoCCCD.getText());
+        ChangeName(tblCongNhan, 4, lblGioiTinh.getText());
+        ChangeName(tblCongNhan, 5, lblNgaySinh.getText());
+        ChangeName(tblCongNhan, 6, lblSoDienThoai.getText());
+        ChangeName(tblCongNhan, 7, lblDiaChi.getText());
+        ChangeName(tblCongNhan, 8, lblAnhDaiDien.getText());
+        ChangeName(tblCongNhan, 9, lblEmail.getText());
+        ChangeName(tblCongNhan, 10, lblToNhom.getText());
+        ChangeName(tblCongNhan, 11, lblNgayVaoLam.getText());
+
+        stThongbao = prop.getProperty("thongBao");
+        stBanXacNhanXoa = prop.getProperty("banXacNhanXoa");
+        stXoaThanhCong = prop.getProperty("xoaThanhCong");
+        stXoaThatBai = prop.getProperty("xoaThatBai");
+        stThemThanhCong = prop.getProperty("themThanhCong");
+        stThemThatBai = prop.getProperty("themThatBai");
+        stTren = prop.getProperty("tren");
+        stKhongDocDuocFile = prop.getProperty("khongDocDuocFile");
+        stKhongTimThayFile = prop.getProperty("khongTimThayFile");
+        stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
+        stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+        stErrKhongDeTrong = prop.getProperty("khongDeTrong");
+        stErrHoTen = prop.getProperty("hoTenKhongHopLe");
+        stErrSoCCCD = prop.getProperty("soCCCDKhongHopLe");
+        stErrEmail = prop.getProperty("emailKhongHopLe");
+        stErrSdt = prop.getProperty("sdtKhongHopLe");
+        stErrNgaySinh = prop.getProperty("ngaySinhKhongHopLe");
+        stErrNgayVaoLam = prop.getProperty("ngayVaoLamKhongHopLe");
+        stErrCongNhanKhongDuTuoi = prop.getProperty("congNhanChuaDuTuoi");
+    }
+
+    public void ChangeName(JTable table, int col_index, String col_name) {
+        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
+    }
 
 	public void excute() throws Exception {
 		model = (DefaultTableModel) tblCongNhan.getModel();
@@ -737,7 +811,7 @@ public class CongNhan_GUI extends JPanel {
 	private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {
 		int rowSelected = tblCongNhan.getSelectedRow();
 		if (rowSelected != -1) {
-			if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa nhân viên này không","Thông báo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			if (JOptionPane.showConfirmDialog(null, stBanXacNhanXoa, stThongbao, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				if (daoCongNhan.xoaCongNhanTheoMa(tblCongNhan.getValueAt(tblCongNhan.getSelectedRow(), 1).toString())) {
 					JOptionPane.showMessageDialog(null, stXoaThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 					try {
@@ -759,7 +833,86 @@ public class CongNhan_GUI extends JPanel {
 		isThem = false;
 	}
 	
-	
+	public boolean validateForm() {
+        boolean flag = true;
+        String hoTen = txtHoVaTen.getText().trim();
+        String soCCCD = txtSoCCCD.getText().trim();
+        String email = txtEmail.getText().trim();
+        String soDienThoai = txtSoDienThoai.getText().trim();
+        String diaChi = txtDiaChi.getText().trim();
+        Date ngaySinh = dcsNgaySinh.getDate();
+        Date ngayVaoLam = dcsNgayVaoLam.getDate();
+
+        if (hoTen.equals("")) {
+            lblErrHoVaTen.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!hoTen.matches("^([A-ZĐÂÁƯ]{1}[a-zvxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)"
+                + "((\\s{1}[A-ZĐÂÁƯ][{1}a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$")) {
+        	lblErrHoVaTen.setText(stErrHoTen);
+            flag = false;
+        } else {
+        	lblErrHoVaTen.setText("");
+        }
+        if (soCCCD.equals("")) {
+            lblErrSoCCCD.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!soCCCD.matches("^[0-9]{12}$")) {
+        	lblErrSoCCCD.setText(stErrSoCCCD);
+            flag = false;
+        } else {
+        	lblErrSoCCCD.setText("");
+        }
+        if (email.equals("")) {
+            lblErrEmail.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            lblErrEmail.setText(stErrEmail);
+            flag = false;
+        } else {
+            lblErrEmail.setText("");
+        }
+        if (soDienThoai.equals("")) {
+            lblErrSoDienThoai.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!soDienThoai.matches("^\\+84[1-9][0-9]{8}$")) {
+            lblErrSoDienThoai.setText(stErrSdt);
+            flag = false;
+        } else {
+            lblErrSoDienThoai.setText("");
+        }
+        if (diaChi.equals("")) {
+            lblErrDiaChi.setText(stErrKhongDeTrong);
+            flag = false;
+        } else {
+            lblErrDiaChi.setText("");
+        }
+        if (!ngaySinh.before(new Date())) {
+            lblErrNgaySinh.setText(stErrNgaySinh);
+            flag = false;
+        } else if (calculateAgeWithJava7(ngaySinh, new Date()) < 18) {
+            lblErrNgaySinh.setText(stErrCongNhanKhongDuTuoi);
+            flag = false;
+        } else {
+            lblErrNgaySinh.setText("");
+        }
+        if (ngayVaoLam.after(new Date())) {
+            lblErrNgayVaoLam.setText(stErrNgayVaoLam);
+            flag = false;
+        } else {
+            lblErrNgayVaoLam.setText("");
+        }
+
+        return flag;
+    }
+
+    public int calculateAgeWithJava7(Date birthDate, Date currentDate) {
+        // validate inputs ...                                                                               
+        DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        int d1 = Integer.parseInt(formatter.format(birthDate));
+        int d2 = Integer.parseInt(formatter.format(currentDate));
+        int age = (d2 - d1) / 10000;
+        return age;
+    }
 	
 	private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
@@ -773,24 +926,32 @@ public class CongNhan_GUI extends JPanel {
 						dcsNgayVaoLam.getDate(), rdoNam.isSelected(), lblHinhAnh.getIcon().toString().split("anhCongNhan/")[1], txtDiaChi.getText(), tn);
 				congNhanEntity.toString();
 				if (isThem) {
+					boolean coHopLe = validateForm();
+	                if (!coHopLe) {
+	                    return;
+	                }
 					if (this.daoCongNhan.themMotCongNhan(congNhanEntity)) {
 						taiDuLieuLenBang();
-						JOptionPane.showMessageDialog(this,"Thêm công nhân thành công");
+	                    JOptionPane.showMessageDialog(null, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 						setHidden(btnLuu, btnHuy);
 						setShow(btnThem, btnThemNhieu, btnXoa, btnCapNhat);
 						setEnableForInput(false);
 						isThem = false;
 					} else {
-						JOptionPane.showMessageDialog(null, "Thêm công nhân thất bại");
+	                    JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 						setHidden(btnLuu, btnHuy);
 						setShow(btnThem, btnThemNhieu, btnXoa, btnCapNhat);
 						setEnableForInput(false);
 					}
 				} 
 				else {
+					boolean coHopLe = validateForm();
+	                if (!coHopLe) {
+	                    return;
+	                }
 					if (this.daoCongNhan.capNhatMotCongNhan(congNhanEntity)) {
 						taiDuLieuLenBang();
-						JOptionPane.showMessageDialog(this, "Cập nhật công nhân thành công", stThongbao, JOptionPane.INFORMATION_MESSAGE);
+	                    JOptionPane.showMessageDialog(null, stCapNhatThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
 						setHidden(btnLuu, btnHuy);
 						setShow(btnThem, btnThemNhieu, btnCapNhat, btnXoa);
 						setEnableForInput(false);
@@ -824,11 +985,9 @@ public class CongNhan_GUI extends JPanel {
 		setInit();
 	}
 
-	private void btnThemNhieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemNhieuMouseClicked
-        // TODO add your handling code here:
+	private void btnThemNhieuMouseClicked(java.awt.event.MouseEvent evt) {
         File file = new File("./excelData");
         JFileChooser fileChooser = new JFileChooser(file.getAbsolutePath());
-//        int respone = fileChooser.showOpenDialog(null);
         fileChooser.setCurrentDirectory(new File("../excelData"));
         fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel File (.xlsx)", "xlsx");

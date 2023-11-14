@@ -91,7 +91,6 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 	private JSeparator jSeparator5_7;
 
 	private JButton btnThem;
-	private JButton btnThemNhieu;
 	private JButton btnXoa;
 	private JButton btnCapNhat;
 	private JButton btnLuu;
@@ -185,8 +184,6 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		scrHopDong.setBorder(new TitledBorder(prop.getProperty("sp_tieuDeTblHopDong")));
 		scrTableSanPham.setBorder(new TitledBorder(prop.getProperty("sp_tieuDeTblSanPham")));
 		pnlThongTinSP.setBorder(new TitledBorder(prop.getProperty("sp_tieuDeThongTinSanPham")));
-		
-		btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
 		btnThem.setText(prop.getProperty("btnThem"));
 		btnXoa.setText(prop.getProperty("btnXoa"));
 		btnCapNhat.setText(prop.getProperty("btnCapNhat"));
@@ -510,23 +507,8 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 			}
 		});
 
-
-		btnThemNhieu = new JButton();
-		btnThemNhieu.setBounds(72, 403, 140, 40);
-		add(btnThemNhieu);
-		btnThemNhieu.setBackground(new Color(255, 215, 0));
-		btnThemNhieu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-		btnThemNhieu.setIcon(new ImageIcon(NhanVien_GUI.class.getResource("/image/icon/them.png")));
-		btnThemNhieu.setText("Thêm nhiều");
-		btnThemNhieu.setBorder(null);
-		btnThemNhieu.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//btnThemNhieuActionPerformed(evt);
-			}
-		});
-
 		btnThem = new JButton();
-		btnThem.setBounds(269, 403, 140, 40);
+		btnThem.setBounds(107, 403, 140, 40);
 		add(btnThem);
 		btnThem.setBackground(new Color(255, 215, 0));
 		btnThem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -540,7 +522,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		});
 
 		btnXoa = new JButton();
-		btnXoa.setBounds(474, 403, 140, 40);
+		btnXoa.setBounds(352, 403, 140, 40);
 		add(btnXoa);
 		btnXoa.setBackground(new Color(255, 215, 0));
 		btnXoa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -554,7 +536,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		});
 
 		btnCapNhat = new JButton();
-		btnCapNhat.setBounds(670, 403, 140, 40);
+		btnCapNhat.setBounds(604, 403, 140, 40);
 		add(btnCapNhat);
 		btnCapNhat.setBackground(new Color(255, 215, 0));
 		btnCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -567,7 +549,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 			}
 		});
 		btnLuu = new JButton();
-		btnLuu.setBounds(882, 403, 140, 40);
+		btnLuu.setBounds(848, 403, 140, 40);
 		add(btnLuu);
 		btnLuu.setBackground(new Color(255, 0, 255));
 		btnLuu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -845,7 +827,6 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 			btnCapNhat.setEnabled(false);
 			btnLuu.setEnabled(true);
 			btnHuy.setEnabled(true);
-			btnThemNhieu.setEnabled(false);
 			lblThemAnhSanPham.setEnabled(true);
 			xoaTrangField();
 			txtMaSanPham.setText(sanPham_DAO.layMaSanPhamDeThem());
@@ -853,7 +834,6 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		} else if (o.equals(btnCapNhat)) {
 			oFlag = e.getSource();
 			btnThem.setEnabled(false);
-			btnThemNhieu.setEnabled(false);
 			btnXoa.setEnabled(false);
 			btnCapNhat.setEnabled(false);
 			btnLuu.setEnabled(true);
@@ -905,7 +885,6 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 				if (coThemDuoc) {
 					taiDuLieuLenBangSanPham(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
 					btnThem.setEnabled(true);
-					btnThemNhieu.setEnabled(true);
 					btnXoa.setEnabled(true);
 					btnCapNhat.setEnabled(true);
 					btnLuu.setEnabled(false);
@@ -946,7 +925,6 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 				if (coSuaDuoc) {
 					taiDuLieuLenBangSanPham(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
 					btnThem.setEnabled(true);
-					btnThemNhieu.setEnabled(true);
 					btnXoa.setEnabled(true);
 					btnCapNhat.setEnabled(true);
 					btnLuu.setEnabled(false);
@@ -971,7 +949,6 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 				tblDanhSachSanPham.setRowSelectionInterval(0, 0);
 			}
 			btnThem.setEnabled(true);
-			btnThemNhieu.setEnabled(true);
 			btnXoa.setEnabled(true);
 			btnCapNhat.setEnabled(true);
 			btnLuu.setEnabled(false);
@@ -995,7 +972,6 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 				btnThem.setEnabled(true);
 				btnCapNhat.setEnabled(true);
 				btnXoa.setEnabled(true);
-				btnThemNhieu.setEnabled(true);
 				btnHuy.setEnabled(false);
 				btnLuu.setEnabled(false);
 				lblErrSoLuong.setText("");

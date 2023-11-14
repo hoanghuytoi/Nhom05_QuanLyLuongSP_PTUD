@@ -249,7 +249,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         cmbTrangThai.addItemListener(this::toggleCmbTrangThai);
 
         setCmbGio("Sáng");
-        //caiDatNgonNguChoView(fileName);
+        caiDatNgonNguChoView(fileName);
         setEditTextDateChooser();
     }
 

@@ -441,10 +441,10 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 			int nam = Integer.parseInt(cmbNamTinh.getSelectedItem().toString());
 			boolean tinhLuong = bangLuongCN_DAO.tinhLuongCongNhan(thang, nam);
 			if (tinhLuong) {
-				JOptionPane.showMessageDialog(this, stTinhLuongThanhCong);
+				JOptionPane.showMessageDialog(this, "Tính lương công nhân thành công");
 				taiDuLieuLenBang();
 			} else {
-				JOptionPane.showMessageDialog(this, stTinhLuongThatBai);
+				JOptionPane.showMessageDialog(this, "Tính lương công nhân thất bại!!!");
 			}
 
 		}

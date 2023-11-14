@@ -101,6 +101,8 @@ public class TimKiemNhanVien_GUI extends JPanel implements ActionListener {
 		
 		
 	}
+	
+	
 
 	private void initComponents() {
 		setBackground(new Color(255, 255, 255));
