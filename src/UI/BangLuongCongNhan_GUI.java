@@ -2,6 +2,9 @@ package UI;
 
 import Entity.BangLuongCongNhan;
 import Entity.BangLuongNhanVien;
+import Entity.ChamCongCongNhan;
+import Entity.CongNhan;
+import Entity.NhanVien;
 import XuatFile.xuatIreport;
 
 import java.awt.Color;
@@ -37,6 +40,9 @@ import Custom_UI.ScrollBarCustom;
 import Dao.BangLuongCongNhan_Dao;
 import Dao.BangLuongNhanVien_Dao;
 import Dao.ChamCongCongNhan_Dao;
+import Dao.ChamCongNhanVien_Dao;
+import Dao.CongNhan_Dao;
+import Dao.NhanVien_Dao;
 
 
 public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
@@ -57,6 +63,7 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 	private String stTinhLuongThanhCong;
 	private String stTinhLuongThatBai;
 	private JLabel lblTieuDe;
+	private CongNhan_Dao congNhanDao;
 
 	public BangLuongCongNhan_GUI(String fileName) throws IOException {
 		this.fileName = fileName;
@@ -327,17 +334,28 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 	}
 
 	public void taiDuLieuLenBang() {
-		while (tblBangLuong.getRowCount() != 0) {
-			modelTableChamCong.removeRow(0);
-		}
-		ArrayList<BangLuongCongNhan> dsBangLuong = bangLuongCN_DAO.layDanhSachBangLuongCongNhan();
-		for (BangLuongCongNhan bangLuong : dsBangLuong) {
-			String data[] = {(modelTableChamCong.getRowCount() + 1) + "", bangLuong.getMaBangLuong(), bangLuong.getCongNhan().getMaCongNhan(),
-					bangLuong.getCongNhan().getHoTen(), bangLuong.getCongNhan().getMaCCCD(), bangLuong.getSoNgayDiLam() + "",
-					bangLuong.getSoNgayNghi() + "", bangLuong.getSoPhepNghi() + "",bangLuong.getSoLuongSanPhamLam() + "" , bangLuong.getLuongTheoThang(), bangLuong.getNgayTinh().toString(),
-					(bangLuong.getTongLuong() == 0) ? "0" : nf.format(bangLuong.getTongLuong()),bangLuong.getDonViTien()};
-			modelTableChamCong.addRow(data);
-		}
+	    // Xóa tất cả các dòng trong bảng
+	    modelTableChamCong.setRowCount(0);
+
+	    ArrayList<BangLuongCongNhan> dsBangLuong = bangLuongCN_DAO.layDanhSachBangLuongCongNhan();
+	    for (BangLuongCongNhan bangLuong : dsBangLuong) {
+	        String data[] = {
+	            (modelTableChamCong.getRowCount() + 1) + "",
+	            bangLuong.getMaBangLuong(),
+	            bangLuong.getCongNhan().getMaCongNhan(),
+	            bangLuong.getCongNhan().getHoTen(),
+	            bangLuong.getCongNhan().getMaCCCD(),
+	            bangLuong.getSoNgayDiLam() + "",
+	            bangLuong.getSoNgayNghi() + "",
+	            bangLuong.getSoPhepNghi() + "",
+	            bangLuong.getSoLuongSanPhamLam() + "",
+	            bangLuong.getLuongTheoThang(),
+	            bangLuong.getNgayTinh().toString(),
+	            (bangLuong.getTongLuong() == 0) ? "0" : nf.format(bangLuong.getTongLuong()),
+	            bangLuong.getDonViTien()
+	        };
+	        modelTableChamCong.addRow(data);
+	    }
 	}
 
 	public void excute() {
@@ -432,7 +450,7 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 			btnInBangLuong.setEnabled(false);
 		}
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
@@ -444,9 +462,10 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Tính lương công nhân thành công");
 				taiDuLieuLenBang();
 			} else {
-				JOptionPane.showMessageDialog(this, "Tính lương công nhân thất bại!!!");
+				JOptionPane.showMessageDialog(this, "Tính lương công nhân thất bại");
 			}
 
 		}
 	}
+
 }

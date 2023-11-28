@@ -78,7 +78,7 @@ public class TimKiemCongNhan_GUI extends JPanel implements ActionListener {
 		daoToNhom = new ToNhom_Dao();
 		model = (DefaultTableModel) tblNhanVien.getModel();
 		
-		taiDuLieuLenBang("all", "all", "all", "all", "all");
+		//taiDuLieuLenBang("all", "all", "all", "all", "all");
 		btnTimKiem.addActionListener(this);
 		btnXoaRong.addActionListener(this);
 		btnQuayLai.addActionListener(this);

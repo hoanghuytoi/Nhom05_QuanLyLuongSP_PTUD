@@ -3,6 +3,11 @@ package UI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,10 +15,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,10 +38,13 @@ import javax.swing.table.DefaultTableModel;
 import Custom_UI.ScrollBarCustom;
 import Dao.ChamCongNhanVien_Dao;
 import Dao.NhanVien_Dao;
+import Dao.PhongBan_Dao;
 import Entity.ChamCongNhanVien;
 import Entity.NhanVien;
+import Entity.PhongBan;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
@@ -41,6 +53,7 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 
 public class ChamCongNhanVien_GUI extends JPanel {
 
@@ -53,7 +66,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 
 	private JComboBox<String> cmbCaLam;
 	private JComboBox<String> cmbGio;
-	private JComboBox<String> cmbPhut;
 	private JComboBox<String> cmbGioTangCa;
 	private JComboBox<String> cmbTinhTrang;
 
@@ -62,7 +74,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 	private JLabel lblTieuDe;
 	private JLabel lblMaNV;
 	private JLabel lblTenNV;
-	private JLabel lblPhut;
 	private JLabel lblCaLam;
 	private JLabel lblGioDiLam;
 	private JLabel lblGioTangCa;
@@ -96,86 +107,103 @@ public class ChamCongNhanVien_GUI extends JPanel {
 
 	private JLabel lblHienThi;
 	private JComboBox<String> cmbHienThi;
+	private JComboBox<String> cboPhongBan;
+
+	private JButton btnTichTatCa;
+	private JButton btnBoTich;
+
+	private JCheckBox checkBoxCoMat;
+	private JCheckBox checkBoxNghiCoPhep;
 
 	public ChamCongNhanVien_GUI(NhanVien nhanVien, String fileName) throws ParseException, Exception {
 		nhanvienDangNhap = nhanVien;
 		ConnectionDB.ConnectDB.getInstance().connect();
 		initComponents();
 		excute();
-		taiDuLieuLenBangNhanVien();
+		//taiDuLieuLenBangNhanVien();
 		while (modelChamCong.getRowCount() != 0) {
 			modelChamCong.removeRow(0);
 		}
+		cmbCaLam.setSelectedIndex(0);
 		dcsNgayChamCong.setDate(new Date());
 		btnChamCongTatCa.setEnabled(false);
-		cmbCaLam.setSelectedIndex(0);
 		btnChamLai.setEnabled(false);
-        caiDatNgonNgu(fileName);
-		setEditTextDateChooser();
 
+		PhongBan_Dao daoPhongBan = new PhongBan_Dao();
+		ArrayList<PhongBan> phongBan = daoPhongBan.layDanhSachPhongBan();
+
+		cboPhongBan.addItem("Tất cả");
+
+		if (phongBan.size() > 0) {
+			for (PhongBan pb : phongBan) {
+				cboPhongBan.addItem(pb.getTenPhongBan());
+			}
+		}
+		caiDatNgonNgu(fileName);
+		setEditTextDateChooser();
 	}
 
 	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
-        FileInputStream fis = new FileInputStream(fileName);
-        Properties prop = new Properties();
-        prop.load(fis);
-        btnCapNhat.setText(prop.getProperty("btnCapNhat"));
-        btnLuu.setText(prop.getProperty("btnLuu"));
-        btnHuy.setText(prop.getProperty("btnHuy"));
-        btnLayDanhSach.setText(prop.getProperty("chamCong_layDanhSachChamCong"));
-        btnChamCongTatCa.setText(prop.getProperty("chamCong_btnChamCongTatCa"));
-        btnChamLai.setText(prop.getProperty("chamCong_btnChamLai"));
-        scrChamCong.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeChamCong")));
-        scrNhanVien.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeDanhSachNhanVien")));
-        pnlThongTinChamCong.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeThongTinChamCong")));
-        
-        lblNgayChamCong.setText(prop.getProperty("chamCong_NgayChamCong"));
-        lblCaLam.setText(prop.getProperty("chamCong_CaLam"));
-        lblMaNV.setText(prop.getProperty("chamCong_maNhanVien"));
-        lblTenNV.setText(prop.getProperty("chamCong_hoTen"));
-        lblTinhTrang.setText(prop.getProperty("chamCong_tinhTrang"));
-        lblGioDiLam.setText(prop.getProperty("chamCong_gio"));
-        lblGioTangCa.setText(prop.getProperty("chamCong_gioTangCa"));
-        lblPhut.setText(prop.getProperty("chamCong_phut"));
-        lblHienThi.setText(prop.getProperty("chamCong_hienThi"));
+		FileInputStream fis = new FileInputStream(fileName);
+		Properties prop = new Properties();
+		prop.load(fis);
+		btnCapNhat.setText(prop.getProperty("btnCapNhat"));
+		btnLuu.setText(prop.getProperty("btnLuu"));
+		btnHuy.setText(prop.getProperty("btnHuy"));
+		btnLayDanhSach.setText(prop.getProperty("chamCong_layDanhSachChamCong"));
+		btnChamCongTatCa.setText(prop.getProperty("chamCong_btnChamCongTatCa"));
+		btnChamLai.setText(prop.getProperty("chamCong_btnChamLai"));
+		scrChamCong.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeChamCong")));
+		scrNhanVien.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeDanhSachNhanVien")));
+		pnlThongTinChamCong.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeThongTinChamCong")));
 
-        doiNgonNguTable(tblChamCong, 0, prop.getProperty("chamCong_stt"));
-        doiNgonNguTable(tblChamCong, 1, lblMaNV.getText());
-        doiNgonNguTable(tblChamCong, 2, lblTenNV.getText());
-        doiNgonNguTable(tblChamCong, 3, prop.getProperty("chamCong_sdt"));
-        doiNgonNguTable(tblChamCong, 4, prop.getProperty("chamCong_phongBan"));
-        doiNgonNguTable(tblChamCong, 5, prop.getProperty("chamCong_chucVu"));
+		lblNgayChamCong.setText(prop.getProperty("chamCong_NgayChamCong"));
+		lblCaLam.setText(prop.getProperty("chamCong_CaLam"));
+		lblMaNV.setText(prop.getProperty("chamCong_maNhanVien"));
+		lblTenNV.setText(prop.getProperty("chamCong_hoTen"));
+		lblTinhTrang.setText(prop.getProperty("chamCong_tinhTrang"));
+		lblGioDiLam.setText(prop.getProperty("chamCong_gio"));
+		lblGioTangCa.setText(prop.getProperty("chamCong_gioTangCa"));
+		lblHienThi.setText(prop.getProperty("chamCong_hienThi"));
 
-        doiNgonNguTable(tblNhanVien, 0, prop.getProperty("chamCong_stt"));
-        doiNgonNguTable(tblNhanVien, 1, prop.getProperty("chamCong_maNhanVienChamCong"));
-        doiNgonNguTable(tblNhanVien, 2, lblMaNV.getText());
-        doiNgonNguTable(tblNhanVien, 3, lblTenNV.getText());
-        doiNgonNguTable(tblNhanVien, 4, prop.getProperty("chamCong_sdt"));
-        doiNgonNguTable(tblNhanVien, 5, prop.getProperty("chamCong_phongBan"));
-        doiNgonNguTable(tblNhanVien, 6, prop.getProperty("chamCong_chucVu"));
-        doiNgonNguTable(tblNhanVien, 7, lblNgayChamCong.getText());
-        doiNgonNguTable(tblNhanVien, 8, lblCaLam.getText());
-        doiNgonNguTable(tblNhanVien, 9, lblTinhTrang.getText());
-        doiNgonNguTable(tblNhanVien, 10, lblGioDiLam.getText());
-        doiNgonNguTable(tblNhanVien, 11, lblGioTangCa.getText());
+		doiNgonNguTable(tblChamCong, 0, prop.getProperty("chamCong_stt"));
+		doiNgonNguTable(tblChamCong, 1, lblMaNV.getText());
+		doiNgonNguTable(tblChamCong, 2, lblTenNV.getText());
+		doiNgonNguTable(tblChamCong, 3, prop.getProperty("chamCong_phongBan"));
+		doiNgonNguTable(tblChamCong, 4, prop.getProperty("chamCong_coMat"));
+		doiNgonNguTable(tblChamCong, 5, prop.getProperty("chamCong_nghiCoPhep"));
 
-        cmbHienThi.removeAllItems();
-        cmbHienThi.addItem(prop.getProperty("cmbHienThiAll"));
-        cmbHienThi.addItem(prop.getProperty("cmbHienThiLoc"));
 
-        stChamCongThanhCong = prop.getProperty("chamCong_chamCongThanhCong");
-        stErrNgayChamCong = prop.getProperty("chamCong_errNgayChamCong");
+		doiNgonNguTable(tblNhanVien, 0, prop.getProperty("chamCong_stt"));
+		doiNgonNguTable(tblNhanVien, 1, prop.getProperty("chamCong_maNhanVienChamCong"));
+		doiNgonNguTable(tblNhanVien, 2, lblMaNV.getText());
+		doiNgonNguTable(tblNhanVien, 3, lblTenNV.getText());
+		doiNgonNguTable(tblNhanVien, 4, prop.getProperty("chamCong_sdt"));
+		doiNgonNguTable(tblNhanVien, 5, prop.getProperty("chamCong_phongBan"));
+		doiNgonNguTable(tblNhanVien, 6, prop.getProperty("chamCong_chucVu"));
+		doiNgonNguTable(tblNhanVien, 7, lblNgayChamCong.getText());
+		doiNgonNguTable(tblNhanVien, 8, lblCaLam.getText());
+		doiNgonNguTable(tblNhanVien, 9, lblTinhTrang.getText());
+		doiNgonNguTable(tblNhanVien, 10, lblGioDiLam.getText());
+		doiNgonNguTable(tblNhanVien, 11, lblGioTangCa.getText());
 
-        stThongbao = prop.getProperty("thongBao");
-        stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
-        stCapNhatThatBai = prop.getProperty("capNhatThatBai");
-        stNgayThangKhongHople = prop.getProperty("ngayThangKhongHopLe");
-    }
+		cmbHienThi.removeAllItems();
+		cmbHienThi.addItem(prop.getProperty("cmbHienThiAll"));
+		cmbHienThi.addItem(prop.getProperty("cmbHienThiLoc"));
 
-    public void doiNgonNguTable(JTable table, int col_index, String col_name) {
-        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
-    }
-    
+		stChamCongThanhCong = prop.getProperty("chamCong_chamCongThanhCong");
+		stErrNgayChamCong = prop.getProperty("chamCong_errNgayChamCong");
+
+		stThongbao = prop.getProperty("thongBao");
+		stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
+		stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+		stNgayThangKhongHople = prop.getProperty("ngayThangKhongHopLe");
+	}
+
+	public void doiNgonNguTable(JTable table, int col_index, String col_name) {
+		table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
+	}
+
 	public void setEditTextDateChooser() {
 		JTextFieldDateEditor ngayChamCong = (JTextFieldDateEditor) dcsNgayChamCong.getDateEditor();
 		ngayChamCong.setEnabled(false);
@@ -217,40 +245,120 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		tblChamCong.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
 		tblChamCong.setRowHeight(20);
 
-		tblChamCong.setModel(new DefaultTableModel(
-				new Object[][] {
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null},
-					{null, null, null, null, null, null}
-				},
-				new String[] {
-						"STT", "Mã nhân viên", "Họ và tên", "SĐT", "Phòng ban", "Chức vụ"
-				}
-				));
-		tblChamCong.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				tblChamCongMouseClicked(evt);
-			}
-		});
+		tblChamCong.setModel(new javax.swing.table.DefaultTableModel(
+				new Object[][]{
+			        {null, null, null, null, null, null},
+			        {null, null, null, null, null, null},
+			    },
+			    new String[]{
+			        "STT", "Mã nhân viên", "Họ và tên", "Phòng ban", "Có mặt", "Nghỉ có phép", "Giờ tăng ca"
+			    }
+			) {
+			    @Override
+			    public Class<?> getColumnClass(int columnIndex) {
+			        return columnIndex == 4 || columnIndex == 5 ? Boolean.class : columnIndex == 6 ? Integer.class : Object.class;
+			    }
 
-		tblChamCong.getColumnModel().getColumn(0).setPreferredWidth(40);
-		tblChamCong.getColumnModel().getColumn(0).setMinWidth(20);
-		tblChamCong.getColumnModel().getColumn(0).setMaxWidth(40);
-		tblChamCong.getColumnModel().getColumn(1).setPreferredWidth(72);
-		tblChamCong.getColumnModel().getColumn(2).setPreferredWidth(76);
-		tblChamCong.getColumnModel().getColumn(3).setPreferredWidth(86);
+			    @Override
+			    public Object getValueAt(int row, int column) {
+			        if (column == 6) {
+			            return super.getValueAt(row, column);
+			        }
+			        return super.getValueAt(row, column);
+			    }
+
+			    @Override
+			    public boolean isCellEditable(int row, int column) {
+			        return column == 4 || column == 5;
+			    }
+			});
+
+		checkBoxCoMat = new JCheckBox();
+		tblChamCong.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(checkBoxCoMat));
+
+		checkBoxNghiCoPhep = new JCheckBox();
+		tblChamCong.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(checkBoxNghiCoPhep));
+
+		// Thêm ItemListener cho checkbox "Có mặt"
+		ItemListener coMatListener = new ItemListener() {
+		    @Override
+		    public void itemStateChanged(ItemEvent e) {
+		        int selectedRow = tblChamCong.getSelectedRow();
+		        if (selectedRow != -1 && e.getStateChange() == ItemEvent.SELECTED) {
+		            // Nếu ô "Có mặt" được tích, hủy tích ô "Nghỉ có phép"
+		            modelChamCong.setValueAt(true, selectedRow, 4);  // Chọn "Có mặt"
+		            modelChamCong.setValueAt(false, selectedRow, 5); // Hủy chọn "Nghỉ có phép"
+		        }
+		    }
+		};
+
+		// Thêm ItemListener cho checkbox "Nghỉ có phép"
+		ItemListener nghiCoPhepListener = new ItemListener() {
+		    @Override
+		    public void itemStateChanged(ItemEvent e) {
+		        int selectedRow = tblChamCong.getSelectedRow();
+		        if (selectedRow != -1 && e.getStateChange() == ItemEvent.SELECTED) {
+		            // Nếu ô "Nghỉ có phép" được tích, hủy tích ô "Có mặt"
+		        	modelChamCong.setValueAt(true, selectedRow, 5);  // Chọn "Nghỉ có phép"
+		        	modelChamCong.setValueAt(false, selectedRow, 4); // Hủy chọn "Có mặt"
+		        }
+		    }
+		};
+
+		checkBoxCoMat.addItemListener(coMatListener);
+		checkBoxNghiCoPhep.addItemListener(nghiCoPhepListener);
 
 		tblChamCong.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblChamCong.setSelectionBackground(new Color(255, 215, 0));
 
+		tblChamCong.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent evt) {
+		        tblChamCongMouseClicked(evt);
+		        int column = tblChamCong.columnAtPoint(evt.getPoint());
+		        int row = tblChamCong.rowAtPoint(evt.getPoint());
+
+		        if (column == 6 && row != -1) {
+		            Boolean isCoMat = (Boolean) modelChamCong.getValueAt(row, 4);
+		            Boolean isNghiCoPhep = (Boolean) modelChamCong.getValueAt(row, 5);
+
+		            if (isCoMat != null && isCoMat) {
+		                if (isNghiCoPhep == null || !isNghiCoPhep) {
+		                    String newOvertime = JOptionPane.showInputDialog("Nhập giờ tăng ca mới:");
+		                    if (newOvertime != null && !newOvertime.isEmpty()) {
+		                        try {
+		                            int overtimeValue = Integer.parseInt(newOvertime);
+
+		                            if (isValidOvertime(overtimeValue)) {
+		                                modelChamCong.setValueAt(overtimeValue, row, 6);
+		                            } else {
+		                                JOptionPane.showMessageDialog(null, "Vui lòng nhập một giờ tăng ca hợp lệ (1, 2, 3, 4).", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		                            }
+		                        } catch (NumberFormatException e) {
+		                            JOptionPane.showMessageDialog(null, "Vui lòng nhập một số nguyên cho giờ tăng ca.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		                        }
+		                    }
+		                } else {
+		                    JOptionPane.showMessageDialog(null, "Nhân viên đang nghỉ có phép! Không thể nhập giờ tăng ca!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		                }
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Nhân viên không có mặt! Không thể nhập giờ tăng ca!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		            }
+		        }
+		    }
+
+		    private boolean isValidOvertime(int value) {
+		        int[] allowedOvertimes = {1, 2, 3, 4};
+
+		        for (int allowedValue : allowedOvertimes) {
+		            if (value == allowedValue) {
+		                return true;
+		            }
+		        }
+
+		        return false;
+		    }
+		});
 
 		scrChamCong = new JScrollPane(tblChamCong);
 		scrChamCong.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -262,7 +370,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		TitledBorder titledBorder = BorderFactory.createTitledBorder(blackLineBorder, "Danh sách nhân viên cần chấm công");
 		scrChamCong.setBorder(titledBorder);
 		scrChamCong.setBackground(Color.WHITE);
-		scrChamCong.setBounds(44, 84, 639, 286);
+		scrChamCong.setBounds(44, 76, 639, 273);
 		add(scrChamCong);
 
 		ScrollBarCustom scrollBar = new ScrollBarCustom();
@@ -272,12 +380,31 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		lblNgayChamCong = new JLabel();
 		lblNgayChamCong.setText("Ngày chấm công:");
 		lblNgayChamCong.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		lblNgayChamCong.setBounds(74, 381, 115, 41);
+		lblNgayChamCong.setBounds(44, 381, 115, 41);
 		add(lblNgayChamCong);
+
+		lblCaLam = new JLabel();
+		lblCaLam.setBounds(467, 386, 57, 30);
+		add(lblCaLam);
+		lblCaLam.setText("Ca làm:");
+		lblCaLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+
+		cmbCaLam = new JComboBox<String>();
+		cmbCaLam.setBounds(517, 381, 111, 41);
+		add(cmbCaLam);
+		cmbCaLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		cmbCaLam.setBackground(Color.WHITE);
+
+		cmbCaLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ca sáng(4h)","Ca chiều(4h)"}));
+		cmbCaLam.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				cmbCaLamActionPerformed(evt);
+			}
+		});
 
 		dcsNgayChamCong = new JDateChooser();
 		dcsNgayChamCong.setDateFormatString("yyyy-MM-dd");
-		dcsNgayChamCong.setBounds(198, 381, 177, 41);
+		dcsNgayChamCong.setBounds(152, 381, 98, 41);
 		dcsNgayChamCong.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				dcsNgayChamCongMouseClicked(evt);
@@ -293,7 +420,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		JLabel lblMuiTen = new JLabel();
 		lblMuiTen.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/muitenNgang.png")));
 		lblMuiTen.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		lblMuiTen.setBounds(704, 240, 57, 30);
+		lblMuiTen.setBounds(703, 206, 57, 30);
 		add(lblMuiTen);
 
 		tblNhanVien = new JTable();
@@ -302,32 +429,32 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		tblNhanVien.setRowHeight(20);
 
 		tblNhanVien.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"STT", "M\u00E3 ng\u01B0\u1EDDi ch\u1EA5m", "M\u00E3 nh\u00E2n vi\u00EAn", "H\u1ECD v\u00E0 t\u00EAn", "S\u0110T", "Ph\u00F2ng ban", "Ch\u1EE9c v\u1EE5", "Ng\u00E0y ch\u1EA5m c\u00F4ng", "Ca l\u00E0m", "Tr\u1EA1ng th\u00E1i", "Gi\u1EDD \u0111i l\u00E0m", "Gi\u1EDD t\u0103ng ca"
-			}
-		));
+				new Object[][] {
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null, null, null},
+				},
+				new String[] {
+						"STT", "M\u00E3 ng\u01B0\u1EDDi ch\u1EA5m", "M\u00E3 nh\u00E2n vi\u00EAn", "H\u1ECD v\u00E0 t\u00EAn", "S\u0110T", "Ph\u00F2ng ban", "Ch\u1EE9c v\u1EE5", "Ng\u00E0y ch\u1EA5m c\u00F4ng", "Ca l\u00E0m", "Tr\u1EA1ng th\u00E1i", "Gi\u1EDD \u0111i l\u00E0m", "Gi\u1EDD t\u0103ng ca"
+				}
+				));
 		tblNhanVien.setSelectionBackground(new java.awt.Color(232, 57, 95));
 		tblNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -356,9 +483,22 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		TitledBorder titledBorder2 = BorderFactory.createTitledBorder(blackLineBorder2, "Thông tin chấm công");
 		pnlThongTinChamCong.setBorder(titledBorder2);
 		pnlThongTinChamCong.setBackground(new Color(255, 255, 255));
-		pnlThongTinChamCong.setBounds(757, 56, 487, 390);
+		pnlThongTinChamCong.setBounds(757, 56, 487, 314);
 		add(pnlThongTinChamCong);
 		pnlThongTinChamCong.setLayout(null);
+
+		cmbTinhTrang = new JComboBox<String>();
+		cmbTinhTrang.setBounds(149, 139, 301, 36);
+		pnlThongTinChamCong.add(cmbTinhTrang);
+		cmbTinhTrang.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		cmbTinhTrang.setBackground(Color.WHITE);
+
+		cmbTinhTrang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đi làm", "Nghỉ có phép", "Nghỉ không phép" }));
+		cmbTinhTrang.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				cmbTinhTrangActionPerformed(evt);
+			}
+		});
 
 		lblMaNV = new JLabel();
 		lblMaNV.setBounds(27, 33, 84, 20);
@@ -400,96 +540,49 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		lblTinhTrang.setText("Tình trạng:");
 		lblTinhTrang.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 
-		cmbTinhTrang = new JComboBox<String>();
-		cmbTinhTrang.setBounds(149, 139, 301, 36);
-		pnlThongTinChamCong.add(cmbTinhTrang);
-		cmbTinhTrang.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		cmbTinhTrang.setBackground(Color.WHITE);
-
-		cmbTinhTrang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đi Làm", "Đi Trễ", "Nghỉ Có Phép", "Nghỉ Không Phép" }));
-		cmbTinhTrang.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				cmbTinhTrangActionPerformed(evt);
-			}
-		});
-
 		lblGioDiLam = new JLabel();
-		lblGioDiLam.setBounds(27, 210, 102, 30);
+		lblGioDiLam.setBounds(29, 209, 102, 30);
 		pnlThongTinChamCong.add(lblGioDiLam);
 		lblGioDiLam.setText("Giờ đi làm:");
 		lblGioDiLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 
-		JLabel lblGio = new JLabel();
-		lblGio.setText("giờ");
-		lblGio.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		lblGio.setBounds(216, 195, 57, 30);
-		pnlThongTinChamCong.add(lblGio);
-
 		JLabel lblGio_1 = new JLabel();
 		lblGio_1.setText("giờ");
 		lblGio_1.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		lblGio_1.setBounds(216, 324, 57, 30);
+		lblGio_1.setBounds(216, 270, 57, 30);
 		pnlThongTinChamCong.add(lblGio_1);
 
 		cmbGio = new JComboBox<String>();
-		cmbGio.setBounds(149, 189, 57, 43);
+		cmbGio.setBounds(149, 196, 111, 43);
 		pnlThongTinChamCong.add(cmbGio);
 		cmbGio.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		cmbGio.setBackground(Color.WHITE);
-
-		cmbGio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "1", "2", "3", "4", "5", "6" }));
-
-		lblPhut = new JLabel();
-		lblPhut.setBounds(350, 195, 57, 30);
-		pnlThongTinChamCong.add(lblPhut);
-		lblPhut.setText("phút");
-		lblPhut.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-
-		cmbPhut = new JComboBox<String>();
-		cmbPhut.setBounds(283, 189, 57, 43);
-		pnlThongTinChamCong.add(cmbPhut);
-		cmbPhut.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		cmbPhut.setBackground(Color.WHITE);
-
-		cmbPhut.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "15", "30", "45" }));
-
-		lblCaLam = new JLabel();
-		lblCaLam.setBounds(27, 277, 102, 30);
-		pnlThongTinChamCong.add(lblCaLam);
-		lblCaLam.setText("Ca làm:");
-		lblCaLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-
-		cmbCaLam = new JComboBox<String>();
-		cmbCaLam.setBounds(149, 255, 301, 41);
-		pnlThongTinChamCong.add(cmbCaLam);
-		cmbCaLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		cmbCaLam.setBackground(Color.WHITE);
-
-		cmbCaLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sáng ", "Chiều", "Đêm" }));
-		cmbCaLam.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				cmbCaLamActionPerformed(evt);
-			}
-		});
+		cmbGio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"7h30-11h30","13h00-17h00"}));
 
 		lblGioTangCa = new JLabel();
-		lblGioTangCa.setBounds(27, 339, 102, 30);
+		lblGioTangCa.setBounds(27, 270, 102, 30);
 		pnlThongTinChamCong.add(lblGioTangCa);
 		lblGioTangCa.setText("Giờ tăng ca:");
 		lblGioTangCa.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 
 		cmbGioTangCa = new JComboBox<String>();
-		cmbGioTangCa.setBounds(149, 319, 57, 40);
+		cmbGioTangCa.setBounds(149, 260, 57, 40);
 		pnlThongTinChamCong.add(cmbGioTangCa);
 		cmbGioTangCa.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		cmbGioTangCa.setBackground(Color.WHITE);
 
-		cmbGioTangCa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0","2", "4", "6", "8" }));
+		cmbGioTangCa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2","3", "4"}));
 		cmbGioTangCa.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cmbGioTangCaActionPerformed(evt);
 			}
 		});
+
+		cboPhongBan = new JComboBox<String>();
+		cboPhongBan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		cboPhongBan.setBackground(Color.WHITE);
+		cboPhongBan.setBounds(663, 380, 244, 40);
+		add(cboPhongBan);
 
 		lblHienThi = new JLabel();
 		lblHienThi.setText("Hiển thị:");
@@ -499,7 +592,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 
 		cmbHienThi = new JComboBox<String>();
 		cmbHienThi.setBounds(105, 471, 145, 40);
-		cmbHienThi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Theo ngày chấm" }));
+		cmbHienThi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Theo ngày chấm"}));
 		cmbHienThi.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cmbHienThiActionPerformed(evt);
@@ -555,7 +648,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		btnLayDanhSach.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		btnLayDanhSach.setBorder(null);
 		btnLayDanhSach.setBackground(new Color(0, 255, 127));
-		btnLayDanhSach.setBounds(444, 380, 237, 40);
+		btnLayDanhSach.setBounds(287, 380, 160, 40);
 		btnLayDanhSach.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnLayDanhSachActionPerformed(evt);
@@ -593,6 +686,41 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		});
 		add(btnHuy);
 
+		btnTichTatCa = new JButton();
+		btnTichTatCa.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/them.png")));
+		btnTichTatCa.setText("Có mặt tất cả");
+		btnTichTatCa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnTichTatCa.setBorder(null);
+		btnTichTatCa.setBackground(new Color(0, 255, 127));
+		btnTichTatCa.setBounds(937, 380, 160, 40);
+		add(btnTichTatCa);
+		btnTichTatCa.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int rowCount = tblChamCong.getRowCount();
+				for (int i = 0; i < rowCount; i++) {
+					tblChamCong.getModel().setValueAt(true, i, 4); // Cột "Có mặt" là cột thứ 4
+				}
+			}
+		});
+
+		btnBoTich = new JButton();
+		btnBoTich.setIcon(new ImageIcon(ChamCongNhanVien_GUI.class.getResource("/image/icon/xoa.png")));
+		btnBoTich.setText("Bỏ tích");
+		btnBoTich.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnBoTich.setBorder(null);
+		btnBoTich.setBackground(new Color(0, 255, 127));
+		btnBoTich.setBounds(1127, 381, 115, 40);
+		add(btnBoTich);
+		btnBoTich.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int rowCount = tblChamCong.getRowCount();
+				for (int i = 0; i < rowCount; i++) {
+					tblChamCong.getModel().setValueAt(false, i, 4); // Cột "Có mặt" là cột thứ 4
+				}
+			}
+		});
 	}
 
 	public void hienThiChamCongTheoNgay() {
@@ -601,25 +729,37 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			String strDate = formatter.format(dcsNgayChamCong.getDate());
 			ArrayList<ChamCongNhanVien> listChamCong = daoChamCong.layDanhSachChamCongTheoNgay(strDate);
+
+			// Sắp xếp danh sách chấm công theo phòng ban
+			Collections.sort(listChamCong, new Comparator<ChamCongNhanVien>() {
+				@Override
+				public int compare(ChamCongNhanVien cc1, ChamCongNhanVien cc2) {
+					return cc1.getNhanVien().getPhongBan().getTenPhongBan()
+							.compareTo(cc2.getNhanVien().getPhongBan().getTenPhongBan());
+				}
+			});
+
+			// Xóa dữ liệu trên bảng
 			while (modelNhanVien.getRowCount() != 0) {
 				modelNhanVien.removeRow(0);
 			}
-			daoChamCong = new ChamCongNhanVien_Dao();
-			if (daoChamCong != null) {
-				for (ChamCongNhanVien chamCong : listChamCong) {
-				    String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
-				            chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
-				            chamCong.getNhanVien().getPhongBan().getTenPhongBan(), chamCong.getNhanVien().getChucVu(), chamCong.getNgayChamCong().toString(),
-				            chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), String.valueOf(chamCong.getGioDiLam()), String.valueOf(chamCong.getGioTangCa())};
-				    modelNhanVien.addRow(data);
-				}
-				if (tblNhanVien.getRowCount() > 0) {
-					tblNhanVien.setRowSelectionInterval(0, 0);
-					try {
-						hienThiDuLieuLenTxtBangNhanVien(0);
-					} catch (ParseException ex) {
-						Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
-					}
+
+			// Hiển thị dữ liệu mới theo phòng ban
+			for (ChamCongNhanVien chamCong : listChamCong) {
+				String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
+						chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
+						chamCong.getNhanVien().getPhongBan().getTenPhongBan(), chamCong.getNhanVien().getChucVu(), chamCong.getNgayChamCong().toString(),
+						chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), String.valueOf(chamCong.getGioDiLam()), String.valueOf(chamCong.getGioTangCa())};
+				modelNhanVien.addRow(data);
+			}
+
+			// Chọn dòng đầu tiên nếu có dữ liệu
+			if (tblNhanVien.getRowCount() > 0) {
+				tblNhanVien.setRowSelectionInterval(0, 0);
+				try {
+					hienThiDuLieuLenTxtBangNhanVien(0);
+				} catch (ParseException ex) {
+					Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
 				}
 			}
 		} else {
@@ -631,14 +771,45 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		}
 	}
 
+
 	private void cmbHienThiActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
 		hienThiChamCongTheoNgay();
 	}
 
-	private void cmbGioTangCaActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
+	public void hienThiChamCongTheoCaLam(String caLam) throws ParseException {
+	    while (modelNhanVien.getRowCount() != 0) {
+	        modelNhanVien.removeRow(0);
+	    }
 
+	    daoChamCong = new ChamCongNhanVien_Dao();
+	    ArrayList<ChamCongNhanVien> listChamCong = daoChamCong.danhSachChamCongNhanVien();
+
+	    // Lọc danh sách chấm công theo ca làm
+	    List<ChamCongNhanVien> chamCongTheoCaLam = listChamCong.stream()
+	            .filter(chamCong -> chamCong.getCaLam().equals(caLam))
+	            .collect(Collectors.toList());
+
+	    if (chamCongTheoCaLam != null) {
+	        for (ChamCongNhanVien chamCong : chamCongTheoCaLam) {
+	            if (chamCong.getNguoiChamCong() != null) {
+	                String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
+	                        chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
+	                        chamCong.getNhanVien().getPhongBan().getTenPhongBan(), chamCong.getNhanVien().getChucVu(), chamCong.getNgayChamCong().toString(),
+	                        chamCong.getCaLam(), chamCong.getTrangThaiDiLam(), chamCong.getGioDiLam(), String.valueOf(chamCong.getGioTangCa())};
+	                modelNhanVien.addRow(data);
+	            }
+	        }
+	        if (tblNhanVien.getRowCount() > 0) {
+	            tblNhanVien.setRowSelectionInterval(0, 0);
+	            hienThiDuLieuLenTxtBangNhanVien(0);
+	            setEditInput(false);
+	        }
+	    }
+	    setEditInput(false);
+	}
+
+	
+	private void cmbGioTangCaActionPerformed(ActionEvent evt) {
 	}
 
 	public void taiDuLieuLenBangNhanVien() throws ParseException {
@@ -647,8 +818,13 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		}
 		daoChamCong = new ChamCongNhanVien_Dao();
 		ArrayList<ChamCongNhanVien> listChamCong = daoChamCong.danhSachChamCongNhanVien();
-		if (listChamCong != null) {
-			for (ChamCongNhanVien chamCong : listChamCong) {
+
+		// Giữ lại chỉ 10 chấm công gần nhất
+		int count = Math.min(10, listChamCong.size());
+		List<ChamCongNhanVien> recentChamCong = listChamCong.subList(0, count);
+
+		if (recentChamCong != null) {
+			for (ChamCongNhanVien chamCong : recentChamCong) {
 				if (chamCong.getNguoiChamCong() != null) {
 					String data[] = {(modelNhanVien.getRowCount() + 1) + "", chamCong.getNguoiChamCong().getMaNhanVien(),
 							chamCong.getNhanVien().getMaNhanVien(), chamCong.getNhanVien().getHoTen(), chamCong.getNhanVien().getSoDienThoai(),
@@ -663,7 +839,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 				setEditInput(false);
 			}
 		}
-
 		setEditInput(false);
 	}
 
@@ -680,24 +855,31 @@ public class ChamCongNhanVien_GUI extends JPanel {
 				listTemp1.add(e.getNhanVien());
 			}
 		});
+		String selectedPhongBan = cboPhongBan.getSelectedItem().toString();
+
 		listNhanVienForEvtChamCongTatCa = new ArrayList<>();
 		listNhanVien.forEach(e -> {
 			boolean flag = false;
-			if (e.getNgayVaoLam().after(dcsNgayChamCong.getDate())) {
-				//                System.out.println(e.getMaNhanVien() + "Nhan vien nay chua du dk de cham cong");
-			} else {
-				for (NhanVien nhanVien : listTemp1) {
-					if (nhanVien.getMaNhanVien().equalsIgnoreCase(e.getMaNhanVien())) {
-						flag = true;
+
+			if ("Tất cả".equalsIgnoreCase(selectedPhongBan) || selectedPhongBan.equalsIgnoreCase(e.getPhongBan().getTenPhongBan())) {
+				if (e.getNgayVaoLam().after(dcsNgayChamCong.getDate())) {
+				} else {
+					for (NhanVien nhanVien : listTemp1) {
+						if (nhanVien.getMaNhanVien().equalsIgnoreCase(e.getMaNhanVien())) {
+							flag = true;
+						}
 					}
-				}
-				if (!flag) {
-					listNhanVienForEvtChamCongTatCa.add(e);
-					String data[] = {(modelChamCong.getRowCount() + 1) + "", e.getMaNhanVien(), e.getHoTen(), e.getSoDienThoai(), e.getPhongBan().getTenPhongBan(), e.getChucVu()};
-					modelChamCong.addRow(data);
+					if (!flag) {
+						listNhanVienForEvtChamCongTatCa.add(e);
+						String data[] = {(modelChamCong.getRowCount() + 1) + "", e.getMaNhanVien(), e.getHoTen(), e.getPhongBan().getTenPhongBan()};
+						modelChamCong.addRow(data);
+					}
 				}
 			}
 		});
+		if (modelChamCong.getRowCount() == 0) {
+			JOptionPane.showMessageDialog(null, "Đã chấm công rồi không có dữ liệu chấm công!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	public void taiDuLieuLenBangChamCong() throws ParseException, InterruptedException {
@@ -718,17 +900,40 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		}
 	}
 
-	public void setComBoBoxToSunDay() {
-		cmbCaLam.removeAllItems();
-		cmbCaLam.addItem("Sáng chủ nhật");
-		cmbCaLam.addItem("Chiều chủ nhật");
-	}
-
 	public void setComBoBoxToReset() {
 		cmbCaLam.removeAllItems();
-		cmbCaLam.addItem("Sáng");
-		cmbCaLam.addItem("Chiều");
-		cmbCaLam.addItem("Đêm");
+		cmbCaLam.addItem("Ca sáng(4h)");
+		cmbCaLam.addItem("Ca chiều(4h)");
+	}
+
+	public void setComBoBoxToSunDay() {
+		cmbCaLam.removeAllItems();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dcsNgayChamCong.getDate());
+
+		int selectedDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+		if (selectedDayOfWeek == Calendar.SUNDAY) {
+			cmbCaLam.addItem("Sáng chủ nhật");
+			cmbCaLam.addItem("Chiều chủ nhật");
+		} else if (selectedDayOfWeek == Calendar.SATURDAY) {
+			cmbCaLam.addItem("Sáng thứ bảy");
+			cmbCaLam.addItem("Chiều thứ bảy");
+		} else {
+			setComBoBoxToReset();
+		}
+	}
+
+	private void dcsNgayChamCongPropertyChange(java.beans.PropertyChangeEvent evt) {
+		if ("date".equals(evt.getPropertyName())) {
+			setComBoBoxToSunDay();
+		}
+
+		btnChamLai.setEnabled(false);
+		hienThiChamCongTheoNgay();
+		while (modelChamCong.getRowCount() > 0) {
+			modelChamCong.removeRow(0);
+		}
 	}
 
 	public void hienThiDuLieuLenTxtBangNhanVien(int dong) throws ParseException {
@@ -736,15 +941,12 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			txtMaNV.setText(tblNhanVien.getValueAt(dong, 2).toString());
 			txtTenNV.setText(tblNhanVien.getValueAt(dong, 3).toString());
 			cmbTinhTrang.setSelectedItem(tblNhanVien.getValueAt(dong, 9).toString());
-			if (cmbTinhTrang.getSelectedIndex() != 2 && cmbTinhTrang.getSelectedIndex() != 3) {
-				cmbGio.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString().split("h")[0]);
-				cmbPhut.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString().split("h")[1]);
+			if (cmbTinhTrang.getSelectedIndex() != 1 && cmbTinhTrang.getSelectedIndex() != 2) {
+				cmbGio.setSelectedItem(tblNhanVien.getValueAt(dong, 10).toString());
 				cmbGioTangCa.setSelectedItem(tblNhanVien.getValueAt(dong, 11));
 				cmbGio.setEditable(true);
-				cmbPhut.setEditable(true);
 			} else {
 				cmbGio.setEditable(true);
-				cmbPhut.setEditable(true);
 			}
 		}
 	}
@@ -769,7 +971,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 	public void setEditInput(boolean check) {
 		cmbTinhTrang.setEnabled(check);
 		cmbGio.setEnabled(check);
-		cmbPhut.setEnabled(check);
 		cmbGioTangCa.setEnabled(check);
 	}
 
@@ -805,6 +1006,59 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		}
 	}
 
+	private void dcsNgayChamCongMouseClicked(java.awt.event.MouseEvent evt) {
+	}
+
+	public void thayDouCmbBox() {
+		if (cmbTinhTrang.getSelectedIndex() == 0 ) {
+			cmbGio.setEnabled(false);
+			cmbGioTangCa.setEnabled(true);
+		}
+		else if (cmbTinhTrang.getSelectedIndex() == 1 || cmbTinhTrang.getSelectedIndex() == 2) {
+			cmbGio.setEnabled(false);
+			cmbGioTangCa.setEnabled(false);
+		} else {
+			cmbGio.setEnabled(true);
+			cmbGio.setEditable(false);
+			cmbGioTangCa.setEnabled(true);
+			cmbGioTangCa.setEditable(false);
+		}
+	}
+	private void cmbTinhTrangActionPerformed(java.awt.event.ActionEvent evt) {
+		thayDouCmbBox();
+	}
+
+	private void scrChamCongMouseClicked(java.awt.event.MouseEvent evt) {
+	}
+
+	public void capNhatCmbGio() {
+		cmbGio.removeAllItems();
+		if (cmbCaLam.getSelectedIndex() == 0) {
+			cmbGio.addItem("7h30-11h30");
+		} else if (cmbCaLam.getSelectedIndex() == 1) {
+			cmbGio.addItem("13h-17h");
+		}
+	}
+
+	private void cmbCaLamActionPerformed(java.awt.event.ActionEvent evt) {
+		capNhatCmbGio();
+		setHidden(btnHuy, btnLuu, btnChamCongTatCa, btnChamLai, btnCapNhat);
+		setEditInput(false);
+		btnChamLai.setEnabled(false);
+		hienThiChamCongTheoNgay();
+		while (modelChamCong.getRowCount() > 0) {
+			modelChamCong.removeRow(0);
+		}
+		String selectedShift = (String) cmbCaLam.getSelectedItem();
+	    if (selectedShift != null && !selectedShift.isEmpty()) {
+	        try {
+				hienThiChamCongTheoCaLam(selectedShift);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+	    }
+	}
+
 	private void btnLayDanhSachActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
 			if (dcsNgayChamCong.getDate().after(new Date())) {
@@ -828,115 +1082,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		}
 	}
 
-	private void dcsNgayChamCongMouseClicked(java.awt.event.MouseEvent evt) {
-	}
-
-	private void dcsNgayChamCongPropertyChange(java.beans.PropertyChangeEvent evt) {
-		if ("date".equals(evt.getPropertyName())) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(dcsNgayChamCong.getDate());
-			if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
-				setComBoBoxToSunDay();
-			} else {
-				setComBoBoxToReset();
-			}
-		}
-		btnChamLai.setEnabled(false);
-		hienThiChamCongTheoNgay();
-		while (modelChamCong.getRowCount() > 0) {
-			modelChamCong.removeRow(0);
-		}
-
-	}
-
-	private void btnChamCongTatCaActionPerformed(java.awt.event.ActionEvent evt) {
-		daoChamCong = new ChamCongNhanVien_Dao();
-		String gio = "";
-		int gioTangCa = 0;
-
-		if (cmbCaLam.getSelectedIndex() == 0) {
-			gio = "7h00";
-		} else if (cmbCaLam.getSelectedIndex() == 1) {
-			gio = "14h00";
-		} else {
-			gio = "22h00";
-		}
-		if (cmbGioTangCa.getSelectedIndex() == 0) {
-			gioTangCa = 0;
-		}
-		cmbTinhTrang.setSelectedIndex(0);
-		taiDuLieuLenBangChamCongEvt();
-		for (NhanVien nhanVien : listNhanVienForEvtChamCongTatCa) {
-			ChamCongNhanVien chamCong = new ChamCongNhanVien(nhanVien, dcsNgayChamCong.getDate(), cmbCaLam.getSelectedItem().toString(), cmbTinhTrang.getSelectedItem().toString(),
-					gio,gioTangCa, nhanvienDangNhap);
-			daoChamCong.themMotChamCongNhanVien(chamCong);
-		}
-		btnChamCongTatCa.setEnabled(false);
-		hienThiChamCongTheoNgay();
-		while (modelChamCong.getRowCount() != 0) {
-			modelChamCong.removeRow(0);
-		}
-		btnChamLai.setEnabled(false);
-		JOptionPane.showMessageDialog(null, stChamCongThanhCong);
-	}
-
-	public void thayDouCmbBox() {
-		if (cmbTinhTrang.getSelectedIndex() == 0 ) {
-			cmbGio.setEnabled(false);
-			cmbPhut.setEnabled(false);
-			cmbGioTangCa.setEnabled(true);
-		}
-		else if (cmbTinhTrang.getSelectedIndex() == 2 || cmbTinhTrang.getSelectedIndex() == 3) {
-			cmbGio.setEnabled(false);
-			cmbPhut.setEnabled(false);
-			cmbGioTangCa.setEnabled(false);
-		} else {
-			cmbGio.setEnabled(true);
-			cmbPhut.setEnabled(true);
-			cmbGio.setEditable(false);
-			cmbPhut.setEditable(false);
-			cmbGioTangCa.setEnabled(true);
-			cmbGioTangCa.setEditable(false);
-		}
-	}
-	private void cmbTinhTrangActionPerformed(java.awt.event.ActionEvent evt) {
-		thayDouCmbBox();
-	}
-
-	private void scrChamCongMouseClicked(java.awt.event.MouseEvent evt) {
-	}
-
-	public void capNhatCmbGio() {
-		cmbGio.removeAllItems();
-		if (cmbCaLam.getSelectedIndex() == 0) {
-			for (int i = 7; i < 12; i++) {
-				cmbGio.addItem(i + "");
-			}
-		} else if (cmbCaLam.getSelectedIndex() == 1) {
-			for (int i = 13; i < 18; i++) {
-				cmbGio.addItem(i + "");
-			}
-		} else {
-			for (int i = 19; i <= 24; i++) {
-				cmbGio.addItem(i + "");
-			}
-			for (int i = 0; i < 7; i++) {
-				cmbGio.addItem(i + "");
-			}
-		}
-	}
-
-	private void cmbCaLamActionPerformed(java.awt.event.ActionEvent evt) {
-		capNhatCmbGio();
-		setHidden(btnHuy, btnLuu, btnChamCongTatCa, btnChamLai, btnCapNhat);
-		setEditInput(false);
-		btnChamLai.setEnabled(false);
-		hienThiChamCongTheoNgay();
-		while (modelChamCong.getRowCount() > 0) {
-			modelChamCong.removeRow(0);
-		}
-	}
-
 	private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {
 		setHidden(btnCapNhat, btnChamLai, btnChamCongTatCa);
 		cmbCaLam.setEnabled(false);
@@ -945,33 +1090,90 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		thayDouCmbBox();
 	}
 
-	private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
-		String gioLam = "";
+	private void btnChamCongTatCaActionPerformed(java.awt.event.ActionEvent evt) {
+	    daoChamCong = new ChamCongNhanVien_Dao();
+	    String gio = "";
 	    int gioTangCa = 0;
-	    
-	    if (cmbTinhTrang.getSelectedIndex() == 0) {
-	        gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
-	    } else if (cmbGio.isEnabled()) {
-	        gioLam = cmbGio.getSelectedItem().toString() + "h" + cmbPhut.getSelectedItem();
-	    } else {
-	        gioLam = "";
+	    if (cmbCaLam.getSelectedIndex() == 0) {
+	        gio = "7h30-11h30";
+	    } else if (cmbCaLam.getSelectedIndex() == 1) {
+	        gio = "13h00-17h00";
 	    }
 
-	    if (cmbTinhTrang.getSelectedIndex() == 0) {
-	        try {
-	            gioTangCa = Integer.parseInt(cmbGioTangCa.getSelectedItem().toString());
-	        } catch (NumberFormatException e) {
-	            // Handle the case where the selected item is not a valid integer.
+	    for (int i = 0; i < modelChamCong.getRowCount(); i++) {
+	        NhanVien nhanVien = listNhanVienForEvtChamCongTatCa.get(i);
+
+	        // Sử dụng giá trị từ cột "Có mặt" và "Nghỉ có phép"
+	        Boolean isCoMat = (Boolean) modelChamCong.getValueAt(i, 4);
+	        Boolean isNghiCoPhep = (Boolean) modelChamCong.getValueAt(i, 5);
+
+	        // Kiểm tra giá trị null trước khi gọi booleanValue()
+	        boolean coMat = isCoMat != null && isCoMat.booleanValue();
+	        boolean nghiCoPhep = isNghiCoPhep != null && isNghiCoPhep.booleanValue();
+
+	        String tinhTrang = "";
+	        if (coMat) {
+	            tinhTrang = "Đi làm";
+	        } else if (nghiCoPhep) {
+	            tinhTrang = "Nghỉ có phép";
+	        } else {
+	            tinhTrang = "Nghỉ không phép";
 	        }
-	    } else if (cmbGio.isEnabled()) {
-	        try {
-	            gioTangCa = Integer.parseInt(cmbGioTangCa.getSelectedItem().toString());
-	        } catch (NumberFormatException e) {
-	            // Handle the case where the selected item is not a valid integer.
-	        }
-	    } else {
-	        gioTangCa = 0;
+
+	        // Thêm giờ tăng ca từ tableChamCong vào tableNhanVien
+	        Object gioTangCaObject = modelChamCong.getValueAt(i, 6);
+	        gioTangCa = gioTangCaObject != null ? (Integer) gioTangCaObject : 0;
+
+	        ChamCongNhanVien chamCong = new ChamCongNhanVien(
+	            nhanVien,
+	            dcsNgayChamCong.getDate(),
+	            cmbCaLam.getSelectedItem().toString(),
+	            tinhTrang,
+	            gio,
+	            gioTangCa,
+	            nhanvienDangNhap
+	        );
+
+	        daoChamCong.themMotChamCongNhanVien(chamCong);
 	    }
+
+	    btnChamCongTatCa.setEnabled(false);
+	    hienThiChamCongTheoNgay();
+
+	    // Xóa dữ liệu trong bảng
+	    while (modelChamCong.getRowCount() != 0) {
+	        modelChamCong.removeRow(0);
+	    }
+
+	    btnChamLai.setEnabled(false);
+	    JOptionPane.showMessageDialog(null, stChamCongThanhCong);
+	}
+
+	private void btnLuuActionPerformed(java.awt.event.ActionEvent evt){
+		String gioLam = "";
+		int gioTangCa = 0;
+
+		if (cmbTinhTrang.getSelectedIndex() == 0) {
+			gioLam = cmbGio.getSelectedItem().toString();
+		} else if (cmbGio.isEnabled()) {
+			gioLam = cmbGio.getSelectedItem().toString();
+		} else {
+			gioLam = "";
+		}
+
+		if (cmbTinhTrang.getSelectedIndex() == 0) {
+			try {
+				gioTangCa = Integer.parseInt(cmbGioTangCa.getSelectedItem().toString());
+			} catch (NumberFormatException e) {
+			}
+		} else if (cmbGio.isEnabled()) {
+			try {
+				gioTangCa = Integer.parseInt(cmbGioTangCa.getSelectedItem().toString());
+			} catch (NumberFormatException e) {
+			}
+		} else {
+			gioTangCa = 0;
+		}
 
 		daoChamCong = new ChamCongNhanVien_Dao();
 		daoNhanVien = new NhanVien_Dao();
@@ -981,12 +1183,12 @@ public class ChamCongNhanVien_GUI extends JPanel {
 					cmbCaLam.getSelectedItem().toString(), cmbTinhTrang.getSelectedItem().toString(), gioLam, gioTangCa, nhanvienDangNhap);
 			if (daoChamCong.themMotChamCongNhanVien(chamcong)) {
 				try {
-					JOptionPane.showMessageDialog(null,stChamCongThanhCong);
-					taiDuLieuLenBangNhanVien();
+					JOptionPane.showMessageDialog(null, stChamCongThanhCong);
+					taiDuLieuLenBangChamCong();
 					hienThiChamCongTheoNgay();
 					setShow(btnCapNhat, btnChamLai);
 					setHidden(btnLuu, btnHuy);
-				} catch (ParseException ex) {
+				} catch (ParseException | InterruptedException ex) {
 					Logger.getLogger(ChamCongNhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
 				} finally {
 					if (modelChamCong.getRowCount() > 0) {
@@ -1019,7 +1221,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 			}
 		}
 		cmbGio.setEnabled(false);
-		cmbPhut.setEnabled(false);
 	}
 
 	private void btnChamLaiActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1030,7 +1231,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		cmbTinhTrang.setSelectedIndex(0);
 		cmbGio.setEditable(false);
 		cmbGioTangCa.setEditable(false);
-		cmbPhut.setEditable(false);
 		cmbGioTangCa.setEditable(false);
 	}
 
@@ -1045,6 +1245,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		checkChamCong = false;
 		this.cmbTinhTrang.setEnabled(false);
 		cmbGio.setEnabled(false);
-		cmbPhut.setEnabled(false);
 	}
+
 }

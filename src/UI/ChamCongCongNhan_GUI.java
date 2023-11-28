@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileInputStream;
@@ -36,6 +37,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -47,6 +49,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
@@ -120,16 +123,18 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
     private String stThemThatBai;
     private String stCapNhatThanhCong;
     private String stCapNhatThatBai;
-    private String stChamCongThanhCong;
     private String stErrNgayChamCong;
     private String stErrBeHonTongSanPhamCongDoan;
     private String stErrChamCong;
     private JSeparator jSeparator1_3;
     private JSeparator jSeparator1_4;
+	private JCheckBox checkBoxCoMat;
+	private JCheckBox checkBoxNghiCoPhep;
+	private JButton btnTichTatCa;
+	private JButton btnChamCongTatCa;
 
     public ChamCongCongNhan_GUI(String fileName) throws IOException {
-    	setBackground(new Color(255, 255, 255));
-        initComponents();
+    	initComponents();
         excute();
         lblErrSoLuongSP.setText("");
         try {
@@ -146,10 +151,10 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         btnXoa.setEnabled(false);
         btnHuy.setEnabled(false);
         btnLuu.setEnabled(false);
-        
         // add su kien cho cac button, table
         btnLayDanhSach.addActionListener(this);
         btnChamCong.addActionListener(this);
+        btnChamCongTatCa.addActionListener(this);
         btnCapNhat.addActionListener(this);
         btnLuu.addActionListener(this);
         btnXoa.addActionListener(this);
@@ -172,7 +177,6 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         modelTableChamCong = (DefaultTableModel) tblChamCong.getModel();
         modelTableCongNhan = (DefaultTableModel) tblCongNhan.getModel();
         dtcNgayChamCong.setDate(new Date());
-        
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dtcNgayChamCong.getDate());
         if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
@@ -242,6 +246,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         cmbMaCongDoan.addItemListener(itemMaCongDoan);
         cmbTenCongDoan.addItemListener(itemTenCongDoan);
         taiDuLieuLenCmbToNhom();
+        cmbTenCongDoan.addItemListener(this::comboBoxitemStateChangedTenCongDoan);
         cmbTenToNhom.addItemListener(this::comboBoxItemStateChangedToNhom);
         cmbMaSanPham.addItemListener(itemMaSanPham);
         cmbTenSanPham.addItemListener(itemTenSanPham);
@@ -249,7 +254,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         cmbTrangThai.addItemListener(this::toggleCmbTrangThai);
 
         setCmbGio("Sáng");
-        caiDatNgonNguChoView(fileName);
+        caiDatNgonNgu(fileName);
         setEditTextDateChooser();
     }
 
@@ -264,7 +269,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         ngaySinh.setEnabled(false);
     }
 
-    public void caiDatNgonNguChoView(String fileName) throws FileNotFoundException, IOException {
+    public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
         FileInputStream fis = new FileInputStream(fileName);
         Properties prop = new Properties();
         prop.load(fis);
@@ -426,7 +431,6 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             } else {
                 setCmbGio("Đêm");
             }
-
         }
     }
 
@@ -594,7 +598,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         jSeparator1.setBounds(1040, 344, 180, 10);
         
         lblErrSoLuongSP = new javax.swing.JLabel();
-        lblErrSoLuongSP.setBounds(1040, 300, 190, 0);
+        lblErrSoLuongSP.setBounds(1040, 349, 240, 21);
         
         cmbMaCongDoan = new javax.swing.JComboBox<>();
         cmbMaCongDoan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
@@ -647,7 +651,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         lblHienThi.setBounds(20, 409, 60, 21);
         cmbHienThi = new javax.swing.JComboBox<>();
         cmbHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-        cmbHienThi.setBounds(106, 398, 170, 40);
+        cmbHienThi.setBounds(90, 398, 95, 40);
         
         cmbTenToNhom = new javax.swing.JComboBox<>();
         cmbTenToNhom.setFont(new Font("Times New Roman", Font.PLAIN, 16));
@@ -657,21 +661,21 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         lblToNhom.setBounds(20, 20, 90, 40);
         
         btnChamCong = new javax.swing.JButton();
-        btnChamCong.setBounds(327, 396, 160, 40);
+        btnChamCong.setBounds(383, 399, 140, 40);
         
         btnXoa = new javax.swing.JButton();
-        btnXoa.setBounds(742, 397, 150, 40);
+        btnXoa.setBounds(855, 399, 120, 40);
         
         btnCapNhat = new javax.swing.JButton();
         btnCapNhat.setBackground(new Color(255, 215, 0));
-        btnCapNhat.setBounds(543, 396, 150, 40);
+        btnCapNhat.setBounds(702, 399, 130, 40);
         
         btnLuu = new javax.swing.JButton();
-        btnLuu.setBounds(946, 397, 140, 40);
+        btnLuu.setBounds(998, 399, 120, 40);
         
         btnHuy = new javax.swing.JButton();
         btnHuy.setBackground(new Color(255, 0, 255));
-        btnHuy.setBounds(1130, 397, 150, 40);
+        btnHuy.setBounds(1140, 397, 140, 40);
         
         cmbMaSanPham = new javax.swing.JComboBox<>();
         cmbMaSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 16));
@@ -705,21 +709,107 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         tblCongNhan.setFont(new java.awt.Font("Segoe UI", 0, 13));
         tblCongNhan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-            	{null, null, null},
-            	{null, null, null},
-            	{null, null, null},
-            	{null, null, null},
-            	{null, null, null}
+            	{null, null, null, null, null, null},
+            	{null, null, null, null, null, null},
+            	{null, null, null, null, null, null},
+            	{null, null, null, null, null, null},
+            	{null, null, null, null, null, null},
+            	{null, null, null, null, null, null}
             },
             new String [] {
-                "STT", "Mã công nhân", "Họ và tên"
+                "STT", "Mã công nhân", "Họ và tên", "Có mặt", "Nghỉ có phép", "Số lượng SP làm được"
             }
-        ));
+        		) {
+		    @Override
+		    public Class<?> getColumnClass(int columnIndex) {
+		        return columnIndex == 3 || columnIndex == 4 ? Boolean.class : columnIndex == 5 ? Integer.class : Object.class;
+		    }
+
+		    @Override
+		    public Object getValueAt(int row, int column) {
+		        if (column == 5) {
+		            return super.getValueAt(row, column);
+		        }
+		        return super.getValueAt(row, column);
+		    }
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        return column == 3 || column == 4;
+		    }
+		});
+        
+        checkBoxCoMat = new JCheckBox();
+        tblCongNhan.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(checkBoxCoMat));
+
+		checkBoxNghiCoPhep = new JCheckBox();
+		tblCongNhan.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(checkBoxNghiCoPhep));
+
+		// Thêm ItemListener cho checkbox "Có mặt"
+		ItemListener coMatListener = new ItemListener() {
+		    @Override
+		    public void itemStateChanged(ItemEvent e) {
+		        int selectedRow = tblCongNhan.getSelectedRow();
+		        if (selectedRow != -1 && e.getStateChange() == ItemEvent.SELECTED) {
+		            // Nếu ô "Có mặt" được tích, hủy tích ô "Nghỉ có phép"
+		            modelTableCongNhan.setValueAt(true, selectedRow, 3);  // Chọn "Có mặt"
+		            modelTableCongNhan.setValueAt(false, selectedRow, 4); // Hủy chọn "Nghỉ có phép"
+		        }
+		    }
+		};
+
+		// Thêm ItemListener cho checkbox "Nghỉ có phép"
+		ItemListener nghiCoPhepListener = new ItemListener() {
+		    @Override
+		    public void itemStateChanged(ItemEvent e) {
+		        int selectedRow = tblCongNhan.getSelectedRow();
+		        if (selectedRow != -1 && e.getStateChange() == ItemEvent.SELECTED) {
+		            // Nếu ô "Nghỉ có phép" được tích, hủy tích ô "Có mặt"
+		        	modelTableCongNhan.setValueAt(true, selectedRow, 4);  // Chọn "Nghỉ có phép"
+		        	modelTableCongNhan.setValueAt(false, selectedRow, 3); // Hủy chọn "Có mặt"
+		        }
+		    }
+		};
+
+		checkBoxCoMat.addItemListener(coMatListener);
+		checkBoxNghiCoPhep.addItemListener(nghiCoPhepListener);
+        
         tblCongNhan.getTableHeader().setBackground(new Color(128, 200, 255));
 		tblCongNhan.setSelectionBackground(new Color(255, 215, 0));
         
-        scrTableCongNhan.setViewportView(tblCongNhan);
+		tblCongNhan.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent evt) {
+		        tblCongNhanMouseClicked(evt);
+		        int column = tblCongNhan.columnAtPoint(evt.getPoint());
+		        int row = tblCongNhan.rowAtPoint(evt.getPoint());
 
+		        if (column == 5 && row != -1) {
+		            Boolean isCoMat = (Boolean) modelTableCongNhan.getValueAt(row, 3);
+		            Boolean isNghiCoPhep = (Boolean) modelTableCongNhan.getValueAt(row, 4);
+
+		            if (isCoMat != null && isCoMat) {
+		                if (isNghiCoPhep == null || !isNghiCoPhep) {
+		                    String newOvertime = JOptionPane.showInputDialog("Nhập số lượng sản phẩm nhân viên làm: ");
+		                    if (newOvertime != null && !newOvertime.isEmpty()) {
+		                        try {
+		                            int quantity = Integer.parseInt(newOvertime);
+		                            modelTableCongNhan.setValueAt(quantity, row, 5);
+		                        } catch (NumberFormatException e) {
+		                            JOptionPane.showMessageDialog(null, "Vui lòng nhập một số nguyên cho số lượng!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		                        }
+		                    }
+		                } else {
+		                    JOptionPane.showMessageDialog(null, "Nhân viên đang nghỉ có phép! Không thể nhập số lượng!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		                }
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Nhân viên không có mặt! Không thể nhập số lượng!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		            }
+		        }
+		    }
+		});
+		
+        scrTableCongNhan.setViewportView(tblCongNhan);
         pnlChamCongCN.add(scrTableCongNhan);
 
         lblNgayChamCong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -797,7 +887,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         jSeparator1_4.setBounds(1040, 39, 180, 10);
         pnlChamCongCN.add(jSeparator1_4);
 
-        cmbMaCongDoan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cd001" }));
+        cmbMaCongDoan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
         cmbMaCongDoan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbMaCongDoanActionPerformed(evt);
@@ -815,7 +905,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         lblMaCongDoan.setText("Mã công đoạn:");
         pnlChamCongCN.add(lblMaCongDoan);
 
-        cmbCaLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ca 01", "Ca 02", "Ca 03", "Chủ nhật" }));
+        cmbCaLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
         cmbCaLam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbCaLamActionPerformed(evt);
@@ -824,7 +914,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         pnlChamCongCN.add(cmbCaLam);
 
         cmbGioDiLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        cmbGioDiLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "24" }));
+        cmbGioDiLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
         pnlChamCongCN.add(cmbGioDiLam);
 
         lblGioDiLam.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -841,7 +931,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         cmbPhutDiLam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "00", "15", "30", "45" }));
         pnlChamCongCN.add(cmbPhutDiLam);
 
-        cmbTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đi Làm", "Đi Trễ", "Nghỉ Không Phép", "Nghỉ Có Phép" }));
+        cmbTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đi làm", "Nghỉ có phép", "Nghỉ không phép" }));
         pnlChamCongCN.add(cmbTrangThai);
 
         lblCaLam.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -867,20 +957,20 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         });
         pnlChamCongCN.add(btnLayDanhSach);
 
-        lblTenSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 18)); // NOI18N
+        lblTenSanPham.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         lblTenSanPham.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTenSanPham.setText("Tên sản phẩm:");
         pnlChamCongCN.add(lblTenSanPham);
 
-        cmbTenCongDoan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rap giày" }));
+        cmbTenCongDoan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
         pnlChamCongCN.add(cmbTenCongDoan);
 
-        lblTenCongDoan.setFont(new Font("Times New Roman", Font.PLAIN, 18)); // NOI18N
+        lblTenCongDoan.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         lblTenCongDoan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTenCongDoan.setText("Công đoạn:");
         pnlChamCongCN.add(lblTenCongDoan);
 
-        lblHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 18)); // NOI18N
+        lblHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         lblHienThi.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblHienThi.setText("Hiển thị");
         pnlChamCongCN.add(lblHienThi);
@@ -893,7 +983,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         });
         pnlChamCongCN.add(cmbHienThi);
 
-        cmbTenToNhom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SP001", " " }));
+        cmbTenToNhom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
         cmbTenToNhom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbTenToNhomActionPerformed(evt);
@@ -976,6 +1066,38 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         });
         pnlChamCongCN.add(btnHuy);
 
+        btnTichTatCa = new JButton();
+        btnTichTatCa.setIcon(new ImageIcon(ChamCongCongNhan_GUI.class.getResource("/image/icon/them.png")));
+        btnTichTatCa.setText("Có mặt tất cả");
+        btnTichTatCa.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        btnTichTatCa.setBorder(null);
+        btnTichTatCa.setBackground(new Color(46, 204, 113));
+        btnTichTatCa.setBounds(540, 399, 140, 40);
+        pnlChamCongCN.add(btnTichTatCa);
+        btnTichTatCa.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int rowCount = tblCongNhan.getRowCount();
+				for (int i = 0; i < rowCount; i++) {
+					tblCongNhan.getModel().setValueAt(true, i, 3);
+				}
+			}
+		});
+        
+        btnChamCongTatCa = new JButton();
+        btnChamCongTatCa.setIcon(new ImageIcon(ChamCongCongNhan_GUI.class.getResource("/image/icon/them.png")));
+        btnChamCongTatCa.setText("Chấm công tất cả");
+        btnChamCongTatCa.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        btnChamCongTatCa.setBorder(null);
+        btnChamCongTatCa.setBackground(new Color(46, 204, 113));
+        btnChamCongTatCa.setBounds(195, 399, 178, 40);
+        btnChamCongTatCa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	btnChamCongTatCaActionPerformed(evt);
+            }
+        });
+        pnlChamCongCN.add(btnChamCongTatCa);
+        
         cmbMaSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cd001" }));
         cmbMaSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1022,38 +1144,13 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         add(scrChamCong);
     }
 
-    private void btnLayDanhSachActionPerformed(java.awt.event.ActionEvent evt) {
-        if (tblCongNhan.getRowCount() == 0) {
-            btnChamCong.setEnabled(false);
-        } else {
-            btnChamCong.setEnabled(true);
-        }
-        lblTenSanPhamOutput.setText(cmbTenSanPham.getSelectedItem().toString());
-        lblTenCongDoanOutput.setText(cmbTenCongDoan.getSelectedItem().toString());
+    private void btnChamCongTatCaActionPerformed(ActionEvent evt) {
         setEditTextDateChooser();
-    }
+	}
 
-    private void dtcNgayChamCongPropertyChange(java.beans.PropertyChangeEvent evt) {
-        if ("date".equals(evt.getPropertyName())) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(dtcNgayChamCong.getDate());
-            if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
-                setComBoBoxToSunDay();
-            } else {
-                setComBoBoxToReset();
-            }
-        }
-        Date ngayChon = dtcNgayChamCong.getDate();
-        if (ngayChon.after(new Date())) {
-            JOptionPane.showMessageDialog(null, stErrChamCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
-            dtcNgayChamCong.setDate(new Date());
-        }
-        btnChamCong.setEnabled(false);
-        while (tblCongNhan.getRowCount() != 0) {
-            modelTableCongNhan.removeRow(0);
-        }
-    }
-
+    private void tblCongNhanMouseClicked(MouseEvent evt) {
+	}
+	
     private void cmbHienThiActionPerformed(java.awt.event.ActionEvent evt) {
     }
 
@@ -1113,7 +1210,39 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         cmbCaLam.addItem("Chiều");
         cmbCaLam.addItem("Đêm");
     }
+    
+    private void btnLayDanhSachActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tblCongNhan.getRowCount() == 0) {
+            btnChamCong.setEnabled(false);
+        } else {
+            btnChamCong.setEnabled(true);
+        }
+        lblTenSanPhamOutput.setText(cmbTenSanPham.getSelectedItem().toString());
+        lblTenCongDoanOutput.setText(cmbTenCongDoan.getSelectedItem().toString());
+        setEditTextDateChooser();
+    }
 
+    private void dtcNgayChamCongPropertyChange(java.beans.PropertyChangeEvent evt) {
+        if ("date".equals(evt.getPropertyName())) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dtcNgayChamCong.getDate());
+            if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
+                setComBoBoxToSunDay();
+            } else {
+                setComBoBoxToReset();
+            }
+        }
+        Date ngayChon = dtcNgayChamCong.getDate();
+        if (ngayChon.after(new Date())) {
+            JOptionPane.showMessageDialog(null, stErrChamCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+            dtcNgayChamCong.setDate(new Date());
+        }
+        btnChamCong.setEnabled(false);
+        while (tblCongNhan.getRowCount() != 0) {
+            modelTableCongNhan.removeRow(0);
+        }
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
@@ -1146,7 +1275,8 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             caLamFlag = cmbCaLam.getSelectedItem().toString();
             ngayChamCongFlag = dtcNgayChamCong.getDate();
             lblTenCongDoanOutput.setText(cmbTenCongDoan.getSelectedItem().toString());
-        } else if (o.equals(btnChamCong)) {
+        } 
+        else if (o.equals(btnChamCong)) {
             boolean isValid = validateForm();
             if (!isValid) {
                 return;
@@ -1157,7 +1287,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             String maPhanCong = phanCong_DAO.layRaMaPhanCongTheoMaCongDoanMaCongNhan(maCongDoanFlag, lblMaCongNhanHienThi.getText().trim());
             PhanCongCongNhan phanCong = phanCong_DAO.layMotPhanCongCongNhanTheoMaPhanCong(maPhanCong);
             String gioDiLam = cmbGioDiLam.getSelectedItem().toString() + "h" + cmbPhutDiLam.getSelectedItem().toString();
-            if (cmbTrangThai.getSelectedIndex() >= 2) {
+            if (cmbTrangThai.getSelectedIndex() >= 1) {
                 gioDiLam = "";
             }
             int soLuongLam = Integer.parseInt(txtSoLuongLam.getText().trim());
@@ -1183,11 +1313,77 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             } else {
                 JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
             }
+        }
+        else if (o.equals(btnChamCongTatCa)) {
+            boolean isValid = validateForm();
+            if (!isValid) {
+                return;
+            }
+            if (lblMaCongNhanHienThi.getText().equals("")) {
+                return;
+            }
+            // Kiểm tra xem đã chọn đúng công đoạn và có công nhân nào trong bảng không
+            if (maCongDoanFlag == null || modelTableCongNhan.getRowCount() == 0) {
+                return;
+            }
 
-        } else if (o.equals(btnCapNhat)) {
+            for (int i = 0; i < modelTableCongNhan.getRowCount(); i++) {
+                String maCongNhan = modelTableCongNhan.getValueAt(i, 1).toString();
+                String maPhanCong = phanCong_DAO.layRaMaPhanCongTheoMaCongDoanMaCongNhan(maCongDoanFlag, maCongNhan);
+                PhanCongCongNhan phanCong = phanCong_DAO.layMotPhanCongCongNhanTheoMaPhanCong(maPhanCong);
+
+                Boolean isCoMat = (Boolean) modelTableCongNhan.getValueAt(i, 3);
+                Boolean isNghiCoPhep = (Boolean) modelTableCongNhan.getValueAt(i, 4);
+
+                boolean coMat = isCoMat != null && isCoMat.booleanValue();
+                boolean nghiCoPhep = isNghiCoPhep != null && isNghiCoPhep.booleanValue();
+
+                String tinhTrang = "";
+                if (coMat) {
+                    tinhTrang = "Đi làm";
+                }else if (nghiCoPhep) {
+                    tinhTrang = "Nghỉ có phép";
+                } else {
+                    tinhTrang = "Nghỉ không phép";
+                }
+                
+                String gioDiLam = "";
+                int soLuongLam = 0;
+                if (coMat) {
+                    gioDiLam = cmbGioDiLam.getSelectedItem().toString() + "h" + cmbPhutDiLam.getSelectedItem().toString();
+                    soLuongLam = Integer.parseInt(modelTableCongNhan.getValueAt(i, 5).toString());
+                }
+                try {
+                	if (chamCongCN_DAO.themMotChamCongCongNhan(new ChamCongCongNhan(phanCong, cmbCaLam.getSelectedItem().toString(), ngayChamCongFlag, soLuongLam, tinhTrang, gioDiLam))) {
+                        JOptionPane.showMessageDialog(null, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, stThemThatBai, stThongbao, JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
+            }
+
+            taiDuLieuChamCongLenBang();
+            taiDuLieuLenBangCongNhan();
+            btnChamCong.setEnabled(false);
+            cmbTrangThai.setEnabled(false);
+            cmbGioDiLam.setEnabled(false);
+            cmbPhutDiLam.setEnabled(false);
+            txtSoLuongLam.setEditable(false);
+            if (tblChamCong.getRowCount() != 0) {
+                if (tblCongNhan.getSelectedRow() != -1) {
+                    tblCongNhan.removeRowSelectionInterval(tblCongNhan.getSelectedRow(), tblCongNhan.getSelectedRow());
+                }
+                tblChamCong.setRowSelectionInterval(0, 0);
+            }
+            congDoan_DAO.updateTinhTrangHoanThanhCuaCacCongDoan();
+        }
+        else if (o.equals(btnCapNhat)) {
             cmbCaLam.setEnabled(false);
             cmbTrangThai.setEnabled(true);
-            if (cmbTrangThai.getSelectedIndex() >= 2) {
+            if (cmbTrangThai.getSelectedIndex() >= 1) {
                 cmbGioDiLam.setEnabled(false);
                 cmbPhutDiLam.setEnabled(false);
                 txtSoLuongLam.setEditable(false);
@@ -1200,8 +1396,8 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             btnXoa.setEnabled(false);
             btnLuu.setEnabled(true);
             btnHuy.setEnabled(true);
-        } else if (o.equals(btnHuy)) {
-
+        } 
+        else if (o.equals(btnHuy)) {
             cmbTrangThai.setEnabled(false);
             cmbGioDiLam.setEnabled(false);
             cmbPhutDiLam.setEnabled(false);
@@ -1212,7 +1408,8 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             btnHuy.setEnabled(false);
             lblErrSoLuongSP.setText("");
             cmbCaLam.setEnabled(true);
-        } else if (o.equals(btnLuu)) {
+        } 
+        else if (o.equals(btnLuu)) {
             boolean isHople = validateForm();
             if (!isHople) {
                 return;
@@ -1230,7 +1427,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             int soLuongLam = Integer.parseInt(txtSoLuongLam.getText().trim());
             String trangThaiDiLam = cmbTrangThai.getSelectedItem().toString();
             String gioDiLam = cmbGioDiLam.getSelectedItem().toString() + "h" + cmbPhutDiLam.getSelectedItem().toString();
-            if (cmbTrangThai.getSelectedIndex() >= 2) {
+            if (cmbTrangThai.getSelectedIndex() >= 1) {
                 gioDiLam = "";
             }
             ChamCongCongNhan cccn = new ChamCongCongNhan(phanCong, caLam, ngayChamCong, soLuongLam, trangThaiDiLam, gioDiLam);
@@ -1258,7 +1455,8 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             } else {
                 JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
             }
-        } else if (o.equals(btnXoa)) {
+        }
+        else if (o.equals(btnXoa)) {
             int rowChamCongSelect = tblChamCong.getSelectedRow();
             if (rowChamCongSelect != -1) {
                 int isAccept = JOptionPane.showConfirmDialog(null, stBanXacNhanXoa, stThongbao, JOptionPane.INFORMATION_MESSAGE);
@@ -1294,6 +1492,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
     public boolean validateForm() {
         if (txtSoLuongLam.getText().trim().equals("")) {
             lblErrSoLuongSP.setText(stErrKhongDeTrong);
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập số lượng sản phẩm!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         int soLuong = -1;
@@ -1325,7 +1524,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         ArrayList<PhanCongCongNhan> phanCongDS = phanCong_DAO.layDanhSachPhanCongTheoMaCongDoan(maCongDoanFlag);
         if (phanCongDS.size() > 0) {
             int soLuongLamCuaPhanCong = phanCongDS.get(0).getSoLuongCanLam();
-            if (soLuong > soLuongLamCuaPhanCong) {
+            if (soLuong > soLuongLamCuaPhanCong){
                 lblErrSoLuongSP.setText(stErrBeHonTongSanPhamCongDoan);
                 return false;
             }
@@ -1345,7 +1544,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         String maToNhom = toNhom_DAO.layMotToNhomTheoTen(cmbTenToNhom.getSelectedItem().toString()).getMaToNhom();
         SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
         String ngayChamCong = sm.format(dtcNgayChamCong.getDate());
-        ArrayList<CongNhan> dsCongNhan = phanCong_DAO.layRaDanhSachCongNhanTheoCongDoanVaToNhom(maCongDoan, maToNhom, ngayChamCong, cmbCaLam.getSelectedItem().toString());
+        ArrayList<CongNhan> dsCongNhan = phanCong_DAO.layRaDanhSachCongNhanTheoCongDoanVaToNhom(maCongDoan, maToNhom, ngayChamCong, cmbCaLam.getSelectedItem().toString());// vu them
         for (CongNhan congNhan : dsCongNhan) {
             String data[] = {(modelTableCongNhan.getRowCount() + 1) + "", congNhan.getMaCongNhan(), congNhan.getHoTen()};
             modelTableCongNhan.addRow(data);
@@ -1445,6 +1644,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         lblHoVaTenHienThi.setText(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 3).toString());
         cmbTrangThai.setSelectedItem(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 7).toString());
         setCmbGio(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 6).toString());
+        //cmbCaLam.setSelectedItem(tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 6).toString());
         String times[] = tblChamCong.getValueAt(tblChamCong.getSelectedRow(), 8).toString().split("h");
         if (times.length > 1) {
             cmbGioDiLam.setSelectedItem(times[0]);

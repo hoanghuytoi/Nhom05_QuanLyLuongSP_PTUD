@@ -51,13 +51,12 @@ public class PhanCongCongNhan_GUI extends JPanel {
 
 	private JTextField txtMaPhanCong;
 	private JTextField txtTenCD;
-	private JTextField txtSoLuongCan;
+	private JTextField txtSoLuongCanLam;
 	private JLabel lblTieuDe;
 	private JPanel panelCDCongNhan;
 	private JLabel lblMaPhanCong;
 	private JLabel lblTenCD;
-	private JLabel lblSoLuongCan;
-	private JLabel lblErrSoLuongCan;
+	private JLabel lblSoLuongCanLam;
 	private JLabel lblMaCD;
 	private JLabel lblToNhom;
 	private JComboBox<String> cmbToNhom;
@@ -94,12 +93,16 @@ public class PhanCongCongNhan_GUI extends JPanel {
     private String stErr2;
     private String stErr3;
     private String stErrPhanCong;
+    private JTextField txtSoLuongCan;
+	private JLabel lblSoLuongCan;
 
 	public PhanCongCongNhan_GUI(String fileName) throws IOException {
 		initComponents();
         caiDatNgonNgu(fileName);
 		excute();
         taiDuLieuLenBangSanPham();
+        txtSoLuongCan.setEditable(false);
+        txtSoLuongCanLam.setEditable(false);
         dcsNgayPhanCong.setEnabled(false);
         btnPhanCong.setEnabled(false);
 	}
@@ -115,7 +118,7 @@ public class PhanCongCongNhan_GUI extends JPanel {
         ChangeName(tblSanPham, 0, prop.getProperty("pc_stt"));
         ChangeName(tblSanPham, 1, prop.getProperty("pc_maSanPham"));
         ChangeName(tblSanPham, 2, prop.getProperty("pc_tenSanPham"));
-        ChangeName(tblSanPham, 3, prop.getProperty("pc_soLuongCan"));
+        ChangeName(tblSanPham, 3, prop.getProperty("pc_soLuong"));
         ChangeName(tblSanPham, 4, prop.getProperty("pc_donGia"));
 
         
@@ -126,8 +129,9 @@ public class PhanCongCongNhan_GUI extends JPanel {
         ChangeName(tblPhanCong, 4, prop.getProperty("pc_MaCongDoan"));
         ChangeName(tblPhanCong, 5, prop.getProperty("pc_TenCongDoan"));
         ChangeName(tblPhanCong, 6, prop.getProperty("pc_toNhom"));
-        ChangeName(tblPhanCong, 7, prop.getProperty("pc_soLuongCan"));
-        ChangeName(tblPhanCong, 8, prop.getProperty("pc_ngayPhanCong"));
+        ChangeName(tblPhanCong, 7, prop.getProperty("pc_tenCongNhan"));
+        ChangeName(tblPhanCong, 8, prop.getProperty("pc_soLuongCanLam"));
+        ChangeName(tblPhanCong, 9, prop.getProperty("pc_ngayPhanCong"));
 
         lblTieuDe.setText(prop.getProperty("pc_TieuDe"));
         lblNgayPhanCong.setText(prop.getProperty("pc_ngayPhanCong"));
@@ -135,6 +139,7 @@ public class PhanCongCongNhan_GUI extends JPanel {
         lblMaCD.setText(prop.getProperty("pc_MaCongDoan"));
         lblTenCD.setText(prop.getProperty("pc_TenCongDoan"));
         lblSoLuongCan.setText(prop.getProperty("pc_soLuongCan"));
+        lblSoLuongCanLam.setText(prop.getProperty("pc_soLuongCanLam"));
         lblToNhom.setText(prop.getProperty("pc_toNhom"));
 
         btnPhanCong.setText(prop.getProperty("pc_btnPhanCong"));
@@ -186,8 +191,7 @@ public class PhanCongCongNhan_GUI extends JPanel {
         txtMaPhanCong.setText("");
         cmbMaCongDoan.removeAllItems();
         txtTenCD.setText("");
-        txtSoLuongCan.setText("");
-        lblErrSoLuongCan.setText("");
+        txtSoLuongCanLam.setText("");
     }
 	
 	private void initComponents() {
@@ -254,7 +258,7 @@ public class PhanCongCongNhan_GUI extends JPanel {
 		TitledBorder titledBorder1 = BorderFactory.createTitledBorder(blackLineBorder1, "Thông tin phân công công nhân");
 		panelCDCongNhan.setBorder(titledBorder1);
 		panelCDCongNhan.setBackground(Color.WHITE);
-		panelCDCongNhan.setBounds(854, 70, 387, 369);
+		panelCDCongNhan.setBounds(854, 39, 387, 400);
 		add(panelCDCongNhan);
 		panelCDCongNhan.setLayout(null);
 
@@ -286,38 +290,31 @@ public class PhanCongCongNhan_GUI extends JPanel {
 		txtTenCD.setBackground(new Color(255, 255, 255));
 		txtTenCD.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		txtTenCD.setBorder(null);
-		txtTenCD.setBounds(134, 147, 224, 36);
+		txtTenCD.setBounds(134, 136, 224, 34);
 		panelCDCongNhan.add(txtTenCD);
 
-		lblSoLuongCan = new JLabel();
-		lblSoLuongCan.setText("Số lượng cần:");
-		lblSoLuongCan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		lblSoLuongCan.setBounds(10, 223, 114, 30);
-		panelCDCongNhan.add(lblSoLuongCan);
+		lblSoLuongCanLam = new JLabel();
+		lblSoLuongCanLam.setText("Số lượng nv làm:");
+		lblSoLuongCanLam.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		lblSoLuongCanLam.setBounds(10, 271, 114, 30);
+		panelCDCongNhan.add(lblSoLuongCanLam);
 
 		JSeparator jSeparator2 = new JSeparator();
 		jSeparator2.setForeground(Color.BLACK);
-		jSeparator2.setBounds(134, 184, 224, 10);
+		jSeparator2.setBounds(134, 176, 224, 10);
 		panelCDCongNhan.add(jSeparator2);
 
-		txtSoLuongCan = new JTextField();
-		txtSoLuongCan.setBackground(new Color(255, 255, 255));
-		txtSoLuongCan.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		txtSoLuongCan.setBorder(null);
-		txtSoLuongCan.setBounds(134, 223, 224, 30);
-		panelCDCongNhan.add(txtSoLuongCan);
+		txtSoLuongCanLam = new JTextField();
+		txtSoLuongCanLam.setBackground(new Color(255, 255, 255));
+		txtSoLuongCanLam.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		txtSoLuongCanLam.setBorder(null);
+		txtSoLuongCanLam.setBounds(134, 254, 224, 30);
+		panelCDCongNhan.add(txtSoLuongCanLam);
 
 		JSeparator jSeparator2_1 = new JSeparator();
 		jSeparator2_1.setForeground(Color.BLACK);
-		jSeparator2_1.setBounds(134, 254, 224, 10);
+		jSeparator2_1.setBounds(134, 291, 224, 10);
 		panelCDCongNhan.add(jSeparator2_1);
-
-		lblErrSoLuongCan = new JLabel();
-		lblErrSoLuongCan.setText("thông báo lỗi");
-		lblErrSoLuongCan.setForeground(new Color(204, 0, 0));
-		lblErrSoLuongCan.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-		lblErrSoLuongCan.setBounds(134, 254, 200, 30);
-		panelCDCongNhan.add(lblErrSoLuongCan);
 
 		lblMaCD = new JLabel();
 		lblMaCD.setText("Mã công đoạn:");
@@ -328,7 +325,7 @@ public class PhanCongCongNhan_GUI extends JPanel {
 		lblToNhom = new JLabel();
 		lblToNhom.setText("Tổ nhóm:");
 		lblToNhom.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		lblToNhom.setBounds(10, 289, 114, 36);
+		lblToNhom.setBounds(10, 337, 114, 36);
 		panelCDCongNhan.add(lblToNhom);
 
 		cmbToNhom = new JComboBox<String>();
@@ -340,7 +337,7 @@ public class PhanCongCongNhan_GUI extends JPanel {
         });
 		cmbToNhom.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		cmbToNhom.setBackground(Color.WHITE);
-		cmbToNhom.setBounds(134, 289, 224, 36);
+		cmbToNhom.setBounds(134, 326, 224, 36);
 		panelCDCongNhan.add(cmbToNhom);
 		
 		cmbMaCongDoan = new JComboBox<String>();
@@ -355,6 +352,26 @@ public class PhanCongCongNhan_GUI extends JPanel {
 		cmbMaCongDoan.setBackground(Color.WHITE);
 		cmbMaCongDoan.setBounds(134, 89, 224, 36);
 		panelCDCongNhan.add(cmbMaCongDoan);
+		
+		lblSoLuongCan = new JLabel();
+		lblSoLuongCan.setText("Số lượng cần:");
+		lblSoLuongCan.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+		lblSoLuongCan.setBounds(10, 216, 114, 30);
+		panelCDCongNhan.add(lblSoLuongCan);
+		
+		txtSoLuongCan = new JTextField();
+		txtSoLuongCan.setText("");
+		txtSoLuongCan.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		txtSoLuongCan.setEditable(false);
+		txtSoLuongCan.setBorder(null);
+		txtSoLuongCan.setBackground(Color.WHITE);
+		txtSoLuongCan.setBounds(134, 205, 224, 30);
+		panelCDCongNhan.add(txtSoLuongCan);
+		
+		JSeparator jSeparator2_1_1 = new JSeparator();
+		jSeparator2_1_1.setForeground(Color.BLACK);
+		jSeparator2_1_1.setBounds(134, 236, 224, 10);
+		panelCDCongNhan.add(jSeparator2_1_1);
 
 		tblPhanCong = new JTable();
 		tblPhanCong.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -363,21 +380,20 @@ public class PhanCongCongNhan_GUI extends JPanel {
 
 		tblPhanCong.setModel(new DefaultTableModel(
 				new Object[][]{
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
-					{null, null, null, null, null, null, null, null,null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null},
+					{null, null, null, null, null, null, null, null, null, null}
 				},
 				new String[]{
-						"STT","Mã phân công", "Mã sản phẩm", "Tên sản phẩm", "Mã công đoạn", "Tên  công đoạn", "Tổ Nhóm", "Số lượng cần", "Ngày phân công"
+						"STT","Mã phân công", "Mã sản phẩm", "Tên sản phẩm", "Mã công đoạn", "Tên  công đoạn", "Tổ Nhóm", "Tên công nhân", "Số lượng cần làm", "Ngày phân công"
 				}
 				));
 
@@ -516,7 +532,6 @@ public class PhanCongCongNhan_GUI extends JPanel {
                 }
             });
         }
-
         setTblClick(false);
     }
     
@@ -524,7 +539,7 @@ public class PhanCongCongNhan_GUI extends JPanel {
     	dcsNgayPhanCong.setEnabled(false);
         cmbMaCongDoan.setEnabled(kq);
         cmbToNhom.setEnabled(kq);
-        txtSoLuongCan.setEditable(kq);
+        txtSoLuongCanLam.setEditable(kq);
     }
     
     public void taiDuLieuLenBangPhanCong() {
@@ -549,45 +564,28 @@ public class PhanCongCongNhan_GUI extends JPanel {
         if (listPhanCong != null) {
             for (PhanCongCongNhan e : listPhanCong) {
                 if (e.getCongDoan().getSanPham().getMaSanPham().equals(sp.getMaSanPham())) {
-                    modelPhanCong.addRow(new Object[]{modelPhanCong.getRowCount() + 1,e.getMaPhanCong(), e.getCongDoan().getSanPham().getMaSanPham(),
-                        e.getCongDoan().getSanPham().getTenSanPham(), e.getCongDoan().getMaCongDoan(), e.getCongDoan().getTenCongDoan(),
-                        e.getToNhom().getTenToNhom(), e.getSoLuongCanLam(), e.getNgayPhanCong()});
-                }
-            }
-        }
-        for (int i = 0; i < modelPhanCong.getRowCount(); i++) {
-            for (int j = i + 1; j < modelPhanCong.getRowCount(); j++) {
-                if (tblPhanCong.getValueAt(i, 6).toString().equalsIgnoreCase(tblPhanCong.getValueAt(j, 6).toString())
-                        && tblPhanCong.getValueAt(i, 4).toString().equalsIgnoreCase(tblPhanCong.getValueAt(j, 4).toString())) {
-                    modelPhanCong.removeRow(j);
+                    modelPhanCong.addRow(new Object[]{
+                        modelPhanCong.getRowCount() + 1,
+                        e.getMaPhanCong(),
+                        e.getCongDoan().getSanPham().getMaSanPham(),
+                        e.getCongDoan().getSanPham().getTenSanPham(),
+                        e.getCongDoan().getMaCongDoan(),
+                        e.getCongDoan().getTenCongDoan(),
+                        e.getToNhom().getTenToNhom(),
+                        e.getCongNhan().getHoTen(),
+                        e.getSoLuongCanLam(),
+                        e.getNgayPhanCong()
+                    });
                 }
             }
         }
     }
+
     
     private void scrDanhSachSanPhamMouseClicked(java.awt.event.MouseEvent evt) {
         setHidden(btnCapNhat, btnHuy, btnLuu, btnCapNhat);
         setShow(btnPhanCong);
         setTblClick(false);
-    }
-    
-    private void btnPhanCongActionPerformed(java.awt.event.ActionEvent evt) {
-        setHidden(btnCapNhat, btnPhanCong, btnXoa);
-        setShow(btnLuu, btnHuy);
-        checkPhanCong = true;
-        daoPhanCong = new PhanCongCongNhan_Dao();
-        dcsNgayPhanCong.setEnabled(false);
-        setTblClick(true);
-        daoPhanCong = new PhanCongCongNhan_Dao();
-        String maPhanCong = "";
-        if (daoPhanCong.layDanhSachPhanCongCongNhan().size() < 1) {
-            maPhanCong = "PPPC100001";
-        } else {
-            int maSo = Integer.parseInt(daoPhanCong.layDanhSachPhanCongCongNhan().get(daoPhanCong.layDanhSachPhanCongCongNhan().size() - 1).getMaPhanCong().split("C")[1]) + 1;
-            maPhanCong = "PPPC" + maSo;
-        }
-        txtMaPhanCong.setText(maPhanCong);
-        txtSoLuongCan.setText("");
     }
 
     public boolean checkSoLuongCanLam() {
@@ -596,24 +594,39 @@ public class PhanCongCongNhan_GUI extends JPanel {
             JOptionPane.showMessageDialog(this, stErrPhanCong, stThongbao, JOptionPane.ERROR_MESSAGE);
             flag = false;
         }
-        if (txtSoLuongCan.getText().trim().equals("")) {
-            lblErrSoLuongCan.setText(stErrKhongDeTrong);
-            flag = false;
-        } else if (!txtSoLuongCan.getText().matches("^[1-9][0-9]*$")) {
-            lblErrSoLuongCan.setText(stErrChuSo);
-            flag = false;
-        } else {
-            lblErrSoLuongCan.setText("");
-        }
+         //Loại bỏ kiểm tra số lượng cần làm không được để trống
+//         if (txtSoLuongCan.getText().trim().equals("")) {
+//             lblErrSoLuongCan.setText(stErrKhongDeTrong);
+//             flag = false;
+//         } else 
+//        if (!txtSoLuongCan.getText().matches("^[1-9][0-9]*$")) {
+//            lblErrSoLuongCan.setText(stErrChuSo);
+//            flag = false;
+//        } else {
+//            lblErrSoLuongCan.setText("");
+//        }
         return flag;
     }
+
 
     private void tblSanPhamMouseClicked(java.awt.event.MouseEvent evt) {
         setShow(btnPhanCong);
         setHidden(btnCapNhat, btnXoa, btnHuy, btnLuu);
         setTblClick(false);
-        lblErrSoLuongCan.setText("");
         taiDuLieuLenBangPhanCong();
+
+        // Lấy giá trị soLuongCan từ CongDoan và hiển thị lên txtSoLuongCanLam
+        int selectedSanPhamIndex = tblSanPham.getSelectedRow();
+        if (selectedSanPhamIndex != -1 && selectedSanPhamIndex < modelSanPham.getRowCount()) {
+            String maSanPham = tblSanPham.getValueAt(selectedSanPhamIndex, 1).toString();
+            ArrayList<CongDoan> listCongDoan = daoCongDoan.layDanhSachCongDoanTheoMaSP(maSanPham);
+
+            // Giả sử bạn muốn lấy giá trị từ công đoạn đầu tiên của sản phẩm
+            if (!listCongDoan.isEmpty()) {
+                CongDoan selectedCongDoan = listCongDoan.get(0);
+                txtSoLuongCan.setText(String.valueOf(selectedCongDoan.getSoLuongCan()));
+            }
+        }
     }
 
     private void cmbMaCongDoanActionPerformed(java.awt.event.ActionEvent evt) {
@@ -628,14 +641,14 @@ public class PhanCongCongNhan_GUI extends JPanel {
     }
 
     private void tblPhanCongMouseClicked(java.awt.event.MouseEvent evt) {
-        lblErrSoLuongCan.setText("");
         ToNhom_Dao daoToNhom = new ToNhom_Dao();
         ArrayList<ToNhom> toNhomList = daoToNhom.layDanhSachToNhom();
-		CongNhan_Dao congNhan_dao = new CongNhan_Dao();
+        CongNhan_Dao congNhan_dao = new CongNhan_Dao();
         cmbToNhom.removeAllItems();
+        
         for (ToNhom toNhom : toNhomList) {
-	        int soLuongCongNhan = congNhan_dao.laySoLuongCongNhanTheoToNhom(toNhom.getMaToNhom());
-            if (soLuongCongNhan> 0) {
+            int soLuongCongNhan = congNhan_dao.laySoLuongCongNhanTheoToNhom(toNhom.getMaToNhom());
+            if (soLuongCongNhan > 0) {
                 cmbToNhom.addItem(toNhom.getTenToNhom());
             }
         }
@@ -651,12 +664,20 @@ public class PhanCongCongNhan_GUI extends JPanel {
         txtMaPhanCong.setText(tblPhanCong.getValueAt(tblPhanCong.getSelectedRow(), 1).toString());
         cmbMaCongDoan.setSelectedItem(tblPhanCong.getValueAt(tblPhanCong.getSelectedRow(), 4).toString());
         txtTenCD.setText(tblPhanCong.getValueAt(tblPhanCong.getSelectedRow(), 5).toString());
-        txtSoLuongCan.setText(tblPhanCong.getValueAt(tblPhanCong.getSelectedRow(), 7).toString());
+
+        // Lấy giá trị soLuongCan từ CongDoan và hiển thị lên txtSoLuongCanLam
+        int selectedIndex = tblPhanCong.getSelectedRow();
+        if (selectedIndex != -1 && selectedIndex < listCongDoan.size()) {
+            CongDoan selectedCongDoan = listCongDoan.get(selectedIndex);
+            txtSoLuongCan.setText(String.valueOf(selectedCongDoan.getSoLuongCan()));
+        }
+        txtSoLuongCanLam.setText(tblPhanCong.getValueAt(tblPhanCong.getSelectedRow(), 8).toString());
         cmbToNhom.setSelectedItem(tblPhanCong.getValueAt(tblPhanCong.getSelectedRow(), 6).toString());
         setHidden(btnLuu, btnHuy, btnPhanCong);
         setShow(btnCapNhat, btnXoa);
         setTblClick(false);
     }
+
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {
         if (JOptionPane.showConfirmDialog(null, stBanXacNhanXoa, stThongbao, JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -687,6 +708,27 @@ public class PhanCongCongNhan_GUI extends JPanel {
         checkPhanCong = false;
     }
     
+    private void btnPhanCongActionPerformed(java.awt.event.ActionEvent evt) {
+        setHidden(btnCapNhat, btnPhanCong, btnXoa);
+        setShow(btnLuu, btnHuy);
+        checkPhanCong = true;
+        daoPhanCong = new PhanCongCongNhan_Dao();
+        dcsNgayPhanCong.setEnabled(false);
+        setTblClick(true);
+        daoPhanCong = new PhanCongCongNhan_Dao();
+        String maPhanCong = "";
+        if (daoPhanCong.layDanhSachPhanCongCongNhan().size() < 1) {
+            maPhanCong = "PPPC100001";
+        } else {
+            int maSo = Integer.parseInt(daoPhanCong.layDanhSachPhanCongCongNhan().get(daoPhanCong.layDanhSachPhanCongCongNhan().size() - 1).getMaPhanCong().split("C")[1]) + 1;
+            maPhanCong = "PPPC" + maSo;
+        }
+        txtSoLuongCan.setEditable(false);
+        txtSoLuongCanLam.setEditable(false);
+        txtMaPhanCong.setText(maPhanCong);
+        txtSoLuongCanLam.setText("");
+    }
+    
     private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {
         daoCongNhan = new CongNhan_Dao();
         daoToNhom = new ToNhom_Dao();
@@ -694,8 +736,10 @@ public class PhanCongCongNhan_GUI extends JPanel {
         daoToNhom = new ToNhom_Dao();
         daoSanPham = new SanPham_Dao();
         daoCongDoan = new CongDoan_Dao();
+        
         NhanVien nhanVienChamCong = daoNhanVien.layMotNhanVienTheoMaNhanVien("PPNV100001");
         ToNhom toNhom = daoToNhom.layMotToNhomTheoTen(cmbToNhom.getSelectedItem().toString());
+
         if (checkSoLuongCanLam()) {
             if (checkPhanCong) {
                 ArrayList<CongNhan> congNhanList = daoCongNhan.layDanhSachCongNhanTheoMaTo(toNhom.getMaToNhom());
@@ -703,6 +747,7 @@ public class PhanCongCongNhan_GUI extends JPanel {
                 CongDoan congDoan = daoCongDoan.layMotCongDoanTheoMaCongDoan(maCongDoan);
                 Date ngayPhanCong = dcsNgayPhanCong.getDate();
                 boolean check = false;
+                
                 if (daoPhanCong.checkDuocPhanCong(maCongDoan, toNhom.getMaToNhom())) {
                     for (CongNhan congNhanTheoToNhom : congNhanList) {
                         String maPhanCong = "";
@@ -712,38 +757,44 @@ public class PhanCongCongNhan_GUI extends JPanel {
                             int maSo = Integer.parseInt(daoPhanCong.layDanhSachPhanCongCongNhan().get(daoPhanCong.layDanhSachPhanCongCongNhan().size() - 1).getMaPhanCong().split("C")[1]) + 1;
                             maPhanCong = "PPPC" + maSo;
                         }
-                        int soLuongCanLham = Integer.parseInt(txtSoLuongCan.getText());
-                        PhanCongCongNhan phanCong = new PhanCongCongNhan(maPhanCong, congNhanTheoToNhom, congDoan, nhanVienChamCong, ngayPhanCong, soLuongCanLham, toNhom);
+
+                        // Chia đều soLuongCan cho số lượng công nhân
+                        int soLuongCongNhan = congNhanList.size();
+                        int soLuongCanLam = congDoan.getSoLuongCan();
+                        int soLuongCanLamChoMotCongNhan = soLuongCanLam / soLuongCongNhan;
+
+                        PhanCongCongNhan phanCong = new PhanCongCongNhan(maPhanCong, congNhanTheoToNhom, congDoan, nhanVienChamCong, ngayPhanCong, soLuongCanLamChoMotCongNhan, toNhom);
+                        
                         if (daoPhanCong.themMotPhanCongNhan(phanCong)) {
                             check = true;
                         }
                     }
+
                     if (check) {
                         taiDuLieuLenBangPhanCong();
-                        JOptionPane.showMessageDialog(this,stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, stThemThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
                         setShow(btnPhanCong);
                         setHidden(btnLuu, btnHuy, btnXoa, btnCapNhat);
                         checkPhanCong = false;
                         dcsNgayPhanCong.setEnabled(false);
                         cmbMaCongDoan.setEnabled(false);
                         cmbToNhom.setEnabled(false);
-                        txtSoLuongCan.setEditable(false);
+                        txtSoLuongCanLam.setEditable(false);
                     } else {
                         JOptionPane.showMessageDialog(this, stThemThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
                         setShow(btnPhanCong);
                         setHidden(btnLuu, btnHuy, btnXoa, btnCapNhat);
                         checkPhanCong = false;
-                        checkPhanCong = false;
                         dcsNgayPhanCong.setEnabled(false);
                         cmbMaCongDoan.setEnabled(false);
                         cmbToNhom.setEnabled(false);
-                        txtSoLuongCan.setEditable(false);
+                        txtSoLuongCanLam.setEditable(false);
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, stErr1 + " " + congDoan.getMaCongDoan() + " " + stErr2 + " " + toNhom.getTenToNhom() + " " + stErr3);
                 }
             } else {
-                if (daoPhanCong.suaMotPhanCongNhanTheoMaCongDoan(toNhom.getMaToNhom(), Integer.parseInt(txtSoLuongCan.getText()), cmbMaCongDoan.getSelectedItem().toString())) {
+                if (daoPhanCong.suaMotPhanCongNhanTheoMaCongDoan(toNhom.getMaToNhom(), Integer.parseInt(txtSoLuongCanLam.getText()), cmbMaCongDoan.getSelectedItem().toString())) {
                     taiDuLieuLenBangPhanCong();
                     JOptionPane.showMessageDialog(this, stCapNhatThanhCong, stThongbao, JOptionPane.ERROR_MESSAGE);
                     setHidden(btnPhanCong, btnLuu, btnHuy, btnCapNhat, btnXoa);
@@ -754,17 +805,17 @@ public class PhanCongCongNhan_GUI extends JPanel {
             }
         }
     }
+
     
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {
         setShow(btnPhanCong);
         setHidden(btnHuy, btnLuu, btnCapNhat, btnXoa, btnPhanCong);
         setTblClick(false);
-        lblErrSoLuongCan.setText("");
         dcsNgayPhanCong.setEnabled(false);
         cmbMaCongDoan.setEnabled(false);
         cmbToNhom.setEnabled(false);
-        txtSoLuongCan.setEditable(false);
-        txtSoLuongCan.setText("");
+        txtSoLuongCanLam.setEditable(false);
+        txtSoLuongCanLam.setText("");
 
     }
 

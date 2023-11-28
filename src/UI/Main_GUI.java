@@ -117,6 +117,9 @@ public class Main_GUI extends JFrame {
     private String lblXacNhanDangXuat;
     private String lblHoTro;
     private String lblDoiMatKhau;
+	private MenuItem menuNhanVienKT;
+	private MenuItem menuCongNhanKT;
+	private MenuItem menuCongNhanNV;
     
     public Main_GUI(String userName, String fileName) throws IOException {
     	try {
@@ -586,6 +589,11 @@ public class Main_GUI extends JFrame {
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
             setSelectMenu(menuNhanVien);
+            
+            // Show capNhatNhanVien and chamCongNhanVien
+            capNhatNhanVien.setVisible(true);
+            chamCongNhanVien.setVisible(true);
+            
         }, capNhatNhanVien, chamCongNhanVien, tinhLuongNhanVien, timKiemNhanVien);
         
         // menu Công nhân
@@ -626,7 +634,33 @@ public class Main_GUI extends JFrame {
             setSelectMenu(menuHeThong);
         },thongTinCaNhan,doiMatKhau,dangXuat);
         
-        addMenu(menuTrangChu,menuPhongBan,menuToNhom,menuHopDong,menuSanPham,menuNhanVien,menuCongNhan,menuThongKe,menuHoTro,menuHeThong);
+        addMenu(menuTrangChu,menuPhongBan,menuToNhom,menuHopDong,menuSanPham,menuNhanVien,menuCongNhan,menuThongKe,menuHoTro, menuHeThong);
+   
+        // menu nhân viên khi KT đăng nhập
+        menuNhanVienKT = new MenuItem(iconNhanVien, lblNhanVien, (ActionEvent e) -> {
+            pnBody.repaint();
+            pnBody.revalidate();
+            setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVienKT, menuCongNhanKT, menuSanPham, menuThongKe, menuHoTro, menuHeThong);
+            setSelectMenu(menuNhanVienKT);
+            
+        },tinhLuongNhanVien, timKiemNhanVien);
+        
+        // menu Công nhân khi KT đăng nhập
+        menuCongNhanKT = new MenuItem(iconCongNhan, lblCongNhan, (ActionEvent e) -> {
+            pnBody.repaint();
+            pnBody.revalidate();
+            setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVienKT, menuCongNhanKT, menuSanPham, menuThongKe, menuHoTro, menuHeThong);
+            setSelectMenu(menuCongNhanKT);
+        }, tinhLuongCongNhan, timKiemCongNhan);
+        
+        // menu Công nhân khi NV đăng nhập
+        menuCongNhanNV = new MenuItem(iconCongNhan, lblCongNhan, (ActionEvent e) -> {
+            pnBody.repaint();
+            pnBody.revalidate();
+            menuCongNhan.setVisible(false);
+            setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhanNV, menuSanPham, menuThongKe, menuHoTro, menuHeThong);
+            setSelectMenu(menuCongNhanNV);
+        }, capNhatCongNhan,phanCongCongNhan, chamCongCongNhan, timKiemCongNhan);
         
         if (this.userName.contains("PPNV")) {
             pnBody.removeAll();
@@ -638,16 +672,27 @@ public class Main_GUI extends JFrame {
             NhanVien nhanVien = nhanVienDao.layMotNhanVienTheoMaNhanVien(userName);
             if (nhanVien.getChucVu().equalsIgnoreCase("Quản lý")) {
                 addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuThongKe, menuHoTro, menuHeThong);
+            }else if (nhanVien.getChucVu().equalsIgnoreCase("Nhân viên kế toán")) {
+                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVienKT, menuCongNhanKT, menuThongKe, menuHoTro, menuHeThong);
+                menuToNhom.setVisible(false);
+                menuPhongBan.setVisible(false);
+                menuHopDong.setVisible(false);
+                menuSanPham.setVisible(false);
+                menuNhanVien.setVisible(false);
+                menuCongNhan.setVisible(false);
+                menuHoTro.setVisible(false);
+                
             } else {
-                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuThongKe, menuHoTro, menuHeThong);
+                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhanNV, menuThongKe, menuHoTro, menuHeThong);
+                menuToNhom.setVisible(false);
                 menuPhongBan.setVisible(false);
                 menuHopDong.setVisible(false);
                 menuNhanVien.setVisible(false);
+                menuCongNhan.setVisible(false);
                 menuThongKe.setVisible(false);
                 menuHoTro.setVisible(false);
             }
-        }
-        
+        }        
     }
 	
     public void iconSubMenuMacDinh(MenuItem menu) {

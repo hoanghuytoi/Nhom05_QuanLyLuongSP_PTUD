@@ -63,8 +63,7 @@ public class BangLuongNhanVien_GUI extends JPanel {
 
 	public BangLuongNhanVien_GUI() {
 		initComponents();
-		excute();
-		taiDuLieuLenBangLuong();
+		excute();	
 	}
 
 	public void excute() {
@@ -119,7 +118,7 @@ public class BangLuongNhanVien_GUI extends JPanel {
 				{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"STT", "M\u00E3 l\u01B0\u01A1ng", "M\u00E3 nh\u00E2n vi\u00EAn", "H\u1ECD v\u00E0 t\u00EAn", "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i", "Ch\u1EE9c v\u1EE5", "L\u01B0\u01A1ng th\u00E1ng", "L\u01B0\u01A1ng c\u01A1 b\u1EA3n", "S\u1ED1 ng\u00E0y \u0111i l\u00E0m", "S\u1ED1 ng\u00E0y ngh\u1EC9", "S\u1ED1 ph\u00E9p ngh\u1EC9", "L\u01B0\u01A1ng t\u0103ng ca", "Ph\u1EE5 c\u1EA5p", "T\u1ED5ng l\u01B0\u01A1ng", "\u0110\u01A1n v\u1ECB ti\u1EC1n", "Ng\u00E0y t\u00EDnh l\u01B0\u01A1ng"
+				"STT", "M\u00E3 l\u01B0\u01A1ng", "M\u00E3 nh\u00E2n vi\u00EAn", "H\u1ECD v\u00E0 t\u00EAn", "S\u1ED1 \u0111i\u1EC7n tho\u1EA1i", "Ch\u1EE9c v\u1EE5", "L\u01B0\u01A1ng th\u00E1ng", "L\u01B0\u01A1ng c\u01A1 b\u1EA3n", "S\u1ED1 buổi \u0111i l\u00E0m", "S\u1ED1 buổi ngh\u1EC9", "S\u1ED1 ph\u00E9p ngh\u1EC9", "L\u01B0\u01A1ng t\u0103ng ca", "Ph\u1EE5 c\u1EA5p", "T\u1ED5ng l\u01B0\u01A1ng", "\u0110\u01A1n v\u1ECB ti\u1EC1n", "Ng\u00E0y t\u00EDnh l\u01B0\u01A1ng"
 			}
 		));
 		tblBangLuong.getColumnModel().getColumn(0).setPreferredWidth(34);
@@ -335,25 +334,33 @@ public class BangLuongNhanVien_GUI extends JPanel {
 	        if (bangLuongList.size() > 0) {
 	            maBangLuong = "PPLN" + (Integer.parseInt(bangLuongList.get(bangLuongList.size() - 1).getMaBangLuong().split("N")[1]) + 1);
 	        }
-	        int soNgayDiLam = 0;
-	        int soNgayNghi = 0;
+	        int soBuoiDiLam = 0;
+	        int soBuoiNghi = 0;
 	        int soPhepNghi = 0;
 	        double luongTangCa = 0;
 	        double phuCapCV = 0;
 	        double phuCapThamNien = 0;
+            int soNgayChuNhatDiLam = 0;
+            int soNgayThuBayDiLam = 0;
 
 	        // Lấy thông tin chấm công
 	        ArrayList<String[]> danhSach = chamCongNhanVienDao.layDanhSachChamCongTheoMaNhanVienVaThang(nv.getMaNhanVien(),
 	                cmbThang.getSelectedItem().toString(), cmbNam.getSelectedItem().toString());
 	        for (String[] string : danhSach) {
 	            if (string[1].contains("Đi")) {
-	                soNgayDiLam++;
+	                soBuoiDiLam ++;
+	                if (string[0].contains("chủ nhật")) {
+                        soNgayChuNhatDiLam++;
+                    }
+	                if (string[0].contains("thứ bảy")) {
+                        soNgayThuBayDiLam++;
+                    }
 	            }
-	            if (string[1].contains("Nghỉ")) {
-	                soNgayNghi++;
+	            if (string[1].contains("Nghỉ không phép")) {
+	                soBuoiNghi ++;
 	            }
 	            if (string[1].contains("Nghỉ có phép")) {
-	                soPhepNghi++;
+	                soPhepNghi ++;
 	            }
 	            if (!string[2].isEmpty()) {
 	                double gioTangCa = Double.parseDouble(string[2]);
@@ -363,10 +370,10 @@ public class BangLuongNhanVien_GUI extends JPanel {
 
 	        // Xác định phụ cấp chức danh dựa trên chức vụ
 	        if (nv.getChucVu().equals("Nhân viên")) {
-	            phuCapCV = (nv.getLuongCoBan() / 28) * 0.8;
-	        } else if (nv.getChucVu().equals("Trưởng phòng")) {
 	            phuCapCV = (nv.getLuongCoBan() / 28) * 1;
-	        } else if (nv.getChucVu().equals("Quản lý")) {
+	        }else if (nv.getChucVu().equals("Nhân viên kế toán")) {
+	            phuCapCV = (nv.getLuongCoBan() / 28) * 1;
+	        }else if (nv.getChucVu().equals("Quản lý")) {
 	            phuCapCV = (nv.getLuongCoBan() / 28) * 1.2;
 	        }
 
@@ -380,10 +387,10 @@ public class BangLuongNhanVien_GUI extends JPanel {
 
 	        double phuCap = phuCapCV + phuCapThamNien;
 	        String luongTheoThang = cmbThang.getSelectedItem().toString() + "-" + cmbNam.getSelectedItem().toString();
-	        double luongThang = (nv.getLuongCoBan() / 28) * (soNgayDiLam + soNgayNghi - soPhepNghi);
-	        double thucLanh = luongThang + luongTangCa + phuCap; 
+	        double luongThang = (nv.getLuongCoBan() / 28) * ((soBuoiDiLam + soPhepNghi - soBuoiNghi)/2) + nv.getLuongCoBan() / 28 * soNgayChuNhatDiLam + nv.getLuongCoBan() / 28 * soNgayThuBayDiLam;
+	        double thucLanh = luongThang + luongTangCa + phuCap;
 
-	        bangLuongNhanVienDao.themMotBangLuongString(maBangLuong, nv.getMaNhanVien(), soNgayDiLam, soNgayNghi, soPhepNghi, new Date(), luongTheoThang, luongTangCa, phuCap, thucLanh, "VND");
+	        bangLuongNhanVienDao.themMotBangLuongString(maBangLuong, nv.getMaNhanVien(), soBuoiDiLam, soBuoiNghi, soPhepNghi, new Date(), luongTheoThang, luongTangCa, phuCap, thucLanh, "VND");
 	    }
 
 	    // Hiển thị thông báo khi tính lương thành công
@@ -441,4 +448,5 @@ public class BangLuongNhanVien_GUI extends JPanel {
 
 	private void tblBangLuongMouseClicked(MouseEvent evt) {
 	}
+	
 }

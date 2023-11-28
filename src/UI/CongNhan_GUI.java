@@ -145,9 +145,8 @@ public class CongNhan_GUI extends JPanel {
         daoCongNhan = new CongNhan_Dao();
         toNhom_Dao = new ToNhom_Dao();
 		excute();
-		taiDuLieuLenBang();
+		//taiDuLieuLenBang();
 		this.txtMaCongNhan.setEditable(false);
-
 	}
 	
 	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
@@ -340,7 +339,7 @@ public class CongNhan_GUI extends JPanel {
 		
 		lblTieuDe = new JLabel("QUẢN LÝ CÔNG NHÂN");
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblTieuDe.setBounds(627, 11, 272, 42);
+		lblTieuDe.setBounds(473, 11, 272, 42);
 		add(lblTieuDe);
 
 		LineBorder blackLineBorder = new LineBorder(Color.BLACK, 2);

@@ -150,7 +150,7 @@ public class NhanVien_GUI extends JPanel {
 		initComponents();
 		caiDatNgonNgu(fileName);
 		excute();
-		taiDuLieuLenBang();
+		//taiDuLieuLenBang();
 		this.txtMaNhanVien.setEditable(false);
 
 	}
@@ -524,7 +524,7 @@ public class NhanVien_GUI extends JPanel {
 		cboPhongBan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		panelNhanVien.add(cboPhongBan);
 
-		cboChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quản lý", "Nhân viên","Trưởng phòng"}));
+		cboChucVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quản lý", "Nhân viên", "Nhân viên kế toán"}));
 		cboChucVu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		cboChucVu.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -89,7 +89,7 @@ public class TimKiemNhanVien_GUI extends JPanel implements ActionListener {
 		dcf = new DecimalFormat("###,###,###,###,###.###");
 		model = (DefaultTableModel) tblNhanVien.getModel();
 		
-		taiDuLieuLenBang("all", "all", "all", "all", "all");
+		//taiDuLieuLenBang("all", "all", "all", "all", "all");
 		btnTimKiem.addActionListener(this);
 		btnXoaRong.addActionListener(this);
 		btnQuayLai.addActionListener(this);

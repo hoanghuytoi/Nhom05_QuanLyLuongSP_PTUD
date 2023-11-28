@@ -1,5 +1,6 @@
 package Dao;
 
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -169,6 +170,43 @@ public class ChamCongCongNhan_Dao {
         }
         return dsChamCong;
     }
+    
+    public ArrayList<ChamCongCongNhan> layDanhSachChamCongTheoMaCongNhanVaThang(String maCongNhan, String thang, String nam) {
+        PreparedStatement stm = null;
+        ArrayList<ChamCongCongNhan> dsChamCong = new ArrayList<ChamCongCongNhan>();
+        PhanCongCongNhan_Dao phanCong_DAO = new PhanCongCongNhan_Dao();
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            String truyVan = "select * from PhanCongCongNhan PCCN"
+                    + " join BangChamCongCongNhan CCCN on PCCN.maPhanCong = CCCN.maPhanCong"
+                    + " where maCongNhan = ? and month(ngayChamCong) = ? and YEAR(ngayChamCong) = ?";
+            stm = con.prepareStatement(truyVan);
+            stm.setString(1, maCongNhan);
+            stm.setString(2, thang);
+            stm.setString(3, nam);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()){
+                String maPhanCong = rs.getString("maPhanCong");
+                String caLam = rs.getString("caLam");
+                Date ngayChamCong = rs.getDate("ngayChamCong");
+                int soLuongLam = rs.getInt("soLuongLam");
+                String trangThaiDiLam = rs.getString("trangThaiDiLam");
+                String gioDiLam = rs.getString("gioDiLam");
+                PhanCongCongNhan phanCong = phanCong_DAO.layMotPhanCongCongNhanTheoMaPhanCong(maPhanCong);
+                dsChamCong.add(new ChamCongCongNhan(phanCong, caLam, ngayChamCong, soLuongLam, trangThaiDiLam, gioDiLam));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                stm.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return dsChamCong;
+    }
 
     public ArrayList<ChamCongCongNhan> layDanhSachChamCongTheoNgay(Date date){
         PreparedStatement stm = null;
@@ -204,5 +242,19 @@ public class ChamCongCongNhan_Dao {
         
     }
     
-    
+    public static void main(String[] args) {
+        try {
+            System.setOut(new PrintStream(System.out, true, "UTF8"));
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        try {
+            ConnectDB.getInstance().connect();
+            System.out.println("Yes");
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println(e);
+        }
+    }
 }

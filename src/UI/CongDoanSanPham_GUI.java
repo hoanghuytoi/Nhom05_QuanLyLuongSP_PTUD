@@ -547,9 +547,6 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 
 	}
 
-
-
-
 	public void setEditTextDateChooser() {
 		JTextFieldDateEditor thoiHan = (JTextFieldDateEditor) dcsThoiHan.getDateEditor();
 		thoiHan.setEnabled(false);

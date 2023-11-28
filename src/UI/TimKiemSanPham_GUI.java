@@ -96,7 +96,7 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
         lblErrTenSP.setText("");
         lblErrSoLuong.setText("");
 
-        taiDuLieuLenBang("all", "all", "all", "all","all","all");
+        //taiDuLieuLenBang("all", "all", "all", "all","all","all");
 	}
 
 	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {

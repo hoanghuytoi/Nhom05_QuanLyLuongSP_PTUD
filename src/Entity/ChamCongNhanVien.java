@@ -1,12 +1,7 @@
-
 package Entity;
 
 import java.util.Date;
 
-/**
- *
- * @author Student
- */
 public class ChamCongNhanVien {
     private NhanVien nhanVien;
     private Date ngayChamCong;
@@ -16,23 +11,19 @@ public class ChamCongNhanVien {
     private int gioTangCa;
     private NhanVien nguoiChamCong;
 
-    
-    public ChamCongNhanVien(NhanVien nhanVien, Date ngayChamCong, String caLam, String trangThaiDiLam, String gioDiLam,int gioTangCa, NhanVien nguoiChamCong) {
-        try {
-            
-            setNhanVien(nhanVien);
-            setNgayChamCong(ngayChamCong);
-            setCaLam(caLam);
-            setTrangThaiDiLam(trangThaiDiLam);
-            setGioDiLam(gioDiLam);
-            setGioTangCa(gioTangCa);
-            setNguoiChamCong(nguoiChamCong);
-        } catch (Exception e) {
-            e.getMessage();
-        }
-    }
-    
-    public int getGioTangCa() {
+	public ChamCongNhanVien(NhanVien nhanVien, Date ngayChamCong, String caLam, String trangThaiDiLam, String gioDiLam,
+			int gioTangCa, NhanVien nguoiChamCong) {
+		super();
+		this.nhanVien = nhanVien;
+		this.ngayChamCong = ngayChamCong;
+		this.caLam = caLam;
+		this.trangThaiDiLam = trangThaiDiLam;
+		this.gioDiLam = gioDiLam;
+		this.gioTangCa = gioTangCa;
+		this.nguoiChamCong = nguoiChamCong;
+	}
+
+	public int getGioTangCa() {
 		return gioTangCa;
 	}
 
@@ -44,6 +35,9 @@ public class ChamCongNhanVien {
         return ngayChamCong;
     }
 
+    /* Lý do ngày chấm công là ngày hiện tại hoặc ngày trước vì hệ thống có thể gặp trục trặc ngày đó không
+        thể chấm được thì ngày sau vẫn có thể chấm bù cho ngày đó
+     */
     public void setNgayChamCong(Date ngayChamCong) throws Exception {
         if (ngayChamCong.after(new Date())) {
             throw new Exception("Ngày chấm công phải bằng hoặc trước ngày hiện tại");
@@ -58,17 +52,6 @@ public class ChamCongNhanVien {
 
     public void setCaLam(String caLam) {
         this.caLam = caLam;
-    }
-
-    private void setTrangThaiDiLam(String trangThaiDiLam) throws Exception {
-        if (trangThaiDiLam.equalsIgnoreCase("Đi làm")
-                || trangThaiDiLam.equalsIgnoreCase("Đi trễ")
-                || trangThaiDiLam.equalsIgnoreCase("Nghỉ Không phép")
-                || trangThaiDiLam.equalsIgnoreCase("Nghỉ có phép")) {
-            this.trangThaiDiLam = trangThaiDiLam;
-        } else {
-            throw new Exception("Trạng thái đi làm phải là 1 trong 3: Đi làm, Đi trễ, Nghỉ");
-        }
     }
 
     public String getTrangThaiDiLam() {
@@ -99,9 +82,13 @@ public class ChamCongNhanVien {
         this.nguoiChamCong = nguoiChamCong;
     }
 
-    @Override
-    public String toString() {
-        return "ChamCongNhanVien{" + "nhanVien=" + nhanVien + ", ngayChamCong=" + ngayChamCong + ", caLam=" + caLam + ", trangThaiDiLam=" + trangThaiDiLam + ", gioDiLam=" + gioDiLam +", gioTangCa=" + gioTangCa + ", nguoiChamCong=" + nguoiChamCong + '}';
-    }
+	@Override
+	public String toString() {
+		return "ChamCongNhanVien [nhanVien=" + nhanVien + ", ngayChamCong=" + ngayChamCong + ", caLam=" + caLam
+				+ ", trangThaiDiLam=" + trangThaiDiLam + ", gioDiLam=" + gioDiLam + ", gioTangCa=" + gioTangCa
+				+ ", nguoiChamCong=" + nguoiChamCong + "]";
+	}
+
+    
 
 }
