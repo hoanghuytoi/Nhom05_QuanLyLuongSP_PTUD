@@ -9,6 +9,11 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -39,11 +44,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.GroupLayout;
 
 /**
@@ -115,7 +122,12 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 	private String stThemThatBai;
 	private String stCapNhatThanhCong;
 	private String stCapNhatThatBai;
+	private String stTren;
+    private String stSanPham;
+    private String stKhongTimThayFile;
+    private String stKhongDocDuocFile;
 	private TitledBorder titledBorder2;
+	private JButton btnThemNhieu;
 
 
 	public SanPham_GUI(String fileName) throws IOException{
@@ -136,6 +148,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		oFlag = null;
 
 		// Gắn sự kiện
+		btnThemNhieu.addActionListener(this);
 		btnCapNhat.addActionListener(this);
 		btnHuy.addActionListener(this);
 		btnLuu.addActionListener(this);
@@ -149,6 +162,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		btnHuy.setEnabled(false);
 		lblThemAnhSanPham.setEnabled(false);
 		txtSoCongDoan.setEnabled(false);
+		
 		excute();
 		moKhoaTextField(false);
 	}
@@ -185,6 +199,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		scrTableSanPham.setBorder(new TitledBorder(prop.getProperty("sp_tieuDeTblSanPham")));
 		pnlThongTinSP.setBorder(new TitledBorder(prop.getProperty("sp_tieuDeThongTinSanPham")));
 		btnThem.setText(prop.getProperty("btnThem"));
+		btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
 		btnXoa.setText(prop.getProperty("btnXoa"));
 		btnCapNhat.setText(prop.getProperty("btnCapNhat"));
 		btnLuu.setText(prop.getProperty("btnLuu"));
@@ -200,6 +215,10 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		stCapNhatThatBai = prop.getProperty("capNhatThatBai");
 		stErrSoLuong = prop.getProperty("errSoLuong");
 		stErrKhongDeTrong = prop.getProperty("khongDeTrong");
+		stTren = prop.getProperty("tren");
+        stSanPham = prop.getProperty("sp_SanPham");
+        stKhongDocDuocFile = prop.getProperty("khongDocDuocFile");
+        stKhongTimThayFile = prop.getProperty("khongTimThayFile");
 	}
 
 	public void doiNgonNguTable(JTable table, int col_index, String col_name) {
@@ -507,8 +526,22 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 			}
 		});
 
+		btnThemNhieu = new JButton();
+		btnThemNhieu.setIcon(new ImageIcon(SanPham_GUI.class.getResource("/image/icon/them.png")));
+		btnThemNhieu.setText("Thêm nhiều");
+		btnThemNhieu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnThemNhieu.setBorder(null);
+		btnThemNhieu.setBackground(new Color(255, 215, 0));
+		btnThemNhieu.setBounds(20, 403, 140, 40);
+		btnThemNhieu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnThemNhieuMouseClicked(evt);
+            }
+        });
+		add(btnThemNhieu);
+		
 		btnThem = new JButton();
-		btnThem.setBounds(107, 403, 140, 40);
+		btnThem.setBounds(221, 403, 140, 40);
 		add(btnThem);
 		btnThem.setBackground(new Color(255, 215, 0));
 		btnThem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -522,7 +555,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		});
 
 		btnXoa = new JButton();
-		btnXoa.setBounds(352, 403, 140, 40);
+		btnXoa.setBounds(436, 403, 140, 40);
 		add(btnXoa);
 		btnXoa.setBackground(new Color(255, 215, 0));
 		btnXoa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -536,7 +569,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		});
 
 		btnCapNhat = new JButton();
-		btnCapNhat.setBounds(604, 403, 140, 40);
+		btnCapNhat.setBounds(649, 403, 140, 40);
 		add(btnCapNhat);
 		btnCapNhat.setBackground(new Color(255, 215, 0));
 		btnCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -961,6 +994,93 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		}
 	}
 
+	private void btnThemNhieuMouseClicked(java.awt.event.MouseEvent evt) {
+        File file = new File("./excelData");
+        JFileChooser fileChooser = new JFileChooser(file.getAbsolutePath());
+        fileChooser.setCurrentDirectory(new File("../excelData"));
+        fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel File (.xlsx)", "xlsx");
+        fileChooser.setFileFilter(filter);
+        int count = 0, total = 0;
+        int respone = fileChooser.showSaveDialog(null);
+        if (respone == JFileChooser.APPROVE_OPTION) {
+            File inputFile = fileChooser.getSelectedFile();
+
+            try (FileInputStream in = new FileInputStream(inputFile)) {
+                XSSFWorkbook importedFile = new XSSFWorkbook(in);
+                XSSFSheet sheet1 = importedFile.getSheetAt(0);
+                Iterator<Row> rowIterator = sheet1.iterator();
+                while (rowIterator.hasNext()) {
+                    total++;
+                    Row row = rowIterator.next();
+                    Iterator<Cell> cellItera = row.cellIterator();
+                    // khai báo biến 
+                    try {
+                        String maHopDong = "";
+                        String tenSanPham = "";
+                        int soLuongSanPham = 0,
+                        		kichThuoc = 0;
+                        double donGia = 0;
+                        String chatLieu = "";
+                        String anhSanPham = "";
+                        while (cellItera.hasNext()) {
+                            Cell cell = cellItera.next();
+                            if (row.getRowNum() == 0) {
+                                continue;
+                            } else {
+                                if (cell.getColumnIndex() == 0) {
+                                    // Mã hợp đồng
+                                    maHopDong = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 1) {
+                                    // Tên sản phẩm
+                                    tenSanPham = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 2) {
+                                    // Số lượng sản phẩm
+                                    soLuongSanPham = (int) cell.getNumericCellValue();
+                                } else if (cell.getColumnIndex() == 3) {
+                                    // Đơn giá
+                                    donGia = (double) cell.getNumericCellValue();
+                                }else if (cell.getColumnIndex() == 4) {
+                                    // Chất liệu
+                                    chatLieu = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 5) {
+                                    // Kích thước
+                                    kichThuoc = (int) cell.getNumericCellValue();
+                                } else if (cell.getColumnIndex() == 6) {
+                                    // Ảnh sản phẩm
+                                    anhSanPham = cell.getStringCellValue();
+                                }
+                            }
+                        }
+                        HopDong hopDong = hopDong_DAO.layRaMotHopDongTheoMaHopDong(maHopDong);
+                        String maSanPham = sanPham_DAO.layMaSanPhamDeThem();
+                        boolean coThemDuoc = sanPham_DAO.themMotSanPham(new SanPham(maSanPham, tenSanPham, soLuongSanPham, donGia, chatLieu, kichThuoc, anhSanPham, 0, hopDong));
+                        if (coThemDuoc) {
+                            count++;
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                in.close();
+                JOptionPane.showMessageDialog(null, stThemThanhCong+" " + count+" " + stTren +" "+ (--total)+" " + stSanPham);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, stKhongTimThayFile, stThongbao, JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, stKhongDocDuocFile, stThongbao, JOptionPane.ERROR_MESSAGE);
+            }
+            if (count != 0) {
+                try {
+                    if (tblHopDong.getSelectedRow() != -1) {
+                        taiDuLieuLenBangSanPham(tblHopDong.getValueAt(tblHopDong.getSelectedRow(), 1).toString());
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object o = e.getSource();

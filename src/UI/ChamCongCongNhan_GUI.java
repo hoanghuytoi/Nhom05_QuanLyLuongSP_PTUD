@@ -277,8 +277,10 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         btnLuu.setText(prop.getProperty("btnLuu"));
         btnHuy.setText(prop.getProperty("btnHuy"));
         btnXoa.setText(prop.getProperty("btnXoa"));
+		btnChamCongTatCa.setText(prop.getProperty("chamCong_btnChamCongTatCa"));
         btnChamCong.setText(prop.getProperty("chamCong_btnChamCong"));
         btnLayDanhSach.setText(prop.getProperty("cccc_layDanhSach"));
+		btnTichTatCa.setText(prop.getProperty("btnTichTatCa"));
 
         lblToNhom.setText(prop.getProperty("cccc_toNhom"));
         lblNgayChamCong.setText(prop.getProperty("cccc_ngayCham"));
@@ -307,6 +309,9 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         ChangeName(tblCongNhan, 0, prop.getProperty("cccc_stt"));
         ChangeName(tblCongNhan, 1, lblMaCongNhan.getText());
         ChangeName(tblCongNhan, 2, lblHoTen.getText());
+        ChangeName(tblCongNhan, 3, prop.getProperty("chamCong_coMat"));
+        ChangeName(tblCongNhan, 4, prop.getProperty("chamCong_nghiCoPhep"));
+        ChangeName(tblCongNhan, 5, prop.getProperty("cccc_soLuongSPCNLam"));
 
         ChangeName(tblChamCong, 0, prop.getProperty("cccc_stt"));
         ChangeName(tblChamCong, 1, prop.getProperty("cccc_maPhanCong"));

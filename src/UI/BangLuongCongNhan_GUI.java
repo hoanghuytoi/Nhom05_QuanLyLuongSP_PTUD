@@ -12,6 +12,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
@@ -20,7 +22,9 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -63,7 +67,9 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 	private String stTinhLuongThanhCong;
 	private String stTinhLuongThatBai;
 	private JLabel lblTieuDe;
-	private CongNhan_Dao congNhanDao;
+	private JLabel lblHienThi;
+	private JLabel lblThang;
+	private JLabel lblNam;
 
 	public BangLuongCongNhan_GUI(String fileName) throws IOException {
 		this.fileName = fileName;
@@ -88,12 +94,52 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 		for (int i = 2023; i <= lcDate.getYear(); i++) {
 			cmbNamTinh.addItem(i + "");
 		}
-		//caiDatNgonNguChoView(fileName);
+		caiDatNgonNguChoView(fileName);
 		cmbThangTinh.addItemListener(this::checkThangChon);
 		cmbHienThi.addItemListener(this::hienThiBangLuongTheoNgay);
 		taiDuLieuLenBang();
 	}
 
+	public void caiDatNgonNguChoView(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+		lblTieuDe.setText(prop.getProperty("lcn_tieuDeLuong"));
+        lblThang.setText(prop.getProperty("lnv_thang"));
+        lblNam.setText(prop.getProperty("lnv_nam"));
+        btnTinhLuong.setText(prop.getProperty("lnv_btnTinhLuong"));
+        btnInBangLuong.setText(prop.getProperty("lnv_btnInBangLuong"));
+		btnChiTiet.setText(prop.getProperty("lnv_btnChiTiet"));
+        lblHienThi.setText(prop.getProperty("lnv_hienThi"));
+        
+		scrBangLuong.setBorder(new TitledBorder(prop.getProperty("lnv_tieuDe")));
+
+        cmbHienThi.removeAllItems();
+        cmbHienThi.addItem(prop.getProperty("lnv_cmb0"));
+        cmbHienThi.addItem(prop.getProperty("lnv_cmb1"));
+        scrBangLuong.setBorder(new TitledBorder(prop.getProperty("lnv_tieuDe")));
+        ChangeName(tblBangLuong, 0, prop.getProperty("lnv_stt"));
+        ChangeName(tblBangLuong, 1, prop.getProperty("lnv_maLuong"));
+        ChangeName(tblBangLuong, 2, prop.getProperty("maCongNhan"));
+        ChangeName(tblBangLuong, 3, prop.getProperty("tenCongNhan"));
+        ChangeName(tblBangLuong, 4, prop.getProperty("soCCCD"));
+        ChangeName(tblBangLuong, 5, prop.getProperty("lnv_soBuoiDiLam"));
+		ChangeName(tblBangLuong, 6, prop.getProperty("lnv_soBuoiNghi"));
+		ChangeName(tblBangLuong, 7, prop.getProperty("lnv_soPhepNghi"));
+		ChangeName(tblBangLuong, 8, prop.getProperty("lcn_soLuongSP"));
+        ChangeName(tblBangLuong, 9, prop.getProperty("lnv_luongThang"));
+        ChangeName(tblBangLuong, 10, prop.getProperty("lnv_ngayTinh"));
+        ChangeName(tblBangLuong, 11, prop.getProperty("lnv_tongLuong"));
+		ChangeName(tblBangLuong, 12, prop.getProperty("lnv_donViTien"));
+
+        stTinhLuongThanhCong = prop.getProperty("tinhLuongThanhCong");
+        stTinhLuongThatBai = prop.getProperty("tinhLuongThatBai");
+    }
+	
+	public void ChangeName(JTable table, int col_index, String col_name) {
+        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
+    }
+	
 	private void initComponents() {
 		setSize(1290, 750);
 		setLayout(null);
@@ -199,14 +245,14 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 		});
 		panelButton.add(btnChiTiet);
 
-		JLabel lblHienThi = new JLabel();
+		lblHienThi = new JLabel();
 		lblHienThi.setText("Hiển thị:");
 		lblHienThi.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-		lblHienThi.setBounds(91, 11, 51, 40);
+		lblHienThi.setBounds(28, 11, 114, 40);
 		panelButton.add(lblHienThi);
 
 		cmbHienThi = new JComboBox<String>();
-		cmbHienThi.setBounds(164, 12, 145, 40);
+		cmbHienThi.setBounds(139, 11, 145, 40);
 		cmbHienThi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Theo tháng/năm" }));
 		cmbHienThi.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,7 +261,7 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 		});
 		panelButton.add(cmbHienThi);
 
-		JLabel lblThang = new JLabel();
+		lblThang = new JLabel();
 		lblThang.setBounds(498, 100, 66, 41);
 		add(lblThang);
 		lblThang.setText("Tháng");
@@ -234,7 +280,7 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 			}
 		});
 
-		JLabel lblNam = new JLabel();
+		lblNam = new JLabel();
 		lblNam.setText("Năm");
 		lblNam.setFont(new Font("Times New Roman", Font.BOLD, 20));
 		lblNam.setBounds(676, 99, 66, 41);
@@ -459,10 +505,10 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 			int nam = Integer.parseInt(cmbNamTinh.getSelectedItem().toString());
 			boolean tinhLuong = bangLuongCN_DAO.tinhLuongCongNhan(thang, nam);
 			if (tinhLuong) {
-				JOptionPane.showMessageDialog(this, "Tính lương công nhân thành công");
+				JOptionPane.showMessageDialog(this, stTinhLuongThanhCong);
 				taiDuLieuLenBang();
 			} else {
-				JOptionPane.showMessageDialog(this, "Tính lương công nhân thất bại");
+				JOptionPane.showMessageDialog(this, stTinhLuongThatBai);
 			}
 
 		}

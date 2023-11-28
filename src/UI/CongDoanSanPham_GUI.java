@@ -8,8 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import Custom_UI.ScrollBarCustom;
 import Dao.CongDoan_Dao;
@@ -25,12 +31,14 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -40,6 +48,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,12 +118,17 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 	private String stSauNgayHienTai;
 	private String stThuTuLamPhaiLonHon;
 	private String stThuTuCongDoanHienTai;
+	private String stTren;
+	private String stCongDoan;
+	private String stKhongTimThayFile;
+	private String stKhongDocDuocFile;
 	private SanPham_Dao daoSanPham;
+	private JButton btnThemNhieu;
 
 	public CongDoanSanPham_GUI(String fileName)throws IOException {
 		initComponents();
-        caiDatNgonNgu(fileName);
-        
+		caiDatNgonNgu(fileName);
+
 		nf = new DecimalFormat("#,###.00");
 		df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
@@ -134,12 +148,12 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		sanPham_DAO = new SanPham_Dao();
 		congDoan_DAO = new CongDoan_Dao();
 
+		btnThemNhieu.addActionListener(this);
 		btnThem.addActionListener(this);
 		btnHuy.addActionListener(this);
 		btnCapNhat.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnXoa.addActionListener(this);
-
 		btnLuu.setEnabled(false);
 		btnHuy.setEnabled(false);
 
@@ -164,7 +178,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		doiNgonNguTable(tblDanhSachSanPham, 1, lblMaSanPham.getText());
 		doiNgonNguTable(tblDanhSachSanPham, 2, prop.getProperty("sp_tenSP"));
 		doiNgonNguTable(tblDanhSachSanPham, 2, prop.getProperty("sp_donGia"));
-		
+
 		doiNgonNguTable(tblCongDoan, 0, lblThuTu.getText());
 		doiNgonNguTable(tblCongDoan, 1, lblMaCD.getText());
 		doiNgonNguTable(tblCongDoan, 2, lblTenCD.getText());
@@ -177,6 +191,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		scrTableCongDoan.setBorder(new TitledBorder(prop.getProperty("pcd_tieuDeCongDoan")));
 		panelCDSP.setBorder(new TitledBorder(prop.getProperty("pcd_tieuDeThongTinCD")));
 		btnThem.setText(prop.getProperty("btnThem"));
+		btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
 		btnXoa.setText(prop.getProperty("btnXoa"));
 		btnCapNhat.setText(prop.getProperty("btnCapNhat"));
 		btnLuu.setText(prop.getProperty("btnLuu"));
@@ -199,6 +214,10 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		stSauNgayHienTai = prop.getProperty("pcd_ErrPhaiBangHoacSauNgayHienTai");
 		stThuTuLamPhaiLonHon = prop.getProperty("pcd_thuThuTuLamPhaiBeHon");
 		stThuTuCongDoanHienTai = prop.getProperty("pcd_thuThuCongDoanHienTai");
+		stTren = prop.getProperty("tren");
+        stCongDoan = prop.getProperty("pcd_congDoan");
+        stKhongDocDuocFile = prop.getProperty("khongDocDuocFile");
+        stKhongTimThayFile = prop.getProperty("khongTimThayFile");
 	}
 
 	public void doiNgonNguTable(JTable table, int col_index, String col_name) {
@@ -429,8 +448,22 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		jSeparator_1.setBounds(134, 54, 251, 10);
 		panelCDSP.add(jSeparator_1);
 
+		btnThemNhieu = new JButton();
+		btnThemNhieu.setIcon(new ImageIcon(CongDoanSanPham_GUI.class.getResource("/image/icon/them.png")));
+		btnThemNhieu.setText("Thêm nhiều");
+		btnThemNhieu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnThemNhieu.setBorder(null);
+		btnThemNhieu.setBackground(new Color(255, 215, 0));
+		btnThemNhieu.setBounds(48, 476, 140, 40);
+		btnThemNhieu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnThemNhieuMouseClicked(evt);
+            }
+        });
+		add(btnThemNhieu);
+		
 		btnThem = new JButton();
-		btnThem.setBounds(134, 476, 140, 40);
+		btnThem.setBounds(226, 476, 140, 40);
 		add(btnThem);
 		btnThem.setBackground(new Color(255, 215, 0));
 		btnThem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -444,7 +477,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		});
 
 		btnXoa = new JButton();
-		btnXoa.setBounds(365, 476, 140, 40);
+		btnXoa.setBounds(405, 476, 140, 40);
 		add(btnXoa);
 		btnXoa.setBackground(new Color(255, 215, 0));
 		btnXoa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -584,8 +617,8 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		while (tblDanhSachSanPham.getRowCount() != 0) {
 			modelTableSanPham.removeRow(0);
 		}
-		 daoSanPham = new SanPham_Dao();
-	        ArrayList<SanPham> listSanPham = daoSanPham.layDanhSachSanPham();
+		daoSanPham = new SanPham_Dao();
+		ArrayList<SanPham> listSanPham = daoSanPham.layDanhSachSanPham();
 		for (SanPham sanPham : listSanPham) {
 			String data[] = {(modelTableSanPham.getRowCount() + 1) + "", sanPham.getMaSanPham(), sanPham.getTenSanPham(),sanPham.getSoLuongSanPham() + "",};
 			modelTableSanPham.addRow(data);
@@ -615,8 +648,8 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 			String maCongDoan = congDoan.getMaCongDoan();
 
 			String data[] = {congDoan.getThuTuCongDoan() + "", congDoan.getMaCongDoan(), congDoan.getTenCongDoan(),
-	                congDoan.getSoLuongCan() + "", congDoan_DAO.laySoLuongLamDuocTheoMaCongDoan(maCongDoan) + "", nf.format(congDoan.getDonGia()), congDoan.getThoiHan().toString(),
-	                String.format("%.2f", congDoan_DAO.layMucDoHoanThanhCuaMotCongDoan(maCongDoan)) + "%"};
+					congDoan.getSoLuongCan() + "", congDoan_DAO.laySoLuongLamDuocTheoMaCongDoan(maCongDoan) + "", nf.format(congDoan.getDonGia()), congDoan.getThoiHan().toString(),
+					String.format("%.2f", congDoan_DAO.layMucDoHoanThanhCuaMotCongDoan(maCongDoan)) + "%"};
 
 			modelTableCongDoan.addRow(data);
 		}
@@ -788,7 +821,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		} else {
 			lblErrSoLuongCan.setText("");
 		}
-		
+
 		SanPham sanPham = sanPham_DAO.layMotSanPhamTheoMa(txtHienThiMaSP.getText());
 		if (soLuongCan < sanPham.getSoLuongSanPham()) {
 			lblErrSoLuongCan.setText(stSoLuongPhaiLonHonHoacBang + sanPham.getSoLuongSanPham());
@@ -803,7 +836,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 			lblErrThuTu.setText(stSoNguyen);
 			flag = false;
 		}
-		
+
 		String maSanPham = txtHienThiMaSP.getText().trim();
 		ArrayList<CongDoan> dsCongDoan = congDoan_DAO.layRaThuTuLamLonNhatCuaMotSanPham(maSanPham);
 		int thuTuMax = 0;
@@ -836,7 +869,7 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 				flag = false;
 			}
 		}
-		
+
 		// ThoiHan
 		if (dcsThoiHan.getDate().before(new Date())) {
 			lblErrThoiHan.setText(stSauNgayHienTai);
@@ -1019,6 +1052,88 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 				}
 			}
 
+		}
+	}
+
+	private void btnThemNhieuMouseClicked(java.awt.event.MouseEvent evt) {
+		File file = new File("./excelData");
+		JFileChooser fileChooser = new JFileChooser(file.getAbsolutePath());
+		fileChooser.setCurrentDirectory(new File("../excelData"));
+		fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel File (.xlsx)", "xlsx");
+		fileChooser.setFileFilter(filter);
+		int count = 0, total = 0;
+		int respone = fileChooser.showSaveDialog(null);
+		if (respone == JFileChooser.APPROVE_OPTION) {
+			File inputFile = fileChooser.getSelectedFile();
+
+			try (FileInputStream in = new FileInputStream(inputFile)) {
+				XSSFWorkbook importedFile = new XSSFWorkbook(in);
+				XSSFSheet sheet1 = importedFile.getSheetAt(0);
+				Iterator<Row> rowIterator = sheet1.iterator();
+				while (rowIterator.hasNext()) {
+					total++;
+					Row row = rowIterator.next();
+					Iterator<Cell> cellItera = row.cellIterator();
+					// khai báo biến 
+					int thuTuLam = 0, soLuongCan = 0;
+					String tenCongDoan = "";
+					Date thoiHan = new Date();
+					String maSanPham = "";
+					String tinhTrang = "0%";
+					double tienLuong = 0f;
+					try {
+						while (cellItera.hasNext()) {
+							Cell cell = cellItera.next();
+							if (row.getRowNum() == 0) {
+								continue;
+							} else {
+								if (cell.getColumnIndex() == 0) {
+									thuTuLam = (int) cell.getNumericCellValue();
+								} else if (cell.getColumnIndex() == 1) {
+									tenCongDoan = cell.getStringCellValue();
+								} else if (cell.getColumnIndex() == 2) {
+									soLuongCan = (int) cell.getNumericCellValue();
+								} else if (cell.getColumnIndex() == 3) {
+									try {
+										String chuoiThoiHan = cell.getStringCellValue();
+										thoiHan = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiThoiHan);
+									} catch (Exception e) {
+										System.out.println(e.getMessage());
+									}
+								} else if (cell.getColumnIndex() == 4) {
+									maSanPham = cell.getStringCellValue();
+								} else if (cell.getColumnIndex() == 5) {
+									tienLuong = cell.getNumericCellValue();
+								}
+							}
+						}
+
+						SanPham sanPham = sanPham_DAO.layMotSanPhamTheoMa(maSanPham);
+						String maCongDoan = congDoan_DAO.layRaMaCongDoanDeThem();
+						boolean coThemDuoc = congDoan_DAO.themMotCongDoan(new CongDoan(maCongDoan, thuTuLam, tenCongDoan, soLuongCan, tinhTrang, thoiHan, sanPham, tienLuong));
+
+						if (coThemDuoc) {
+							count++;
+						}
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
+				}
+				in.close();
+				JOptionPane.showMessageDialog(null, stThemThanhCong + " " + count + " " + stTren + " " + (--total) + " " + stCongDoan);
+			} catch (FileNotFoundException ex) {
+				JOptionPane.showMessageDialog(null, stKhongTimThayFile, stThongbao, JOptionPane.ERROR_MESSAGE);
+			} catch (IOException ex) {
+				JOptionPane.showMessageDialog(null, stKhongDocDuocFile, stThongbao, JOptionPane.ERROR_MESSAGE);
+			}
+			if (count != 0) {
+				try {
+					taiDuLieuLenBangCongDoan();
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
 		}
 	}
 }

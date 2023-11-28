@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -66,6 +67,10 @@ public class ThongKeCongNhan_GUI extends JPanel implements ActionListener{
 	private JPanel pnPieChar;
 	private JComboBox<String> cmbTC1;
 	private JButton btnInBangThongKe;
+	private JLabel lblTieuChi;
+	private JLabel lblThang;
+	private JLabel lblNam;
+	private JLabel lblBangThongKe;
 
 
 	public ThongKeCongNhan_GUI(String fileName) throws FileNotFoundException, IOException {
@@ -80,18 +85,36 @@ public class ThongKeCongNhan_GUI extends JPanel implements ActionListener{
 		btnThongKe.addActionListener(this);
 		thongKeCongNhanTheoTo();
 		thongKeGioiTinhCongNhan();
-		
+		caiDatNgonNgu(fileName);
 	}
+	
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+		FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        lblThang.setText(prop.getProperty("lnv_thang"));
+		lblNam.setText(prop.getProperty("lnv_nam"));
+        lblTieuDe.setText(prop.getProperty("TieuDe_ThongKeCN"));
+        lblTieuChi.setText(prop.getProperty("thongKeNV_TieuChi"));
+        btnThongKe.setText(prop.getProperty("btnThongKe"));
+        btnInBangThongKe.setText(prop.getProperty("btnInBangThongKe"));
+        lblBangThongKe.setText(prop.getProperty("TieuDe_lblBangThongKeCN"));
+
+	}
+
+	public void ChangeName(JTable table, int col_index, String col_name) {
+        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
+    }
 	
 	private void initComponents() {
 		setPreferredSize(new Dimension(1290, 750));
 		setLayout(null);
 		lblTieuDe = new JLabel("THỐNG KÊ LƯƠNG CÔNG NHÂN");
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblTieuDe.setBounds(460, 11, 454, 30);
+		lblTieuDe.setBounds(397, 11, 583, 30);
 		add(lblTieuDe);
 
-		JLabel lblTieuChi = new JLabel("Tiêu chí:");
+		lblTieuChi = new JLabel("Tiêu chí:");
 		lblTieuChi.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblTieuChi.setBounds(216, 129, 62, 21);
 		add(lblTieuChi);
@@ -102,12 +125,12 @@ public class ThongKeCongNhan_GUI extends JPanel implements ActionListener{
 		cmbTC1.setBounds(288, 124, 246, 30);
 		add(cmbTC1);
 
-		JLabel lblThang = new JLabel("Tháng:");
+		lblThang = new JLabel("Tháng:");
 		lblThang.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblThang.setBounds(216, 76, 62, 17);
 		add(lblThang);
 
-		JLabel lblNam = new JLabel("Năm:");
+		lblNam = new JLabel("Năm:");
 		lblNam.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNam.setBounds(408, 77, 62, 14);
 		add(lblNam);
@@ -172,7 +195,7 @@ public class ThongKeCongNhan_GUI extends JPanel implements ActionListener{
 		add(pnPieChar);
 		pnPieChar.setLayout(new BorderLayout());
 
-		JLabel lblBangThongKe = new JLabel("BẢNG THỐNG KÊ LƯƠNG CÔNG NHÂN");
+		lblBangThongKe = new JLabel("BẢNG THỐNG KÊ LƯƠNG CÔNG NHÂN");
 		lblBangThongKe.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblBangThongKe.setBounds(242, 664, 308, 30);
 		add(lblBangThongKe);

@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JTable;
+import javax.swing.border.TitledBorder;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -43,10 +45,14 @@ public class ThongKeDoanhThu_GUI extends javax.swing.JPanel {
 	
 	private JComboBox<String> cmbNam;
 	private JPanel pnBarChar;
-	private JLabel lblBangThongKe;
+	private JLabel lblBangThongKeNV;
 	private JPanel pnBarCharCN;
 	private ChartPanel ChartPnlDT;
 	private JPanel pnBarCharDT;
+	private JLabel lblBangThongKeCN;
+	private JLabel lblTieuDeDoanhThu;
+	private JLabel lblNam;
+	private JLabel lblBangThongKeDT;
 
 	public ThongKeDoanhThu_GUI(String fileName) throws IOException {
 		this.fileName = fileName;
@@ -57,29 +63,31 @@ public class ThongKeDoanhThu_GUI extends javax.swing.JPanel {
 		}
 		cmbNam.setSelectedItem(LocalDate.now().getYear() + "");
 		
-		
-		
-
 		excute();
-		//caiDatNgonNguChoView(fileName);
+		caiDatNgonNgu(fileName);
 		thongKeTongLuongNhanVienTheoThangNam();
 		thongKeTongLuongCongNhanTheoThang();
 		thongKeTongDoanhThuTheoThang();
 	}
 
-	public void caiDatNgonNguChoView(String fileName) throws FileNotFoundException, IOException {
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
 		FileInputStream fis = new FileInputStream(fileName);
-		Properties prop = new Properties();
-		prop.load(fis);
+        Properties prop = new Properties();
+        prop.load(fis);
+		lblNam.setText(prop.getProperty("lnv_nam"));
+        lblTieuDeDoanhThu.setText(prop.getProperty("TieuDe_doanhThu"));
+        lblBangThongKeNV.setText(prop.getProperty("TieuDe_thongKeNV"));
+        lblBangThongKeCN.setText(prop.getProperty("TieuDe_thongKeCN"));
+        lblBangThongKeDT.setText(prop.getProperty("TieuDe_thongKeDoanhThu"));
 	}
 
 	public void ChangeName(JTable table, int col_index, String col_name) {
-	}
+        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
+    }
 
 	public void excute() {
 	}
-
-
+	
 	private void initComponents() {
 		cmbNam = new javax.swing.JComboBox<>();
 		cmbNam.setBounds(128, 181, 80, 40);
@@ -108,10 +116,10 @@ public class ThongKeDoanhThu_GUI extends javax.swing.JPanel {
 
 		pnBarChar.setLayout(new java.awt.BorderLayout());
 
-		lblBangThongKe = new JLabel("BẢNG THỐNG KÊ TỔNG TIỀN PHẢI CHI TRẢ CHO NHÂN VIÊN TRONG THÁNG");
-		lblBangThongKe.setBounds(103, 659, 454, 30);
-		lblBangThongKe.setFont(new Font("Times New Roman", Font.BOLD, 12));
-		add(lblBangThongKe);
+		lblBangThongKeNV = new JLabel("BẢNG THỐNG KÊ TỔNG TIỀN PHẢI CHI TRẢ CHO NHÂN VIÊN TRONG THÁNG");
+		lblBangThongKeNV.setBounds(103, 659, 454, 30);
+		lblBangThongKeNV.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		add(lblBangThongKeNV);
 		
 		ChartPanel ChartPnlCN = new ChartPanel((JFreeChart) null);
 		ChartPnlCN.setBounds(653, 376, 537, 284);
@@ -124,15 +132,15 @@ public class ThongKeDoanhThu_GUI extends javax.swing.JPanel {
 		ChartPnlCN.add(pnBarCharCN);
 		pnBarCharCN.setLayout(new BorderLayout());
 		
-		JLabel lblBngThngK = new JLabel("BẢNG THỐNG KÊ TỔNG TIỀN PHẢI CHI TRẢ CHO CÔNG NHÂN TRONG THÁNG");
-		lblBngThngK.setFont(new Font("Times New Roman", Font.BOLD, 12));
-		lblBngThngK.setBounds(687, 659, 471, 30);
-		add(lblBngThngK);
+		lblBangThongKeCN = new JLabel("BẢNG THỐNG KÊ TỔNG TIỀN PHẢI CHI TRẢ CHO CÔNG NHÂN TRONG THÁNG");
+		lblBangThongKeCN.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		lblBangThongKeCN.setBounds(687, 659, 471, 30);
+		add(lblBangThongKeCN);
 		
-		JLabel lblThngKDoanh = new JLabel("THỐNG KÊ DOANH THU CÔNG TY");
-		lblThngKDoanh.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		lblThngKDoanh.setBounds(433, 11, 419, 40);
-		add(lblThngKDoanh);
+		lblTieuDeDoanhThu = new JLabel("THỐNG KÊ DOANH THU CÔNG TY");
+		lblTieuDeDoanhThu.setFont(new Font("Times New Roman", Font.BOLD, 25));
+		lblTieuDeDoanhThu.setBounds(433, 11, 419, 40);
+		add(lblTieuDeDoanhThu);
 		
 		ChartPnlDT = new ChartPanel((JFreeChart) null);
 		ChartPnlDT.setLayout(null);
@@ -145,15 +153,15 @@ public class ThongKeDoanhThu_GUI extends javax.swing.JPanel {
 		ChartPnlDT.add(pnBarCharDT);
 		pnBarCharDT.setLayout(new BorderLayout());
 		
-		JLabel lblNam = new JLabel("Năm:");
+		lblNam = new JLabel("Năm:");
 		lblNam.setFont(new Font("Times New Roman", Font.BOLD, 20));
 		lblNam.setBounds(59, 187, 59, 29);
 		add(lblNam);
 		
-		JLabel lblBngThngK_1 = new JLabel("BẢNG THỐNG KÊ TỔNG DOANH THU CỦA CÔNG TY TRONG THÁNG");
-		lblBngThngK_1.setFont(new Font("Times New Roman", Font.BOLD, 12));
-		lblBngThngK_1.setBounds(460, 72, 404, 30);
-		add(lblBngThngK_1);
+		lblBangThongKeDT = new JLabel("BẢNG THỐNG KÊ TỔNG DOANH THU CỦA CÔNG TY TRONG THÁNG");
+		lblBangThongKeDT.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		lblBangThongKeDT.setBounds(460, 72, 404, 30);
+		add(lblBangThongKeDT);
 	}
 
 	private void cmbNamActionPerformed(java.awt.event.ActionEvent evt) {

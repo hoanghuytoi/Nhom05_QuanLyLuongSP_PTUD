@@ -9,9 +9,14 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -37,6 +42,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,11 +51,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 
 /**
  * Hoàng Huy Tới
@@ -91,6 +99,7 @@ public class HopDong_GUI extends JPanel {
 	private JComboBox<String> cboNhanVien;
 
 	private JButton btnThem;
+	private JButton btnThemNhieu;
 	private JButton btnXoa;
 	private JButton btnCapNhat;
 	private JButton btnLuu;
@@ -118,6 +127,10 @@ public class HopDong_GUI extends JPanel {
 	private String stCapNhatThanhCong;
 	private String stCapNhatThatBai;
 	private String stErrTienKhongHopLe;
+	private String stTren;
+    private String stHopDong;
+    private String stKhongTimThayFile;
+    private String stKhongDocDuocFile;
 	
 	private DecimalFormat dcf = new DecimalFormat("###.00");
 	private NhanVien nhanVienDangNhap;
@@ -150,6 +163,7 @@ public class HopDong_GUI extends JPanel {
         pnlHopDong.setBorder(new TitledBorder(prop.getProperty("HopDong_ThongTinHD")));
 		scrHopDong.setBorder(new TitledBorder(prop.getProperty("HopDong_TableHD")));
         btnThem.setText(prop.getProperty("btnThem"));
+        btnThemNhieu.setText(prop.getProperty("btnThemNhieu"));
         btnXoa.setText(prop.getProperty("btnXoa"));
         btnCapNhat.setText(prop.getProperty("btnCapNhat"));
         btnLuu.setText(prop.getProperty("btnLuu"));
@@ -177,10 +191,14 @@ public class HopDong_GUI extends JPanel {
         stXoaThanhCong = prop.getProperty("xoaThanhCong");
         stXoaThatBai = prop.getProperty("xoaThatBai");
         stThemThanhCong = prop.getProperty("themThanhCong");
-        stThemThatBai = prop.getProperty("themThatBai");
+        stThemThatBai = prop.getProperty("themThatBai");   
         stErrTienKhongHopLe = prop.getProperty("soTienKhongHople");
         stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
         stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+        stTren = prop.getProperty("tren");
+        stHopDong = prop.getProperty("hopDong");
+        stKhongDocDuocFile = prop.getProperty("khongDocDuocFile");
+        stKhongTimThayFile = prop.getProperty("khongTimThayFile");
     }
 	
 	public void doiNgonNguTable(JTable table, int col_index, String col_name) {
@@ -460,12 +478,26 @@ public class HopDong_GUI extends JPanel {
 		cboNhanVien.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		cboNhanVien.setBackground(Color.WHITE);
 		cboNhanVien.setBounds(930, 225, 200, 40);
-		cboNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hoàng Huy Tới",}));
+		cboNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
 		cboNhanVien.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		pnlHopDong.add(cboNhanVien);
 
+		btnThemNhieu = new JButton();
+		btnThemNhieu.setIcon(new ImageIcon(HopDong_GUI.class.getResource("/image/icon/them.png")));
+		btnThemNhieu.setText("Thêm nhiều");
+		btnThemNhieu.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		btnThemNhieu.setBorder(null);
+		btnThemNhieu.setBackground(new Color(255, 215, 0));
+		btnThemNhieu.setBounds(40, 434, 140, 40);
+		btnThemNhieu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnThemNhieuMouseClicked(evt);
+            }
+        });
+		add(btnThemNhieu);
+		
 		btnThem = new JButton();
-		btnThem.setBounds(102, 434, 140, 40);
+		btnThem.setBounds(206, 434, 140, 40);
 		add(btnThem);
 		btnThem.setBackground(new Color(255, 215, 0));
 		btnThem.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -479,7 +511,7 @@ public class HopDong_GUI extends JPanel {
 		});
 
 		btnXoa = new JButton();
-		btnXoa.setBounds(298, 434, 140, 40);
+		btnXoa.setBounds(368, 434, 140, 40);
 		add(btnXoa);
 		btnXoa.setBackground(new Color(255, 215, 0));
 		btnXoa.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -493,7 +525,7 @@ public class HopDong_GUI extends JPanel {
 		});
 
 		btnCapNhat = new JButton();
-		btnCapNhat.setBounds(486, 434, 140, 40);
+		btnCapNhat.setBounds(530, 434, 140, 40);
 		add(btnCapNhat);
 		btnCapNhat.setBackground(new Color(255, 215, 0));
 		btnCapNhat.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -507,7 +539,7 @@ public class HopDong_GUI extends JPanel {
 		});
 
 		btnInHopDong = new JButton();
-		btnInHopDong.setBounds(674, 434, 140, 40);
+		btnInHopDong.setBounds(697, 434, 140, 40);
 		add(btnInHopDong);
 		btnInHopDong.setBackground(new Color(255, 218, 185));
 		btnInHopDong.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -632,31 +664,38 @@ public class HopDong_GUI extends JPanel {
 	}
 
 	public void taiDuLieuLenBang() throws ParseException {
-		while (tblHopDong.getRowCount() != 0) {
-			model.removeRow(0);
-		}
-		cboNhanVien.removeAllItems();
-		nhanVienDao = new NhanVien_Dao();
-		ArrayList<NhanVien> nhanVien = nhanVienDao.layDanhSachNhanVien();
-		if (nhanVien.size() > 0) {
-			for (NhanVien nv : nhanVien) {
-				cboNhanVien.addItem(nv.getHoTen());
-			}
-			hopDongDao = new HopDong_Dao();
-			ArrayList<HopDong> danhSachHopDong = hopDongDao.layDanhSachHopDong();
-			for (HopDong hd : danhSachHopDong) {
-				if (hd.getNguoiKyKet() != null) {
-					String data[] = {(model.getRowCount() + 1) + "", hd.getMaHopDong(), hd.getTenHopDong(), hd.getTenKhachHang(), dcf.format(hd.getTienDatCoc()).replaceAll("\\,", "."),
-							dcf.format(hd.getTriGiaHD()).replaceAll("\\,", "."), hd.getNgayKyKetHD().toString(), hd.getNgayKetThucHD().toString(), hd.getNguoiKyKet().getHoTen()};
-					model.addRow(data);
-				}
-			}
-			if (tblHopDong.getRowCount() != 0) {
-				tblHopDong.setRowSelectionInterval(0, 0);
-				hienThiDuLieuLenTxt(0);
-			}
-		}
+	    while (tblHopDong.getRowCount() != 0) {
+	        model.removeRow(0);
+	    }
+	    cboNhanVien.removeAllItems();
+	    nhanVienDao = new NhanVien_Dao();
+	    ArrayList<NhanVien> nhanVien = nhanVienDao.layDanhSachNhanVien();
+	    
+	    if (nhanVien.size() > 0) {
+	        for (NhanVien nv : nhanVien) {
+	            // Kiểm tra chức vụ của nhân viên
+	            if ("Quản lý".equals(nv.getChucVu())) {
+	                cboNhanVien.addItem(nv.getHoTen());
+	            }
+	        }
+	        
+	        hopDongDao = new HopDong_Dao();
+	        ArrayList<HopDong> danhSachHopDong = hopDongDao.layDanhSachHopDong();
+	        for (HopDong hd : danhSachHopDong) {
+	            if (hd.getNguoiKyKet() != null) {
+	                String data[] = {(model.getRowCount() + 1) + "", hd.getMaHopDong(), hd.getTenHopDong(), hd.getTenKhachHang(), dcf.format(hd.getTienDatCoc()).replaceAll("\\,", "."),
+	                        dcf.format(hd.getTriGiaHD()).replaceAll("\\,", "."), hd.getNgayKyKetHD().toString(), hd.getNgayKetThucHD().toString(), hd.getNguoiKyKet().getHoTen()};
+	                model.addRow(data);
+	            }
+	        }
+	        
+	        if (tblHopDong.getRowCount() != 0) {
+	            tblHopDong.setRowSelectionInterval(0, 0);
+	            hienThiDuLieuLenTxt(0);
+	        }
+	    }
 	}
+
 
 	public void hienThiDuLieuLenTxt(int dong) throws ParseException {
 		hopDongDao = new HopDong_Dao();
@@ -906,7 +945,6 @@ public class HopDong_GUI extends JPanel {
                 JOptionPane.showMessageDialog(null, stCapNhatThatBai, stThongbao, JOptionPane.INFORMATION_MESSAGE);
             }
         }
-
     }
 	
 	private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -967,8 +1005,102 @@ public class HopDong_GUI extends JPanel {
 	    }
 	}
 
+	private void btnThemNhieuMouseClicked(java.awt.event.MouseEvent evt) {
+        File file = new File("./excelData");
+        JFileChooser fileChooser = new JFileChooser(file.getAbsolutePath());
+        fileChooser.setCurrentDirectory(new File("../excelData"));
+        fileChooser.removeChoosableFileFilter(fileChooser.getFileFilter());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel File (.xlsx)", "xlsx");
+        fileChooser.setFileFilter(filter);
+        int count = 0, total = 0;
+        int respone = fileChooser.showSaveDialog(null);
+        if (respone == JFileChooser.APPROVE_OPTION) {
+            File inputFile = fileChooser.getSelectedFile();
 
+            try (FileInputStream in = new FileInputStream(inputFile)) {
+                XSSFWorkbook importedFile = new XSSFWorkbook(in);
+                XSSFSheet sheet1 = importedFile.getSheetAt(0);
+                Iterator<Row> rowIterator = sheet1.iterator();
+                while (rowIterator.hasNext()) {
+                    total++;
+                    Row row = rowIterator.next();
+                    Iterator<Cell> cellItera = row.cellIterator();
+                    // khai báo biến 
+                    try {
+                        String tenHopDong = "", tenKhachHang = "";
+                        double tienCoc = 0f;
+                        double tongTien = 0f;
+                        Date ngayKiKet = new Date(), hanChot = new Date();
+                        String yeuCau = "";
+                        while (cellItera.hasNext()) {
+                            Cell cell = cellItera.next();
+                            if (row.getRowNum() == 0) {
+                                continue;
+                            } else {
+                                if (cell.getColumnIndex() == 0) {
+                                    tenHopDong = cell.getStringCellValue();
+                                    // Tên hợp đồng
+                                } else if (cell.getColumnIndex() == 1) {
+                                    // Tên khách hàng
+                                    tenKhachHang = cell.getStringCellValue();
+                                } else if (cell.getColumnIndex() == 2) {
+                                    // Số tiền cọc
+                                    tienCoc = cell.getNumericCellValue();
+                                } else if (cell.getColumnIndex() == 3) {
+                                    // Tổng tiền
+                                    tongTien = cell.getNumericCellValue();
+                                } else if (cell.getColumnIndex() == 4) {
+                                    // Ngày kí kết
+                                    String chuoiNgayKiKet = cell.getStringCellValue();
+                                    try {
+                                        ngayKiKet = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiNgayKiKet);
+                                    } catch (ParseException ex) {
+                                        System.out.println(ex.getMessage());
+                                    }
+                                } else if (cell.getColumnIndex() == 5) {
+                                    // Hạn chót
+                                    String chuoiHanChot = cell.getStringCellValue();
+                                    try {
+                                        hanChot = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiHanChot);
+                                    } catch (ParseException ex) {
+                                        System.out.println(ex.getMessage());
+                                    }
+                                } else if (cell.getColumnIndex() == 6) {
+                                    // Yêu cầu
+                                    yeuCau = cell.getStringCellValue();
+                                }
+                            }
 
+                        }
+                        String maHopDongDeThem = hopDongDao.layRaMaHopDongDeThem();
+                        nhanVienDao = new NhanVien_Dao();
+            			NhanVien nv = nhanVienDao.layMotNhanVienTheoTen(cboNhanVien.getSelectedItem().toString());
+                        boolean coThemDuoc = hopDongDao.themMotHopDong(new HopDong(maHopDongDeThem, tenHopDong, tenKhachHang, tienCoc, tongTien, ngayKiKet, hanChot, yeuCau,nv));
+                        if (coThemDuoc) {
+                            count++;
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                in.close();
+                String chuoiThongBaoKetQua = stThemThanhCong + " " + count + " " + stTren +" "+ (--total)+ " " + stHopDong;
+                JOptionPane.showMessageDialog(null, chuoiThongBaoKetQua);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, stKhongTimThayFile, stThongbao, JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, stKhongDocDuocFile, stThongbao, JOptionPane.ERROR_MESSAGE);
+            }
+            if (count != 0) {
+                try {
+                    taiDuLieuLenBang();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+	
 
 	private void txtTenHopDongActionPerformed(ActionEvent evt) {
 	}

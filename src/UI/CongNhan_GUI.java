@@ -160,6 +160,7 @@ public class CongNhan_GUI extends JPanel {
         btnLuu.setText(prop.getProperty("btnLuu"));
         btnHuy.setText(prop.getProperty("btnHuy"));
 
+        lblTieuDe.setText(prop.getProperty("TieuDe_congNhan"));
         lblMaCongNhan.setText(prop.getProperty("maCongNhan"));
         lblHoVaTen.setText(prop.getProperty("hoTen"));
         lblSoCCCD.setText(prop.getProperty("soCCCD"));
@@ -175,6 +176,9 @@ public class CongNhan_GUI extends JPanel {
         rdoNu.setText(prop.getProperty("nu"));
         stCongNhan = prop.getProperty("congNhan");
 
+        panelCongNhan.setBorder(new TitledBorder(prop.getProperty("congNhan_ThongTinCN")));
+        srcCongNhan.setBorder(new TitledBorder(prop.getProperty("congNhan_TableCN")));
+        
         ChangeName(tblCongNhan, 0, prop.getProperty("pcd_stt"));
         ChangeName(tblCongNhan, 1, lblMaCongNhan.getText());
         ChangeName(tblCongNhan, 2, lblHoVaTen.getText());

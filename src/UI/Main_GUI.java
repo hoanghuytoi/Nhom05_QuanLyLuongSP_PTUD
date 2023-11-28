@@ -338,7 +338,7 @@ public class Main_GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 pnBody.removeAll();
                 try {
-                    pnBody.add(new BangLuongNhanVien_GUI(), BorderLayout.CENTER);
+                    pnBody.add(new BangLuongNhanVien_GUI(fileName), BorderLayout.CENTER);
                 } catch (Exception ex) {
                     Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -354,7 +354,7 @@ public class Main_GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 pnBody.removeAll();
                 try {
-                    pnBody.add(new TimKiemNhanVien_GUI(), BorderLayout.CENTER);
+                    pnBody.add(new TimKiemNhanVien_GUI(fileName), BorderLayout.CENTER);
                 } catch (Exception ex) {
                     Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -405,7 +405,7 @@ public class Main_GUI extends JFrame {
         timKiemCongNhan = new MenuItem(iconSubMenuNonSelect, lblTimKiem, ((e) -> {
             pnBody.removeAll();
             try {
-                pnBody.add(new TimKiemCongNhan_GUI(), BorderLayout.CENTER);
+                pnBody.add(new TimKiemCongNhan_GUI(fileName), BorderLayout.CENTER);
             } catch (Exception ex) {
                 Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
             }

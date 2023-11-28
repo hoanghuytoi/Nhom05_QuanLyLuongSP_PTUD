@@ -150,13 +150,16 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		btnCapNhat.setText(prop.getProperty("btnCapNhat"));
 		btnLuu.setText(prop.getProperty("btnLuu"));
 		btnHuy.setText(prop.getProperty("btnHuy"));
+		btnTichTatCa.setText(prop.getProperty("btnTichTatCa"));
+		btnBoTich.setText(prop.getProperty("btnBoTich"));
 		btnLayDanhSach.setText(prop.getProperty("chamCong_layDanhSachChamCong"));
 		btnChamCongTatCa.setText(prop.getProperty("chamCong_btnChamCongTatCa"));
-		btnChamLai.setText(prop.getProperty("chamCong_btnChamLai"));
+		btnChamLai.setText(prop.getProperty("chamCong_btnChamCong"));
 		scrChamCong.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeChamCong")));
 		scrNhanVien.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeDanhSachNhanVien")));
 		pnlThongTinChamCong.setBorder(new TitledBorder(prop.getProperty("chamCong_tieuDeThongTinChamCong")));
 
+		lblTieuDe.setText(prop.getProperty("chamCong_TieuDe"));
 		lblNgayChamCong.setText(prop.getProperty("chamCong_NgayChamCong"));
 		lblCaLam.setText(prop.getProperty("chamCong_CaLam"));
 		lblMaNV.setText(prop.getProperty("chamCong_maNhanVien"));
@@ -172,7 +175,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		doiNgonNguTable(tblChamCong, 3, prop.getProperty("chamCong_phongBan"));
 		doiNgonNguTable(tblChamCong, 4, prop.getProperty("chamCong_coMat"));
 		doiNgonNguTable(tblChamCong, 5, prop.getProperty("chamCong_nghiCoPhep"));
-
+		doiNgonNguTable(tblChamCong, 6, prop.getProperty("chamCong_gioTangCa"));
 
 		doiNgonNguTable(tblNhanVien, 0, prop.getProperty("chamCong_stt"));
 		doiNgonNguTable(tblNhanVien, 1, prop.getProperty("chamCong_maNhanVienChamCong"));
@@ -193,7 +196,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 
 		stChamCongThanhCong = prop.getProperty("chamCong_chamCongThanhCong");
 		stErrNgayChamCong = prop.getProperty("chamCong_errNgayChamCong");
-
 		stThongbao = prop.getProperty("thongBao");
 		stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
 		stCapNhatThatBai = prop.getProperty("capNhatThatBai");
