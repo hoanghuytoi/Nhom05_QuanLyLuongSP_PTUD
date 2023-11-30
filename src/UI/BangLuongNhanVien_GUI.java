@@ -409,17 +409,17 @@ public class BangLuongNhanVien_GUI extends JPanel {
 					}
 					if (!string[2].isEmpty()) {
 						double gioTangCa = Double.parseDouble(string[2]);
-						luongTangCa += (nv.getLuongCoBan() / 28) / 24 * (gioTangCa) * 2;
+						luongTangCa += (nv.getLuongCoBan() / 20) / 24 * (gioTangCa) * 2;
 					}
 				}
 
 				// Xác định phụ cấp chức danh dựa trên chức vụ
 				if (nv.getChucVu().equals("Nhân viên")) {
-					phuCapCV = (nv.getLuongCoBan() / 28) * 1;
+					phuCapCV = (nv.getLuongCoBan() / 20) * 1;
 				}else if (nv.getChucVu().equals("Nhân viên kế toán")) {
-					phuCapCV = (nv.getLuongCoBan() / 28) * 1;
+					phuCapCV = (nv.getLuongCoBan() / 20) * 1;
 				}else if (nv.getChucVu().equals("Quản lý")) {
-					phuCapCV = (nv.getLuongCoBan() / 28) * 1.2;
+					phuCapCV = (nv.getLuongCoBan() / 20) * 1.2;
 				}
 
 				// Tính phụ cấp thâm niên sau 1 năm làm việc
@@ -427,12 +427,12 @@ public class BangLuongNhanVien_GUI extends JPanel {
 				Date ngayHienTai = new Date();
 				long soNamLamViec = (ngayHienTai.getTime() - ngayVaoLam.getTime()) / (1000L * 60 * 60 * 24 * 365);
 				if (soNamLamViec >= 1) {
-					phuCapThamNien = (nv.getLuongCoBan() / 28) * 0.05 * soNamLamViec;
+					phuCapThamNien = (nv.getLuongCoBan() / 20) * 0.1 * soNamLamViec;
 				}
 
 				double phuCap = phuCapCV + phuCapThamNien;
 				String luongTheoThang = cmbThang.getSelectedItem().toString() + "-" + cmbNam.getSelectedItem().toString();
-				double luongThang = (nv.getLuongCoBan() / 28) * ((soBuoiDiLam + soPhepNghi - soBuoiNghi)/2) + nv.getLuongCoBan() / 28 * soNgayChuNhatDiLam + nv.getLuongCoBan() / 28 * soNgayThuBayDiLam;
+				double luongThang = (nv.getLuongCoBan() / 20) * ((soBuoiDiLam + soPhepNghi - soBuoiNghi)/2) + nv.getLuongCoBan() / 20 * soNgayChuNhatDiLam * 1.5 + nv.getLuongCoBan() / 20 * soNgayThuBayDiLam * 1.5;
 				double thucLanh = luongThang + luongTangCa + phuCap;
 
 				bangLuongNhanVienDao.themMotBangLuongString(maBangLuong, nv.getMaNhanVien(), soBuoiDiLam, soBuoiNghi, soPhepNghi, new Date(), luongTheoThang, luongTangCa, phuCap, thucLanh, "VND");

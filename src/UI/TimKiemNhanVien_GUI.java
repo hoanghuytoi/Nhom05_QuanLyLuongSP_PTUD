@@ -105,7 +105,7 @@ public class TimKiemNhanVien_GUI extends JPanel implements ActionListener {
 
         }
         cmbPhongBan.setSelectedItem("Tất cả");
-        taiDuLieuLenBang("all", "all", "all", "all", "all", "all", "all");
+        //taiDuLieuLenBang("all", "all", "all", "all", "all", "all", "all");
         btnTimKiem.addActionListener(this);
         lblErrEmail.setText("");
         lblErrHoTen.setText("");

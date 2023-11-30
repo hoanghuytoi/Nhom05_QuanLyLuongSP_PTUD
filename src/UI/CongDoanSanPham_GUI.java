@@ -826,6 +826,9 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 		if (soLuongCan < sanPham.getSoLuongSanPham()) {
 			lblErrSoLuongCan.setText(stSoLuongPhaiLonHonHoacBang + sanPham.getSoLuongSanPham());
 			flag = false;
+		}else if (soLuongCan > sanPham.getSoLuongSanPham()+ sanPham.getSoLuongSanPham()*0.5) {
+			lblErrSoLuongCan.setText(stSoLuongPhaiLonHonHoacBang + sanPham.getSoLuongSanPham());
+			flag = false;
 		} else {
 			lblErrSoLuongCan.setText("");
 		}

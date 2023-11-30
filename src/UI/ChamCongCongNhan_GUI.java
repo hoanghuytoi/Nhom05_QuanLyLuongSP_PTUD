@@ -795,7 +795,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
 
 		            if (isCoMat != null && isCoMat) {
 		                if (isNghiCoPhep == null || !isNghiCoPhep) {
-		                    String newOvertime = JOptionPane.showInputDialog("Nhập số lượng sản phẩm nhân viên làm: ");
+		                    String newOvertime = JOptionPane.showInputDialog("Nhập số lượng sản phẩm công nhân làm: ");
 		                    if (newOvertime != null && !newOvertime.isEmpty()) {
 		                        try {
 		                            int quantity = Integer.parseInt(newOvertime);
@@ -805,10 +805,10 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
 		                        }
 		                    }
 		                } else {
-		                    JOptionPane.showMessageDialog(null, "Nhân viên đang nghỉ có phép! Không thể nhập số lượng!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		                    JOptionPane.showMessageDialog(null, "Công nhân đang nghỉ có phép! Không thể nhập số lượng!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 		                }
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Nhân viên không có mặt! Không thể nhập số lượng!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		                JOptionPane.showMessageDialog(null, "Công nhân không có mặt! Không thể nhập số lượng!!!", "Lỗi", JOptionPane.ERROR_MESSAGE);
 		            }
 		        }
 		    }
@@ -1264,6 +1264,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             btnLuu.setEnabled(false);
             cmbTrangThai.setSelectedIndex(0);
             if (modelTableCongNhan.getRowCount() == 0) {
+    			JOptionPane.showMessageDialog(null, "Đã chấm công rồi không có dữ liệu chấm công!!!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 lblMaCongNhanHienThi.setText("");
                 lblHoVaTenHienThi.setText("");
                 lblTenCongDoanOutput.setText("");

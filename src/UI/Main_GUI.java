@@ -594,7 +594,7 @@ public class Main_GUI extends JFrame {
             capNhatNhanVien.setVisible(true);
             chamCongNhanVien.setVisible(true);
             
-        }, capNhatNhanVien, chamCongNhanVien, tinhLuongNhanVien, timKiemNhanVien);
+        }, capNhatNhanVien,phanCongCongNhan, chamCongNhanVien, tinhLuongNhanVien, timKiemNhanVien);
         
         // menu Công nhân
         menuCongNhan = new MenuItem(iconCongNhan, lblCongNhan, (ActionEvent e) -> {
@@ -602,7 +602,7 @@ public class Main_GUI extends JFrame {
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
             setSelectMenu(menuCongNhan);
-        }, capNhatCongNhan,phanCongCongNhan, chamCongCongNhan, tinhLuongCongNhan, timKiemCongNhan);
+        }, capNhatCongNhan, chamCongCongNhan, tinhLuongCongNhan, timKiemCongNhan);
         
         // menu Thống kê
         menuThongKe = new MenuItem(iconThongKe, lblThongKe, (ActionEvent e) -> {
@@ -636,6 +636,8 @@ public class Main_GUI extends JFrame {
         
         addMenu(menuTrangChu,menuPhongBan,menuToNhom,menuHopDong,menuSanPham,menuNhanVien,menuCongNhan,menuThongKe,menuHoTro, menuHeThong);
    
+        
+        
         // menu nhân viên khi KT đăng nhập
         menuNhanVienKT = new MenuItem(iconNhanVien, lblNhanVien, (ActionEvent e) -> {
             pnBody.repaint();
@@ -671,8 +673,9 @@ public class Main_GUI extends JFrame {
             NhanVien_Dao nhanVienDao = new NhanVien_Dao();
             NhanVien nhanVien = nhanVienDao.layMotNhanVienTheoMaNhanVien(userName);
             if (nhanVien.getChucVu().equalsIgnoreCase("Quản lý")) {
-                addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuThongKe, menuHoTro, menuHeThong);
-            }else if (nhanVien.getChucVu().equalsIgnoreCase("Nhân viên kế toán")) {
+                addMenu(menuTrangChu, menuHopDong, menuSanPham, menuNhanVien, menuCongNhan, menuPhongBan, menuToNhom, menuThongKe, menuHoTro, menuHeThong);
+            }
+            else if (nhanVien.getChucVu().equalsIgnoreCase("Nhân viên kế toán")) {
                 addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVienKT, menuCongNhanKT, menuThongKe, menuHoTro, menuHeThong);
                 menuToNhom.setVisible(false);
                 menuPhongBan.setVisible(false);
@@ -680,8 +683,7 @@ public class Main_GUI extends JFrame {
                 menuSanPham.setVisible(false);
                 menuNhanVien.setVisible(false);
                 menuCongNhan.setVisible(false);
-                menuHoTro.setVisible(false);
-                
+                menuHoTro.setVisible(false);                
             } else {
                 addMenu(menuTrangChu, menuPhongBan, menuToNhom, menuHopDong, menuSanPham, menuNhanVien, menuCongNhanNV, menuThongKe, menuHoTro, menuHeThong);
                 menuToNhom.setVisible(false);
