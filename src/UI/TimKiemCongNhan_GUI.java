@@ -34,11 +34,11 @@ import Dao.ToNhom_Dao;
 import javax.swing.JSeparator;
 import javax.swing.JComboBox;
 
-/**
- *
- * @author ngoc minh
- */
 public class TimKiemCongNhan_GUI extends JPanel implements ActionListener {
+	/**
+	 *  ngoc minh
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton btnTimKiem;
 	private JPanel pnlNV;
 	private JLabel lblEmail;

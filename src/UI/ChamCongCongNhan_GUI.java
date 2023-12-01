@@ -55,6 +55,10 @@ import javax.swing.SwingConstants;
 
 
 public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, MouseListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton btnCapNhat;
     private JButton btnChamCong;
     private JButton btnHuy;
@@ -108,7 +112,6 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
     private ToNhom_Dao toNhom_DAO;
     private PhanCongCongNhan_Dao phanCong_DAO;
     private String maCongDoanFlag;
-    private String caLamFlag;
     private Date ngayChamCongFlag;
     private ChamCongCongNhan_Dao chamCongCN_DAO;
     private ItemListener itemMaCongDoan, itemTenCongDoan, itemMaSanPham, itemTenSanPham;
@@ -123,7 +126,6 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
     private String stThemThatBai;
     private String stCapNhatThanhCong;
     private String stCapNhatThatBai;
-    private String stErrNgayChamCong;
     private String stErrBeHonTongSanPhamCongDoan;
     private String stErrChamCong;
     private JSeparator jSeparator1_3;
@@ -144,7 +146,6 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
             System.out.println(e.getMessage());
         }
         maCongDoanFlag = "";
-        caLamFlag = "";
         ngayChamCongFlag = new Date();
         btnChamCong.setEnabled(false);
         btnCapNhat.setEnabled(false);
@@ -1278,7 +1279,7 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
                 btnChamCong.setEnabled(false);
             }
             maCongDoanFlag = cmbMaCongDoan.getSelectedItem().toString();
-            caLamFlag = cmbCaLam.getSelectedItem().toString();
+            cmbCaLam.getSelectedItem().toString();
             ngayChamCongFlag = dtcNgayChamCong.getDate();
             lblTenCongDoanOutput.setText(cmbTenCongDoan.getSelectedItem().toString());
         } 

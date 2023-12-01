@@ -1,7 +1,6 @@
 package XuatFile;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 public class PhieuLuongNVForm {

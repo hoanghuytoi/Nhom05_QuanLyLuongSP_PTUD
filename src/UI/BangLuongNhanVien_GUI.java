@@ -40,6 +40,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 public class BangLuongNhanVien_GUI extends JPanel {
 
+	/**
+	 * Hoàng Huy Tới
+	 */
+	private static final long serialVersionUID = 1L;
 	private JScrollPane scrBangLuong;
 	private JTable tblBangLuong;
 	private JLabel lblTieuDe;
@@ -55,7 +59,6 @@ public class BangLuongNhanVien_GUI extends JPanel {
 	private BangLuongNhanVien_Dao bangLuongNhanVienDao;
 	private ChamCongNhanVien_Dao chamCongNhanVienDao;
 
-	private String fileName;
 	private JLabel lblHienThi;
 	private JLabel lblThang;
 	private JLabel lblNam;
@@ -64,7 +67,6 @@ public class BangLuongNhanVien_GUI extends JPanel {
 	private String stTinhLuongThatBai;
 
 	public BangLuongNhanVien_GUI(String fileName) throws IOException {
-		this.fileName = fileName;
 		initComponents();
 		excute();
 		taiDuLieuLenBangLuong();

@@ -61,6 +61,10 @@ import javax.swing.JButton;
 import java.awt.Dimension;
 
 public class NhanVien_GUI extends JPanel {
+	/**
+	 * Hoàng Huy Tới
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel btnAnhNhanVien;
 	private JButton btnCapNhat;
 	private JButton btnHuy;
@@ -113,10 +117,7 @@ public class NhanVien_GUI extends JPanel {
 	private DefaultTableModel model;
 	private DateFormat df = new SimpleDateFormat("yyy-MM-dd");
 	private DecimalFormat dcf = new DecimalFormat("###.00");
-	private Date date;
 	private boolean isThem = false;
-	private boolean isCapNhat = false;
-
 	private String stErrKhongDeTrong;
     private String stThongbao;
     private String stBanXacNhanXoa;
@@ -994,7 +995,6 @@ public class NhanVien_GUI extends JPanel {
 		setShow(btnLuu, btnHuy);
 		setEnableForInput(true);
 		txtLuongCoBan.setText(txtLuongCoBan.getText().replaceAll(",", ""));
-		isCapNhat = true;
 		setEditTextDateChooser();
 		isThem = false;
 	}
@@ -1059,7 +1059,6 @@ public class NhanVien_GUI extends JPanel {
 			Logger.getLogger(NhanVien_GUI.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		isThem = false;
-		isCapNhat = false;
 		setInit();
 	}
 

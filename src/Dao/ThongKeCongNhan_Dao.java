@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Entity.BangLuongCongNhan;
-import Entity.BangLuongNhanVien;
 import Entity.CongNhan;
-import Entity.NhanVien;
 
 public class ThongKeCongNhan_Dao {
 	

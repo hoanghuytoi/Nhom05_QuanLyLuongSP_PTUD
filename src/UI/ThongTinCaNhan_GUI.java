@@ -19,10 +19,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 import java.awt.event.ActionEvent;
 import javax.swing.border.BevelBorder;
 import javax.swing.JRadioButton;
@@ -35,7 +38,10 @@ import javax.swing.border.EmptyBorder;
 
 public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 
-	private CongNhan_Dao congNhan_Dao;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private NhanVien_Dao nhanVien_Dao;
 	private boolean isNhanVien;
 	private String userName;
@@ -60,18 +66,40 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 	private JLabel lbl_ErrMatKhau;
 	private JLabel lbl_ErrNgaySinh;
 	private JLabel lblTieuDe;
+	private JLabel lblTenDangNhap;
+	private JLabel lblNgayVaoLam;
+	private JLabel lblSDT;
+	private JLabel lblNgaySinh;
+	private JButton btnAnhDaiDien;
+	private JLabel lblHoVaTen;
+	private JLabel lblEmail;
+	private JLabel lblDiaChi;
+	private JLabel lblGioiTinh;
+	private JLabel lblMatKhau;
+	private JLabel lblCCCD;
 
+	private String stErrKhongDeTrong;
+    private String stThongbao;
+    private String stCapNhatThanhCong;
+    private String stCapNhatThatBai;
+    private String stErrHoTen;
+    private String stErrEmail;
+    private String stErrSdt;
+    private String stErrNgaySinh;
+    private String stErrBanChuaDu18Tuoi;
+    private String stErrMatKhau;
+    
 	public ThongTinCaNhan_GUI(String fileName, String userName) throws IOException{
 		initComponents();
 		this.userName = userName;
-
+		caiDatNgonNgu(fileName);
 		try {
 			ConnectionDB.ConnectDB.getInstance().connect();
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		congNhan_Dao = new CongNhan_Dao();
+		new CongNhan_Dao();
 		nhanVien_Dao = new NhanVien_Dao();
 		String loai = userName.substring(0, 4);
 		if (loai.equals("PPNV")) {
@@ -81,6 +109,41 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		}
 		taiDuLieuLenTrang();
 	}
+	
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+
+        btnLuu.setText(prop.getProperty("btnLuu"));
+
+        lblTenDangNhap.setText(prop.getProperty("qlttcn_tenDangNhap"));
+        lblMatKhau.setText(prop.getProperty("qlttcn_matKhau"));
+        lblHoVaTen.setText(prop.getProperty("hoTen"));
+        lblCCCD.setText(prop.getProperty("soCCCD"));
+        lblEmail.setText(prop.getProperty("email"));
+        lblSDT.setText(prop.getProperty("sdt"));
+        lblDiaChi.setText(prop.getProperty("diaChi"));
+        lblNgaySinh.setText(prop.getProperty("ngaySinh"));
+        lblGioiTinh.setText(prop.getProperty("gioiTinh"));
+        lblNgayVaoLam.setText(prop.getProperty("ngayVaoLam"));
+        btnAnhDaiDien.setText(prop.getProperty("anhDaiDien"));
+        lblTieuDe.setText(prop.getProperty("qlttcn_TieuDe"));
+        
+        rdNam.setText(prop.getProperty("nam"));
+        rdNu.setText(prop.getProperty("nu"));
+        
+        stErrBanChuaDu18Tuoi=prop.getProperty("qlttcn_khongDuTuoi");
+        stErrMatKhau=prop.getProperty("qlttcn_errMatKhau");
+        stThongbao = prop.getProperty("thongBao");
+        stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
+        stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+        stErrKhongDeTrong = prop.getProperty("KhongDeTrong");
+        stErrHoTen = prop.getProperty("hoTenKhongHopLe");
+        stErrEmail = prop.getProperty("emailKhongHopLe");
+        stErrSdt = prop.getProperty("sdtKhongHopLe");
+        stErrNgaySinh = prop.getProperty("ngaySinhKhongHopLe");
+    }
 	
 	public void taiDuLieuLenTrang() {
 		if (isNhanVien) {
@@ -116,7 +179,7 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 
 		lblTieuDe = new JLabel("THÔNG TIN CÁ NHÂN");
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 30));
-		lblTieuDe.setBounds(491, 10, 368, 66);
+		lblTieuDe.setBounds(491, 10, 545, 66);
 		add(lblTieuDe);
 
 		setBackground(new Color(255, 255, 255));
@@ -176,7 +239,7 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		jSeparator2.setBounds(-301, 86, 1920, 20);
 		add(jSeparator2);
 
-		JLabel lblCCCD = new JLabel("CCCD\t\t:");
+		lblCCCD = new JLabel("CCCD\t\t:");
 		lblCCCD.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblCCCD.setBounds(279, 214, 120, 40);
 		add(lblCCCD);
@@ -205,7 +268,7 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		add(txtCCCD);
 
 
-		JLabel lblTenDangNhap = new JLabel("Tên đăng nhập:\r\n");
+		lblTenDangNhap = new JLabel("Tên đăng nhập:\r\n");
 		lblTenDangNhap.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblTenDangNhap.setBounds(279, 146, 132, 40);
 		add(lblTenDangNhap);
@@ -216,17 +279,17 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		txtSoDienThoai.setBounds(444, 279, 240, 34);
 		add(txtSoDienThoai);
 
-		JLabel lblNgayVaoLam = new JLabel("Ngày vào làm:");
+		lblNgayVaoLam = new JLabel("Ngày vào làm:");
 		lblNgayVaoLam.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNgayVaoLam.setBounds(279, 458, 120, 40);
+		lblNgayVaoLam.setBounds(279, 458, 155, 40);
 		add(lblNgayVaoLam);
 
-		JLabel lblSDT = new JLabel("Số điện thoại:\r\n");
+		lblSDT = new JLabel("Số điện thoại:\r\n");
 		lblSDT.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblSDT.setBounds(279, 294, 120, 40);
 		add(lblSDT);
 
-		JLabel lblNgaySinh = new JLabel("Ngày Sinh:");
+		lblNgaySinh = new JLabel("Ngày Sinh:");
 		lblNgaySinh.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNgaySinh.setBounds(279, 372, 120, 40);
 		add(lblNgaySinh);
@@ -245,7 +308,7 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		lblAnhDaiDien.setBounds(56, 222, 132, 140);
 		add(lblAnhDaiDien);
 
-		JButton btnAnhDaiDien = new JButton("Ảnh đại diện");
+		btnAnhDaiDien = new JButton("Ảnh đại diện");
 		btnAnhDaiDien.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		btnAnhDaiDien.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
 		btnAnhDaiDien.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -257,7 +320,7 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		btnAnhDaiDien.setBounds(56, 372, 132, 40);
 		add(btnAnhDaiDien);
 
-		JLabel lblHoVaTen = new JLabel("Họ và tên:\r\n");
+		lblHoVaTen = new JLabel("Họ và tên:\r\n");
 		lblHoVaTen.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblHoVaTen.setBounds(782, 146, 120, 40);
 		add(lblHoVaTen);
@@ -268,7 +331,7 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		txtHoTen.setBounds(903, 128, 240, 40);
 		add(txtHoTen);
 
-		JLabel lblEmail = new JLabel("Email:\r\n");
+		lblEmail = new JLabel("Email:\r\n");
 		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblEmail.setBounds(782, 224, 120, 40);
 		add(lblEmail);
@@ -279,7 +342,7 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		txtEmail.setBounds(903, 214, 240, 34);
 		add(txtEmail);
 
-		JLabel lblDiaChi = new JLabel("Địa chỉ:");
+		lblDiaChi = new JLabel("Địa chỉ:");
 		lblDiaChi.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblDiaChi.setBounds(782, 294, 120, 40);
 		add(lblDiaChi);
@@ -290,12 +353,12 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		txtDiaChi.setBounds(903, 281, 240, 40);
 		add(txtDiaChi);
 
-		JLabel lblGioiTinh = new JLabel("Giới tính:");
+		lblGioiTinh = new JLabel("Giới tính:");
 		lblGioiTinh.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblGioiTinh.setBounds(782, 372, 120, 40);
 		add(lblGioiTinh);
 
-		JLabel lblMatKhau = new JLabel("Mật khẩu:");
+		lblMatKhau = new JLabel("Mật khẩu:");
 		lblMatKhau.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblMatKhau.setBounds(782, 458, 120, 40);
 		add(lblMatKhau);
@@ -320,7 +383,7 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 		btnLuu.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
 		btnLuu.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		btnLuu.setBackground(new Color(0, 255, 128));
-		btnLuu.setBounds(587, 593, 132, 40);
+		btnLuu.setBounds(626, 592, 160, 40);
 		add(btnLuu);
 
 		txtMatKhau = new JPasswordField();
@@ -383,69 +446,69 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 	}
 
 	public boolean validateForm() {
-		Boolean flag = true;
-		String hoTen = txtHoTen.getText().trim();
-		String email = txtEmail.getText().trim();
-		String soDienThoai = txtSoDienThoai.getText().trim();
-		String diaChi = txtDiaChi.getText().trim();
-		String matKhau = new String(txtMatKhau.getPassword());
-		Date ngaySinh = dtcNgaySinh.getDate();
+        Boolean flag = true;
+        String hoTen = txtHoTen.getText().trim();
+        String email = txtEmail.getText().trim();
+        String soDienThoai = txtSoDienThoai.getText().trim();
+        String diaChi = txtDiaChi.getText().trim();
+        String matKhau = new String(txtMatKhau.getPassword());
+        Date ngaySinh = dtcNgaySinh.getDate();
 
-		if (hoTen.equals("")) {
-			lbl_ErrHoVaTen.setText("Khong de trong");
-			flag = false;
-		} else if (!hoTen.matches("^([A-ZĐÂÁƯ]{1}[a-zvxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)"
-				+ "((\\s{1}[A-ZĐÂÁƯ][{1}a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$")) {
-			lbl_ErrHoVaTen.setText("Họ và tên theo mẫu:(Nguyễn Văn A)");
-			flag = false;
-		} else {
-			lbl_ErrHoVaTen.setText("_______________________");
-		}
-		if (email.equals("")) {
-			lbl_ErrEmail.setText("Khong de trong");
-			flag = false;
-		} else if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-			lbl_ErrEmail.setText("Email theo mẫu Google");
-			flag = false;
-		} else {
-			lbl_ErrEmail.setText("_______________________");
-		}
-		if (soDienThoai.equals("")) {
-			lbl_ErrSDT.setText("Khong de trong");
-			flag = false;
-		} else if (!soDienThoai.matches("^\\+84[1-9][0-9]{8}$")) {
-			lbl_ErrSDT.setText("SDT theo mẫu:+84********");
-			flag = false;
-		} else {
-			lbl_ErrSDT.setText("_______________________");
-		}
-		if (diaChi.equals("")) {
-			lbl_ErrDiaChi.setText("Khong de trong");
-			flag = false;
-		} else {
-			lbl_ErrDiaChi.setText("_______________________");
-		}
-		if (!ngaySinh.before(new Date())) {
-			lbl_ErrNgaySinh.setText("ngaySinhKhongHopLe");
-			flag = false;
-		} else if (calculateAgeWithJava7(ngaySinh, new Date()) < 18) {
-			lbl_ErrNgaySinh.setText("Ban chua du tuoi lam viec");
-			flag = false;
-		} else {
-			lbl_ErrNgaySinh.setText("_______________________");
-		}
+        if (hoTen.equals("")) {
+            lbl_ErrHoVaTen.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!hoTen.matches("^([A-ZĐÂÁƯ]{1}[a-zvxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+)"
+                + "((\\s{1}[A-ZĐÂÁƯ][{1}a-vxyỳọáầảấờễàạằệếýộậốũứĩõúữịỗìềểẩớặòùồợãụủíỹắẫựỉỏừỷởóéửỵẳẹèẽổẵẻỡơôưăêâđ]+){1,})$")) {
+        	lbl_ErrHoVaTen.setText(stErrHoTen);
+            flag = false;
+        } else {
+        	lbl_ErrHoVaTen.setText("");
+        }
+        if (email.equals("")) {
+            lbl_ErrEmail.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        	lbl_ErrEmail.setText(stErrEmail);
+            flag = false;
+        } else {
+        	lbl_ErrEmail.setText("");
+        }
+        if (soDienThoai.equals("")) {
+            lbl_ErrSDT.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (!soDienThoai.matches("^\\+84[1-9][0-9]{8}$")) {
+        	lbl_ErrSDT.setText(stErrSdt);
+            flag = false;
+        } else {
+        	lbl_ErrSDT.setText("");
+        }
+        if (diaChi.equals("")) {
+            lbl_ErrDiaChi.setText(stErrKhongDeTrong);
+            flag = false;
+        } else {
+        	lbl_ErrDiaChi.setText("");
+        }
+        if (!ngaySinh.before(new Date())) {
+            lbl_ErrNgaySinh.setText(stErrNgaySinh);
+            flag = false;
+        } else if (calculateAgeWithJava7(ngaySinh, new Date()) < 18) {
+        	lbl_ErrNgaySinh.setText(stErrBanChuaDu18Tuoi);
+            flag = false;
+        } else {
+        	lbl_ErrNgaySinh.setText("");
+        }
 
-		if (matKhau.equals("")) {
-			lbl_ErrMatKhau.setText("Khong de trong");
-			flag = false;
-		} else if (matKhau.length() < 6) {
-			lbl_ErrMatKhau.setText("Mật khẩu >=6kitu");
-			flag = false;
-		} else {
-			lbl_ErrMatKhau.setText("_______________________");
-		}
-		return flag;
-	}
+        if (matKhau.equals("")) {
+            lbl_ErrMatKhau.setText(stErrKhongDeTrong);
+            flag = false;
+        } else if (matKhau.length() < 6) {
+        	lbl_ErrMatKhau.setText(stErrMatKhau);
+            flag = false;
+        } else {
+        	lbl_ErrMatKhau.setText("");
+        }
+        return flag;
+    }
 
 	public int calculateAgeWithJava7(Date birthDate, Date currentDate) {                                                                          
 		DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
@@ -472,11 +535,11 @@ public class ThongTinCaNhan_GUI extends JPanel implements ActionListener {
 						nhanVienOld.getLuongCoBan(), rdNam.isSelected() ? true : false,
 								lblAnhDaiDien.getIcon().toString().split("anhNhanVien/")[1], txtDiaChi.getText(), nhanVienOld.getPhongBan()));
 				if (coSuaDuoc) {
-					JOptionPane.showMessageDialog(null,"Cập nhật thành công","Thông Báo", JOptionPane.INFORMATION_MESSAGE);
-					taiDuLieuLenTrang();
-				} else {
-					JOptionPane.showMessageDialog(null,"Cập nhật thất bại","Thông Báo", JOptionPane.INFORMATION_MESSAGE);
-				}
+                    JOptionPane.showMessageDialog(null,stCapNhatThanhCong, stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                    taiDuLieuLenTrang();
+                } else {
+                    JOptionPane.showMessageDialog(null,stCapNhatThatBai,stThongbao, JOptionPane.INFORMATION_MESSAGE);
+                }
 			} 
 		}
 

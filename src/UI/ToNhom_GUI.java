@@ -35,6 +35,10 @@ import java.util.Properties;
 import java.awt.Dimension;
 
 public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton btnCapNhat;
 	private JButton btnHuy;
 	private JButton btnLuu;
@@ -59,9 +63,6 @@ public class ToNhom_GUI extends JPanel implements MouseListener, ActionListener{
 	private ToNhom_Dao toNhom_DAO;
 	private DefaultTableModel defaultTableToNhom;
 	private Object oFlag;
-	private NhanVien nhanVienDangNhap;
-	private String fileName;
-	
 	private String khongDeTrong;
     private String stThongbao;
     private String stBanXacNhanXoa;

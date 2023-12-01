@@ -32,11 +32,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
-/**
- * Hoàng Huy Tới
- */
-
 public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField txtMaSP;
 	private JTextField txtTenSP;
 	private JTextField txtSoLuong;
@@ -96,7 +96,6 @@ public class TimKiemSanPham_GUI extends JPanel implements ActionListener{
         lblErrTenSP.setText("");
         lblErrSoLuong.setText("");
 
-        //taiDuLieuLenBang("all", "all", "all", "all","all","all");
 	}
 
 	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {

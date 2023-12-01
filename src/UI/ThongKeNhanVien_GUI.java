@@ -54,6 +54,10 @@ import Entity.NhanVien;
 import Entity.PhongBan;
 
 public class ThongKeNhanVien_GUI extends JPanel implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel lblTieuDe;
 	private ChartPanel pnBarChar;
 	private JComboBox<String> cmbNam;

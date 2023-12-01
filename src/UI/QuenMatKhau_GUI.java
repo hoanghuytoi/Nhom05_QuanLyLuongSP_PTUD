@@ -1,12 +1,9 @@
 package UI;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Dao.CongNhan_Dao;
 import Dao.NhanVien_Dao;
 import Entity.NhanVien;
 
@@ -17,19 +14,19 @@ import java.awt.Toolkit;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
-/**
- * Hoàng Huy Tới
- */
 
 public class QuenMatKhau_GUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUserName;
 	private JTextField txtEmail;

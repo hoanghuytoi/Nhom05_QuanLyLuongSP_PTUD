@@ -1,10 +1,6 @@
 package UI;
 
 import Entity.BangLuongCongNhan;
-import Entity.BangLuongNhanVien;
-import Entity.ChamCongCongNhan;
-import Entity.CongNhan;
-import Entity.NhanVien;
 import XuatFile.xuatIreport;
 
 import java.awt.Color;
@@ -24,7 +20,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -42,14 +37,13 @@ import javax.swing.table.DefaultTableModel;
 
 import Custom_UI.ScrollBarCustom;
 import Dao.BangLuongCongNhan_Dao;
-import Dao.BangLuongNhanVien_Dao;
 import Dao.ChamCongCongNhan_Dao;
-import Dao.ChamCongNhanVien_Dao;
-import Dao.CongNhan_Dao;
-import Dao.NhanVien_Dao;
-
 
 public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton btnChiTiet;
 	private JButton btnTinhLuong;
 	private JButton btnInBangLuong;
@@ -60,10 +54,8 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 	private JTable tblBangLuong;
 
 	private DefaultTableModel modelTableChamCong;
-	private ChamCongCongNhan_Dao chamCongCN_DAO;
 	private BangLuongCongNhan_Dao bangLuongCN_DAO;
-	private DecimalFormat nf, df;
-	private String fileName;
+	private DecimalFormat nf;
 	private String stTinhLuongThanhCong;
 	private String stTinhLuongThatBai;
 	private JLabel lblTieuDe;
@@ -72,11 +64,10 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 	private JLabel lblNam;
 
 	public BangLuongCongNhan_GUI(String fileName) throws IOException {
-		this.fileName = fileName;
 		initComponents();
 		excute();
 		nf = new DecimalFormat("#,###.00");
-		df = new DecimalFormat("#");
+		new DecimalFormat("#");
 		modelTableChamCong = (DefaultTableModel) tblBangLuong.getModel();
 		try {
 			ConnectionDB.ConnectDB.getInstance().connect();
@@ -84,7 +75,7 @@ public class BangLuongCongNhan_GUI extends JPanel implements ActionListener {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		chamCongCN_DAO = new ChamCongCongNhan_Dao();
+		new ChamCongCongNhan_Dao();
 		bangLuongCN_DAO = new BangLuongCongNhan_Dao();
 		btnTinhLuong.addActionListener(this);
 		btnInBangLuong.addActionListener(this);

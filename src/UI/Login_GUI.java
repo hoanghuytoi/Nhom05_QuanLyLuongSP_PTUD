@@ -36,11 +36,12 @@ import javax.swing.JComboBox;
 import java.awt.Dimension;
 import javax.swing.JSeparator;
 
-/**
- * Hoàng Huy Tới
- */
-
-public class Login_GUI extends JFrame {	private JButton btnDangNhap;
+public class Login_GUI extends JFrame {	
+	/**
+	 * Hoàng Huy Tới
+	 */
+	private static final long serialVersionUID = 1L;
+	private JButton btnDangNhap;
     private JCheckBox chkRemerberPassword;
     private JComboBox<String> cmbNgonNgu;
     private JLabel disable;
@@ -62,7 +63,6 @@ public class Login_GUI extends JFrame {	private JButton btnDangNhap;
     private JPasswordField txtMatKhau;
     
     private NhanVien_Dao nhanVien_DAO;
-    private CongNhan_Dao congNhan_DAO;
     private ArrayList<String> ngonNguList;
 	private JSeparator jSeparator1;
 	private JSeparator jSeparator1_1;
@@ -74,7 +74,7 @@ public class Login_GUI extends JFrame {	private JButton btnDangNhap;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        congNhan_DAO = new CongNhan_Dao();
+        new CongNhan_Dao();
         nhanVien_DAO = new NhanVien_Dao();
         File file = new File("config/VietNam.properties");
         File file1 = new File("config/English.properties");

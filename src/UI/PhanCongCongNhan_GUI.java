@@ -44,6 +44,10 @@ import javax.swing.JButton;
 
 public class PhanCongCongNhan_GUI extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JScrollPane scrSanPham;
 	private JTable tblSanPham;
 	private JScrollPane scrDanhSachPhanCong;
@@ -79,8 +83,7 @@ public class PhanCongCongNhan_GUI extends JPanel {
 	private boolean checkPhanCong = false;
 	private JComboBox<String> cmbMaCongDoan;
 
-	private String stErrKhongDeTrong;
-    private String stThongbao;
+	private String stThongbao;
     private String stBanXacNhanXoa;
     private String stXoaThanhCong;
     private String stXoaThatBai;
@@ -88,7 +91,6 @@ public class PhanCongCongNhan_GUI extends JPanel {
     private String stThemThatBai;
     private String stCapNhatThanhCong;
     private String stCapNhatThatBai;
-    private String stErrChuSo;
     private String stErr1;
     private String stErr2;
     private String stErr3;
@@ -156,8 +158,8 @@ public class PhanCongCongNhan_GUI extends JPanel {
         stThemThatBai = prop.getProperty("themThatBai");
         stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
         stCapNhatThatBai = prop.getProperty("capNhatThatBai");
-        stErrKhongDeTrong = prop.getProperty("khongDeTrong");
-        stErrChuSo = prop.getProperty("pc_errKytuso");
+        prop.getProperty("khongDeTrong");
+        prop.getProperty("pc_errKytuso");
         stErrPhanCong = prop.getProperty("pc_errNgayPhanCong");
         stErr1 = prop.getProperty("pc_err1");
         stErr2 = prop.getProperty("pc_err2");

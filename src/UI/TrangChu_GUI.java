@@ -1,14 +1,16 @@
 package UI;
 
-/**
- * Hoàng Huy Tới
- */
-
 import javax.swing.*;
 import java.awt.*;
 
 public class TrangChu_GUI extends JPanel {
-    public TrangChu_GUI() {
+	/**
+	 * Hoàng Huy Tới
+	 */
+
+	private static final long serialVersionUID = 1L;
+
+	public TrangChu_GUI() {
     	setBackground(new Color(255, 255, 255));
         setLayout(null);
         setSize(1290, 750);

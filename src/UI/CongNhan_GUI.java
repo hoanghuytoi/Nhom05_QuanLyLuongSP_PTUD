@@ -46,7 +46,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,6 +59,10 @@ import javax.swing.JButton;
 import java.awt.Dimension;
 
 public class CongNhan_GUI extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel btnAnhCongNhan;
 	private JButton btnCapNhat;
 	private JButton btnHuy;

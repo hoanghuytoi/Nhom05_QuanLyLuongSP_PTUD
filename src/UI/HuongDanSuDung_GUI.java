@@ -8,9 +8,17 @@ import Custom_UI.ScrollBarCustom;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 
 public class HuongDanSuDung_GUI extends JPanel {
-    private JLabel lblHDSD;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JLabel lblHDSD;
     private JPanel panel;
     private JLabel lblPhongBan;
     private JLabel lblToNhom;
@@ -22,11 +30,29 @@ public class HuongDanSuDung_GUI extends JPanel {
 	private JPanel panelBody;
 	private JScrollPane scrollPane;
 
-    public HuongDanSuDung_GUI() {
+    public HuongDanSuDung_GUI(String fileName) throws IOException{
         setBackground(new Color(255, 255, 255));
         initComponents();
-        showImages("/image/hdsd/PB.png");
-
+        showImages("/image/hdsd/PB.PNG");
+		caiDatNgonNgu(fileName);
+    }
+    
+    public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+    	FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+        lblHDSD.setText(prop.getProperty("HDSD_TieuDe"));
+        lblPhongBan.setText(prop.getProperty("Main_lblPhongBan"));
+        lblToNhom.setText(prop.getProperty("Main_lblToNhom"));
+        lblHopDong.setText(prop.getProperty("Main_lblHopDong"));
+        lblSanPham.setText(prop.getProperty("Main_lblSanPham"));
+        lblNhanVien.setText(prop.getProperty("Main_lblNhanVien"));
+        lblCongNhan.setText(prop.getProperty("Main_lblCongNhan"));
+        lblThongKe.setText(prop.getProperty("Main_lblThongKe"));
+    }
+	
+	public void doiNgonNguTable(JTable table, int col_index, String col_name) {
+        table.getColumnModel().getColumn(col_index).setHeaderValue(col_name);
     }
 
     private void initComponents() {
@@ -60,7 +86,7 @@ public class HuongDanSuDung_GUI extends JPanel {
         lblPhongBan.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	showImages("/image/hdsd/PB.png");
+            	showImages("/image/hdsd/PB.PNG");
             }
         });
         
@@ -68,7 +94,7 @@ public class HuongDanSuDung_GUI extends JPanel {
         lblToNhom.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	showImages("/image/hdsd/TN.png");
+            	showImages("/image/hdsd/TN.PNG");
             }
         });
         
@@ -76,7 +102,7 @@ public class HuongDanSuDung_GUI extends JPanel {
         lblHopDong.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	showImages("/image/hdsd/HD.png");
+            	showImages("/image/hdsd/HD.PNG");
             }
         });
         
@@ -84,7 +110,7 @@ public class HuongDanSuDung_GUI extends JPanel {
         lblSanPham.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                showImages("/image/hdsd/SP.png", "/image/hdsd/CDSP.png", "/image/hdsd/TKSP.png");
+                showImages("/image/hdsd/SP.PNG", "/image/hdsd/CDSP.PNG", "/image/hdsd/TKSP.PNG");
             }
         });
         
@@ -92,7 +118,7 @@ public class HuongDanSuDung_GUI extends JPanel {
         lblNhanVien.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                showImages("/image/hdsd/NV.png", "/image/hdsd/CCNV.png", "/image/hdsd/LNV.png", "/image/hdsd/TKNV.png");
+                showImages("/image/hdsd/NV.PNG", "/image/hdsd/CCNV.PNG", "/image/hdsd/LNV.PNG", "/image/hdsd/TKNV.PNG");
             }
         });
         
@@ -100,7 +126,7 @@ public class HuongDanSuDung_GUI extends JPanel {
         lblCongNhan.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                showImages("/image/hdsd/CN.png", "/image/hdsd/PCCN.png", "/image/hdsd/CCCN.png", "/image/hdsd/LCN.png", "/image/hdsd/TKCN.png");
+                showImages("/image/hdsd/CN.PNG", "/image/hdsd/PCCN.PNG", "/image/hdsd/CCCN.PNG", "/image/hdsd/LCN.PNG", "/image/hdsd/TKCN.PNG");
             }
         });
         
@@ -108,7 +134,7 @@ public class HuongDanSuDung_GUI extends JPanel {
         lblThongKe.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                showImages("/image/hdsd/TKDT.png", "/image/hdsd/TKeNV.png", "/image/hdsd/TKeCN.png");
+                showImages("/image/hdsd/TKDT.PNG", "/image/hdsd/TKeNV.PNG", "/image/hdsd/TKeCN.PNG");
             }
         });
         

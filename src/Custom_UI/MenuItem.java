@@ -18,13 +18,13 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 import javax.swing.border.BevelBorder;
 
-/**
- *
- * @author HoangHuyToi
- */
 public class MenuItem extends JPanel {
 
-    private JSeparator jSeparator;
+    /**
+	 * Hoàng Huy Tới
+	 */
+	private static final long serialVersionUID = 1L;
+	private JSeparator jSeparator;
     private javax.swing.JLabel lblIcon;
     private javax.swing.JLabel lblName;
     

@@ -3,14 +3,11 @@ package UI;
 import Dao.NhanVien_Dao;
 import Dao.CongNhan_Dao;
 import Entity.NhanVien;
-import Entity.CongNhan;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -18,21 +15,24 @@ import javax.swing.JButton;
 import javax.swing.border.BevelBorder;
 import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
-import java.awt.SystemColor;
-import javax.swing.UIManager;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
+import java.util.Properties;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 
 
 public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField txtTenDangNhap;
 	private JPasswordField txtMatKhau;
 	private JPasswordField txtMatKhauMoi;
 	private JPasswordField txtXacNhanMKMoi;
-	private CongNhan_Dao congNhan_Dao;
 	private NhanVien_Dao nhanVien_Dao;
 	private boolean isNhanVien;
 	private String userName;
@@ -47,21 +47,27 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
 	private JSeparator jSeparator1_1;
 	private JSeparator jSeparator1_2;
 	private JSeparator jSeparator1_3;
+	private JLabel lblTieuDe;
+	private JLabel lblTenDangNhap;
+	private JLabel lblMatKhau;
+	private JLabel lblMatKhauMoi;
+	private JLabel lblXacNhanMK;
 	
-
+	private String stErrKhongDeTrong;
+    private String stErrMatKhau;
 	
 	public DoiMatKhau_GUI(String fileName,String userName) throws IOException {
 		setBackground(new Color(255, 255, 255));
 		initComponents();
 		this.userName = userName;		
-		
+		caiDatNgonNgu(fileName);
 		try {
             ConnectionDB.ConnectDB.getInstance().connect();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        congNhan_Dao = new CongNhan_Dao();
+        new CongNhan_Dao();
         nhanVien_Dao = new NhanVien_Dao();
         String loai = userName.substring(0, 4);
         if (loai.equals("PPNV")) {
@@ -71,6 +77,27 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
         }
         taiDuLieuLenTrang();
 	}
+	
+	public void caiDatNgonNgu(String fileName) throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        Properties prop = new Properties();
+        prop.load(fis);
+
+        btnDongY.setText(prop.getProperty("btnDongY"));
+        btnThoat.setText(prop.getProperty("btnThoat"));
+
+        lblTenDangNhap.setText(prop.getProperty("qlttcn_tenDangNhap"));
+        lblMatKhau.setText(prop.getProperty("qlttcn_matKhau"));
+        lblTieuDe.setText(prop.getProperty("dmk_TieuDe"));
+        lblMatKhauMoi.setText(prop.getProperty("dmk_matKhau"));
+        lblXacNhanMK.setText(prop.getProperty("dmk_xnmatKhau"));
+        
+        stErrMatKhau=prop.getProperty("qlttcn_errMatKhau");
+        prop.getProperty("thongBao");
+        prop.getProperty("capNhatThanhCong");
+        prop.getProperty("capNhatThatBai");
+        stErrKhongDeTrong = prop.getProperty("KhongDeTrong");
+    }
 	
 	public void taiDuLieuLenTrang() {
         if (isNhanVien) {
@@ -84,7 +111,7 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
 		setSize(1290, 750);
 	    setLayout(null);
 	    
-	    JLabel lblTieuDe = new JLabel("ĐỔI MẬT KHẨU");
+	    lblTieuDe = new JLabel("ĐỔI MẬT KHẨU");
 	    lblTieuDe.setHorizontalAlignment(SwingConstants.CENTER);
 	    lblTieuDe.setForeground(new Color(0, 128, 0));
 	    lblTieuDe.setFont(new Font("Tahoma", Font.BOLD, 30));
@@ -157,7 +184,7 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
 		jSeparator1_3.setBounds(365, 519, 250, 10);
 		add(jSeparator1_3);
 		
-	    JLabel lblTenDangNhap = new JLabel("Tên đăng nhập:\r\n");
+	    lblTenDangNhap = new JLabel("Tên đăng nhập:\r\n");
 	    lblTenDangNhap.setFont(new Font("Tahoma", Font.BOLD, 16));
 	    lblTenDangNhap.setBounds(144, 190, 176, 40);
 	    add(lblTenDangNhap);
@@ -170,7 +197,7 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
 	    txtTenDangNhap.setBounds(365, 177, 250, 40);
 	    add(txtTenDangNhap);
 	    
-	    JLabel lblMatKhau = new JLabel("Mật khẩu hiện tại:");
+	    lblMatKhau = new JLabel("Mật khẩu hiện tại:");
 	    lblMatKhau.setFont(new Font("Tahoma", Font.BOLD, 16));
 	    lblMatKhau.setBounds(144, 300, 182, 32);
 	    add(lblMatKhau);
@@ -182,12 +209,12 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
 	    txtMatKhau.setBounds(365, 277, 250, 40);
 	    add(txtMatKhau);
 	    
-	    JLabel lblMatKhauMoi = new JLabel("Mật khẩu mới:");
+	    lblMatKhauMoi = new JLabel("Mật khẩu mới:");
 	    lblMatKhauMoi.setFont(new Font("Tahoma", Font.BOLD, 16));
 	    lblMatKhauMoi.setBounds(144, 402, 182, 32);
 	    add(lblMatKhauMoi);
 	    
-	    JLabel lblXacNhanMK = new JLabel("Xác nhận mật khẩu mới:");
+	    lblXacNhanMK = new JLabel("Xác nhận mật khẩu mới:");
 	    lblXacNhanMK.setFont(new Font("Tahoma", Font.BOLD, 16));
 	    lblXacNhanMK.setBounds(144, 497, 211, 32);
 	    add(lblXacNhanMK);
@@ -215,9 +242,6 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
 	    btnDongY.addActionListener(this);
 	    
 	    btnThoat = new JButton("Thoát");
-	    
-	   
-	   
 	    btnThoat.setIcon(new ImageIcon(DoiMatKhau_GUI.class.getResource("/image/icon/dangxuat.png")));
 	    btnThoat.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
 	    btnThoat.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -259,10 +283,10 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
 	    // Kiểm tra mật khẩu hiện tại
 	    NhanVien nhanVienOld = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(userName);
 	    if (matKhau.equals("")) {
-	    	lbl_ErrMatKhauHT.setText("Không để trống");
+	    	lbl_ErrMatKhauHT.setText(stErrKhongDeTrong);
             flag = false;
         } else if (matKhau.length() < 6) {
-        	lbl_ErrMatKhauHT.setText("Mật khẩu phải có ít nhất 6 ký tự");
+        	lbl_ErrMatKhauHT.setText(stErrMatKhau);
             flag = false;
         } else if (!matKhau.equals(nhanVienOld.getMatKhau())) {
 	        lbl_ErrMatKhauHT.setText("Mật khẩu hiện tại không đúng");
@@ -274,10 +298,10 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
 
 	    // Kiểm tra mật khẩu mới
 	    if (matKhauMoi.equals("")) {
-	        lbl_ErrMatKhauMoi.setText("Không để trống");
+	        lbl_ErrMatKhauMoi.setText(stErrKhongDeTrong);
 	        flag = false;
 	    } else if (matKhauMoi.length() < 6) {
-	        lbl_ErrMatKhauMoi.setText("Mật khẩu phải có ít nhất 6 ký tự");
+	        lbl_ErrMatKhauMoi.setText(stErrMatKhau);
 	        flag = false;
 	    } else {
 	        lbl_ErrMatKhauMoi.setText("_______________________");
@@ -285,10 +309,10 @@ public class DoiMatKhau_GUI extends JPanel  implements ActionListener{
 
 	    // Kiểm tra xác nhận mật khẩu mới
 	    if (xacNhanMatKhauMoi.equals("")) {
-	        lbl_ErrXacNhanMK.setText("Không để trống");
+	        lbl_ErrXacNhanMK.setText(stErrKhongDeTrong);
 	        flag = false;
 	    } else if (xacNhanMatKhauMoi.length() < 6) {
-	        lbl_ErrXacNhanMK.setText("Mật khẩu phải có ít nhất 6 ký tự");
+	        lbl_ErrXacNhanMK.setText(stErrMatKhau);
 	        flag = false;
 	    } else if (!matKhauMoi.equalsIgnoreCase(xacNhanMatKhauMoi)) {
 	        JOptionPane.showMessageDialog(this, "Mật khẩu mới không khớp");

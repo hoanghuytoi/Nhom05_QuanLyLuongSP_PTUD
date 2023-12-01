@@ -3,29 +3,21 @@ package UI;
 import Entity.NhanVien;
 import Entity.PhongBan;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -41,11 +33,12 @@ import Dao.NhanVien_Dao;
 import Dao.PhongBan_Dao;
 import javax.swing.JSeparator;
 
-/**
- *
- * @author Hoàng Huy Tới
- */
+
 public class TimKiemNhanVien_GUI extends JPanel implements ActionListener {
+	/**
+	 * Hoàng Huy Tới
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton btnTimKiem;
 	private JPanel pnlNV;
 	private JLabel lblEmail;

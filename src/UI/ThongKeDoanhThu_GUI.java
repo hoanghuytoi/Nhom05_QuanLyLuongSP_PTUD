@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
@@ -23,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JTable;
-import javax.swing.border.TitledBorder;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -40,6 +38,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ThongKeDoanhThu_GUI extends javax.swing.JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String fileName;
 	private JFreeChart chart;
 	

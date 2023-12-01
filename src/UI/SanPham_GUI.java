@@ -53,11 +53,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.GroupLayout;
 
-/**
- * Hoàng Huy Tới
- */
 
 public class SanPham_GUI extends JPanel implements ActionListener, MouseListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField txtMaSanPham;
 	private JTextField txtTenSanPham;
 	private JTextField txtChatLieu;

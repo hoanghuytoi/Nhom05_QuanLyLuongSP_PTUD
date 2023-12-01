@@ -46,17 +46,18 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import Dao.BangLuongCongNhan_Dao;
-import Dao.BangLuongNhanVien_Dao;
 import Dao.CongNhan_Dao;
 import Dao.ThongKeCongNhan_Dao;
-import Dao.ThongKeNhanVien_Dao;
 import Dao.ToNhom_Dao;
 import Entity.BangLuongCongNhan;
-import Entity.BangLuongNhanVien;
 import Entity.CongNhan;
 import Entity.ToNhom;
 
 public class ThongKeCongNhan_GUI extends JPanel implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel lblTieuDe;
 	private ChartPanel pnBarChar;
 	private JComboBox<String> cmbNam;

@@ -59,11 +59,11 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 
-/**
- * Hoàng Huy Tới
- */
-
 public class HopDong_GUI extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField txtMaHopDong;
 	private JTextField txtTenHopDong;
 	private JTextField txtTenKhachHang;
@@ -133,13 +133,9 @@ public class HopDong_GUI extends JPanel {
     private String stKhongDocDuocFile;
 	
 	private DecimalFormat dcf = new DecimalFormat("###.00");
-	private NhanVien nhanVienDangNhap;
-	private String fileName;
 	private JLabel lblNguoiKyKet;
 
 	public HopDong_GUI(NhanVien nv, String fileName) throws ParseException, IOException {
-		this.nhanVienDangNhap = nv;
-        this.fileName = fileName;
 		initComponents();
 		caiDatNgonNgu(fileName);
 		excute();

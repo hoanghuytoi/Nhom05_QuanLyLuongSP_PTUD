@@ -36,6 +36,10 @@ import java.util.Properties;
 import java.awt.Dimension;
 
 public class PhongBan_GUI extends JPanel implements MouseListener, ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton btnCapNhat;
 	private JButton btnHuy;
 	private JButton btnLuu;
@@ -59,9 +63,6 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 	private PhongBan_Dao phongBan_DAO;
 	private DefaultTableModel defaultTablePhongBan;
 	private Object oFlag;
-	private NhanVien nhanVienDangNhap;
-	private String fileName;
-
 	private String stErrKhongDeTrong;
     private String stThongbao;
     private String stBanXacNhanXoa;
@@ -211,7 +212,7 @@ public class PhongBan_GUI extends JPanel implements MouseListener, ActionListene
 		});
 		pnlPhongBan.add(txtTenPhongBan);
 
-		lblAnhPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/PhongBan.png")));
+		lblAnhPB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/phongBan.png")));
 		lblAnhPB.setText("jLabel1");
 		pnlPhongBan.add(lblAnhPB);
 

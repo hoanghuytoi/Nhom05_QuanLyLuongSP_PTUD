@@ -56,11 +56,11 @@ import java.util.logging.Logger;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
-/**
- * Hoàng Huy Tới
- */
-
 public class CongDoanSanPham_GUI extends JPanel implements ActionListener, MouseListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JScrollPane scrTableSanPham;
 	private JTable tblDanhSachSanPham;
 	private JScrollPane scrTableCongDoan;
