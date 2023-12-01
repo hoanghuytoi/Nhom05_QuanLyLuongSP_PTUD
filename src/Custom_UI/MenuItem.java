@@ -125,7 +125,6 @@ public class MenuItem extends JPanel {
         
     }
     
-    
     private void formMousePressed(MouseEvent evt) {
         if (showing) {
             hideMenu();
