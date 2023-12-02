@@ -403,23 +403,44 @@ public class Login_GUI extends JFrame {
     private void btnDangNhapActionPerformed(ActionEvent evt) {
         String userName = txtDangNhap.getText().trim();
         String password = new String(txtMatKhau.getPassword());
+
+        // Kiểm tra nếu tài khoản hoặc mật khẩu trống
+        if (userName.isEmpty() && password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập tài khoản và mật khẩu!", "Thông Báo Đăng nhập", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else if (userName.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập tên đăng nhập!", "Thông Báo Đăng nhập", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else if (password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập mật khẩu!", "Thông Báo Đăng nhập", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra chiều dài của tài khoản và mật khẩu
         if (userName.length() != 10 || password.length() < 6) {
             JOptionPane.showMessageDialog(null, "Tài khoản hoặc Mật khẩu không chính xác!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
         String loai = userName.substring(0, 4);
+
         if (loai.equals("PPNV")) {
             NhanVien nhanVien = nhanVien_DAO.layMotNhanVienTheoMaNhanVien(userName);
+
             if (nhanVien != null && nhanVien.getMatKhau().equals(password)) {
                 try {
-                	new Main_GUI(nhanVien.getMaNhanVien(), ngonNguList.get(cmbNgonNgu.getSelectedIndex())).setVisible(true);
-                	this.setVisible(false);
+                    new Main_GUI(nhanVien.getMaNhanVien(), ngonNguList.get(cmbNgonNgu.getSelectedIndex())).setVisible(true);
+                    this.setVisible(false);
                 } catch (IOException ex) {
                     Logger.getLogger(Login_GUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 this.setVisible(false);
             } else {
-                JOptionPane.showMessageDialog(null, "Tài khoản hoặc Mật khẩu không chính xác!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
+                if (nhanVien == null) {
+                    JOptionPane.showMessageDialog(null, "Không tìm thấy tài khoản!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Tài khoản hoặc Mật khẩu không chính xác!", "Thông Báo Đăng nhập", JOptionPane.ERROR_MESSAGE);
+                }
                 return;
             }
         } else {
@@ -427,6 +448,7 @@ public class Login_GUI extends JFrame {
             return;
         }
     }
+
     
     public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
