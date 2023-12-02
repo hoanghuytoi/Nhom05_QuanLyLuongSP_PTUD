@@ -24,7 +24,7 @@ public class xuatIreport {
 
 	public void inHopDong(ArrayList<HopDong> dsHD) throws JRException {
 	    try {
-	        InputStream arq = getClass().getResourceAsStream("/FileReport/InHopDong.jrxml");
+	        InputStream arq = getClass().getResourceAsStream("/fileReport/InHopDong.jrxml");
 	        JasperReport report = JasperCompileManager.compileReport(arq);
 
 	        Map<String, Object> parameters = new HashMap<String, Object>();
@@ -57,7 +57,7 @@ public class xuatIreport {
 
 	public void xuatChiTietLuong(ArrayList<BangLuongNhanVien> dsBangLuong) throws JRException {
 		try {
-	        InputStream arq = getClass().getResourceAsStream("/FileReport/ChiTietLuongNV.jrxml");
+	        InputStream arq = getClass().getResourceAsStream("/fileReport/ChiTietLuongNV.jrxml");
 	        JasperReport report = JasperCompileManager.compileReport(arq);
 
 	        Map<String, Object> parameters = new HashMap<String, Object>();
@@ -94,7 +94,7 @@ public class xuatIreport {
 	
 	public void xuatChiTietLuongCN(ArrayList<BangLuongCongNhan> dsBangLuong) throws JRException {
 		try {
-	        InputStream arq = getClass().getResourceAsStream("/FileReport/ChiTietLuongCN.jrxml");
+	        InputStream arq = getClass().getResourceAsStream("/fileReport/ChiTietLuongCN.jrxml");
 	        JasperReport report = JasperCompileManager.compileReport(arq);
 
 	        Map<String, Object> parameters = new HashMap<String, Object>();
