@@ -235,6 +235,7 @@ public class ThongKeNhanVien_GUI extends JPanel implements ActionListener{
 		pnHitogramChar.validate();
 	}
 
+	@SuppressWarnings("removal")
 	private void extracted(DefaultPieDataset barDataset, PhongBan e) {
 		barDataset.setValue(e.getTenPhongBan(), new Double(e.getSoLuongNhanVien()));
 	}

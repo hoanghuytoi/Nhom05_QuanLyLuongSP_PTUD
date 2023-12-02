@@ -1,7 +1,6 @@
 package XuatFile;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 public class HopDongForm {
@@ -31,11 +30,6 @@ public class HopDongForm {
 		// TODO Auto-generated constructor stub
 	}
 	
-	private String formatCurrency(BigDecimal amount) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(amount) + " VNĐ";
-    }
-
 	public HopDongForm(Date time, String maHopDong, String tenHopDong, String tenKhachHang, String nguoiKyKet,
 			String yeuCau, String ngayBatDau, String ngayKetThuc, BigDecimal triGiaHD, BigDecimal tienDatCoc) {
 		super();
@@ -130,9 +124,5 @@ public class HopDongForm {
     public void setTienDatCoc(BigDecimal tienDatCoc) {
         this.tienDatCoc = tienDatCoc;
     }
-
-	
-	
-	
 	
 }

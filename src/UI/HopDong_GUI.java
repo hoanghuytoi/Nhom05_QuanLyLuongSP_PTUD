@@ -1014,71 +1014,72 @@ public class HopDong_GUI extends JPanel {
             File inputFile = fileChooser.getSelectedFile();
 
             try (FileInputStream in = new FileInputStream(inputFile)) {
-                XSSFWorkbook importedFile = new XSSFWorkbook(in);
-                XSSFSheet sheet1 = importedFile.getSheetAt(0);
-                Iterator<Row> rowIterator = sheet1.iterator();
-                while (rowIterator.hasNext()) {
-                    total++;
-                    Row row = rowIterator.next();
-                    Iterator<Cell> cellItera = row.cellIterator();
-                    // khai báo biến 
-                    try {
-                        String tenHopDong = "", tenKhachHang = "";
-                        double tienCoc = 0f;
-                        double tongTien = 0f;
-                        Date ngayKiKet = new Date(), hanChot = new Date();
-                        String yeuCau = "";
-                        while (cellItera.hasNext()) {
-                            Cell cell = cellItera.next();
-                            if (row.getRowNum() == 0) {
-                                continue;
-                            } else {
-                                if (cell.getColumnIndex() == 0) {
-                                    tenHopDong = cell.getStringCellValue();
-                                    // Tên hợp đồng
-                                } else if (cell.getColumnIndex() == 1) {
-                                    // Tên khách hàng
-                                    tenKhachHang = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 2) {
-                                    // Số tiền cọc
-                                    tienCoc = cell.getNumericCellValue();
-                                } else if (cell.getColumnIndex() == 3) {
-                                    // Tổng tiền
-                                    tongTien = cell.getNumericCellValue();
-                                } else if (cell.getColumnIndex() == 4) {
-                                    // Ngày kí kết
-                                    String chuoiNgayKiKet = cell.getStringCellValue();
-                                    try {
-                                        ngayKiKet = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiNgayKiKet);
-                                    } catch (ParseException ex) {
-                                        System.out.println(ex.getMessage());
-                                    }
-                                } else if (cell.getColumnIndex() == 5) {
-                                    // Hạn chót
-                                    String chuoiHanChot = cell.getStringCellValue();
-                                    try {
-                                        hanChot = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiHanChot);
-                                    } catch (ParseException ex) {
-                                        System.out.println(ex.getMessage());
-                                    }
-                                } else if (cell.getColumnIndex() == 6) {
-                                    // Yêu cầu
-                                    yeuCau = cell.getStringCellValue();
-                                }
-                            }
+                try (XSSFWorkbook importedFile = new XSSFWorkbook(in)) {
+					XSSFSheet sheet1 = importedFile.getSheetAt(0);
+					Iterator<Row> rowIterator = sheet1.iterator();
+					while (rowIterator.hasNext()) {
+					    total++;
+					    Row row = rowIterator.next();
+					    Iterator<Cell> cellItera = row.cellIterator();
+					    // khai báo biến 
+					    try {
+					        String tenHopDong = "", tenKhachHang = "";
+					        double tienCoc = 0f;
+					        double tongTien = 0f;
+					        Date ngayKiKet = new Date(), hanChot = new Date();
+					        String yeuCau = "";
+					        while (cellItera.hasNext()) {
+					            Cell cell = cellItera.next();
+					            if (row.getRowNum() == 0) {
+					                continue;
+					            } else {
+					                if (cell.getColumnIndex() == 0) {
+					                    tenHopDong = cell.getStringCellValue();
+					                    // Tên hợp đồng
+					                } else if (cell.getColumnIndex() == 1) {
+					                    // Tên khách hàng
+					                    tenKhachHang = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 2) {
+					                    // Số tiền cọc
+					                    tienCoc = cell.getNumericCellValue();
+					                } else if (cell.getColumnIndex() == 3) {
+					                    // Tổng tiền
+					                    tongTien = cell.getNumericCellValue();
+					                } else if (cell.getColumnIndex() == 4) {
+					                    // Ngày kí kết
+					                    String chuoiNgayKiKet = cell.getStringCellValue();
+					                    try {
+					                        ngayKiKet = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiNgayKiKet);
+					                    } catch (ParseException ex) {
+					                        System.out.println(ex.getMessage());
+					                    }
+					                } else if (cell.getColumnIndex() == 5) {
+					                    // Hạn chót
+					                    String chuoiHanChot = cell.getStringCellValue();
+					                    try {
+					                        hanChot = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiHanChot);
+					                    } catch (ParseException ex) {
+					                        System.out.println(ex.getMessage());
+					                    }
+					                } else if (cell.getColumnIndex() == 6) {
+					                    // Yêu cầu
+					                    yeuCau = cell.getStringCellValue();
+					                }
+					            }
 
-                        }
-                        String maHopDongDeThem = hopDongDao.layRaMaHopDongDeThem();
-                        nhanVienDao = new NhanVien_Dao();
-            			NhanVien nv = nhanVienDao.layMotNhanVienTheoTen(cboNhanVien.getSelectedItem().toString());
-                        boolean coThemDuoc = hopDongDao.themMotHopDong(new HopDong(maHopDongDeThem, tenHopDong, tenKhachHang, tienCoc, tongTien, ngayKiKet, hanChot, yeuCau,nv));
-                        if (coThemDuoc) {
-                            count++;
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
+					        }
+					        String maHopDongDeThem = hopDongDao.layRaMaHopDongDeThem();
+					        nhanVienDao = new NhanVien_Dao();
+							NhanVien nv = nhanVienDao.layMotNhanVienTheoTen(cboNhanVien.getSelectedItem().toString());
+					        boolean coThemDuoc = hopDongDao.themMotHopDong(new HopDong(maHopDongDeThem, tenHopDong, tenKhachHang, tienCoc, tongTien, ngayKiKet, hanChot, yeuCau,nv));
+					        if (coThemDuoc) {
+					            count++;
+					        }
+					    } catch (Exception e) {
+					        System.out.println(e.getMessage());
+					    }
+					}
+				}
                 in.close();
                 String chuoiThongBaoKetQua = stThemThanhCong + " " + count + " " + stTren +" "+ (--total)+ " " + stHopDong;
                 JOptionPane.showMessageDialog(null, chuoiThongBaoKetQua);

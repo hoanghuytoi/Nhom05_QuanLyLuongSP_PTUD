@@ -99,7 +99,6 @@ public class ChamCongNhanVien_GUI extends JPanel {
 
 	private String stThongbao;
 	private String stCapNhatThanhCong;
-	private String stCapNhatThatBai;
 	private String stChamCongThanhCong;
 	private String stErrNgayChamCong;
 	private NhanVien nhanvienDangNhap;
@@ -198,7 +197,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		stErrNgayChamCong = prop.getProperty("chamCong_errNgayChamCong");
 		stThongbao = prop.getProperty("thongBao");
 		stCapNhatThanhCong = prop.getProperty("capNhatThanhCong");
-		stCapNhatThatBai = prop.getProperty("capNhatThatBai");
+		prop.getProperty("capNhatThatBai");
 		stNgayThangKhongHople = prop.getProperty("ngayThangKhongHopLe");
 	}
 
@@ -231,6 +230,7 @@ public class ChamCongNhanVien_GUI extends JPanel {
 		setShow(btnCapNhat);
 	}
 
+	@SuppressWarnings("serial")
 	private void initComponents() {
 		setBackground(new Color(255, 255, 255));
 		setSize(1290, 750);

@@ -110,13 +110,10 @@ public class CongNhan_GUI extends JPanel {
 	private DefaultTableModel model;
 	private DateFormat df = new SimpleDateFormat("yyy-MM-dd");
 	private boolean isThem = false;
-	private boolean isCapNhat = false;
-
 	private String stErrKhongDeTrong;
     private String stThongbao;
     private String stBanXacNhanXoa;
     private String stXoaThanhCong;
-    private String stXoaThatBai;
     private String stThemThanhCong;
     private String stThemThatBai;
     private String stTren;
@@ -198,7 +195,7 @@ public class CongNhan_GUI extends JPanel {
         stThongbao = prop.getProperty("thongBao");
         stBanXacNhanXoa = prop.getProperty("banXacNhanXoa");
         stXoaThanhCong = prop.getProperty("xoaThanhCong");
-        stXoaThatBai = prop.getProperty("xoaThatBai");
+        prop.getProperty("xoaThatBai");
         stThemThanhCong = prop.getProperty("themThanhCong");
         stThemThatBai = prop.getProperty("themThatBai");
         stTren = prop.getProperty("tren");
@@ -834,7 +831,6 @@ public class CongNhan_GUI extends JPanel {
 		setHidden(btnThem, btnXoa, btnCapNhat);
 		setShow(btnLuu, btnHuy);
 		setEnableForInput(true);
-		isCapNhat = true;
 		setEditTextDateChooser();
 		isThem = false;
 	}
@@ -987,7 +983,6 @@ public class CongNhan_GUI extends JPanel {
 			Logger.getLogger(CongNhan_GUI.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		isThem = false;
-		isCapNhat = false;
 		setInit();
 	}
 
@@ -1004,78 +999,79 @@ public class CongNhan_GUI extends JPanel {
             File inputFile = fileChooser.getSelectedFile();
 
             try (FileInputStream in = new FileInputStream(inputFile)) {
-                XSSFWorkbook importedFile = new XSSFWorkbook(in);
-                XSSFSheet sheet1 = importedFile.getSheetAt(0);
-                Iterator<Row> rowIterator = sheet1.iterator();
-                while (rowIterator.hasNext()) {
-                    total++;
-                    Row row = rowIterator.next();
-                    Iterator<Cell> cellItera = row.cellIterator();
-                    // khai báo biến 
-                    try {
-                        String hoTen = "", maCCCD = "", soDienThoai = "", email = "", anhDaiDien = "", diaChi = "";
-                        String maToNhom = "";
-                        Date ngaySinh = new Date(), ngayVaoLam = new Date();
-                        Boolean gioiTinh = false;
-                        while (cellItera.hasNext()) {
-                            Cell cell = cellItera.next();
-                            if (row.getRowNum() == 0) {
-                                continue;
-                            } else {
-                                if (cell.getColumnIndex() == 0) {
-                                    hoTen = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 1) {
-                                    String chuoiNgaySinh = cell.getStringCellValue();
-                                    try {
-                                        ngaySinh = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiNgaySinh);
-                                        System.out.println("Ngay Sinh" + ngaySinh);
-                                    } catch (ParseException ex) {
-                                        System.out.println(ex.getMessage());
-                                    }
-                                } else if (cell.getColumnIndex() == 2) {
-                                    maCCCD = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 3) {
-                                    soDienThoai = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 4) {
-                                    email = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 5) {
-                                    String gioiTinhStr = cell.getStringCellValue();
-                                    if (gioiTinhStr.equalsIgnoreCase("Nữ") || gioiTinhStr.equalsIgnoreCase("Nu")) {
-                                        gioiTinh = false;
-                                    } else {
-                                        gioiTinh = true;
-                                    }
-                                } else if (cell.getColumnIndex() == 6) {
-                                    anhDaiDien = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 7) {
-                                    diaChi = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 8) {
-                                    String chuoiNgayVaoLam = cell.getStringCellValue();
-                                    try {
-                                        ngayVaoLam = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiNgayVaoLam);
-                                    } catch (ParseException ex) {
-                                        System.out.println(ex.getMessage());
-                                    }
+                try (XSSFWorkbook importedFile = new XSSFWorkbook(in)) {
+					XSSFSheet sheet1 = importedFile.getSheetAt(0);
+					Iterator<Row> rowIterator = sheet1.iterator();
+					while (rowIterator.hasNext()) {
+					    total++;
+					    Row row = rowIterator.next();
+					    Iterator<Cell> cellItera = row.cellIterator();
+					    // khai báo biến 
+					    try {
+					        String hoTen = "", maCCCD = "", soDienThoai = "", email = "", anhDaiDien = "", diaChi = "";
+					        String maToNhom = "";
+					        Date ngaySinh = new Date(), ngayVaoLam = new Date();
+					        Boolean gioiTinh = false;
+					        while (cellItera.hasNext()) {
+					            Cell cell = cellItera.next();
+					            if (row.getRowNum() == 0) {
+					                continue;
+					            } else {
+					                if (cell.getColumnIndex() == 0) {
+					                    hoTen = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 1) {
+					                    String chuoiNgaySinh = cell.getStringCellValue();
+					                    try {
+					                        ngaySinh = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiNgaySinh);
+					                        System.out.println("Ngay Sinh" + ngaySinh);
+					                    } catch (ParseException ex) {
+					                        System.out.println(ex.getMessage());
+					                    }
+					                } else if (cell.getColumnIndex() == 2) {
+					                    maCCCD = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 3) {
+					                    soDienThoai = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 4) {
+					                    email = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 5) {
+					                    String gioiTinhStr = cell.getStringCellValue();
+					                    if (gioiTinhStr.equalsIgnoreCase("Nữ") || gioiTinhStr.equalsIgnoreCase("Nu")) {
+					                        gioiTinh = false;
+					                    } else {
+					                        gioiTinh = true;
+					                    }
+					                } else if (cell.getColumnIndex() == 6) {
+					                    anhDaiDien = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 7) {
+					                    diaChi = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 8) {
+					                    String chuoiNgayVaoLam = cell.getStringCellValue();
+					                    try {
+					                        ngayVaoLam = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiNgayVaoLam);
+					                    } catch (ParseException ex) {
+					                        System.out.println(ex.getMessage());
+					                    }
 
-                                } else if (cell.getColumnIndex() == 9) {
-                                    maToNhom = cell.getStringCellValue();
-                                }
-                            }
+					                } else if (cell.getColumnIndex() == 9) {
+					                    maToNhom = cell.getStringCellValue();
+					                }
+					            }
 
-                        }
+					        }
 
-                        String maCongNhan = daoCongNhan.layRaMaCongNhanDeThem();
-                        ToNhom toNhom = toNhom_Dao.layMotToNhomTheoMa(maToNhom);
-                        boolean coThemDuoc
-                                = daoCongNhan.themMotCongNhan(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD,
-                                        soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
-                        if (coThemDuoc) {
-                            count++;
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
+					        String maCongNhan = daoCongNhan.layRaMaCongNhanDeThem();
+					        ToNhom toNhom = toNhom_Dao.layMotToNhomTheoMa(maToNhom);
+					        boolean coThemDuoc
+					                = daoCongNhan.themMotCongNhan(new CongNhan(maCongNhan, hoTen, ngaySinh, maCCCD,
+					                        soDienThoai, email, ngayVaoLam, gioiTinh, anhDaiDien, diaChi, toNhom));
+					        if (coThemDuoc) {
+					            count++;
+					        }
+					    } catch (Exception e) {
+					        System.out.println(e.getMessage());
+					    }
+					}
+				}
                 in.close();
                 JOptionPane.showMessageDialog(null, stThemThanhCong + " " + count + " " + stTren + (--total) + stCongNhan);
             } catch (FileNotFoundException ex) {

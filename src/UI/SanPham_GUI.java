@@ -1008,61 +1008,62 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
             File inputFile = fileChooser.getSelectedFile();
 
             try (FileInputStream in = new FileInputStream(inputFile)) {
-                XSSFWorkbook importedFile = new XSSFWorkbook(in);
-                XSSFSheet sheet1 = importedFile.getSheetAt(0);
-                Iterator<Row> rowIterator = sheet1.iterator();
-                while (rowIterator.hasNext()) {
-                    total++;
-                    Row row = rowIterator.next();
-                    Iterator<Cell> cellItera = row.cellIterator();
-                    // khai báo biến 
-                    try {
-                        String maHopDong = "";
-                        String tenSanPham = "";
-                        int soLuongSanPham = 0,
-                        		kichThuoc = 0;
-                        double donGia = 0;
-                        String chatLieu = "";
-                        String anhSanPham = "";
-                        while (cellItera.hasNext()) {
-                            Cell cell = cellItera.next();
-                            if (row.getRowNum() == 0) {
-                                continue;
-                            } else {
-                                if (cell.getColumnIndex() == 0) {
-                                    // Mã hợp đồng
-                                    maHopDong = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 1) {
-                                    // Tên sản phẩm
-                                    tenSanPham = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 2) {
-                                    // Số lượng sản phẩm
-                                    soLuongSanPham = (int) cell.getNumericCellValue();
-                                } else if (cell.getColumnIndex() == 3) {
-                                    // Đơn giá
-                                    donGia = (double) cell.getNumericCellValue();
-                                }else if (cell.getColumnIndex() == 4) {
-                                    // Chất liệu
-                                    chatLieu = cell.getStringCellValue();
-                                } else if (cell.getColumnIndex() == 5) {
-                                    // Kích thước
-                                    kichThuoc = (int) cell.getNumericCellValue();
-                                } else if (cell.getColumnIndex() == 6) {
-                                    // Ảnh sản phẩm
-                                    anhSanPham = cell.getStringCellValue();
-                                }
-                            }
-                        }
-                        HopDong hopDong = hopDong_DAO.layRaMotHopDongTheoMaHopDong(maHopDong);
-                        String maSanPham = sanPham_DAO.layMaSanPhamDeThem();
-                        boolean coThemDuoc = sanPham_DAO.themMotSanPham(new SanPham(maSanPham, tenSanPham, soLuongSanPham, donGia, chatLieu, kichThuoc, anhSanPham, 0, hopDong));
-                        if (coThemDuoc) {
-                            count++;
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
+                try (XSSFWorkbook importedFile = new XSSFWorkbook(in)) {
+					XSSFSheet sheet1 = importedFile.getSheetAt(0);
+					Iterator<Row> rowIterator = sheet1.iterator();
+					while (rowIterator.hasNext()) {
+					    total++;
+					    Row row = rowIterator.next();
+					    Iterator<Cell> cellItera = row.cellIterator();
+					    // khai báo biến 
+					    try {
+					        String maHopDong = "";
+					        String tenSanPham = "";
+					        int soLuongSanPham = 0,
+					        		kichThuoc = 0;
+					        double donGia = 0;
+					        String chatLieu = "";
+					        String anhSanPham = "";
+					        while (cellItera.hasNext()) {
+					            Cell cell = cellItera.next();
+					            if (row.getRowNum() == 0) {
+					                continue;
+					            } else {
+					                if (cell.getColumnIndex() == 0) {
+					                    // Mã hợp đồng
+					                    maHopDong = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 1) {
+					                    // Tên sản phẩm
+					                    tenSanPham = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 2) {
+					                    // Số lượng sản phẩm
+					                    soLuongSanPham = (int) cell.getNumericCellValue();
+					                } else if (cell.getColumnIndex() == 3) {
+					                    // Đơn giá
+					                    donGia = (double) cell.getNumericCellValue();
+					                }else if (cell.getColumnIndex() == 4) {
+					                    // Chất liệu
+					                    chatLieu = cell.getStringCellValue();
+					                } else if (cell.getColumnIndex() == 5) {
+					                    // Kích thước
+					                    kichThuoc = (int) cell.getNumericCellValue();
+					                } else if (cell.getColumnIndex() == 6) {
+					                    // Ảnh sản phẩm
+					                    anhSanPham = cell.getStringCellValue();
+					                }
+					            }
+					        }
+					        HopDong hopDong = hopDong_DAO.layRaMotHopDongTheoMaHopDong(maHopDong);
+					        String maSanPham = sanPham_DAO.layMaSanPhamDeThem();
+					        boolean coThemDuoc = sanPham_DAO.themMotSanPham(new SanPham(maSanPham, tenSanPham, soLuongSanPham, donGia, chatLieu, kichThuoc, anhSanPham, 0, hopDong));
+					        if (coThemDuoc) {
+					            count++;
+					        }
+					    } catch (Exception e) {
+					        System.out.println(e.getMessage());
+					    }
+					}
+				}
                 in.close();
                 JOptionPane.showMessageDialog(null, stThemThanhCong+" " + count+" " + stTren +" "+ (--total)+" " + stSanPham);
             } catch (FileNotFoundException ex) {

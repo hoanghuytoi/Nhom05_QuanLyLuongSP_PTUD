@@ -1071,56 +1071,57 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 			File inputFile = fileChooser.getSelectedFile();
 
 			try (FileInputStream in = new FileInputStream(inputFile)) {
-				XSSFWorkbook importedFile = new XSSFWorkbook(in);
-				XSSFSheet sheet1 = importedFile.getSheetAt(0);
-				Iterator<Row> rowIterator = sheet1.iterator();
-				while (rowIterator.hasNext()) {
-					total++;
-					Row row = rowIterator.next();
-					Iterator<Cell> cellItera = row.cellIterator();
-					// khai báo biến 
-					int thuTuLam = 0, soLuongCan = 0;
-					String tenCongDoan = "";
-					Date thoiHan = new Date();
-					String maSanPham = "";
-					String tinhTrang = "0%";
-					double tienLuong = 0f;
-					try {
-						while (cellItera.hasNext()) {
-							Cell cell = cellItera.next();
-							if (row.getRowNum() == 0) {
-								continue;
-							} else {
-								if (cell.getColumnIndex() == 0) {
-									thuTuLam = (int) cell.getNumericCellValue();
-								} else if (cell.getColumnIndex() == 1) {
-									tenCongDoan = cell.getStringCellValue();
-								} else if (cell.getColumnIndex() == 2) {
-									soLuongCan = (int) cell.getNumericCellValue();
-								} else if (cell.getColumnIndex() == 3) {
-									try {
-										String chuoiThoiHan = cell.getStringCellValue();
-										thoiHan = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiThoiHan);
-									} catch (Exception e) {
-										System.out.println(e.getMessage());
+				try (XSSFWorkbook importedFile = new XSSFWorkbook(in)) {
+					XSSFSheet sheet1 = importedFile.getSheetAt(0);
+					Iterator<Row> rowIterator = sheet1.iterator();
+					while (rowIterator.hasNext()) {
+						total++;
+						Row row = rowIterator.next();
+						Iterator<Cell> cellItera = row.cellIterator();
+						// khai báo biến 
+						int thuTuLam = 0, soLuongCan = 0;
+						String tenCongDoan = "";
+						Date thoiHan = new Date();
+						String maSanPham = "";
+						String tinhTrang = "0%";
+						double tienLuong = 0f;
+						try {
+							while (cellItera.hasNext()) {
+								Cell cell = cellItera.next();
+								if (row.getRowNum() == 0) {
+									continue;
+								} else {
+									if (cell.getColumnIndex() == 0) {
+										thuTuLam = (int) cell.getNumericCellValue();
+									} else if (cell.getColumnIndex() == 1) {
+										tenCongDoan = cell.getStringCellValue();
+									} else if (cell.getColumnIndex() == 2) {
+										soLuongCan = (int) cell.getNumericCellValue();
+									} else if (cell.getColumnIndex() == 3) {
+										try {
+											String chuoiThoiHan = cell.getStringCellValue();
+											thoiHan = new SimpleDateFormat("yyyy-MM-dd").parse(chuoiThoiHan);
+										} catch (Exception e) {
+											System.out.println(e.getMessage());
+										}
+									} else if (cell.getColumnIndex() == 4) {
+										maSanPham = cell.getStringCellValue();
+									} else if (cell.getColumnIndex() == 5) {
+										tienLuong = cell.getNumericCellValue();
 									}
-								} else if (cell.getColumnIndex() == 4) {
-									maSanPham = cell.getStringCellValue();
-								} else if (cell.getColumnIndex() == 5) {
-									tienLuong = cell.getNumericCellValue();
 								}
 							}
-						}
 
-						SanPham sanPham = sanPham_DAO.layMotSanPhamTheoMa(maSanPham);
-						String maCongDoan = congDoan_DAO.layRaMaCongDoanDeThem();
-						boolean coThemDuoc = congDoan_DAO.themMotCongDoan(new CongDoan(maCongDoan, thuTuLam, tenCongDoan, soLuongCan, tinhTrang, thoiHan, sanPham, tienLuong));
+							SanPham sanPham = sanPham_DAO.layMotSanPhamTheoMa(maSanPham);
+							String maCongDoan = congDoan_DAO.layRaMaCongDoanDeThem();
+							boolean coThemDuoc = congDoan_DAO.themMotCongDoan(new CongDoan(maCongDoan, thuTuLam, tenCongDoan, soLuongCan, tinhTrang, thoiHan, sanPham, tienLuong));
 
-						if (coThemDuoc) {
-							count++;
+							if (coThemDuoc) {
+								count++;
+							}
+						} catch (Exception e) {
+							System.out.println(e.getMessage());
 						}
-					} catch (Exception e) {
-						System.out.println(e.getMessage());
 					}
 				}
 				in.close();

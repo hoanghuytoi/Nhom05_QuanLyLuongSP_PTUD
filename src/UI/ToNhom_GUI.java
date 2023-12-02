@@ -20,7 +20,6 @@ import javax.swing.JTable;
 import Custom_UI.ScrollBarCustom;
 import Dao.CongNhan_Dao;
 import Dao.ToNhom_Dao;
-import Entity.NhanVien;
 import Entity.ToNhom;
 
 import java.awt.event.ActionEvent;

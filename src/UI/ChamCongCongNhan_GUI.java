@@ -554,7 +554,8 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
     }
 
     
-    private void initComponents() {
+    @SuppressWarnings("serial")
+	private void initComponents() {
         pnlChamCongCN = new JPanel();
         pnlChamCongCN.setBounds(0, 0, 1290, 450);
         
