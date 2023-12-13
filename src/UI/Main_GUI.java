@@ -594,7 +594,7 @@ public class Main_GUI extends JFrame {
             capNhatNhanVien.setVisible(true);
             chamCongNhanVien.setVisible(true);
             
-        }, capNhatNhanVien,phanCongCongNhan, chamCongNhanVien, tinhLuongNhanVien, timKiemNhanVien);
+        }, capNhatNhanVien, chamCongNhanVien, tinhLuongNhanVien, timKiemNhanVien);
         
         // menu Công nhân
         menuCongNhan = new MenuItem(iconCongNhan, lblCongNhan, (ActionEvent e) -> {
@@ -602,7 +602,7 @@ public class Main_GUI extends JFrame {
             pnBody.revalidate();
             setNonSelectMenu(menuTrangChu, menuHopDong, menuPhongBan, menuToNhom, menuNhanVien, menuCongNhan, menuSanPham, menuThongKe, menuHoTro,menuHeThong);
             setSelectMenu(menuCongNhan);
-        }, capNhatCongNhan, chamCongCongNhan, tinhLuongCongNhan, timKiemCongNhan);
+        }, capNhatCongNhan,phanCongCongNhan, chamCongCongNhan, tinhLuongCongNhan, timKiemCongNhan);
         
         // menu Thống kê
         menuThongKe = new MenuItem(iconThongKe, lblThongKe, (ActionEvent e) -> {

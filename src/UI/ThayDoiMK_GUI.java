@@ -1,40 +1,38 @@
 package UI;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import Custom_UI.Session;
-import Custom_UI.XEmail;
 import Dao.NhanVien_Dao;
 import Entity.NhanVien;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Toolkit;
-import java.util.Random;
 
-import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-public class QuenMatKhau_GUI extends JFrame {
 
-	/**
-	 * 
-	 */
+public class ThayDoiMK_GUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtUserName;
-	private JTextField txtEmail;
+//	private JTextField txtUserName;
+//	private JTextField txtEmail;
 	private JLabel lblErrUserName;
 	private JLabel lblErrTel;
+	private JPasswordField txtEmail;
+    private JPasswordField txtUserName;
+	
 	private JButton btnGuiMa;
 	
 	private Session ss = Session.getInstance();
     private NhanVien_Dao dao = new NhanVien_Dao();
-    private XEmail email = new XEmail();
-	public QuenMatKhau_GUI() {
+	public ThayDoiMK_GUI() {
         initComponents();
         try {
             ConnectionDB.ConnectDB.getInstance().connect();
@@ -90,38 +88,42 @@ public class QuenMatKhau_GUI extends JFrame {
 		lblGioiThieu1.setBounds(180, 172, 450, 36);
 		panel.add(lblGioiThieu1);
 		
-		JLabel lblUserName = new JLabel("User name:");
+		JLabel lblUserName = new JLabel("Mật khẩu mới:");
 		lblUserName.setForeground(Color.WHITE);
 		lblUserName.setFont(new Font("Times New Roman", Font.BOLD, 32));
-		lblUserName.setBounds(132, 231, 175, 47);
+		lblUserName.setBounds(132, 231, 253, 47);
 		panel.add(lblUserName);
 		
-		txtUserName = new JTextField();
+		txtUserName = new JPasswordField();
 		txtUserName.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		txtUserName.setBounds(132, 276, 512, 52);
 		panel.add(txtUserName);
 		txtUserName.setColumns(10);
 		
-		JLabel lblEmail = new JLabel("Email:");
+		JLabel lblEmail = new JLabel("Nhập lại mật khẩu mới:");
 		lblEmail.setForeground(Color.WHITE);
 		lblEmail.setFont(new Font("Times New Roman", Font.BOLD, 32));
-		lblEmail.setBounds(132, 354, 175, 47);
+		lblEmail.setBounds(132, 354, 340, 47);
 		panel.add(lblEmail);
 		
-		txtEmail = new JTextField();
+		txtEmail = new JPasswordField();
 		txtEmail.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(132, 396, 512, 52);
 		panel.add(txtEmail);
 		
-		btnGuiMa = new JButton("GỬI MÃ ĐẶT LẠI");
+		btnGuiMa = new JButton("Xác Thực");
 		btnGuiMa.setBackground(Color.RED);
 		btnGuiMa.setForeground(Color.WHITE);
 		btnGuiMa.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		btnGuiMa.setBounds(246, 502, 295, 57);
 		btnGuiMa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuiMaActionPerformed(evt);
+                try {
+					btnGuiMaActionPerformed(evt);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
             }
         });
 		panel.add(btnGuiMa);
@@ -140,25 +142,18 @@ public class QuenMatKhau_GUI extends JFrame {
 		
 	}
 	
-	private void btnGuiMaActionPerformed(java.awt.event.ActionEvent evt) {
-		String content = txtEmail.getText();
-        NhanVien nv = dao.layMotNhanVienTheoEmail(content);
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int len = 10;
-        Random random = new Random();
-        StringBuilder buffer = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            int randomLimitedInt = leftLimit + (int)
-                    (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
+	private void btnGuiMaActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
+		String PassNew = new String(txtUserName.getPassword());
+        String ConfirmPassNew = new String(txtEmail.getPassword());
+        String email = (String) ss.get("email");
+        if(ConfirmPassNew.equalsIgnoreCase(PassNew)){
+            NhanVien nv = dao.layMotNhanVienTheoEmail(email);
+            nv.setMatKhau(new String(txtEmail.getPassword()));
+            dao.suaThongTinMotNhanVien(nv);
+            JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công");
+            this.dispose();
+            
         }
-        String generatedString = buffer.toString();
-        email.sendEmail(nv.getEmail(), generatedString);
-        ss.set("content", generatedString);
-        ss.set("email", nv.getEmail());
-        XacThuc_GUI o = new XacThuc_GUI();
-        o.setVisible(true);
-        this.dispose();
     }
+
 }

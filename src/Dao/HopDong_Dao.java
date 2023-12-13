@@ -49,6 +49,46 @@ public class HopDong_Dao {
         }
         return dsHopDong;
     }
+    
+    public ArrayList<HopDong> layDanhSachHopDongChuaHetHan() {
+        Statement stm = null;
+        NhanVien_Dao nhanVien_Dao = new NhanVien_Dao();
+        ArrayList<HopDong> dsHopDong = new ArrayList<>();
+
+        try {
+            ConnectionDB.ConnectDB.getInstance();
+            Connection con = ConnectionDB.ConnectDB.getConnection();
+            String query = "SELECT * FROM HopDong WHERE ngayKetThucHD >= GETDATE()";
+            stm = con.createStatement();
+            ResultSet rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                String maHopDong = rs.getString("maHopDong");
+                String tenHopDong = rs.getString("tenHopDong");
+                String tenKhachHang = rs.getString("tenKhachHang");
+                double tienDatCoc = rs.getBigDecimal("tienDatCoc").doubleValue();
+                double triGiaHD = rs.getBigDecimal("triGiaHD").doubleValue();
+                Date ngayKyKet = rs.getDate("ngayKyKetHD");
+                Date ngayKetThuc = rs.getDate("ngayKetThucHD");
+                String yeuCau = rs.getString("yeuCau");
+                String maNguoiKyKet = rs.getString("maNguoiKyKet");
+                NhanVien maNhanVien = nhanVien_Dao.layMotNhanVienTheoMaNhanVien(maNguoiKyKet);
+
+                dsHopDong.add(new HopDong(maHopDong, tenHopDong, tenKhachHang, tienDatCoc, triGiaHD, ngayKyKet, ngayKetThuc, yeuCau, maNhanVien));
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (stm != null) {
+                    stm.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return dsHopDong;
+    }
 
     public HopDong layRaMotHopDongTheoMaHopDong(String maHopDong) {
         PreparedStatement stm = null;

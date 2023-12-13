@@ -5,36 +5,30 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Custom_UI.Session;
-import Custom_UI.XEmail;
 import Dao.NhanVien_Dao;
-import Entity.NhanVien;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Toolkit;
-import java.util.Random;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-public class QuenMatKhau_GUI extends JFrame {
 
-	/**
-	 * 
-	 */
+public class XacThuc_GUI extends JFrame{
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtUserName;
 	private JTextField txtEmail;
 	private JLabel lblErrUserName;
 	private JLabel lblErrTel;
 	private JButton btnGuiMa;
 	
-	private Session ss = Session.getInstance();
-    private NhanVien_Dao dao = new NhanVien_Dao();
-    private XEmail email = new XEmail();
-	public QuenMatKhau_GUI() {
+    private Session ss = Session.getInstance();
+	public XacThuc_GUI() {
         initComponents();
         try {
             ConnectionDB.ConnectDB.getInstance().connect();
@@ -72,10 +66,10 @@ public class QuenMatKhau_GUI extends JFrame {
 		lblLogo.setBounds(329, 11, 143, 74);
 		panel.add(lblLogo);
 		
-		JLabel lblTieuDe = new JLabel("Đặt lại mật khẩu của bạn");
+		JLabel lblTieuDe = new JLabel("Xác thực mật khẩu của bạn");
 		lblTieuDe.setForeground(Color.WHITE);
 		lblTieuDe.setFont(new Font("Times New Roman", Font.BOLD, 32));
-		lblTieuDe.setBounds(213, 88, 347, 47);
+		lblTieuDe.setBounds(213, 88, 391, 47);
 		panel.add(lblTieuDe);
 		
 		JLabel lblGioiThieu = new JLabel("Bạn không thể nhớ mật khẩu của mình? Nhập tên người dùng và mật khẩu của bạn");
@@ -90,22 +84,22 @@ public class QuenMatKhau_GUI extends JFrame {
 		lblGioiThieu1.setBounds(180, 172, 450, 36);
 		panel.add(lblGioiThieu1);
 		
-		JLabel lblUserName = new JLabel("User name:");
-		lblUserName.setForeground(Color.WHITE);
-		lblUserName.setFont(new Font("Times New Roman", Font.BOLD, 32));
-		lblUserName.setBounds(132, 231, 175, 47);
-		panel.add(lblUserName);
+//		JLabel lblUserName = new JLabel("User name:");
+//		lblUserName.setForeground(Color.WHITE);
+//		lblUserName.setFont(new Font("Times New Roman", Font.BOLD, 32));
+//		lblUserName.setBounds(132, 231, 175, 47);
+//		panel.add(lblUserName);
+//		
+//		txtUserName = new JTextField();
+//		txtUserName.setFont(new Font("Times New Roman", Font.BOLD, 25));
+//		txtUserName.setBounds(132, 276, 512, 52);
+//		panel.add(txtUserName);
+//		txtUserName.setColumns(10);
 		
-		txtUserName = new JTextField();
-		txtUserName.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		txtUserName.setBounds(132, 276, 512, 52);
-		panel.add(txtUserName);
-		txtUserName.setColumns(10);
-		
-		JLabel lblEmail = new JLabel("Email:");
+		JLabel lblEmail = new JLabel("Nhập vào mã xác thực:");
 		lblEmail.setForeground(Color.WHITE);
 		lblEmail.setFont(new Font("Times New Roman", Font.BOLD, 32));
-		lblEmail.setBounds(132, 354, 175, 47);
+		lblEmail.setBounds(132, 343, 340, 47);
 		panel.add(lblEmail);
 		
 		txtEmail = new JTextField();
@@ -114,7 +108,7 @@ public class QuenMatKhau_GUI extends JFrame {
 		txtEmail.setBounds(132, 396, 512, 52);
 		panel.add(txtEmail);
 		
-		btnGuiMa = new JButton("GỬI MÃ ĐẶT LẠI");
+		btnGuiMa = new JButton("Xác Thực");
 		btnGuiMa.setBackground(Color.RED);
 		btnGuiMa.setForeground(Color.WHITE);
 		btnGuiMa.setFont(new Font("Times New Roman", Font.BOLD, 30));
@@ -141,24 +135,15 @@ public class QuenMatKhau_GUI extends JFrame {
 	}
 	
 	private void btnGuiMaActionPerformed(java.awt.event.ActionEvent evt) {
-		String content = txtEmail.getText();
-        NhanVien nv = dao.layMotNhanVienTheoEmail(content);
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int len = 10;
-        Random random = new Random();
-        StringBuilder buffer = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            int randomLimitedInt = leftLimit + (int)
-                    (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
+		String otpSS = (String) ss.get("content");
+        String inputOtp = txtEmail.getText();
+        if(inputOtp.equalsIgnoreCase(otpSS)){
+            ThayDoiMK_GUI f = new ThayDoiMK_GUI();
+            f.setVisible(true);
+            this.dispose();
         }
-        String generatedString = buffer.toString();
-        email.sendEmail(nv.getEmail(), generatedString);
-        ss.set("content", generatedString);
-        ss.set("email", nv.getEmail());
-        XacThuc_GUI o = new XacThuc_GUI();
-        o.setVisible(true);
-        this.dispose();
+        else{
+            JOptionPane.showMessageDialog(this, "Sai mã xác thực");
+        }
     }
 }

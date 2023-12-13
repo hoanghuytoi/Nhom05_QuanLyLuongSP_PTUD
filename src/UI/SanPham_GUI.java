@@ -742,7 +742,7 @@ public class SanPham_GUI extends JPanel implements ActionListener, MouseListener
 		while (tblHopDong.getRowCount() != 0) {
 			modelHopDong.removeRow(0);
 		}
-		ArrayList<HopDong> dsHopDong = hopDong_DAO.layDanhSachHopDong();
+		ArrayList<HopDong> dsHopDong = hopDong_DAO.layDanhSachHopDongChuaHetHan();
 		for (HopDong hopDong : dsHopDong) {
 			String data[] = {(modelHopDong.getRowCount() + 1) + "", hopDong.getMaHopDong(), hopDong.getTenHopDong(), hopDong.getTenKhachHang()};
 			modelHopDong.addRow(data);
