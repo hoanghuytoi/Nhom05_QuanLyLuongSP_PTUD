@@ -176,8 +176,8 @@ public class CongDoanSanPham_GUI extends JPanel implements ActionListener, Mouse
 
 		doiNgonNguTable(tblDanhSachSanPham, 0, prop.getProperty("sp_stt"));
 		doiNgonNguTable(tblDanhSachSanPham, 1, lblMaSanPham.getText());
-		doiNgonNguTable(tblDanhSachSanPham, 2, prop.getProperty("sp_tenSP"));
-		doiNgonNguTable(tblDanhSachSanPham, 2, prop.getProperty("sp_donGia"));
+		doiNgonNguTable(tblDanhSachSanPham, 2, prop.getProperty("sp_tenSanPham"));
+		doiNgonNguTable(tblDanhSachSanPham, 3, prop.getProperty("sp_soLuong"));
 
 		doiNgonNguTable(tblCongDoan, 0, lblThuTu.getText());
 		doiNgonNguTable(tblCongDoan, 1, lblMaCD.getText());
