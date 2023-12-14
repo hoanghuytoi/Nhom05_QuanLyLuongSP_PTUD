@@ -1159,7 +1159,17 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
 	}
 	
     private void cmbHienThiActionPerformed(java.awt.event.ActionEvent evt) {
+        // Lấy giá trị được chọn từ cmbHienThi
+        int selectedOption = cmbHienThi.getSelectedIndex();
+
+        // Kiểm tra nếu giá trị chọn là 1
+        if (selectedOption == 1) {
+            // Thực hiện hàm taiDuLieuChamCongLenBangTheoNgay với ngày cụ thể (ví dụ: new Date())
+            taiDuLieuChamCongLenBangTheoNgay(new Date());
+        }
+        // Các điều kiện khác có thể được thêm vào nếu có nhiều lựa chọn khác.
     }
+
 
     private void btnChamCongActionPerformed(java.awt.event.ActionEvent evt) {
         setEditTextDateChooser();
@@ -1592,6 +1602,39 @@ public class ChamCongCongNhan_GUI extends JPanel implements ActionListener, Mous
         }
     }
 
+    public void taiDuLieuChamCongLenBangTheoNgay(Date ngayChamCong) {
+        // Xóa tất cả các dòng trong bảng
+        while (tblChamCong.getRowCount() != 0) {
+            modelTableChamCong.removeRow(0);
+        }
+
+        // Lấy danh sách chấm công theo ngày
+        ArrayList<ChamCongCongNhan> dsChamCong = chamCongCN_DAO.layDanhSachChamCongTheoNgay(ngayChamCong);
+
+        // Thêm dữ liệu vào bảng
+        for (ChamCongCongNhan cccn : dsChamCong) {
+            String data[] = {
+                (modelTableChamCong.getRowCount() + 1) + "",
+                cccn.getPhanCong().getMaPhanCong(),
+                cccn.getPhanCong().getCongNhan().getMaCongNhan(),
+                cccn.getPhanCong().getCongNhan().getHoTen(),
+                cccn.getPhanCong().getCongNhan().getToNhom().getTenToNhom(),
+                cccn.getNgayChamCong().toString(),
+                cccn.getCaLam(),
+                cccn.getTrangThaiDiLam(),
+                cccn.getGioDiLam(),
+                cccn.getPhanCong().getCongDoan().getSanPham().getMaSanPham(),
+                cccn.getPhanCong().getCongDoan().getSanPham().getTenSanPham(),
+                cccn.getPhanCong().getCongDoan().getMaCongDoan(),
+                cccn.getPhanCong().getCongDoan().getTenCongDoan(),
+                cccn.getSoLuongLam() + ""
+            };
+
+            modelTableChamCong.addRow(data);
+        }
+    }
+
+    
     @Override
     public void mouseClicked(MouseEvent e) {
         Object o = e.getSource();

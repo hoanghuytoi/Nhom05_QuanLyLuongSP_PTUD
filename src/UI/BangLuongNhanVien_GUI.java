@@ -434,7 +434,7 @@ public class BangLuongNhanVien_GUI extends JPanel {
 
 				double phuCap = phuCapCV + phuCapThamNien;
 				String luongTheoThang = cmbThang.getSelectedItem().toString() + "-" + cmbNam.getSelectedItem().toString();
-				double luongThang = (nv.getLuongCoBan() / 20) * ((soBuoiDiLam + soPhepNghi - soBuoiNghi)/2) + nv.getLuongCoBan() / 20 * soNgayChuNhatDiLam * 1.5 + nv.getLuongCoBan() / 20 * soNgayThuBayDiLam * 1.5;
+				double luongThang = (nv.getLuongCoBan() / 20) * ((soBuoiDiLam + soPhepNghi - soBuoiNghi)/2) + nv.getLuongCoBan() / 20 * soNgayChuNhatDiLam * 2 + nv.getLuongCoBan() / 20 * soNgayThuBayDiLam * 2;
 				double thucLanh = luongThang + luongTangCa + phuCap;
 
 				bangLuongNhanVienDao.themMotBangLuongString(maBangLuong, nv.getMaNhanVien(), soBuoiDiLam, soBuoiNghi, soPhepNghi, new Date(), luongTheoThang, luongTangCa, phuCap, thucLanh, "VND");
