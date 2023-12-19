@@ -11,6 +11,8 @@ import Entity.NhanVien;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.util.Random;
@@ -28,7 +30,7 @@ public class QuenMatKhau_GUI extends JFrame {
 	private JTextField txtUserName;
 	private JTextField txtEmail;
 	private JLabel lblErrUserName;
-	private JLabel lblErrTel;
+	private JLabel lblErrEmail;
 	private JButton btnGuiMa;
 	
 	private Session ss = Session.getInstance();
@@ -43,7 +45,7 @@ public class QuenMatKhau_GUI extends JFrame {
         }
         
         new NhanVien_Dao();
-        lblErrTel.setText("");
+        lblErrEmail.setText("");
         lblErrUserName.setText("");
     }
 
@@ -132,33 +134,63 @@ public class QuenMatKhau_GUI extends JFrame {
 		lblErrUserName.setBounds(132, 329, 290, 29);
 		panel.add(lblErrUserName);
 		
-		lblErrTel = new JLabel();
-		lblErrTel.setForeground(Color.RED);
-		lblErrTel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lblErrTel.setBounds(132, 448, 290, 29);
-		panel.add(lblErrTel);
+		lblErrEmail = new JLabel();
+		lblErrEmail.setForeground(Color.RED);
+		lblErrEmail.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		lblErrEmail.setBounds(132, 448, 290, 29);
+		panel.add(lblErrEmail);
 		
 	}
 	
 	private void btnGuiMaActionPerformed(java.awt.event.ActionEvent evt) {
-		String content = txtEmail.getText();
-        NhanVien nv = dao.layMotNhanVienTheoEmail(content);
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int len = 10;
-        Random random = new Random();
-        StringBuilder buffer = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            int randomLimitedInt = leftLimit + (int)
-                    (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
-        }
-        String generatedString = buffer.toString();
-        email.sendEmail(nv.getEmail(), generatedString);
-        ss.set("content", generatedString);
-        ss.set("email", nv.getEmail());
-        XacThuc_GUI o = new XacThuc_GUI();
-        o.setVisible(true);
-        this.dispose();
-    }
+	    String userName = txtUserName.getText().trim();
+	    String emailValue = txtEmail.getText().trim();
+	    
+	    if (userName.isEmpty() || emailValue.isEmpty()) {
+	        JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ thông tin!");
+	        return;
+	    }
+
+	    // Kiểm tra xem UserName có tồn tại trong cơ sở dữ liệu không
+	    NhanVien nv = dao.layMotNhanVienTheoMaNhanVien(userName);
+
+	    if (nv == null) {
+	        // Nếu UserName không tồn tại, hiển thị thông báo lỗi
+	        lblErrUserName.setText("Tài khoản không tồn tại. Vui lòng kiểm tra lại.");
+	        lblErrEmail.setText("");
+	    } else {
+	        // Kiểm tra xem email có trùng khớp với email trong tài khoản không
+	        if (!nv.getEmail().equalsIgnoreCase(emailValue)) {
+	            // Nếu email không trùng khớp, hiển thị thông báo lỗi
+	            lblErrEmail.setText("Email không khớp với tài khoản. Vui lòng kiểm tra lại.");
+	            lblErrUserName.setText("");
+	        } else {
+	        	lblErrEmail.setText("");
+	            // Nếu UserName và email đều hợp lệ, tiếp tục gửi mã đặt lại và chuyển đến giao diện xác thực
+	            int leftLimit = 97; // letter 'a'
+	            int rightLimit = 122; // letter 'z'
+	            int len = 10;
+	            Random random = new Random();
+	            StringBuilder buffer = new StringBuilder(len);
+	            for (int i = 0; i < len; i++) {
+	                int randomLimitedInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
+	                buffer.append((char) randomLimitedInt);
+	            }
+	            String generatedString = buffer.toString();
+	            
+	            // Gửi email với mã đặt lại
+	            email.sendEmail(nv.getEmail(), generatedString);
+	            
+	            // Lưu thông tin cho việc kiểm tra ở giao diện xác thực
+	            ss.set("content", generatedString);
+	            ss.set("email", nv.getEmail());
+	            
+	            // Chuyển đến giao diện xác thực
+	            XacThuc_GUI o = new XacThuc_GUI();
+	            o.setVisible(true);
+	            this.dispose();
+	        }
+	    }
+	}
+
 }

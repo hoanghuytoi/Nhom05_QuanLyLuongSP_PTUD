@@ -21,17 +21,16 @@ import javax.swing.ImageIcon;
 public class ThayDoiMK_GUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-//	private JTextField txtUserName;
-//	private JTextField txtEmail;
 	private JLabel lblErrUserName;
 	private JLabel lblErrTel;
-	private JPasswordField txtEmail;
-    private JPasswordField txtUserName;
-	
+	private JPasswordField txtNhapLaiMK;
+    private JPasswordField txtMK;	
+    
 	private JButton btnGuiMa;
 	
 	private Session ss = Session.getInstance();
     private NhanVien_Dao dao = new NhanVien_Dao();
+    
 	public ThayDoiMK_GUI() {
         initComponents();
         try {
@@ -94,11 +93,11 @@ public class ThayDoiMK_GUI extends JFrame{
 		lblUserName.setBounds(132, 231, 253, 47);
 		panel.add(lblUserName);
 		
-		txtUserName = new JPasswordField();
-		txtUserName.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		txtUserName.setBounds(132, 276, 512, 52);
-		panel.add(txtUserName);
-		txtUserName.setColumns(10);
+		txtMK = new JPasswordField();
+		txtMK.setFont(new Font("Times New Roman", Font.BOLD, 25));
+		txtMK.setBounds(132, 276, 512, 52);
+		panel.add(txtMK);
+		txtMK.setColumns(10);
 		
 		JLabel lblEmail = new JLabel("Nhập lại mật khẩu mới:");
 		lblEmail.setForeground(Color.WHITE);
@@ -106,11 +105,11 @@ public class ThayDoiMK_GUI extends JFrame{
 		lblEmail.setBounds(132, 354, 340, 47);
 		panel.add(lblEmail);
 		
-		txtEmail = new JPasswordField();
-		txtEmail.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		txtEmail.setColumns(10);
-		txtEmail.setBounds(132, 396, 512, 52);
-		panel.add(txtEmail);
+		txtNhapLaiMK = new JPasswordField();
+		txtNhapLaiMK.setFont(new Font("Times New Roman", Font.BOLD, 25));
+		txtNhapLaiMK.setColumns(10);
+		txtNhapLaiMK.setBounds(132, 396, 512, 52);
+		panel.add(txtNhapLaiMK);
 		
 		btnGuiMa = new JButton("Xác Thực");
 		btnGuiMa.setBackground(Color.RED);
@@ -143,17 +142,19 @@ public class ThayDoiMK_GUI extends JFrame{
 	}
 	
 	private void btnGuiMaActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
-		String PassNew = new String(txtUserName.getPassword());
-        String ConfirmPassNew = new String(txtEmail.getPassword());
+		String PassNew = new String(txtMK.getPassword());
+        String ConfirmPassNew = new String(txtNhapLaiMK.getPassword());
         String email = (String) ss.get("email");
         if(ConfirmPassNew.equalsIgnoreCase(PassNew)){
             NhanVien nv = dao.layMotNhanVienTheoEmail(email);
-            nv.setMatKhau(new String(txtEmail.getPassword()));
+            nv.setMatKhau(new String(txtNhapLaiMK.getPassword()));
             dao.suaThongTinMotNhanVien(nv);
             JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công");
-            this.dispose();
-            
+            this.dispose();         
+        } else {
+            JOptionPane.showMessageDialog(this, "Mật khẩu mới và mật khẩu xác nhận không khớp. Vui lòng nhập lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
+        
     }
 
 }

@@ -84,28 +84,16 @@ public class XacThuc_GUI extends JFrame{
 		lblGioiThieu1.setBounds(180, 172, 450, 36);
 		panel.add(lblGioiThieu1);
 		
-//		JLabel lblUserName = new JLabel("User name:");
-//		lblUserName.setForeground(Color.WHITE);
-//		lblUserName.setFont(new Font("Times New Roman", Font.BOLD, 32));
-//		lblUserName.setBounds(132, 231, 175, 47);
-//		panel.add(lblUserName);
-//		
-//		txtUserName = new JTextField();
-//		txtUserName.setFont(new Font("Times New Roman", Font.BOLD, 25));
-//		txtUserName.setBounds(132, 276, 512, 52);
-//		panel.add(txtUserName);
-//		txtUserName.setColumns(10);
-		
 		JLabel lblEmail = new JLabel("Nhập vào mã xác thực:");
 		lblEmail.setForeground(Color.WHITE);
 		lblEmail.setFont(new Font("Times New Roman", Font.BOLD, 32));
-		lblEmail.setBounds(132, 343, 340, 47);
+		lblEmail.setBounds(132, 293, 340, 47);
 		panel.add(lblEmail);
 		
 		txtEmail = new JTextField();
 		txtEmail.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		txtEmail.setColumns(10);
-		txtEmail.setBounds(132, 396, 512, 52);
+		txtEmail.setBounds(132, 351, 512, 52);
 		panel.add(txtEmail);
 		
 		btnGuiMa = new JButton("Xác Thực");
@@ -129,7 +117,7 @@ public class XacThuc_GUI extends JFrame{
 		lblErrTel = new JLabel();
 		lblErrTel.setForeground(Color.RED);
 		lblErrTel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-		lblErrTel.setBounds(132, 448, 290, 29);
+		lblErrTel.setBounds(132, 414, 290, 29);
 		panel.add(lblErrTel);
 		
 	}

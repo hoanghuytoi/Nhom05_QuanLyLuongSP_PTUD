@@ -51,13 +51,13 @@ public class XEmail {
                 
                 msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailToAddress));
 
-                msg.setSubject("Thông tin mật khẩu");
+                msg.setSubject("PACEPRO- LẤY LẠI MẬT KHẨU");
 
                 msg.setContent("Mã xác nhận của bạn Là : " + textMessage, "text/html; charset=utf-8");
               
                 Transport.send(msg);
                 //MsgBox.alert(null, "Gửi Thành Công Đến Email " + emailToAddress);
-                JOptionPane.showMessageDialog(null, "Gửi Thành Công Đến Email " + emailToAddress);
+                JOptionPane.showMessageDialog(null, "Gửi Thành Công Mã Xác Thực Đến Email " + emailToAddress);
             } catch (Exception e) {
                 //MsgBox.alert(null, String.valueOf(e));
                 JOptionPane.showMessageDialog(null, String.valueOf(e));
